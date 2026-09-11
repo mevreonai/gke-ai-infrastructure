@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: model-downloader
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    metadata:
+      annotations:
+        gke-gcsfuse/volumes: "true"
+        gke-gcsfuse/memory-limit: "0"
+    spec:
+      serviceAccountName: ray-ksa
+      restartPolicy: OnFailure
+      containers:
+      - name: downloader
+        image: python:3.10-slim
+        command: ["/bin/sh", "-c"]
+        args:
+        - |
+          pip install -U huggingface_hub filelock
+          python -c '
+          import filelock
+          class DummyLock:
+              def __init__(self, *args, **kwargs): pass
+              def __enter__(self): return self
+              def __exit__(self, *args): pass
+              def acquire(self, *args, **kwargs): pass
+              def release(self, *args, **kwargs): pass
+          filelock.FileLock = DummyLock
+
+          from huggingface_hub import snapshot_download
+          snapshot_download(
+              repo_id="google/gemma-2-27b-it",
+              local_dir="/data/google/gemma-2-27b-it"
+          )
+          '
+        env:
+        - name: HF_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hf-secret
+              key: hf_api_token
+        volumeMounts:
+        - name: gcs-fuse-csi-ephemeral
+          mountPath: /data
+      volumes:
+      - name: gcs-fuse-csi-ephemeral
+        csi:
+          driver: gcsfuse.csi.storage.gke.io
+          volumeAttributes:
+            bucketName: mevreon-tpu-model-weights
+            mountOptions: "implicit-dirs"

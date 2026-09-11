@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-gpu-model-server
+  namespace: default
+  labels:
+    app: vllm-gpu-model-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-gpu-model-server
+  template:
+    metadata:
+      labels:
+        app: vllm-gpu-model-server
+    spec:
+      tolerations:
+      - key: "nvidia.com/gpu"
+        operator: "Equal"
+        value: "present"
+        effect: "NoSchedule"
+      nodeSelector:
+        cloud.google.com/gke-accelerator: "nvidia-l4"
+      containers:
+      - name: vllm-gpu
+        image: vllm/vllm-openai:latest
+        args:
+        - --model=Qwen/Qwen2.5-7B-Instruct
+        - --host=0.0.0.0
+        - --port=8000
+        - --gpu-memory-utilization=0.90
+        - --max-model-len=4096
+        env:
+        - name: HF_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: hf-secret
+              key: hf_api_token
+              optional: true
+        ports:
+        - name: http
+          containerPort: 8000
+        resources:
+          limits:
+            nvidia.com/gpu: "1"
+            memory: 28Gi
+            cpu: "7"
+          requests:
+            nvidia.com/gpu: "1"
+            memory: 22Gi
+            cpu: "4"
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 15
+        volumeMounts:
+        - name: dshm
+          mountPath: /dev/shm
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-gpu-service
+  namespace: default
+  labels:
+    app: vllm-gpu-model-server
+spec:
+  selector:
+    app: vllm-gpu-model-server
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8000
+    targetPort: 8000

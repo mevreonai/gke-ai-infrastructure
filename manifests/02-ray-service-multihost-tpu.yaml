@@ -1,0 +1,146 @@
+apiVersion: ray.io/v1
+kind: RayService
+metadata:
+  name: vllm-tpu-multihost
+  labels:
+    ai.gke.io/model: "gemma-2-27b-it"
+    ai.gke.io/inference-server: "vllm"
+spec:
+  serveConfigV2: |
+    http_options:
+      host: 0.0.0.0
+      port: 8000
+    applications:
+    - name: llm
+      import_path: serve_tpu_multihost:deployment
+      runtime_env:
+        env_vars:
+          PYTHONPATH: "/data"
+          VLLM_XLA_CACHE_PATH: "/tmp/vllm_xla_cache"
+          MODEL_ID: "google/gemma-2-27b-it"
+          MODEL_SOURCE: "/data/google/gemma-2-27b-it"
+          ACCELERATOR_TYPE: "TPU-V5LITEPOD"
+          TPU_TOPOLOGY: "2x4"
+          TENSOR_PARALLEL_SIZE: "8"
+  rayClusterConfig:
+    headGroupSpec:
+      rayStartParams: {}
+      template:
+        metadata:
+          annotations:
+            gke-gcsfuse/volumes: "true"
+            gke-gcsfuse/cpu-limit: "0"
+            gke-gcsfuse/memory-limit: "0"
+            gke-gcsfuse/ephemeral-storage-limit: "0"
+        spec:
+          serviceAccountName: ray-ksa
+          containers:
+          - name: ray-head
+            image: us-east1-docker.pkg.dev/mevreon/ray-repo/vllm-tpu-ray:vllm-tpu
+            imagePullPolicy: Always
+            ports:
+            - containerPort: 6379
+              name: gcs
+            - containerPort: 8265
+              name: dashboard
+            - containerPort: 10001
+              name: client
+            - containerPort: 8000
+              name: serve
+            resources:
+              limits:
+                cpu: "2"
+                memory: 16Gi
+              requests:
+                cpu: "2"
+                memory: 16Gi
+            volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+            - name: gcs-fuse-csi-ephemeral
+              mountPath: /data
+          volumes:
+          - name: dshm
+            emptyDir:
+              medium: Memory
+          - name: gke-gcsfuse-cache
+            emptyDir:
+              medium: Memory
+          - name: gcs-fuse-csi-ephemeral
+            csi:
+              driver: gcsfuse.csi.storage.gke.io
+              volumeAttributes:
+                bucketName: mevreon-tpu-model-weights
+                mountOptions: "implicit-dirs"
+    workerGroupSpecs:
+    - groupName: tpu-group
+      replicas: 1
+      minReplicas: 1
+      maxReplicas: 1
+      numOfHosts: 2
+      rayStartParams: {}
+      template:
+        metadata:
+          annotations:
+            gke-gcsfuse/volumes: "true"
+            gke-gcsfuse/cpu-limit: "0"
+            gke-gcsfuse/memory-limit: "0"
+            gke-gcsfuse/ephemeral-storage-limit: "0"
+        spec:
+          serviceAccountName: ray-ksa
+          containers:
+          - name: ray-worker
+            image: us-east1-docker.pkg.dev/mevreon/ray-repo/vllm-tpu-ray:vllm-tpu
+            imagePullPolicy: Always
+            resources:
+              limits:
+                cpu: "20"
+                google.com/tpu: "4"
+                memory: 120Gi
+              requests:
+                cpu: "20"
+                google.com/tpu: "4"
+                memory: 120Gi
+            env:
+            - name: HF_HOME
+              value: "/data/huggingface"
+            - name: HF_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: hf-secret
+                  key: hf_api_token
+            - name: JAX_PLATFORMS
+              value: "tpu,cpu"
+            - name: NODE_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.hostIP
+            - name: VBAR_CONTROL_SERVICE_URL
+              value: $(NODE_IP):8353
+            - name: TPU_MULTIHOST_BACKEND
+              value: "ray"
+            - name: TPU_BACKEND_TYPE
+              value: "jax"
+            - name: ENABLE_PJRT_COMPATIBILITY
+              value: "true"
+            volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+            - name: gcs-fuse-csi-ephemeral
+              mountPath: /data
+          volumes:
+          - name: dshm
+            emptyDir:
+              medium: Memory
+          - name: gke-gcsfuse-cache
+            emptyDir:
+              medium: Memory
+          - name: gcs-fuse-csi-ephemeral
+            csi:
+              driver: gcsfuse.csi.storage.gke.io
+              volumeAttributes:
+                bucketName: mevreon-tpu-model-weights
+                mountOptions: "implicit-dirs"
+          nodeSelector:
+            cloud.google.com/gke-tpu-accelerator: tpu-v5-lite-podslice
+            cloud.google.com/gke-tpu-topology: 2x4

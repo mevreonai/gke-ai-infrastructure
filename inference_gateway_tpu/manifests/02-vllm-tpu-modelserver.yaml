@@ -1,0 +1,102 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-tpu-model-server
+  namespace: default
+  labels:
+    app: vllm-tpu-model-server
+    model: gemma-2-27b-it
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-tpu-model-server
+  template:
+    metadata:
+      labels:
+        app: vllm-tpu-model-server
+        model: gemma-2-27b-it
+      annotations:
+        gke-gcsfuse/volumes: "true"
+        gke-gcsfuse/cpu-limit: "0"
+        gke-gcsfuse/memory-limit: "0"
+        gke-gcsfuse/ephemeral-storage-limit: "0"
+    spec:
+      serviceAccountName: vllm-ksa
+      nodeSelector:
+        cloud.google.com/gke-tpu-accelerator: tpu-v6e-slice
+        cloud.google.com/gke-tpu-topology: 2x2
+      containers:
+      - name: vllm-tpu
+        image: vllm/vllm-tpu:v0.21.0
+        command: ["python3", "-m", "vllm.entrypoints.openai.api_server"]
+        args:
+        - --host=0.0.0.0
+        - --port=8000
+        - --tensor-parallel-size=4
+        - --max-model-len=4096
+        - --model=/data/google/gemma-2-27b-it
+        - --served-model-name=google/gemma-2-27b-it
+        - --download-dir=/data
+        - --max-num-batched-tokens=2048
+        - --max-num-seqs=64
+        env:
+        - name: VLLM_XLA_CACHE_PATH
+          value: "/tmp/vllm_xla_cache"
+        - name: VLLM_TARGET_DEVICE
+          value: "tpu"
+        - name: JAX_PLATFORMS
+          value: "tpu,cpu"
+        ports:
+        - containerPort: 8000
+          name: http
+        resources:
+          limits:
+            google.com/tpu: 4
+            cpu: "20"
+            memory: 100Gi
+          requests:
+            google.com/tpu: 4
+            cpu: "16"
+            memory: 80Gi
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 45
+          periodSeconds: 15
+        volumeMounts:
+        - name: gcs-fuse-csi-ephemeral
+          mountPath: /data
+        - name: dshm
+          mountPath: /dev/shm
+      volumes:
+      - name: gke-gcsfuse-cache
+        emptyDir:
+          medium: Memory
+      - name: dshm
+        emptyDir:
+          medium: Memory
+      - name: gcs-fuse-csi-ephemeral
+        csi:
+          driver: gcsfuse.csi.storage.gke.io
+          volumeAttributes:
+            bucketName: GSBUCKET
+            mountOptions: "implicit-dirs,file-cache:enable-parallel-downloads:true,file-cache:parallel-downloads-per-file:100,file-cache:max-parallel-downloads:-1,file-cache:download-chunk-size-mb:10,file-cache:max-size-mb:-1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-tpu-service
+  namespace: default
+  labels:
+    app: vllm-tpu-model-server
+spec:
+  selector:
+    app: vllm-tpu-model-server
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8000
+    targetPort: 8000

@@ -1,0 +1,11 @@
+apiVersion: inference.networking.x-k8s.io/v1alpha2
+kind: InferenceObjective
+metadata:
+  name: gemma-tpu-objective
+  namespace: default
+spec:
+  priority: 20
+  poolRef:
+    group: inference.networking.k8s.io
+    kind: InferencePool
+    name: vllm-tpu-inference-pool
