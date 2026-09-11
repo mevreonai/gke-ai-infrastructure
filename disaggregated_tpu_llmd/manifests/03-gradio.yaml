@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradio-ui
+  namespace: default
+  labels:
+    app: gradio-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradio-ui
+  template:
+    metadata:
+      labels:
+        app: gradio-ui
+    spec:
+      containers:
+      - name: gradio
+        image: python:3.10-slim
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          pip install --no-cache-dir gradio openai requests
+          cat << 'EOF' > app.py
+          import gradio as gr
+          from openai import OpenAI
+          import os
+
+          GATEWAY_URL = os.environ.get("OPENAI_BASE_URL", "http://llm-d-router-service:8000/v1")
+          client = OpenAI(base_url=GATEWAY_URL, api_key="not-needed")
+
+          def chat_fn(message, history):
+              messages = [{"role": "system", "content": "You are a helpful AI assistant served via Disaggregated TPU Inferencing with llm-d on Google Cloud GKE."}]
+              for h in history:
+                  messages.append({"role": "user", "content": h[0]})
+                  messages.append({"role": "assistant", "content": h[1]})
+              messages.append({"role": "user", "content": message})
+              
+              stream = client.chat.completions.create(
+                  model="Qwen/Qwen2.5-7B-Instruct",
+                  messages=messages,
+                  stream=True,
+                  temperature=0.7,
+                  max_tokens=512
+              )
+              partial = ""
+              for chunk in stream:
+                  if chunk.choices and chunk.choices[0].delta.content:
+                      partial += chunk.choices[0].delta.content
+                      yield partial
+
+          demo = gr.ChatInterface(
+              fn=chat_fn,
+              title="⚡ Disaggregated TPU vLLM Serving with llm-d on GKE",
+              description="Serving Qwen-2.5-7B across decoupled Prefill and Decode TPU workers with shared network KV-transfer."
+          )
+          demo.launch(server_name="0.0.0.0", server_port=8080)
+          EOF
+          python3 app.py
+        env:
+        - name: OPENAI_BASE_URL
+          value: "http://llm-d-router-service:8000/v1"
+        ports:
+        - containerPort: 8080
+          name: http
+        resources:
+          limits:
+            cpu: "2"
+            memory: 2Gi
+          requests:
+            cpu: "500m"
+            memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gradio-service
+  namespace: default
+  labels:
+    app: gradio-ui
+spec:
+  selector:
+    app: gradio-ui
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8080
+    targetPort: 8080

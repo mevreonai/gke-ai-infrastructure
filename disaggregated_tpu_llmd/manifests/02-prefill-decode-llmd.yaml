@@ -1,0 +1,293 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-tpu-prefill
+  namespace: default
+  labels:
+    app: vllm-tpu-prefill
+    llm-d.ai/modelservice-role: prefill
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-tpu-prefill
+  template:
+    metadata:
+      labels:
+        app: vllm-tpu-prefill
+        llm-d.ai/modelservice-role: prefill
+      annotations:
+        gke-gcsfuse/volumes: "true"
+        gke-gcsfuse/cpu-limit: "0"
+        gke-gcsfuse/memory-limit: "0"
+    spec:
+      serviceAccountName: vllm-ksa
+      nodeSelector:
+        disaggregated-role: prefill
+      containers:
+      - name: vllm
+        image: vllm/vllm-tpu:v0.21.0
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          KV_CONFIG="{\"kv_connector\":\"TPUConnector\",\"kv_connector_module_path\":\"tpu_inference.distributed.tpu_connector\",\"kv_role\":\"kv_producer\",\"kv_ip\":\"$POD_IP\"}"
+          echo "Starting vLLM TPU Prefill with KV_CONFIG=$KV_CONFIG"
+          python3 -m vllm.entrypoints.openai.api_server \
+            --model "Qwen/Qwen2.5-7B-Instruct" \
+            --host 0.0.0.0 \
+            --port 8200 \
+            --tensor-parallel-size 4 \
+            --kv-transfer-config "$KV_CONFIG" \
+            --enable-chunked-prefill \
+            --max-num-seqs 128 \
+            --block-size 128 \
+            --max-model-len 8192 \
+            --disable-uvicorn-access-log
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: TPU_SIDE_CHANNEL_PORT
+          value: "9600"
+        - name: TPU_KV_TRANSFER_PORT
+          value: "9100"
+        - name: VLLM_XLA_CACHE_PATH
+          value: "/tmp/vllm_xla_cache"
+        - name: VLLM_TARGET_DEVICE
+          value: "tpu"
+        - name: JAX_PLATFORMS
+          value: "tpu,cpu"
+        ports:
+        - containerPort: 8200
+          name: vllm
+          protocol: TCP
+        - containerPort: 9100
+          name: tpu-kv
+          protocol: TCP
+        - containerPort: 9600
+          name: tpu-coord
+          protocol: TCP
+        resources:
+          limits:
+            google.com/tpu: 4
+            cpu: "16"
+            memory: 64Gi
+          requests:
+            google.com/tpu: 4
+            cpu: "12"
+            memory: 48Gi
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8200
+          initialDelaySeconds: 45
+          periodSeconds: 15
+        volumeMounts:
+        - name: dshm
+          mountPath: /dev/shm
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-prefill-service
+  namespace: default
+  labels:
+    app: vllm-tpu-prefill
+spec:
+  selector:
+    app: vllm-tpu-prefill
+  type: ClusterIP
+  ports:
+  - name: vllm
+    protocol: TCP
+    port: 8200
+    targetPort: 8200
+  - name: tpu-kv
+    protocol: TCP
+    port: 9100
+    targetPort: 9100
+  - name: tpu-coord
+    protocol: TCP
+    port: 9600
+    targetPort: 9600
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vllm-tpu-decode
+  namespace: default
+  labels:
+    app: vllm-tpu-decode
+    llm-d.ai/modelservice-role: decode
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vllm-tpu-decode
+  template:
+    metadata:
+      labels:
+        app: vllm-tpu-decode
+        llm-d.ai/modelservice-role: decode
+      annotations:
+        gke-gcsfuse/volumes: "true"
+        gke-gcsfuse/cpu-limit: "0"
+        gke-gcsfuse/memory-limit: "0"
+    spec:
+      serviceAccountName: vllm-ksa
+      nodeSelector:
+        disaggregated-role: decode
+      containers:
+      - name: vllm
+        image: vllm/vllm-tpu:v0.21.0
+        command: ["/bin/bash", "-c"]
+        args:
+        - |
+          KV_CONFIG="{\"kv_connector\":\"TPUConnector\",\"kv_connector_module_path\":\"tpu_inference.distributed.tpu_connector\",\"kv_role\":\"kv_consumer\",\"kv_ip\":\"$POD_IP\"}"
+          echo "Starting vLLM TPU Decode with KV_CONFIG=$KV_CONFIG"
+          python3 -m vllm.entrypoints.openai.api_server \
+            --model "Qwen/Qwen2.5-7B-Instruct" \
+            --host 0.0.0.0 \
+            --port 8200 \
+            --tensor-parallel-size 4 \
+            --kv-transfer-config "$KV_CONFIG" \
+            --max-num-seqs 128 \
+            --block-size 128 \
+            --max-model-len 8192 \
+            --disable-uvicorn-access-log
+        env:
+        - name: POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: TPU_SIDE_CHANNEL_PORT
+          value: "9600"
+        - name: TPU_KV_TRANSFER_PORT
+          value: "9100"
+        - name: VLLM_XLA_CACHE_PATH
+          value: "/tmp/vllm_xla_cache"
+        - name: VLLM_TARGET_DEVICE
+          value: "tpu"
+        - name: JAX_PLATFORMS
+          value: "tpu,cpu"
+        ports:
+        - containerPort: 8200
+          name: vllm
+          protocol: TCP
+        - containerPort: 9100
+          name: tpu-kv
+          protocol: TCP
+        - containerPort: 9600
+          name: tpu-coord
+          protocol: TCP
+        resources:
+          limits:
+            google.com/tpu: 4
+            cpu: "16"
+            memory: 64Gi
+          requests:
+            google.com/tpu: 4
+            cpu: "12"
+            memory: 48Gi
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8200
+          initialDelaySeconds: 45
+          periodSeconds: 15
+        volumeMounts:
+        - name: dshm
+          mountPath: /dev/shm
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 16Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vllm-decode-service
+  namespace: default
+  labels:
+    app: vllm-tpu-decode
+spec:
+  selector:
+    app: vllm-tpu-decode
+  type: ClusterIP
+  ports:
+  - name: vllm
+    protocol: TCP
+    port: 8200
+    targetPort: 8200
+  - name: tpu-kv
+    protocol: TCP
+    port: 9100
+    targetPort: 9100
+  - name: tpu-coord
+    protocol: TCP
+    port: 9600
+    targetPort: 9600
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llm-d-routing-proxy
+  namespace: default
+  labels:
+    app: llm-d-routing-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llm-d-routing-proxy
+  template:
+    metadata:
+      labels:
+        app: llm-d-routing-proxy
+    spec:
+      containers:
+      - name: proxy
+        image: ghcr.io/llm-d/llm-d-routing-sidecar:v0.5.0
+        env:
+        - name: PREFILL_BACKEND_URL
+          value: "http://vllm-prefill-service:8200"
+        - name: DECODE_BACKEND_URL
+          value: "http://vllm-decode-service:8200"
+        - name: CONNECTOR
+          value: "nixlv2"
+        - name: PROXY_PORT
+          value: "8000"
+        ports:
+        - containerPort: 8000
+          name: http
+        resources:
+          limits:
+            cpu: "2"
+            memory: 4Gi
+          requests:
+            cpu: "500m"
+            memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llm-d-router-service
+  namespace: default
+  labels:
+    app: llm-d-routing-proxy
+spec:
+  selector:
+    app: llm-d-routing-proxy
+  type: ClusterIP
+  ports:
+  - name: http
+    protocol: TCP
+    port: 8000
+    targetPort: 8000

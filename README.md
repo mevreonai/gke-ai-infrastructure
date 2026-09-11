@@ -24,6 +24,12 @@ This repository provides production infrastructure manifests and automated autom
 ## 📁 Repository Structure
 
 ```
+├── disaggregated_tpu_llmd/     # Disaggregated TPU Serving (Prefill & Decode decoupled via llm-d)
+│   ├── manifests/              # Manifests (Prefill kv_producer, Decode kv_consumer, llm-d proxy)
+│   ├── client/                 # Disaggregated TTFT and throughput benchmark
+│   ├── run.ps1                 # Automated 1-click deployment script
+│   └── cleanup.ps1             # Cost-protection teardown script
+│
 ├── inference_gateway_tpu/      # GKE Inference Gateway deployment on TPU v6e (Trillium)
 │   ├── manifests/              # K8s manifests (CRDs, Gateway, vLLM TPU, EPP, HTTPRoute)
 │   ├── client/                 # Python latency & token benchmarking scripts
