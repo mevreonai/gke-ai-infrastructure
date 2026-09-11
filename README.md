@@ -50,7 +50,6 @@ This repository provides production infrastructure manifests and automated autom
 │
 ├── transfer_deepseek.sh        # High-throughput model synchronization script (GCS bucket)
 ├── download_and_sync.py        # Hugging Face to GCS parallel download utility
-├── BOSS_DEMO_REPLICATION_GUIDE.md # Step-by-step executive demo replication guide
 └── REPLICATION_RUNBOOK.md      # Detailed engineering runbook & operations guide
 ```
 
