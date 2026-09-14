@@ -92,8 +92,9 @@ docker run -d --name ray-head \
   --gpus all \
   --ulimit nofile=1048576:1048576 \
   -v /data/models/kimi-k3:/models/kimi-k3 \
+  --entrypoint /bin/bash \
   vllm-ray:latest \
-  /bin/bash -c "ray start --head --port=6379 --num-gpus=8 --block"
+  -c "ray start --head --port=6379 --num-gpus=8 --block"
 ```
 
 #### On `kimi-node-1` (Ray Worker 1):
@@ -106,8 +107,9 @@ docker run -d --name ray-worker-1 \
   --gpus all \
   --ulimit nofile=1048576:1048576 \
   -v /data/models/kimi-k3:/models/kimi-k3 \
+  --entrypoint /bin/bash \
   vllm-ray:latest \
-  /bin/bash -c "ray start --address=10.128.0.39:6379 --num-gpus=8 --block"
+  -c "ray start --address=10.128.0.39:6379 --num-gpus=8 --block"
 ```
 
 #### On `kimi-node-2` (Ray Worker 2):
@@ -120,8 +122,9 @@ docker run -d --name ray-worker-2 \
   --gpus all \
   --ulimit nofile=1048576:1048576 \
   -v /data/models/kimi-k3:/models/kimi-k3 \
+  --entrypoint /bin/bash \
   vllm-ray:latest \
-  /bin/bash -c "ray start --address=10.128.0.39:6379 --num-gpus=8 --block"
+  -c "ray start --address=10.128.0.39:6379 --num-gpus=8 --block"
 ```
 
 ---

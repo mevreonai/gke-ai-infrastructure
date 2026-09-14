@@ -23,8 +23,9 @@ case "$ROLE" in
             --gpus all \
             --ulimit nofile=1048576:1048576 \
             -v /data/models/kimi-k3:/models/kimi-k3 \
+            --entrypoint /bin/bash \
             vllm-ray:latest \
-            /bin/bash -c "ray start --head --port=6379 --num-gpus=8 --block"
+            -c "ray start --head --port=6379 --num-gpus=8 --block"
 
         HEAD_IP=$(hostname -I | awk '{print $1}')
         echo "======================================================================"
@@ -48,8 +49,9 @@ case "$ROLE" in
             --gpus all \
             --ulimit nofile=1048576:1048576 \
             -v /data/models/kimi-k3:/models/kimi-k3 \
+            --entrypoint /bin/bash \
             vllm-ray:latest \
-            /bin/bash -c "ray start --address=$HEAD_IP:6379 --num-gpus=8 --block"
+            -c "ray start --address=$HEAD_IP:6379 --num-gpus=8 --block"
 
         echo "======================================================================"
         echo " Worker node successfully joined the Ray Cluster!"
