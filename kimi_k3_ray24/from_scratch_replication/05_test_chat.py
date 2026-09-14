@@ -16,7 +16,7 @@ def test_kimi_chat(host="localhost", port=8000):
     model_name = "moonshotai/Kimi-K3"
 
     print("======================================================================")
-    print(f" Testing Kimi-K3 Inference via vLLM Ray API Server")
+    print(" Testing Kimi-K3 Inference via vLLM Ray API Server")
     print(f" Target Endpoint: {url}")
     print(f" Target Model:    {model_name}")
     print("======================================================================\n")

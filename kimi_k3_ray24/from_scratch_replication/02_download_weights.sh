@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # ==============================================================================
 # 02_download_weights.sh
-# Download / Sync Moonshot AI Kimi-K3 weights (1.45 TB, 96 shards) to local NVMe
+# Download / Sync Moonshot AI Kimi-K3 weights (1.45 TB, 96 shards) to local disk
 # Supports both Hugging Face Hub (HF Transfer) and GCS Bucket Sync
 # ==============================================================================
 
