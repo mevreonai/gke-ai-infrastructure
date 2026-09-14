@@ -71,7 +71,28 @@ switch ($Action) {
         Write-Host "`n=== Querying Kimi-K3 (24 GPUs) ===" -ForegroundColor Cyan
         $prompt = "Explain quantum computing and why 24 GPUs are needed for 1.45 TB MoE models in 2 concise sentences."
         Write-Host "Prompt: $prompt`n" -ForegroundColor Yellow
-        gcloud compute ssh kimi-node-0 --zone=us-central1-b --project=$PROJECT --command="curl -s -X POST http://localhost:8000/v1/chat/completions -H 'Content-Type: application/json' -d '{\"model\": \"moonshotai/Kimi-K3\", \"messages\": [{\"role\": \"system\", \"content\": \"You are Moonshot AI Kimi-K3 running on a 24-GPU cluster.\"}, {\"role\": \"user\", \"content\": \"$prompt\"}], \"max_tokens\": 120, \"temperature\": 0.6}' | jq ."
+
+        $node0_ip = gcloud compute instances describe kimi-node-0 --zone=us-central1-b --project=$PROJECT --format="value(networkInterfaces[0].accessConfigs[0].natIP)"
+        if (-not $node0_ip) { $node0_ip = "localhost" }
+
+        $body = @{
+            model = "moonshotai/Kimi-K3"
+            messages = @(
+                @{ role = "system"; content = "You are Moonshot AI Kimi-K3 running on a 24-GPU cluster." },
+                @{ role = "user"; content = $prompt }
+            )
+            max_tokens = 150
+            temperature = 0.6
+        } | ConvertTo-Json -Depth 5
+
+        try {
+            $resp = Invoke-RestMethod -Uri "http://${node0_ip}:8000/v1/chat/completions" -Method Post -ContentType "application/json" -Body $body -TimeoutSec 45
+            Write-Host "Response from Kimi-K3 (24-GPU Cluster):`n" -ForegroundColor Green
+            Write-Host ($resp.choices[0].message.content) -ForegroundColor White
+            Write-Host "`n[Tokens: $($resp.usage.total_tokens) | Fingerprint: $($resp.system_fingerprint)]`n" -ForegroundColor DarkGray
+        } catch {
+            Write-Host "[-] Query failed: $_" -ForegroundColor Red
+        }
     }
 
     "stop" {
