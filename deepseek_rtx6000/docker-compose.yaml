@@ -1,0 +1,69 @@
+# ==============================================================================
+# Unified Docker Compose Stack: DeepSeek-V4.1-Flash + Telemetry + Gradio Web UI
+# Targets: 8x NVIDIA RTX Pro 6000 (96GB VRAM each = 768GB VRAM total)
+# Storage: Local 1,000 GB NVMe/SSD Hard Disk at /data/models/deepseek-v4.1-flash
+# ==============================================================================
+services:
+  # ----------------------------------------------------------------------------
+  # 1. vLLM Engine: Distributed Inference Server
+  # ----------------------------------------------------------------------------
+  vllm:
+    image: vllm/vllm-openai:deepseekv41-flash-0909
+    container_name: vllm-deepseek
+    restart: unless-stopped
+    ipc: host
+    network_mode: host
+    volumes:
+      # Mount the local 1,000 GB hard disk directly into the container
+      - /data/models/deepseek-v4.1-flash:/models/deepseek-ai/DeepSeek-V4.1-Flash:ro
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    command: >
+      vllm serve /models/deepseek-ai/DeepSeek-V4.1-Flash
+        --tensor-parallel-size 8
+        --tokenizer-mode deepseek_v41
+        --language-model-only
+        --block-size 64
+        --gpu-memory-utilization 0.92
+        --served-model-name deepseek-ai/DeepSeek-V4.1-Flash
+        --trust-remote-code
+        --port 8000
+        --host 0.0.0.0
+
+  # ----------------------------------------------------------------------------
+  # 2. DCGM Exporter: Real-Time NVIDIA GPU Hardware Telemetry
+  # ----------------------------------------------------------------------------
+  dcgm-exporter:
+    image: nvidia/dcgm-exporter:latest
+    container_name: dcgm-exporter
+    restart: unless-stopped
+    network_mode: host
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    environment:
+      - DCGM_EXPORTER_PORT=9400
+
+  # ----------------------------------------------------------------------------
+  # 3. Prometheus: Scrapes vLLM (:8000) and DCGM (:9400)
+  # ----------------------------------------------------------------------------
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    network_mode: host
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --web.listen-address=0.0.0.0:9090
+      - --storage.tsdb.retention.time=12h

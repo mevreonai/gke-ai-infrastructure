@@ -1,0 +1,13 @@
+apiVersion: monitoring.googleapis.com/v1
+kind: PodMonitoring
+metadata:
+  name: deepseek-tp8-pod-monitoring
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: deepseek-tp8-vllm
+  endpoints:
+  - path: /metrics
+    port: 8000
+    interval: 10s

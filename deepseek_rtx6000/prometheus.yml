@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s
+
+scrape_configs:
+  # Scrapes vLLM serving metrics: tokens/sec, TTFT, request queue, KV cache usage
+  - job_name: "vllm"
+    static_configs:
+      - targets: ["localhost:8000"]
+    metrics_path: "/metrics"
+
+  # Scrapes NVIDIA DCGM hardware metrics: VRAM used, GPU utilization, temperature, power
+  - job_name: "dcgm"
+    static_configs:
+      - targets: ["localhost:9400"]
+    metrics_path: "/metrics"

@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deepseek-tp8-vllm
+  namespace: default
+  labels:
+    app: deepseek-tp8-vllm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deepseek-tp8-vllm
+  template:
+    metadata:
+      labels:
+        app: deepseek-tp8-vllm
+    spec:
+      nodeSelector:
+        cloud.google.com/gke-accelerator: nvidia-tesla-a100-80gb
+      containers:
+      - name: vllm
+        image: vllm/vllm-openai:latest
+        args:
+        - "serve"
+        - "/models/deepseek-ai/DeepSeek-V4.1-Flash"
+        - "--tensor-parallel-size"
+        - "8"
+        - "--distributed-executor-backend"
+        - "mp"
+        - "--dtype"
+        - "auto"
+        - "--quantization"
+        - "fp8"
+        - "--gpu-memory-utilization"
+        - "0.95"
+        - "--max-model-len"
+        - "8192"
+        - "--trust-remote-code"
+        - "--port"
+        - "8000"
+        - "--host"
+        - "0.0.0.0"
+        ports:
+        - containerPort: 8000
+          name: http-vllm
+        resources:
+          limits:
+            nvidia.com/gpu: "8"
+            memory: "600Gi"
+            cpu: "80"
+          requests:
+            nvidia.com/gpu: "8"
+            memory: "300Gi"
+            cpu: "40"
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /models
+          name: model-volume
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 60
+          periodSeconds: 10
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 8000
+          initialDelaySeconds: 120
+          periodSeconds: 15
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 64Gi
+      - name: model-volume
+        csi:
+          driver: gcsfuse.csi.storage.gke.io
+          volumeAttributes:
+            bucketName: mevreon-deepseek-models
+            mountOptions: "implicit-dirs,read-only"

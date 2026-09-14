@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gradio-ui
+  namespace: default
+  labels:
+    app: gradio-ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gradio-ui
+  template:
+    metadata:
+      labels:
+        app: gradio-ui
+    spec:
+      containers:
+      - name: gradio
+        image: us-docker.pkg.dev/google-samples/containers/gke/gradio-app:v1.0.7
+        resources:
+          requests:
+            cpu: "250m"
+            memory: "512Mi"
+          limits:
+            cpu: "500m"
+            memory: "1Gi"
+        env:
+        - name: CONTEXT_PATH
+          value: "/v1/chat/completions"
+        - name: HOST
+          value: "http://deepseek-tp8-service:8000"
+        - name: LLM_ENGINE
+          value: "openai-chat"
+        - name: MODEL_ID
+          value: "/models/deepseek-ai/DeepSeek-V4.1-Flash"
+        - name: DISABLE_SYSTEM_MESSAGE
+          value: "true"
+        ports:
+        - containerPort: 7860
+          name: http-gradio
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gradio-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  selector:
+    app: gradio-ui
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 7860
