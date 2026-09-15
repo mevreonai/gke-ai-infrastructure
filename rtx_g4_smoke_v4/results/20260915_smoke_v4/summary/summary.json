@@ -1,0 +1,1441 @@
+{
+  "nccl": [
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/120_ar_tp4_16k.log",
+      "label": "120_ar_tp4_16k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 20.17,
+      "algbw_GBs": 0.81,
+      "busbw_GBs": 1.22,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    20.17    0.81    1.22       0    17.76    0.92    1.38       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/120_ar_tp4_128k.log",
+      "label": "120_ar_tp4_128k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 20.73,
+      "algbw_GBs": 6.32,
+      "busbw_GBs": 9.49,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    20.73    6.32    9.49       0    17.93    7.31   10.96       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/120_ar_tp4_512k.log",
+      "label": "120_ar_tp4_512k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 47.81,
+      "algbw_GBs": 10.97,
+      "busbw_GBs": 16.45,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    47.81   10.97   16.45       0    45.52   11.52   17.28       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/120_ar_tp4_64m.log",
+      "label": "120_ar_tp4_64m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 2599.87,
+      "algbw_GBs": 25.81,
+      "busbw_GBs": 38.72,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  2599.87   25.81   38.72       0  2595.97   25.85   38.78       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/120_ar_tp4_128m.log",
+      "label": "120_ar_tp4_128m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 5164.9,
+      "algbw_GBs": 25.99,
+      "busbw_GBs": 38.98,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  5164.90   25.99   38.98       0  5164.94   25.99   38.98       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/120_ar_tp4_256m.log",
+      "label": "120_ar_tp4_256m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 10258.2,
+      "algbw_GBs": 26.17,
+      "busbw_GBs": 39.25,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  10258.2   26.17   39.25       0  10231.8   26.24   39.35       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/122_ar_tp4_curve.log",
+      "label": "122_ar_tp4_curve",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 8,
+      "time_us": 18.88,
+      "algbw_GBs": 0.0,
+      "busbw_GBs": 0.0,
+      "parse_index": 5,
+      "raw_line": "8             2     float     sum      -1    18.88    0.00    0.00       0    16.00    0.00    0.00       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/120_ar_tp4_16k.log",
+      "label": "120_ar_tp4_16k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 17.93,
+      "algbw_GBs": 0.91,
+      "busbw_GBs": 1.37,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    17.93    0.91    1.37       0    16.64    0.98    1.48       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/120_ar_tp4_128k.log",
+      "label": "120_ar_tp4_128k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 21.21,
+      "algbw_GBs": 6.18,
+      "busbw_GBs": 9.27,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    21.21    6.18    9.27       0    17.84    7.35   11.02       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/120_ar_tp4_512k.log",
+      "label": "120_ar_tp4_512k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 47.47,
+      "algbw_GBs": 11.05,
+      "busbw_GBs": 16.57,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    47.47   11.05   16.57       0    44.81   11.70   17.55       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/120_ar_tp4_64m.log",
+      "label": "120_ar_tp4_64m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 2598.53,
+      "algbw_GBs": 25.83,
+      "busbw_GBs": 38.74,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  2598.53   25.83   38.74       0  2592.58   25.88   38.83       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/120_ar_tp4_128m.log",
+      "label": "120_ar_tp4_128m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 5163.1,
+      "algbw_GBs": 26.0,
+      "busbw_GBs": 38.99,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  5163.10   26.00   38.99       0  5157.78   26.02   39.03       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/120_ar_tp4_256m.log",
+      "label": "120_ar_tp4_256m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 10210.8,
+      "algbw_GBs": 26.29,
+      "busbw_GBs": 39.43,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  10210.8   26.29   39.43       0  10220.8   26.26   39.40       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/122_ar_tp4_curve.log",
+      "label": "122_ar_tp4_curve",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 8,
+      "time_us": 20.27,
+      "algbw_GBs": 0.0,
+      "busbw_GBs": 0.0,
+      "parse_index": 5,
+      "raw_line": "8             2     float     sum      -1    20.27    0.00    0.00       0    17.61    0.00    0.00       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/121_ar_tp8_16k.log",
+      "label": "121_ar_tp8_16k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 38.24,
+      "algbw_GBs": 0.43,
+      "busbw_GBs": 0.75,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    38.24    0.43    0.75       0    33.62    0.49    0.85       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/121_ar_tp8_128k.log",
+      "label": "121_ar_tp8_128k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 38.93,
+      "algbw_GBs": 3.37,
+      "busbw_GBs": 5.89,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    38.93    3.37    5.89       0    33.39    3.93    6.87       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/121_ar_tp8_512k.log",
+      "label": "121_ar_tp8_512k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 61.39,
+      "algbw_GBs": 8.54,
+      "busbw_GBs": 14.95,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    61.39    8.54   14.95       0    57.54    9.11   15.95       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/121_ar_tp8_64m.log",
+      "label": "121_ar_tp8_64m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 2961.97,
+      "algbw_GBs": 22.66,
+      "busbw_GBs": 39.65,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  2961.97   22.66   39.65       0  2956.54   22.70   39.72       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/121_ar_tp8_128m.log",
+      "label": "121_ar_tp8_128m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 5891.01,
+      "algbw_GBs": 22.78,
+      "busbw_GBs": 39.87,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  5891.01   22.78   39.87       0  5882.27   22.82   39.93       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/121_ar_tp8_256m.log",
+      "label": "121_ar_tp8_256m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 11688.2,
+      "algbw_GBs": 22.97,
+      "busbw_GBs": 40.19,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  11688.2   22.97   40.19       0  11711.8   22.92   40.11       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/123_ar_tp8_curve.log",
+      "label": "123_ar_tp8_curve",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 8,
+      "time_us": 39.11,
+      "algbw_GBs": 0.0,
+      "busbw_GBs": 0.0,
+      "parse_index": 5,
+      "raw_line": "8             2     float     sum      -1    39.11    0.00    0.00       0    33.46    0.00    0.00       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/121_ar_tp8_16k.log",
+      "label": "121_ar_tp8_16k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 37.52,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.76,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.52    0.44    0.76       0    32.78    0.50    0.87       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/121_ar_tp8_128k.log",
+      "label": "121_ar_tp8_128k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 39.1,
+      "algbw_GBs": 3.35,
+      "busbw_GBs": 5.87,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    39.10    3.35    5.87       0    34.10    3.84    6.73       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/121_ar_tp8_512k.log",
+      "label": "121_ar_tp8_512k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 60.15,
+      "algbw_GBs": 8.72,
+      "busbw_GBs": 15.25,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    60.15    8.72   15.25       0    57.84    9.06   15.86       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/121_ar_tp8_64m.log",
+      "label": "121_ar_tp8_64m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 2964.52,
+      "algbw_GBs": 22.64,
+      "busbw_GBs": 39.62,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  2964.52   22.64   39.62       0  2955.69   22.70   39.73       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/121_ar_tp8_128m.log",
+      "label": "121_ar_tp8_128m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 5890.5,
+      "algbw_GBs": 22.79,
+      "busbw_GBs": 39.87,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  5890.50   22.79   39.87       0  5882.58   22.82   39.93       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/121_ar_tp8_256m.log",
+      "label": "121_ar_tp8_256m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 11721.9,
+      "algbw_GBs": 22.9,
+      "busbw_GBs": 40.08,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  11721.9   22.90   40.08       0  11709.4   22.92   40.12       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/123_ar_tp8_curve.log",
+      "label": "123_ar_tp8_curve",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 8,
+      "time_us": 38.25,
+      "algbw_GBs": 0.0,
+      "busbw_GBs": 0.0,
+      "parse_index": 5,
+      "raw_line": "8             2     float     sum      -1    38.25    0.00    0.00       0    32.42    0.00    0.00       0"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_NATIVE_16k.log",
+      "label": "220_sendrecv_GCP_NATIVE_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 5.34,
+      "busbw_GBs": 3.07,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1     5.34    3.07    3.07       0     1.17   14.04   14.04    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_NATIVE_128k.log",
+      "label": "220_sendrecv_GCP_NATIVE_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 6.27,
+      "busbw_GBs": 20.92,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1     6.27   20.92   20.92       0     1.03  127.69  127.69    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_NATIVE_512k.log",
+      "label": "220_sendrecv_GCP_NATIVE_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 7.01,
+      "busbw_GBs": 74.79,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1     7.01   74.79   74.79       0     1.16  450.42  450.42    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_NATIVE_64m.log",
+      "label": "220_sendrecv_GCP_NATIVE_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 49.05,
+      "busbw_GBs": 1368.2,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1    49.05  1368.2  1368.2       0     1.09   61709   61709    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_NATIVE_128m.log",
+      "label": "220_sendrecv_GCP_NATIVE_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 189.21,
+      "busbw_GBs": 709.37,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1   189.21  709.37  709.37       0     1.09  122629  122629    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_NATIVE_256m.log",
+      "label": "220_sendrecv_GCP_NATIVE_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 374.57,
+      "busbw_GBs": 716.64,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   374.57  716.64  716.64       0     1.12  240318  240318    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_100G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 5.52,
+      "busbw_GBs": 2.97,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1     5.52    2.97    2.97       0     1.17   14.01   14.01    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_100G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 6.61,
+      "busbw_GBs": 19.84,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1     6.61   19.84   19.84       0     1.19  109.96  109.96    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_100G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 7.05,
+      "busbw_GBs": 74.38,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1     7.05   74.38   74.38       0     1.38  379.51  379.51    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_100G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 49.15,
+      "busbw_GBs": 1365.5,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1    49.15  1365.5  1365.5       0     1.03   65376   65376    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_100G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 189.57,
+      "busbw_GBs": 708.03,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1   189.57  708.03  708.03       0     1.16  115855  115855    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_100G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 374.84,
+      "busbw_GBs": 716.14,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   374.84  716.14  716.14       0     1.10  243148  243148    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_50G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 5.47,
+      "busbw_GBs": 3.0,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1     5.47    3.00    3.00       0     1.17   14.00   14.00    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_50G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 6.71,
+      "busbw_GBs": 19.53,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1     6.71   19.53   19.53       0     1.17  112.22  112.22    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_50G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 6.99,
+      "busbw_GBs": 75.04,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1     6.99   75.04   75.04       0     1.13  465.62  465.62    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_50G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 49.1,
+      "busbw_GBs": 1366.9,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1    49.10  1366.9  1366.9       0     1.10   60815   60815    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_50G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 189.57,
+      "busbw_GBs": 708.02,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1   189.57  708.02  708.02       0     1.14  117272  117272    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_50G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 375.2,
+      "busbw_GBs": 715.44,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   375.20  715.44  715.44       0     1.67  161077  161077    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_20G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 5.31,
+      "busbw_GBs": 3.09,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1     5.31    3.09    3.09       0     1.17   13.97   13.97    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_20G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 6.77,
+      "busbw_GBs": 19.37,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1     6.77   19.37   19.37       0     1.11  118.40  118.40    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_20G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 6.97,
+      "busbw_GBs": 75.2,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1     6.97   75.20   75.20       0     1.16  453.73  453.73    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_20G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 49.37,
+      "busbw_GBs": 1359.3,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1    49.37  1359.3  1359.3       0     1.08   61937   61937    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_20G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 189.8,
+      "busbw_GBs": 707.15,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1   189.80  707.15  707.15       0     1.13  119146  119146    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_20G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 374.67,
+      "busbw_GBs": 716.46,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   374.67  716.46  716.46       0     1.18  228068  228068    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_10G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 5.28,
+      "busbw_GBs": 3.1,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1     5.28    3.10    3.10       0     1.15   14.23   14.23    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_10G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 6.55,
+      "busbw_GBs": 20.0,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1     6.55   20.00   20.00       0     1.16  112.90  112.90    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_10G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 6.91,
+      "busbw_GBs": 75.83,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1     6.91   75.83   75.83       0     1.10  476.84  476.84    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_10G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 49.6,
+      "busbw_GBs": 1353.0,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1    49.60  1353.0  1353.0       0     1.11   60350   60350    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_10G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 190.04,
+      "busbw_GBs": 706.25,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1   190.04  706.25  706.25       0     1.17  115011  115011    N/A"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/220_sendrecv_GCP_CAPPED_10G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 374.39,
+      "busbw_GBs": 717.0,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   374.39  717.00  717.00       0     1.16  231610  231610    N/A"
+    }
+  ],
+  "iperf": [
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_NATIVE.raw.json",
+      "network_provenance": "GCP_NATIVE",
+      "gbps": 173.58189309278083,
+      "GBps": 21.697736636597604
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_100G.raw.json",
+      "network_provenance": "GCP_CAPPED_100G",
+      "gbps": 58.75203793460465,
+      "GBps": 7.344004741825581
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_50G.raw.json",
+      "network_provenance": "GCP_CAPPED_50G",
+      "gbps": 33.77260190764106,
+      "GBps": 4.221575238455133
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_20G.raw.json",
+      "network_provenance": "GCP_CAPPED_20G",
+      "gbps": 16.79865417665285,
+      "GBps": 2.099831772081606
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_10G.raw.json",
+      "network_provenance": "GCP_CAPPED_10G",
+      "gbps": 9.02460253128521,
+      "GBps": 1.1280753164106512
+    }
+  ],
+  "nvbandwidth_metrics": [
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 454.979143136
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 452.366698303
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 2915.64551162
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 2911.650413106
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[2].sum",
+      "value": 5631.444873505999
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[3].sum",
+      "value": 5693.724300280999
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[4].sum",
+      "value": 2809.8769144564994
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[5].sum",
+      "value": 2254.7517145799998
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[6].sum",
+      "value": 4372.913941381001
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[7].sum",
+      "value": 4467.468707476001
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[8].sum",
+      "value": 68805.79964071512
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[9].sum",
+      "value": 2809.137988239501
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[10].sum",
+      "value": 2254.9967733175004
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[11].sum",
+      "value": 4377.305773883999
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[12].sum",
+      "value": 4440.693623249
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[13].sum",
+      "value": 76159.8159801215
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 68788.11491513625
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 454.96784721
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 452.36688411750004
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 2915.4369545199997
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 2908.493970382001
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[2].sum",
+      "value": 5629.3315061739995
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[3].sum",
+      "value": 5691.701415391998
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[4].sum",
+      "value": 2809.8418324645
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[5].sum",
+      "value": 2254.7407519845005
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[6].sum",
+      "value": 4372.812665218
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[7].sum",
+      "value": 4467.720338943
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[8].sum",
+      "value": 68689.58604428917
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[9].sum",
+      "value": 2809.0980963985003
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[10].sum",
+      "value": 2254.997540794999
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[11].sum",
+      "value": 4377.636366203999
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[12].sum",
+      "value": 4438.861745146
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[13].sum",
+      "value": 76042.87931090221
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 68682.52510251477
+    }
+  ],
+  "babelstream": [
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1712780.067,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1443628.256,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1469349.477,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1463102.72,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1306891.217,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1716448.98,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1445338.301,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1471631.826,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1463847.396,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1305842.22,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Copy",
+      "value": 1713436.032,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Mul",
+      "value": 1444249.622,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Add",
+      "value": 1471658.72,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Triad",
+      "value": 1463900.616,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Dot",
+      "value": 1320975.621,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Copy",
+      "value": 1709671.078,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Mul",
+      "value": 1440220.275,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Add",
+      "value": 1470073.691,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Triad",
+      "value": 1464752.666,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/111_babelstream_numa1_gpu.log",
+      "kernel": "Dot",
+      "value": 1306827.594,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1718316.835,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1449905.239,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1471795.891,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1469001.036,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1321691.068,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/111_babelstream_numa1_gpu.log",
+      "kernel": "Copy",
+      "value": 1718151.861,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/111_babelstream_numa1_gpu.log",
+      "kernel": "Mul",
+      "value": 1447329.378,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/111_babelstream_numa1_gpu.log",
+      "kernel": "Add",
+      "value": 1471661.409,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/111_babelstream_numa1_gpu.log",
+      "kernel": "Triad",
+      "value": 1464329.18,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/111_babelstream_numa1_gpu.log",
+      "kernel": "Dot",
+      "value": 1318124.798,
+      "unit": "MBytes/sec"
+    }
+  ],
+  "cutlass": []
+}

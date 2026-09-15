@@ -1,0 +1,11 @@
+RTX PRO 6000 GCP Smoke Test V4
+=================================
+Runbook: RTX_PRO_6000_GCP_2NODE_SMOKE_TEST_V4.md
+Scripts:
+  00_smoke_common.sh
+  01_prepare_node.sh
+  02_run_node_local.sh
+  03_run_network_sweep.sh
+  04_summarize_results.py
+  05_analyze_model.py
+  06_package_results.sh

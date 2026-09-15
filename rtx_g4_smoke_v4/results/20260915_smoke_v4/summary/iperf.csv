@@ -1,0 +1,6 @@
+file,network_provenance,gbps,GBps
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_NATIVE.raw.json,GCP_NATIVE,173.58189309278083,21.697736636597604
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_100G.raw.json,GCP_CAPPED_100G,58.75203793460465,7.344004741825581
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_50G.raw.json,GCP_CAPPED_50G,33.77260190764106,4.221575238455133
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_20G.raw.json,GCP_CAPPED_20G,16.79865417665285,2.099831772081606
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/iperf_GCP_CAPPED_10G.raw.json,GCP_CAPPED_10G,9.02460253128521,1.1280753164106512

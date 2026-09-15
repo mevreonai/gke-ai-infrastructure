@@ -1,0 +1,71 @@
+file,metric_path,value
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[0].sum,454.979143136
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[1].sum,452.366698303
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[0].sum,2915.64551162
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[1].sum,2911.650413106
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[2].sum,5631.444873505999
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[3].sum,5693.724300280999
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[4].sum,2809.8769144564994
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[5].sum,2254.7517145799998
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[6].sum,4372.913941381001
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[7].sum,4467.468707476001
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[8].sum,68805.79964071512
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[9].sum,2809.137988239501
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[10].sum,2254.9967733175004
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[11].sum,4377.305773883999
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[12].sum,4440.693623249
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[13].sum,76159.8159801215
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-0/nvbandwidth_latency.raw.json,nvbandwidth.testcases[0].sum,68788.11491513625
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[0].sum,454.96784721
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[1].sum,452.36688411750004
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[0].sum,2915.4369545199997
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[1].sum,2908.493970382001
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[2].sum,5629.3315061739995
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[3].sum,5691.701415391998
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[4].sum,2809.8418324645
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[5].sum,2254.7407519845005
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[6].sum,4372.812665218
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[7].sum,4467.720338943
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[8].sum,68689.58604428917
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[9].sum,2809.0980963985003
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[10].sum,2254.997540794999
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[11].sum,4377.636366203999
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[12].sum,4438.861745146
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[13].sum,76042.87931090221
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4/kimi-node-1/nvbandwidth_latency.raw.json,nvbandwidth.testcases[0].sum,68682.52510251477
