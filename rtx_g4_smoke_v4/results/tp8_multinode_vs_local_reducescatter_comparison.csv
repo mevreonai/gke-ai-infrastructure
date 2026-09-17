@@ -1,0 +1,17 @@
+topology,local_baseline_type,collective,size_bytes,payload_label,description,local_latency_ms,local_algbw_gbs,multi_native_175g_ms,multi_native_algbw_gbs,multi_100g_ms,multi_100g_algbw_gbs,multi_50g_ms,multi_50g_algbw_gbs,multi_20g_ms,multi_20g_algbw_gbs,multi_10g_ms,multi_10g_algbw_gbs,multi_native_vs_local,multi_10g_vs_local
+TP=8,Node-Local Dual-Socket,ReduceScatter,8192,8 KiB,Min Size Floor,0.02,0.41,0.19,0.04,0.774,0.01,0.133,0.06,0.134,0.06,0.132,0.06,9.56x,6.63x
+TP=8,Node-Local Dual-Socket,ReduceScatter,16384,16 KiB,Batch-1 Token Decode,0.018,0.9,0.191,0.09,0.123,0.13,0.126,0.13,0.135,0.12,0.192,0.09,10.54x,10.56x
+TP=8,Node-Local Dual-Socket,ReduceScatter,32768,32 KiB,32 KiB,0.019,1.72,0.118,0.28,0.127,0.26,0.131,0.25,0.131,0.25,0.223,0.15,6.20x,11.67x
+TP=8,Node-Local Dual-Socket,ReduceScatter,65536,64 KiB,64 KiB,0.02,3.32,0.198,0.33,0.198,0.33,0.197,0.33,0.211,0.31,0.321,0.2,10.05x,16.27x
+TP=8,Node-Local Dual-Socket,ReduceScatter,131072,128 KiB,Small Activation,0.03,4.4,0.224,0.59,0.211,0.62,0.215,0.61,0.234,0.56,0.421,0.31,7.51x,14.12x
+TP=8,Node-Local Dual-Socket,ReduceScatter,262144,256 KiB,256 KiB,0.051,5.18,0.305,0.86,0.228,1.15,0.235,1.12,0.275,0.95,0.539,0.49,6.02x,10.65x
+TP=8,Node-Local Dual-Socket,ReduceScatter,524288,512 KiB,512 KiB,0.091,5.76,0.279,1.88,0.263,1.99,0.243,2.16,0.275,1.9,0.456,1.15,3.07x,5.01x
+TP=8,Node-Local Dual-Socket,ReduceScatter,1048576,1 MiB,1 MiB Tensor,0.076,13.81,0.421,2.49,0.412,2.55,0.42,2.5,0.441,2.38,0.931,1.13,5.54x,12.26x
+TP=8,Node-Local Dual-Socket,ReduceScatter,2097152,2 MiB,2 MiB,0.125,16.77,0.639,3.28,0.651,3.22,0.79,2.65,0.791,2.65,1.57,1.34,5.11x,12.56x
+TP=8,Node-Local Dual-Socket,ReduceScatter,4194304,4 MiB,4 MiB,0.187,22.44,1.028,4.08,1.048,4.0,1.229,3.41,1.61,2.6,3.117,1.35,5.50x,16.67x
+TP=8,Node-Local Dual-Socket,ReduceScatter,8388608,8 MiB,8 MiB,0.349,24.01,1.678,5.0,1.785,4.7,1.931,4.34,3.095,2.71,6.499,1.29,4.80x,18.60x
+TP=8,Node-Local Dual-Socket,ReduceScatter,16777216,16 MiB,16 MiB Activation,0.641,26.18,2.534,6.62,3.302,5.08,3.808,4.41,6.193,2.71,12.282,1.37,3.95x,19.16x
+TP=8,Node-Local Dual-Socket,ReduceScatter,33554432,32 MiB,32 MiB,1.247,26.91,4.77,7.03,4.771,7.03,11.3,2.97,12.281,2.73,24.614,1.36,3.83x,19.74x
+TP=8,Node-Local Dual-Socket,ReduceScatter,67108864,64 MiB,64 MiB Chunk,2.484,27.02,8.079,8.31,9.574,7.01,13.07,5.13,24.64,2.72,49.124,1.37,3.25x,19.78x
+TP=8,Node-Local Dual-Socket,ReduceScatter,134217728,128 MiB,8K Prefill Chunk (128 MiB),4.967,27.02,15.575,8.62,16.912,7.94,19.896,6.75,49.25,2.73,98.358,1.36,3.14x,19.80x
+TP=8,Node-Local Dual-Socket,ReduceScatter,268435456,256 MiB,Large Prefill (256 MiB),9.934,27.02,28.447,9.44,29.457,9.11,40.581,6.61,98.488,2.73,196.736,1.36,2.86x,19.80x

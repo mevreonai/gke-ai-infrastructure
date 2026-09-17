@@ -1,0 +1,16 @@
+topology,local_baseline_type,collective,size_bytes,payload_label,description,local_latency_ms,local_algbw_gbs,multi_native_175g_ms,multi_native_algbw_gbs,multi_100g_ms,multi_100g_algbw_gbs,multi_50g_ms,multi_50g_algbw_gbs,multi_20g_ms,multi_20g_algbw_gbs,multi_10g_ms,multi_10g_algbw_gbs,multi_native_vs_local,multi_10g_vs_local
+TP=4,Socket-Local Single-NUMA,AllReduce,16384,16 KiB,Batch-1 Token Decode,0.016,1.01,0.167,0.1,0.155,0.11,0.162,0.1,0.161,0.1,0.166,0.1,10.31x,10.24x
+TP=4,Socket-Local Single-NUMA,AllReduce,32768,32 KiB,32 KiB,0.017,1.95,0.173,0.19,0.173,0.19,0.175,0.19,0.207,0.16,0.175,0.19,10.32x,10.45x
+TP=4,Socket-Local Single-NUMA,AllReduce,65536,64 KiB,64 KiB,0.018,3.63,0.184,0.36,0.178,0.37,0.187,0.35,0.201,0.33,0.178,0.37,10.20x,9.88x
+TP=4,Socket-Local Single-NUMA,AllReduce,131072,128 KiB,Small Activation,0.027,4.92,0.192,0.68,0.189,0.69,0.224,0.59,0.227,0.58,0.331,0.4,7.23x,12.42x
+TP=4,Socket-Local Single-NUMA,AllReduce,262144,256 KiB,256 KiB,0.044,5.95,0.34,0.77,0.308,0.85,0.329,0.8,0.382,0.69,0.661,0.4,7.72x,15.02x
+TP=4,Socket-Local Single-NUMA,AllReduce,524288,512 KiB,512 KiB,0.079,6.65,0.318,1.65,0.296,1.77,0.264,1.99,0.396,1.33,0.662,0.79,4.03x,8.39x
+TP=4,Socket-Local Single-NUMA,AllReduce,1048576,1 MiB,1 MiB Tensor,0.092,11.39,0.473,2.22,0.461,2.28,0.414,2.53,0.75,1.4,1.319,0.79,5.13x,14.33x
+TP=4,Socket-Local Single-NUMA,AllReduce,2097152,2 MiB,2 MiB,0.153,13.69,0.551,3.8,0.552,3.8,0.539,3.89,1.337,1.57,2.636,0.8,3.60x,17.20x
+TP=4,Socket-Local Single-NUMA,AllReduce,4194304,4 MiB,4 MiB,0.255,16.47,0.806,5.2,0.825,5.09,1.064,3.94,2.636,1.59,5.277,0.79,3.16x,20.72x
+TP=4,Socket-Local Single-NUMA,AllReduce,8388608,8 MiB,8 MiB,0.522,16.06,1.353,6.2,1.419,5.91,2.155,3.89,5.273,1.59,10.543,0.8,2.59x,20.19x
+TP=4,Socket-Local Single-NUMA,AllReduce,16777216,16 MiB,16 MiB Activation,1.006,16.68,2.511,6.68,2.665,6.3,4.227,3.97,10.544,1.59,21.082,0.8,2.50x,20.95x
+TP=4,Socket-Local Single-NUMA,AllReduce,33554432,32 MiB,32 MiB,2.008,16.71,5.251,6.39,5.024,6.68,8.448,3.97,21.094,1.59,42.207,0.8,2.61x,21.02x
+TP=4,Socket-Local Single-NUMA,AllReduce,67108864,64 MiB,64 MiB Chunk,3.989,16.82,10.277,6.53,10.03,6.69,16.899,3.97,42.342,1.58,84.395,0.8,2.58x,21.16x
+TP=4,Socket-Local Single-NUMA,AllReduce,134217728,128 MiB,8K Prefill Chunk (128 MiB),7.916,16.95,20.525,6.54,20.532,6.54,33.783,3.97,84.4,1.59,168.843,0.79,2.59x,21.33x
+TP=4,Socket-Local Single-NUMA,AllReduce,268435456,256 MiB,Large Prefill (256 MiB),15.382,17.45,41.384,6.49,41.775,6.43,67.601,3.97,168.829,1.59,337.761,0.79,2.69x,21.96x
