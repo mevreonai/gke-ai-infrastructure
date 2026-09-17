@@ -85,14 +85,20 @@ run_multinode() {
     echo "OK: [$coll] $np ranks, 1 job, NET hops present, tc counted $((after-before)) bytes."
 }
 
-DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c"
-
 # Phase 1: Local Baselines
 echo ">>> [Phase 1/2] Node-Local Baselines <<<"
+MPI_LOCAL="/usr/mpi/gcc/openmpi-4.1.9a1/bin/mpirun --prefix /usr/mpi/gcc/openmpi-4.1.9a1 --allow-run-as-root -x PATH -x LD_LIBRARY_PATH=/opt/cuda-13.0/lib64:/usr/mpi/gcc/openmpi-4.1.9a1/lib64"
+
 for coll in all_gather reduce_scatter; do
     coll_short="${coll//_/}"
     bin="$BIN_DIR/${coll}_perf"
-    $DOCKER_LOCAL "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS NCCL_DEBUG=INFO $bin $NCCL_ARGS_LOCAL" | tee "$BASE_DIR/$coll_short/tp8.log"
+    echo ">>> Running Local TP=4 for $coll <<<"
+    $MPI_LOCAL -np 4 -H localhost:4 "$bin" $NCCL_ARGS | tee "$BASE_DIR/$coll_short/tp4.log"
+    cp -f "$BASE_DIR/$coll_short/tp4.log" "$BASE_DIR/$coll_short/tp4_local.log"
+
+    echo ">>> Running Local TP=8 for $coll <<<"
+    $MPI_LOCAL -np 8 -H localhost:8 "$bin" $NCCL_ARGS | tee "$BASE_DIR/$coll_short/tp8.log"
+    cp -f "$BASE_DIR/$coll_short/tp8.log" "$BASE_DIR/$coll_short/tp8_local.log"
 done
 
 # Phase 2: Multi-Node Sweeps

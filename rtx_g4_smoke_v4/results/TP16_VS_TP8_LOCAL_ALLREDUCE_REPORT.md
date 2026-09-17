@@ -37,10 +37,6 @@
 | **128 MiB** | **14.88 GB/s** | **5.83 GB/s** | 5.33 GB/s | 3.18 GB/s | 1.27 GB/s | **0.64 GB/s** |
 | **256 MiB** | **14.91 GB/s** | **5.85 GB/s** | 5.36 GB/s | 3.18 GB/s | 1.27 GB/s | **0.64 GB/s** |
 
-### Executive Findings for Leadership
-1. **Local PCIe Gen5 Advantage for Small/Medium Tensors**:
-   - For decode-sized tokens (8 KiB – 1 MiB), TP-8 Local is **~3x to 7x faster** than TP-16 Multi-Node because communication avoids Linux network socket and kernel TCP stack overhead entirely.
-2. **Scale-Out Line-Rate Saturation**:
-   - For large prefill payloads (256 MiB), TP-16 Multi-Node reaches **7.49 GB/s algorithmic bandwidth (14.04 GB/s bus bandwidth = ~112.3 Gbps over the wire)** on Native 175G.
-3. **Impact of Bandwidth Throttling**:
-   - Throttling from 175G Native to 10G Capped increases TP-16 256 MiB latency from **35.84 ms to 421.88 ms (11.8x slowdown)**, demonstrating that high-bandwidth inter-node links are mandatory for distributed prefill.
+### Key Takeaways
+1. **Decode vs Prefill**: Local TP-8 is optimal for small decode payloads ($\le 128$ KiB) avoiding TCP latency hops, while TP-16 scales memory capacity for prefill.
+2. **Network Throttling**: Throttling from 175G to 10G dramatically impacts multi-node latency (by ~7x to 23x for large tensors), demonstrating that network bandwidth is the primary bottleneck for distributed communication.
