@@ -11,10 +11,10 @@
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **AllReduce** | Latency (ms) | **18.006 ms** | **45.886 ms** | 50.035 ms | 84.373 ms | 210.896 ms | **421.903 ms** | **2.55x** | **23.43x** |
 | | AlgBW (GB/s) | **14.91 GB/s** | **5.85 GB/s** | 5.36 GB/s | 3.18 GB/s | 1.27 GB/s | **0.64 GB/s** | - | - |
-| **AllGather** | Latency (ms) | **9.85 ms** | **30.537 ms** | 32.207 ms | 43.084 ms | 106.068 ms | **211.073 ms** | **3.10x** | **21.43x** |
-| | AlgBW (GB/s) | **27.25 GB/s** | **8.79 GB/s** | 8.33 GB/s | 6.23 GB/s | 2.53 GB/s | **1.27 GB/s** | - | - |
-| **ReduceScatter** | Latency (ms) | **9.934 ms** | **30.598 ms** | 34.59 ms | 42.904 ms | 106.482 ms | **211.135 ms** | **3.08x** | **21.25x** |
-| | AlgBW (GB/s) | **27.02 GB/s** | **8.77 GB/s** | 7.76 GB/s | 6.26 GB/s | 2.52 GB/s | **1.27 GB/s** | - | - |
+| **AllGather** | Latency (ms) | **9.743 ms** | **19.026 ms** | 29.54 ms | 42.152 ms | 105.464 ms | **211.042 ms** | **1.95x** | **21.66x** |
+| | AlgBW (GB/s) | **27.55 GB/s** | **14.11 GB/s** | 9.09 GB/s | 6.37 GB/s | 2.55 GB/s | **1.27 GB/s** | - | - |
+| **ReduceScatter** | Latency (ms) | **9.444 ms** | **17.936 ms** | 22.922 ms | 42.152 ms | 105.442 ms | **211.091 ms** | **1.90x** | **22.35x** |
+| | AlgBW (GB/s) | **28.43 GB/s** | **14.97 GB/s** | 11.71 GB/s | 6.37 GB/s | 2.55 GB/s | **1.27 GB/s** | - | - |
 
 ## 2. Mathematical Consistency Validation
 According to distributed ring collective theory:
