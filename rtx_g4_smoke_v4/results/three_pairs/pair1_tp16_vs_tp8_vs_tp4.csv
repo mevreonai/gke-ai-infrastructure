@@ -1,0 +1,7 @@
+size_bytes,payload_label,target_phase,tp16_pp1_time_us,tp16_pp1_algbw_gbs,tp8_pp2_time_us,tp8_pp2_algbw_gbs,tp4_pp4_time_us,tp4_pp4_algbw_gbs,optimal_topology,tp4_speedup_vs_tp16,tp4_speedup_vs_tp8
+16384,16 KiB,Batch-1 Decode,425.74,0.04,37.52,0.44,17.93,0.91,TP=4,23.74x,2.09x
+131072,128 KiB,Small Activation,1618.96,0.08,39.10,3.35,21.21,6.18,TP=4,76.33x,1.84x
+524288,512 KiB,Medium Activation,1611.87,0.33,60.15,8.72,47.47,11.05,TP=4,33.95x,1.27x
+67108864,64 MiB,Medium Prefill,2269.29,29.57,2964.52,22.64,2598.53,25.83,TP=4,0.87x,1.14x
+134217728,128 MiB,8K Prefill Chunk,2521.72,53.22,5890.50,22.79,5163.10,26.00,TP=4 / TP=16,0.49x,1.14x
+268435456,256 MiB,Large Prefill,5044.42,53.21,11721.90,22.90,10210.80,26.29,TP=4 / TP=16,0.49x,1.15x

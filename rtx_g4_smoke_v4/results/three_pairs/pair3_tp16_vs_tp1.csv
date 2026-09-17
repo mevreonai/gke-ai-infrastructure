@@ -1,0 +1,7 @@
+size_bytes,payload_label,tp16_network_time_us,tp16_network_algbw_gbs,tp1_zero_comm_time_us,tp1_comm_overhead_bytes,latency_saved_by_tp1_per_layer_us,latency_saved_across_93_layers_ms
+16384,16 KiB (Decode Proxy),425.74,0.04,0.00,0,425.74,39.59
+131072,128 KiB,1618.96,0.08,0.00,0,1618.96,150.56
+524288,512 KiB,1611.87,0.33,0.00,0,1611.87,149.90
+67108864,64 MiB,2269.29,29.57,0.00,0,2269.29,211.04
+134217728,128 MiB (8K Prefill Proxy),2521.72,53.22,0.00,0,2521.72,234.52
+268435456,256 MiB,5044.42,53.21,0.00,0,5044.42,469.13
