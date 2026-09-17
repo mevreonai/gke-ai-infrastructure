@@ -1,0 +1,118 @@
+{
+	"nvbandwidth" : 
+	{
+		"CUDA Driver API Version" : 13000,
+		"CUDA Runtime Version" : 13000,
+		"Driver Version" : "580.173.02",
+		"GPU Device list" : 
+		[
+			"0: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:05:00): (kimi-node-0)",
+			"1: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:06:00): (kimi-node-0)",
+			"2: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:0a:00): (kimi-node-0)",
+			"3: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:0b:00): (kimi-node-0)",
+			"4: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:84:00): (kimi-node-0)",
+			"5: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:85:00): (kimi-node-0)",
+			"6: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:89:00): (kimi-node-0)",
+			"7: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:8a:00): (kimi-node-0)"
+		],
+		"Version Major" : 0,
+		"Version Minor" : 10,
+		"Version Patch" : 0,
+		"bounceBufferConfComputeEnabled" : false,
+		"git_version" : "v0.10",
+		"testcases" : 
+		[
+			{
+				"bandwidth_description" : "Device to Device Latency SM GPU(row) <-> GPU(column) (ns)",
+				"bandwidth_matrix" : 
+				[
+					[
+						"N/A",
+						"941.198",
+						"1196.91",
+						"1192.37",
+						"1200.32",
+						"1196.01",
+						"1452.28",
+						"1444.37"
+					],
+					[
+						"942.158",
+						"N/A",
+						"1181.84",
+						"1177.51",
+						"1194.21",
+						"1189.9",
+						"1437.26",
+						"1429.48"
+					],
+					[
+						"1195.47",
+						"1179.39",
+						"N/A",
+						"944.803",
+						"1447.3",
+						"1434.82",
+						"1194.91",
+						"1196.08"
+					],
+					[
+						"1192.76",
+						"1176.81",
+						"946.406",
+						"N/A",
+						"1444.54",
+						"1432.09",
+						"1201.19",
+						"1202.33"
+					],
+					[
+						"1201.35",
+						"1194.26",
+						"1449.76",
+						"1445.36",
+						"N/A",
+						"943.327",
+						"1200.34",
+						"1192.37"
+					],
+					[
+						"1198.59",
+						"1191.46",
+						"1438.78",
+						"1434.35",
+						"944.937",
+						"N/A",
+						"1189.35",
+						"1181.36"
+					],
+					[
+						"1452.13",
+						"1436.12",
+						"1196.19",
+						"1200.72",
+						"1199.13",
+						"1186.61",
+						"N/A",
+						"948.005"
+					],
+					[
+						"1445.57",
+						"1429.64",
+						"1198.78",
+						"1203.26",
+						"1192.36",
+						"1179.95",
+						"949.377",
+						"N/A"
+					]
+				],
+				"name" : "device_to_device_latency_sm",
+				"status" : "Passed",
+				"sum" : 68788.114915136248
+			}
+		],
+		"version" : "v0.10.0"
+	}
+}
+

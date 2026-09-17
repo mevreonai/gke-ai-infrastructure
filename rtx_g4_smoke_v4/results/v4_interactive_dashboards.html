@@ -95,10 +95,10 @@
     <p>Empirical Hardware & Fabric Characterization on 2 Nodes &times; 8x NVIDIA RTX PRO 6000 Ada (Blackwell Server Edition)</p>
   </div>
   <div class="tabs">
-    <button class="tab-btn active" onclick="showTab(1)">Dashboard 1: 9-Panel Decomposition</button>
-    <button class="tab-btn" onclick="showTab(2)">Dashboard 2: 3-Pair AllReduce Deep Dive</button>
-    <button class="tab-btn" onclick="showTab(3)">Dashboard 3: AllReduce Bandwidth Sweep (10G-175G)</button>
-    <button class="tab-btn" onclick="showTab(4)">Dashboard 4: Pipeline Calculator & Fabric</button>
+    <button class="tab-btn active" onclick="showTab(1)">Dashboard 1: 9-Panel Infographic</button>
+    <button class="tab-btn" onclick="showTab(2)">Dashboard 2: AllReduce Suite</button>
+    <button class="tab-btn" onclick="showTab(3)">Dashboard 3: AllGather Suite</button>
+    <button class="tab-btn" onclick="showTab(4)">Dashboard 4: ReduceScatter Suite</button>
   </div>
 </header>
 
@@ -296,316 +296,480 @@
   </div>
 </div>
 
-<!-- TAB 2: 3-Pair AllReduce Deep Dive -->
+<!-- TAB 2: AllReduce Suite -->
 <div id="tab2" class="tab-content">
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
-    <div class="card">
-      <div class="card-header">
-        <h3>Pair 1 & 2: AllReduce Latency Curves (µs)</h3>
-        <span class="badge badge-hw">LOG SCALE</span>
-      </div>
-      <div style="height: 240px;">
-        <canvas id="chartPairLatency"></canvas>
-      </div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <h3>Pair 1 & 2: Algorithmic Bandwidth (GB/s)</h3>
-        <span class="badge badge-hw">THROUGHPUT</span>
-      </div>
-      <div style="height: 240px;">
-        <canvas id="chartPairBandwidth"></canvas>
-      </div>
-    </div>
-  </div>
-
-  <!-- Pair 1 Table -->
-  <div class="card" style="margin-bottom: 20px;">
-    <div class="card-header">
-      <h3>Pair 1: TP=16 (Cross-Node) vs TP=8 (Node-Local) vs TP=4 (Socket-Local)</h3>
-      <a href="three_pairs/pair1_tp16_vs_tp8_vs_tp4.csv" style="color:var(--accent-blue); font-size:12px; text-decoration:none;">Download CSV &darr;</a>
-    </div>
-    <table>
-      <thead>
-        <tr><th>Payload Size</th><th>Target Phase</th><th>TP=16, PP=1 (Network)</th><th>TP=8, PP=2 (Dual-Socket)</th><th>TP=4, PP=4 (Single-NUMA)</th><th>Optimal</th><th>TP=4 vs TP=16 Speedup</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><b>16 KiB</b></td><td>Batch-1 Decode</td><td>425.74 µs (0.04 GB/s)</td><td>37.52 µs (0.44 GB/s)</td><td>17.93 µs (0.91 GB/s)</td><td class="highlight-green">TP=4</td><td class="highlight-green">23.74x</td></tr>
-        <tr><td><b>128 KiB</b></td><td>Small Activation</td><td>1618.96 µs (0.08 GB/s)</td><td>39.10 µs (3.35 GB/s)</td><td>21.21 µs (6.18 GB/s)</td><td class="highlight-green">TP=4</td><td class="highlight-green">76.33x</td></tr>
-        <tr><td><b>512 KiB</b></td><td>Medium Activation</td><td>1611.87 µs (0.33 GB/s)</td><td>60.15 µs (8.72 GB/s)</td><td>47.47 µs (11.05 GB/s)</td><td class="highlight-green">TP=4</td><td class="highlight-green">33.95x</td></tr>
-        <tr><td><b>64 MiB</b></td><td>Medium Prefill</td><td>2269.29 µs (29.57 GB/s)</td><td>2964.52 µs (22.64 GB/s)</td><td>2598.53 µs (25.83 GB/s)</td><td class="highlight-green">TP=4</td><td class="highlight-green">1.14x vs TP=8</td></tr>
-        <tr><td><b>128 MiB</b></td><td>8K Prefill Chunk</td><td>2521.72 µs (53.22 GB/s)</td><td>5890.50 µs (22.79 GB/s)</td><td>5163.10 µs (26.00 GB/s)</td><td class="highlight-green">TP=4 / TP=16</td><td class="highlight-green">1.14x vs TP=8</td></tr>
-        <tr><td><b>256 MiB</b></td><td>Large Prefill</td><td>5044.42 µs (53.21 GB/s)</td><td>11721.90 µs (22.90 GB/s)</td><td>10210.80 µs (26.29 GB/s)</td><td class="highlight-green">TP=4 / TP=16</td><td class="highlight-green">1.15x vs TP=8</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- Pair 2 & 3 Tables -->
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-    <div class="card">
-      <div class="card-header">
-        <h3>Pair 2: TP=8 vs TP=2 (PCIe Inter-Socket vs Local Switch)</h3>
-        <a href="three_pairs/pair2_tp8_vs_tp2.csv" style="color:var(--accent-blue); font-size:12px; text-decoration:none;">Download CSV &darr;</a>
-      </div>
-      <table>
-        <thead><tr><th>Payload</th><th>TP=8 (Cross-Socket)</th><th>TP=2 (Local Switch)</th><th>Speedup</th></tr></thead>
-        <tbody>
-          <tr><td><b>16 KiB</b></td><td>37.52 µs</td><td>11.75 µs</td><td class="highlight-green">3.19x</td></tr>
-          <tr><td><b>128 KiB</b></td><td>39.10 µs</td><td>12.94 µs</td><td class="highlight-green">3.02x</td></tr>
-          <tr><td><b>512 KiB</b></td><td>60.15 µs</td><td>33.37 µs</td><td class="highlight-green">1.80x</td></tr>
-          <tr><td><b>64 MiB</b></td><td>2964.52 µs (22.6 GB/s)</td><td>1892.73 µs (35.5 GB/s)</td><td class="highlight-green">1.57x</td></tr>
-          <tr><td><b>128 MiB</b></td><td>5890.50 µs (22.8 GB/s)</td><td>3728.91 µs (36.0 GB/s)</td><td class="highlight-green">1.58x</td></tr>
-          <tr><td><b>256 MiB</b></td><td>11721.90 µs (22.9 GB/s)</td><td>7360.78 µs (36.5 GB/s)</td><td class="highlight-green">1.59x</td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="card">
-      <div class="card-header">
-        <h3>Pair 3: TP=16 vs TP=1 (Network Scaling vs Zero-Comm)</h3>
-        <a href="three_pairs/pair3_tp16_vs_tp1.csv" style="color:var(--accent-blue); font-size:12px; text-decoration:none;">Download CSV &darr;</a>
-      </div>
-      <table>
-        <thead><tr><th>Payload</th><th>TP=16 Time (Network)</th><th>TP=1 Time</th><th>Overhead Eliminated by TP=1</th></tr></thead>
-        <tbody>
-          <tr><td><b>16 KiB</b></td><td>425.74 µs</td><td>0.00 µs</td><td class="highlight-green">425.74 µs / layer</td></tr>
-          <tr><td><b>128 KiB</b></td><td>1618.96 µs</td><td>0.00 µs</td><td class="highlight-green">1618.96 µs / layer</td></tr>
-          <tr><td><b>512 KiB</b></td><td>1611.87 µs</td><td>0.00 µs</td><td class="highlight-green">1611.87 µs / layer</td></tr>
-          <tr><td><b>64 MiB</b></td><td>2269.29 µs</td><td>0.00 µs</td><td class="highlight-green">2.27 ms / layer</td></tr>
-          <tr><td><b>128 MiB</b></td><td>2521.72 µs</td><td>0.00 µs</td><td class="highlight-green">2.52 ms / layer (~0.23s / chunk)</td></tr>
-          <tr><td><b>256 MiB</b></td><td>5044.42 µs</td><td>0.00 µs</td><td class="highlight-green">5.04 ms / layer (~0.47s / chunk)</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<!-- TAB 3: Multi-Bandwidth AllReduce Sweep (10G to 175G) -->
-<div id="tab3" class="tab-content">
-  <!-- CSV Download Bar -->
-  <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+  <!-- Controls Bar -->
+  <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
     <div>
-      <h3 style="font-size: 15px; color: #fff; font-weight: 700; margin-bottom: 2px;">Empirical Multi-Node AllReduce (TP=16) Bandwidth Sweep</h3>
-      <p style="font-size: 12px; color: var(--text-muted);">Measured on 2 nodes &times; 8x RTX PRO 6000 Ada (16 GPUs total) from 8 KiB to 256 MiB across 5 network bandwidth profiles.</p>
+      <h2 style="font-size: 18px; color: #fff; font-weight: 700; margin-bottom: 3px;">AllReduce Distributed Characterization</h2>
+      <p style="font-size: 13px; color: var(--text-muted);">Measured live on 16x RTX PRO 6000 Ada Blackwell GPUs across 8 KiB to 256 MiB.</p>
     </div>
-    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-      <a href="network_allreduce_sweep/allreduce_175g_native.csv" style="background: rgba(16, 185, 129, 0.2); border: 1px solid #10b981; color: #34d399; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px; text-decoration: none;">175G Native CSV &darr;</a>
-      <a href="network_allreduce_sweep/allreduce_100g.csv" style="background: rgba(59, 130, 246, 0.2); border: 1px solid #3b82f6; color: #93c5fd; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px; text-decoration: none;">100G Capped CSV &darr;</a>
-      <a href="network_allreduce_sweep/allreduce_50g.csv" style="background: rgba(245, 158, 11, 0.2); border: 1px solid #f59e0b; color: #fcd34d; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px; text-decoration: none;">50G Capped CSV &darr;</a>
-      <a href="network_allreduce_sweep/allreduce_20g.csv" style="background: rgba(249, 115, 22, 0.2); border: 1px solid #f97316; color: #fdba74; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px; text-decoration: none;">20G Capped CSV &darr;</a>
-      <a href="network_allreduce_sweep/allreduce_10g.csv" style="background: rgba(239, 68, 68, 0.2); border: 1px solid #ef4444; color: #fca5a5; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px; text-decoration: none;">10G Capped CSV &darr;</a>
-      <a href="network_allreduce_sweep/allreduce_network_bandwidth_sweep.csv" style="background: rgba(139, 92, 246, 0.2); border: 1px solid #8b5cf6; color: #c4b5fd; font-size: 11px; font-weight: 600; padding: 6px 10px; border-radius: 6px; text-decoration: none;">Combined Sweep CSV &darr;</a>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <label style="font-size: 13px; font-weight: 600; color: var(--accent-cyan);">Select TP Configuration:</label>
+      <select id="allreduce_tpSelect" onchange="renderCollectiveView('allreduce')" style="background: #131b2e; border: 1px solid var(--accent-blue); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+        <option value="tp16" selected>Page 1: TP=16 Multi-Node Network Sweep (10G - 175G)</option>
+        <option value="tp8">Page 2: TP=8 Node-Local Cross-Socket (8 GPUs)</option>
+        <option value="tp4">Page 3: TP=4 Socket-Local Single-NUMA (4 GPUs)</option>
+        <option value="compare">Page 4: All TPs & Pair Comparison (TP16 vs TP8 vs TP4)</option>
+      </select>
     </div>
   </div>
 
-  <!-- Charts Grid -->
+  <!-- Dynamic Download Bar -->
+  <div id="allreduce_downloadBar" style="margin-bottom: 18px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+
+  <!-- Charts Row -->
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
     <div class="card">
       <div class="card-header">
-        <h3>AllReduce Latency vs Message Size (8 KiB to 256 MiB)</h3>
+        <h3 id="allreduce_chart1_title">Latency vs Payload Size (8 KiB - 256 MiB)</h3>
         <span class="badge badge-hw">LOG SCALE (µs)</span>
       </div>
-      <div style="height: 260px;">
-        <canvas id="chartAllreduceNetLatency"></canvas>
+      <div style="height: 270px;">
+        <canvas id="allreduce_chartLatency"></canvas>
       </div>
     </div>
     <div class="card">
       <div class="card-header">
-        <h3>Algorithmic Bandwidth Across Network Tiers (GB/s)</h3>
-        <span class="badge badge-hw">THROUGHPUT</span>
+        <h3 id="allreduce_chart2_title">Throughput / Algorithmic Bandwidth</h3>
+        <span class="badge badge-hw">GB/s</span>
       </div>
-      <div style="height: 260px;">
-        <canvas id="chartAllreduceNetBandwidth"></canvas>
+      <div style="height: 270px;">
+        <canvas id="allreduce_chartBandwidth"></canvas>
       </div>
     </div>
   </div>
 
-  <!-- Full Comparative Table -->
+  <!-- Dynamic Data Table Card -->
   <div class="card" style="margin-bottom: 20px;">
     <div class="card-header">
-      <h3>Multi-Node AllReduce (TP=16) Empirical Data Table</h3>
-      <span class="badge badge-hw">16 SIZES &bull; 5 TIERS</span>
+      <h3 id="allreduce_table_title">Empirical Benchmark Data Points</h3>
+      <span class="badge badge-hw" id="allreduce_table_badge">FRESH RUN &bull; LIVE HARDWARE</span>
     </div>
-    <table>
-      <thead>
-        <tr>
-          <th>Payload Size</th>
-          <th>Workload Target</th>
-          <th>Native 175G (173.6 Gbps)</th>
-          <th>Capped 100G</th>
-          <th>Capped 50G</th>
-          <th>Capped 20G</th>
-          <th>Capped 10G</th>
-          <th>100G vs Nat</th>
-          <th>10G vs Nat Penalty</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr><td><b>8 KiB</b></td><td>Min Packet Floor</td><td>875.35 µs</td><td>825.89 µs</td><td>1077.80 µs</td><td>803.84 µs</td><td>1049.35 µs</td><td>0.94x</td><td class="highlight-green">1.20x</td></tr>
-        <tr><td><b>16 KiB</b></td><td>Batch-1 Token Decode</td><td>1246.64 µs</td><td>1060.85 µs</td><td>993.69 µs</td><td>1109.31 µs</td><td>1245.80 µs</td><td>0.85x</td><td class="highlight-green">1.00x (Identical!)</td></tr>
-        <tr><td><b>32 KiB</b></td><td>Batch-2 Token Decode</td><td>1731.70 µs</td><td>827.59 µs</td><td>820.47 µs</td><td>957.58 µs</td><td>1304.49 µs</td><td>0.48x</td><td class="highlight-green">0.75x</td></tr>
-        <tr><td><b>64 KiB</b></td><td>Small Activation</td><td>1243.02 µs</td><td>951.83 µs</td><td>1143.45 µs</td><td>1310.00 µs</td><td>1370.15 µs</td><td>0.77x</td><td class="highlight-green">1.10x</td></tr>
-        <tr><td><b>128 KiB</b></td><td>Medium Activation</td><td>2562.07 µs</td><td>916.68 µs</td><td>1792.27 µs</td><td>1079.22 µs</td><td>1870.05 µs</td><td>0.36x</td><td class="highlight-green">0.73x</td></tr>
-        <tr><td><b>256 KiB</b></td><td>Activation Barrier</td><td>2573.75 µs</td><td>1804.42 µs</td><td>2014.39 µs</td><td>1083.74 µs</td><td>1130.40 µs</td><td>0.70x</td><td class="highlight-green">0.44x</td></tr>
-        <tr><td><b>512 KiB</b></td><td>Intermediate Buffer</td><td>2027.51 µs</td><td>1819.56 µs</td><td>2084.30 µs</td><td>2084.66 µs</td><td>1049.81 µs</td><td>0.90x</td><td class="highlight-green">0.52x</td></tr>
-        <tr><td><b>1 MiB</b></td><td>MoE Token Routing</td><td>1574.11 µs</td><td>3432.36 µs</td><td>1645.70 µs</td><td>1835.76 µs</td><td>866.30 µs</td><td>2.18x</td><td class="highlight-green">0.55x</td></tr>
-        <tr><td><b>2 MiB</b></td><td>Layer Norm Barrier</td><td>2284.65 µs</td><td>2207.51 µs</td><td>2183.71 µs</td><td>1809.42 µs</td><td>1105.92 µs</td><td>0.97x</td><td class="highlight-green">0.48x</td></tr>
-        <tr><td><b>4 MiB</b></td><td>Dense Projection</td><td>1926.86 µs</td><td>1458.04 µs</td><td>1490.55 µs</td><td>2444.81 µs</td><td>1105.55 µs</td><td>0.76x</td><td class="highlight-green">0.57x</td></tr>
-        <tr><td><b>8 MiB</b></td><td>Sub-Chunk Prefill</td><td>1507.38 µs (5.57 GB/s)</td><td>1700.90 µs (4.93 GB/s)</td><td>1696.21 µs (4.95 GB/s)</td><td>1830.50 µs (4.58 GB/s)</td><td>1724.58 µs (4.86 GB/s)</td><td>1.13x</td><td class="highlight-green">1.14x</td></tr>
-        <tr><td><b>16 MiB</b></td><td>1K Context Prefill</td><td>1585.11 µs (10.58 GB/s)</td><td>2606.27 µs (6.44 GB/s)</td><td>2006.05 µs (8.36 GB/s)</td><td>1901.07 µs (8.83 GB/s)</td><td>1592.72 µs (10.53 GB/s)</td><td>1.64x</td><td class="highlight-green">1.00x</td></tr>
-        <tr><td><b>32 MiB</b></td><td>2K Context Prefill</td><td>1731.01 µs (19.38 GB/s)</td><td>1765.17 µs (19.01 GB/s)</td><td>2149.43 µs (15.61 GB/s)</td><td>1460.02 µs (22.98 GB/s)</td><td>2408.94 µs (13.93 GB/s)</td><td>1.02x</td><td class="highlight-amber">1.39x</td></tr>
-        <tr><td><b>64 MiB</b></td><td>4K Context Prefill</td><td>3199.90 µs (20.97 GB/s)</td><td>1926.06 µs (34.84 GB/s)</td><td>1919.26 µs (34.97 GB/s)</td><td>2193.17 µs (30.60 GB/s)</td><td>2132.61 µs (31.47 GB/s)</td><td>0.60x</td><td class="highlight-green">0.67x</td></tr>
-        <tr><td><b>128 MiB</b></td><td>8K Chunk Hidden-State</td><td>2413.68 µs (55.61 GB/s)</td><td>3009.81 µs (44.59 GB/s)</td><td>1919.92 µs (69.91 GB/s)</td><td>2193.05 µs (61.20 GB/s)</td><td>2394.30 µs (56.06 GB/s)</td><td>1.25x</td><td class="highlight-green">0.99x</td></tr>
-        <tr><td><b>256 MiB</b></td><td>16K Chunk / Large Batch</td><td>4345.41 µs (61.77 GB/s)</td><td>4862.68 µs (55.20 GB/s)</td><td>5179.59 µs (51.83 GB/s)</td><td>4253.94 µs (63.10 GB/s)</td><td>5113.02 µs (52.50 GB/s)</td><td>1.12x</td><td class="highlight-amber">1.18x</td></tr>
-      </tbody>
-    </table>
+    <div id="allreduce_tableContainer" style="overflow-x: auto;"></div>
   </div>
 
-  <!-- Engineering Findings Grid -->
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-    <div class="card">
-      <div class="card-header">
-        <h3>Finding 1: Decode Phase Latency Invariance</h3>
-        <span class="badge badge-hw">8K - 512K</span>
-      </div>
-      <p style="font-size: 12px; line-height: 1.6; color: var(--text-muted); margin-bottom: 10px;">
-        For per-token decode steps (8 KiB to 512 KiB), capping the network to 10 Gbps causes <b>zero penalty</b> compared to 175 Gbps. Completion times hover between 800 µs and 1250 µs across all network bandwidth tiers.
-      </p>
-      <div class="success-box">Small message AllReduce is 100% bound by Linux TCP stack round-trip overhead and kernel socket signaling (&alpha;-latency), not link rate (&beta;-bandwidth).</div>
-    </div>
-    <div class="card">
-      <div class="card-header">
-        <h3>Finding 2: Hierarchical PCIe Shielding</h3>
-        <span class="badge badge-hw">64M - 256M</span>
-      </div>
-      <p style="font-size: 12px; line-height: 1.6; color: var(--text-muted); margin-bottom: 10px;">
-        For 128 MiB (8K prefill chunk) and 256 MiB payloads, algorithmic bandwidth reaches <b>52 to 63 GB/s</b>. NCCL uses a two-level ring algorithm: 7 GPUs inside Node 0 reduce locally across PCIe Gen5 (~50 GB/s), passing only the boundary partition across the network.
-      </p>
-      <div class="alert-box">Pipeline Parallelism (SendRecv) suffers heavily on 10G (~217 ms vs 10 ms), but AllReduce hides network bottlenecks via local intra-node aggregation!</div>
-    </div>
-  </div>
+  <!-- Analysis Callout -->
+  <div id="allreduce_insightsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
 </div>
 
-<!-- TAB 4: Pipeline Calculator & Network Fabric -->
+<!-- TAB 3: AllGather Suite -->
+<div id="tab3" class="tab-content">
+  <!-- Controls Bar -->
+  <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+    <div>
+      <h2 style="font-size: 18px; color: #fff; font-weight: 700; margin-bottom: 3px;">AllGather Distributed Characterization</h2>
+      <p style="font-size: 13px; color: var(--text-muted);">Measured live on 16x RTX PRO 6000 Ada Blackwell GPUs across 8 KiB to 256 MiB.</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <label style="font-size: 13px; font-weight: 600; color: var(--accent-cyan);">Select TP Configuration:</label>
+      <select id="allgather_tpSelect" onchange="renderCollectiveView('allgather')" style="background: #131b2e; border: 1px solid var(--accent-blue); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+        <option value="tp16" selected>Page 1: TP=16 Multi-Node Network Sweep (10G - 175G)</option>
+        <option value="tp8">Page 2: TP=8 Node-Local Cross-Socket (8 GPUs)</option>
+        <option value="tp4">Page 3: TP=4 Socket-Local Single-NUMA (4 GPUs)</option>
+        <option value="compare">Page 4: All TPs & Pair Comparison (TP16 vs TP8 vs TP4)</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Dynamic Download Bar -->
+  <div id="allgather_downloadBar" style="margin-bottom: 18px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
+
+  <!-- Charts Row -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
+    <div class="card">
+      <div class="card-header">
+        <h3 id="allgather_chart1_title">Latency vs Payload Size (8 KiB - 256 MiB)</h3>
+        <span class="badge badge-hw">LOG SCALE (µs)</span>
+      </div>
+      <div style="height: 270px;">
+        <canvas id="allgather_chartLatency"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 id="allgather_chart2_title">Throughput / Algorithmic Bandwidth</h3>
+        <span class="badge badge-hw">GB/s</span>
+      </div>
+      <div style="height: 270px;">
+        <canvas id="allgather_chartBandwidth"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dynamic Data Table Card -->
+  <div class="card" style="margin-bottom: 20px;">
+    <div class="card-header">
+      <h3 id="allgather_table_title">Empirical Benchmark Data Points</h3>
+      <span class="badge badge-hw" id="allgather_table_badge">FRESH RUN &bull; LIVE HARDWARE</span>
+    </div>
+    <div id="allgather_tableContainer" style="overflow-x: auto;"></div>
+  </div>
+
+  <!-- Analysis Callout -->
+  <div id="allgather_insightsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
+</div>
+
+<!-- TAB 4: ReduceScatter Suite -->
 <div id="tab4" class="tab-content">
-  <div class="calc-panel">
-    <h3 style="font-size:16px; margin-bottom:4px;">Interactive Kimi-K3 Pipeline Parallel (PP) Hop Calculator</h3>
-    <p style="font-size:12px; color:var(--text-muted);">Calculates activation tensor size, transmission serialization time, and pipeline stall bubbles across 93 layers.</p>
-    
-    <div class="calc-controls">
-      <div class="calc-group">
-        <label>Prefill Chunk Tokens (C):</label>
-        <select id="calcTokens" onchange="updateCalc()">
-          <option value="4096">4,096 tokens</option>
-          <option value="8192" selected>8,192 tokens (Default 8K)</option>
-          <option value="16384">16,384 tokens</option>
-          <option value="32768">32,768 tokens</option>
-          <option value="65536">65,536 tokens</option>
-        </select>
-      </div>
-      <div class="calc-group">
-        <label>Hidden Dimension (H):</label>
-        <select id="calcHidden" onchange="updateCalc()">
-          <option value="7168" selected>7,168 (Kimi-K3 Standard)</option>
-        </select>
-      </div>
-      <div class="calc-group">
-        <label>Data Type:</label>
-        <select id="calcDtype" onchange="updateCalc()">
-          <option value="2" selected>BF16 / FP16 (2 bytes)</option>
-          <option value="1">FP8 (1 byte)</option>
-        </select>
-      </div>
-      <div class="calc-group">
-        <label>Inter-Node Network Fabric:</label>
-        <select id="calcNet" onchange="updateCalc()">
-          <option value="21.7" selected>GCP Native (173.6 Gbps / 21.7 GB/s)</option>
-          <option value="7.34">GCP Capped 100G (58.8 Gbps / 7.34 GB/s)</option>
-          <option value="4.22">GCP Capped 50G (33.8 Gbps / 4.22 GB/s)</option>
-          <option value="2.10">GCP Capped 20G (16.8 Gbps / 2.10 GB/s)</option>
-          <option value="1.13">GCP Capped 10G / On-Prem 10GbE (1.13 GB/s)</option>
-        </select>
-      </div>
+  <!-- Controls Bar -->
+  <div style="background: rgba(15, 23, 42, 0.85); border: 1px solid var(--border); border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+    <div>
+      <h2 style="font-size: 18px; color: #fff; font-weight: 700; margin-bottom: 3px;">ReduceScatter Distributed Characterization</h2>
+      <p style="font-size: 13px; color: var(--text-muted);">Measured live on 16x RTX PRO 6000 Ada Blackwell GPUs across 8 KiB to 256 MiB.</p>
     </div>
-
-    <div class="calc-result">
-      <div class="calc-stat"><div class="val" id="resTensor">112.0 MiB</div><div class="lbl">Activation Tensor</div></div>
-      <div class="calc-stat"><div class="val" id="resSingleHop">5.16 ms</div><div class="lbl">Single PP Hop Delay</div></div>
-      <div class="calc-stat"><div class="val" id="resTotalHops">15.48 ms</div><div class="lbl">Total Pipeline Boundary (PP=4)</div></div>
-      <div class="calc-stat"><div class="val" id="resBubbleStatus" style="color:var(--accent-green);">HEALTHY</div><div class="lbl">Pipeline Bubble Risk</div></div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <label style="font-size: 13px; font-weight: 600; color: var(--accent-cyan);">Select TP Configuration:</label>
+      <select id="reducescatter_tpSelect" onchange="renderCollectiveView('reducescatter')" style="background: #131b2e; border: 1px solid var(--accent-blue); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
+        <option value="tp16" selected>Page 1: TP=16 Multi-Node Network Sweep (10G - 175G)</option>
+        <option value="tp8">Page 2: TP=8 Node-Local Cross-Socket (8 GPUs)</option>
+        <option value="tp4">Page 3: TP=4 Socket-Local Single-NUMA (4 GPUs)</option>
+        <option value="compare">Page 4: All TPs & Pair Comparison (TP16 vs TP8 vs TP4)</option>
+      </select>
     </div>
   </div>
 
-  <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-    <div class="card">
-      <div class="card-header"><h3>Network Sweep Throughput (iperf3)</h3><span class="badge badge-hw">RAW GCP</span></div>
-      <table>
-        <thead><tr><th>Network Provenance</th><th>Bandwidth (Gbps)</th><th>Payload Rate (GB/s)</th><th>Relative to Native</th></tr></thead>
-        <tbody>
-          <tr><td><b>GCP_NATIVE</b></td><td class="highlight-green">173.58 Gbps</td><td>21.70 GB/s</td><td>100%</td></tr>
-          <tr><td><b>GCP_CAPPED_100G</b></td><td>58.75 Gbps</td><td>7.34 GB/s</td><td>33.8%</td></tr>
-          <tr><td><b>GCP_CAPPED_50G</b></td><td>33.77 Gbps</td><td>4.22 GB/s</td><td>19.5%</td></tr>
-          <tr><td><b>GCP_CAPPED_20G</b></td><td>16.80 Gbps</td><td>2.10 GB/s</td><td>9.7%</td></tr>
-          <tr><td><b>GCP_CAPPED_10G</b></td><td class="highlight-red">9.02 Gbps</td><td>1.13 GB/s</td><td>5.2%</td></tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- Dynamic Download Bar -->
+  <div id="reducescatter_downloadBar" style="margin-bottom: 18px; display: flex; gap: 10px; flex-wrap: wrap;"></div>
 
+  <!-- Charts Row -->
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;">
     <div class="card">
-      <div class="card-header"><h3>256 MiB SendRecv Transfer Latency</h3><span class="badge badge-hw">P2P DMA</span></div>
-      <table>
-        <thead><tr><th>Network Provenance</th><th>Measured Transfer Time</th><th>Throughput Degrade</th></tr></thead>
-        <tbody>
-          <tr><td><b>GCP_NATIVE</b></td><td class="highlight-green">10.0 ms</td><td>Baseline</td></tr>
-          <tr><td><b>GCP_CAPPED_100G</b></td><td>23.0 ms</td><td>2.3x slower</td></tr>
-          <tr><td><b>GCP_CAPPED_50G</b></td><td>45.0 ms</td><td>4.5x slower</td></tr>
-          <tr><td><b>GCP_CAPPED_20G</b></td><td>110.0 ms</td><td>11.0x slower</td></tr>
-          <tr><td><b>GCP_CAPPED_10G</b></td><td class="highlight-red">217.0 ms</td><td>21.7x slower</td></tr>
-        </tbody>
-      </table>
+      <div class="card-header">
+        <h3 id="reducescatter_chart1_title">Latency vs Payload Size (8 KiB - 256 MiB)</h3>
+        <span class="badge badge-hw">LOG SCALE (µs)</span>
+      </div>
+      <div style="height: 270px;">
+        <canvas id="reducescatter_chartLatency"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3 id="reducescatter_chart2_title">Throughput / Algorithmic Bandwidth</h3>
+        <span class="badge badge-hw">GB/s</span>
+      </div>
+      <div style="height: 270px;">
+        <canvas id="reducescatter_chartBandwidth"></canvas>
+      </div>
     </div>
   </div>
+
+  <!-- Dynamic Data Table Card -->
+  <div class="card" style="margin-bottom: 20px;">
+    <div class="card-header">
+      <h3 id="reducescatter_table_title">Empirical Benchmark Data Points</h3>
+      <span class="badge badge-hw" id="reducescatter_table_badge">FRESH RUN &bull; LIVE HARDWARE</span>
+    </div>
+    <div id="reducescatter_tableContainer" style="overflow-x: auto;"></div>
+  </div>
+
+  <!-- Analysis Callout -->
+  <div id="reducescatter_insightsContainer" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;"></div>
 </div>
 
 <script>
+  const benchData = {"allreduce": {"tp4": {"8192": {"time_us": 18.86, "algbw_gb_s": 0.4344}, "16384": {"time_us": 16.32, "algbw_gb_s": 1.0039}, "32768": {"time_us": 16.46, "algbw_gb_s": 1.9908}, "65536": {"time_us": 16.78, "algbw_gb_s": 3.9056}, "131072": {"time_us": 16.88, "algbw_gb_s": 7.7649}, "262144": {"time_us": 25.59, "algbw_gb_s": 10.244}, "524288": {"time_us": 44.75, "algbw_gb_s": 11.7159}, "1048576": {"time_us": 60.04, "algbw_gb_s": 17.4646}, "2097152": {"time_us": 95.85, "algbw_gb_s": 21.8795}, "4194304": {"time_us": 173.21, "algbw_gb_s": 24.2151}, "8388608": {"time_us": 334.16, "algbw_gb_s": 25.1036}, "16777216": {"time_us": 659.01, "algbw_gb_s": 25.4582}, "33554432": {"time_us": 1307.24, "algbw_gb_s": 25.6681}, "67108864": {"time_us": 2597.89, "algbw_gb_s": 25.8321}, "134217728": {"time_us": 5169.74, "algbw_gb_s": 25.9622}, "268435456": {"time_us": 10238.5, "algbw_gb_s": 26.2182}}, "tp8": {"8192": {"time_us": 38.58, "algbw_gb_s": 0.2123}, "16384": {"time_us": 33.3, "algbw_gb_s": 0.492}, "32768": {"time_us": 33.71, "algbw_gb_s": 0.9721}, "65536": {"time_us": 33.93, "algbw_gb_s": 1.9315}, "131072": {"time_us": 34.59, "algbw_gb_s": 3.7893}, "262144": {"time_us": 39.51, "algbw_gb_s": 6.6349}, "524288": {"time_us": 64.92, "algbw_gb_s": 8.0759}, "1048576": {"time_us": 88.3, "algbw_gb_s": 11.8752}, "2097152": {"time_us": 131.4, "algbw_gb_s": 15.9601}, "4194304": {"time_us": 198.98, "algbw_gb_s": 21.079}, "8388608": {"time_us": 377.59, "algbw_gb_s": 22.2162}, "16777216": {"time_us": 743.26, "algbw_gb_s": 22.5725}, "33554432": {"time_us": 1487.71, "algbw_gb_s": 22.5544}, "67108864": {"time_us": 2958.26, "algbw_gb_s": 22.6852}, "134217728": {"time_us": 5881.48, "algbw_gb_s": 22.8204}, "268435456": {"time_us": 11705.9, "algbw_gb_s": 22.9316}}, "tp16": {"NATIVE": {"8192": {"time_us": 833.59, "algbw_gb_s": 0.0098}, "16384": {"time_us": 1129.78, "algbw_gb_s": 0.0145}, "32768": {"time_us": 1003.77, "algbw_gb_s": 0.0326}, "65536": {"time_us": 1207.78, "algbw_gb_s": 0.0543}, "131072": {"time_us": 1278.51, "algbw_gb_s": 0.1025}, "262144": {"time_us": 1644.07, "algbw_gb_s": 0.1594}, "524288": {"time_us": 2909.37, "algbw_gb_s": 0.1802}, "1048576": {"time_us": 1725.39, "algbw_gb_s": 0.6077}, "2097152": {"time_us": 1737.38, "algbw_gb_s": 1.2071}, "4194304": {"time_us": 3139.13, "algbw_gb_s": 1.3361}, "8388608": {"time_us": 3592.0, "algbw_gb_s": 2.3354}, "16777216": {"time_us": 3449.42, "algbw_gb_s": 4.8638}, "33554432": {"time_us": 2694.0, "algbw_gb_s": 12.4552}, "67108864": {"time_us": 1729.38, "algbw_gb_s": 38.8052}, "134217728": {"time_us": 2524.14, "algbw_gb_s": 53.1736}, "268435456": {"time_us": 5103.52, "algbw_gb_s": 52.5981}}, "100": {"8192": {"time_us": 1307.34, "algbw_gb_s": 0.0063}, "16384": {"time_us": 1015.73, "algbw_gb_s": 0.0161}, "32768": {"time_us": 1707.96, "algbw_gb_s": 0.0192}, "65536": {"time_us": 798.32, "algbw_gb_s": 0.0821}, "131072": {"time_us": 1504.75, "algbw_gb_s": 0.0871}, "262144": {"time_us": 2097.1, "algbw_gb_s": 0.125}, "524288": {"time_us": 1576.53, "algbw_gb_s": 0.3326}, "1048576": {"time_us": 1540.19, "algbw_gb_s": 0.6808}, "2097152": {"time_us": 1917.01, "algbw_gb_s": 1.094}, "4194304": {"time_us": 2178.99, "algbw_gb_s": 1.9249}, "8388608": {"time_us": 1733.23, "algbw_gb_s": 4.8399}, "16777216": {"time_us": 1621.81, "algbw_gb_s": 10.3447}, "33554432": {"time_us": 2428.66, "algbw_gb_s": 13.816}, "67108864": {"time_us": 1202.13, "algbw_gb_s": 55.825}, "134217728": {"time_us": 2569.82, "algbw_gb_s": 52.2285}, "268435456": {"time_us": 4413.58, "algbw_gb_s": 60.8203}}, "50": {"8192": {"time_us": 783.39, "algbw_gb_s": 0.0105}, "16384": {"time_us": 1794.91, "algbw_gb_s": 0.0091}, "32768": {"time_us": 2278.23, "algbw_gb_s": 0.0144}, "65536": {"time_us": 841.97, "algbw_gb_s": 0.0778}, "131072": {"time_us": 2275.97, "algbw_gb_s": 0.0576}, "262144": {"time_us": 2254.01, "algbw_gb_s": 0.1163}, "524288": {"time_us": 2217.47, "algbw_gb_s": 0.2364}, "1048576": {"time_us": 2559.21, "algbw_gb_s": 0.4097}, "2097152": {"time_us": 2385.1, "algbw_gb_s": 0.8793}, "4194304": {"time_us": 2161.78, "algbw_gb_s": 1.9402}, "8388608": {"time_us": 2206.88, "algbw_gb_s": 3.8011}, "16777216": {"time_us": 2086.61, "algbw_gb_s": 8.0404}, "33554432": {"time_us": 1628.33, "algbw_gb_s": 20.6067}, "67108864": {"time_us": 1451.96, "algbw_gb_s": 46.2195}, "134217728": {"time_us": 3117.86, "algbw_gb_s": 43.048}, "268435456": {"time_us": 4319.69, "algbw_gb_s": 62.1423}}, "20": {"8192": {"time_us": 1673.06, "algbw_gb_s": 0.0049}, "16384": {"time_us": 1664.52, "algbw_gb_s": 0.0098}, "32768": {"time_us": 1671.29, "algbw_gb_s": 0.0196}, "65536": {"time_us": 1598.71, "algbw_gb_s": 0.041}, "131072": {"time_us": 1725.96, "algbw_gb_s": 0.0759}, "262144": {"time_us": 2401.12, "algbw_gb_s": 0.1092}, "524288": {"time_us": 2875.25, "algbw_gb_s": 0.1823}, "1048576": {"time_us": 2017.74, "algbw_gb_s": 0.5197}, "2097152": {"time_us": 2081.23, "algbw_gb_s": 1.0077}, "4194304": {"time_us": 2028.11, "algbw_gb_s": 2.0681}, "8388608": {"time_us": 2020.17, "algbw_gb_s": 4.1524}, "16777216": {"time_us": 2701.84, "algbw_gb_s": 6.2096}, "33554432": {"time_us": 2354.09, "algbw_gb_s": 14.2537}, "67108864": {"time_us": 2443.42, "algbw_gb_s": 27.4651}, "134217728": {"time_us": 3575.44, "algbw_gb_s": 37.5388}, "268435456": {"time_us": 4211.72, "algbw_gb_s": 63.7354}}, "10": {"8192": {"time_us": 841.07, "algbw_gb_s": 0.0097}, "16384": {"time_us": 1507.42, "algbw_gb_s": 0.0109}, "32768": {"time_us": 1182.27, "algbw_gb_s": 0.0277}, "65536": {"time_us": 1608.63, "algbw_gb_s": 0.0407}, "131072": {"time_us": 1088.93, "algbw_gb_s": 0.1204}, "262144": {"time_us": 1668.65, "algbw_gb_s": 0.1571}, "524288": {"time_us": 1327.28, "algbw_gb_s": 0.395}, "1048576": {"time_us": 1383.35, "algbw_gb_s": 0.758}, "2097152": {"time_us": 1532.99, "algbw_gb_s": 1.368}, "4194304": {"time_us": 1638.74, "algbw_gb_s": 2.5595}, "8388608": {"time_us": 1967.7, "algbw_gb_s": 4.2632}, "16777216": {"time_us": 1665.8, "algbw_gb_s": 10.0716}, "33554432": {"time_us": 2212.59, "algbw_gb_s": 15.1652}, "67108864": {"time_us": 3691.92, "algbw_gb_s": 18.1772}, "134217728": {"time_us": 3109.79, "algbw_gb_s": 43.1597}, "268435456": {"time_us": 3861.03, "algbw_gb_s": 69.5243}}}}, "allgather": {"tp4": {"8192": {"time_us": 17.57, "algbw_gb_s": 0.4662}, "16384": {"time_us": 16.4, "algbw_gb_s": 0.999}, "32768": {"time_us": 16.51, "algbw_gb_s": 1.9847}, "65536": {"time_us": 16.45, "algbw_gb_s": 3.984}, "131072": {"time_us": 16.97, "algbw_gb_s": 7.7237}, "262144": {"time_us": 17.83, "algbw_gb_s": 14.7024}, "524288": {"time_us": 27.76, "algbw_gb_s": 18.8865}, "1048576": {"time_us": 38.97, "algbw_gb_s": 26.9073}, "2097152": {"time_us": 59.77, "algbw_gb_s": 35.087}, "4194304": {"time_us": 99.24, "algbw_gb_s": 42.2642}, "8388608": {"time_us": 183.16, "algbw_gb_s": 45.7993}, "16777216": {"time_us": 352.08, "algbw_gb_s": 47.6517}, "33554432": {"time_us": 691.91, "algbw_gb_s": 48.4954}, "67108864": {"time_us": 1367.66, "algbw_gb_s": 49.0684}, "134217728": {"time_us": 2719.49, "algbw_gb_s": 49.354}, "268435456": {"time_us": 5409.66, "algbw_gb_s": 49.6215}}, "tp8": {"8192": {"time_us": 37.46, "algbw_gb_s": 0.2187}, "16384": {"time_us": 32.1, "algbw_gb_s": 0.5104}, "32768": {"time_us": 32.85, "algbw_gb_s": 0.9975}, "65536": {"time_us": 33.07, "algbw_gb_s": 1.9817}, "131072": {"time_us": 33.27, "algbw_gb_s": 3.9396}, "262144": {"time_us": 33.12, "algbw_gb_s": 7.915}, "524288": {"time_us": 38.96, "algbw_gb_s": 13.4571}, "1048576": {"time_us": 53.8, "algbw_gb_s": 19.4903}, "2097152": {"time_us": 75.12, "algbw_gb_s": 27.9174}, "4194304": {"time_us": 109.22, "algbw_gb_s": 38.4023}, "8388608": {"time_us": 197.2, "algbw_gb_s": 42.5386}, "16777216": {"time_us": 386.12, "algbw_gb_s": 43.4508}, "33554432": {"time_us": 769.2, "algbw_gb_s": 43.6225}, "67108864": {"time_us": 1523.94, "algbw_gb_s": 44.0364}, "134217728": {"time_us": 3035.53, "algbw_gb_s": 44.2156}, "268435456": {"time_us": 6049.5, "algbw_gb_s": 44.3732}}, "tp16": {"NATIVE": {"8192": {"time_us": 272.31, "algbw_gb_s": 0.0301}, "16384": {"time_us": 554.78, "algbw_gb_s": 0.0295}, "32768": {"time_us": 451.49, "algbw_gb_s": 0.0726}, "65536": {"time_us": 1467.5, "algbw_gb_s": 0.0447}, "131072": {"time_us": 1010.56, "algbw_gb_s": 0.1297}, "262144": {"time_us": 1012.49, "algbw_gb_s": 0.2589}, "524288": {"time_us": 1786.2, "algbw_gb_s": 0.2935}, "1048576": {"time_us": 1787.43, "algbw_gb_s": 0.5866}, "2097152": {"time_us": 1810.42, "algbw_gb_s": 1.1584}, "4194304": {"time_us": 1780.73, "algbw_gb_s": 2.3554}, "8388608": {"time_us": 2319.83, "algbw_gb_s": 3.616}, "16777216": {"time_us": 2762.49, "algbw_gb_s": 6.0732}, "33554432": {"time_us": 2695.19, "algbw_gb_s": 12.4497}, "67108864": {"time_us": 2116.37, "algbw_gb_s": 31.7094}, "134217728": {"time_us": 3493.12, "algbw_gb_s": 38.4235}, "268435456": {"time_us": 4257.3, "algbw_gb_s": 63.053}}, "100": {"8192": {"time_us": 973.93, "algbw_gb_s": 0.0084}, "16384": {"time_us": 488.48, "algbw_gb_s": 0.0335}, "32768": {"time_us": 1198.63, "algbw_gb_s": 0.0273}, "65536": {"time_us": 963.05, "algbw_gb_s": 0.0681}, "131072": {"time_us": 1552.69, "algbw_gb_s": 0.0844}, "262144": {"time_us": 2233.61, "algbw_gb_s": 0.1174}, "524288": {"time_us": 1793.87, "algbw_gb_s": 0.2923}, "1048576": {"time_us": 2166.7, "algbw_gb_s": 0.484}, "2097152": {"time_us": 1956.6, "algbw_gb_s": 1.0718}, "4194304": {"time_us": 1854.04, "algbw_gb_s": 2.2623}, "8388608": {"time_us": 1195.1, "algbw_gb_s": 7.0192}, "16777216": {"time_us": 900.71, "algbw_gb_s": 18.6267}, "33554432": {"time_us": 1132.89, "algbw_gb_s": 29.6184}, "67108864": {"time_us": 2983.3, "algbw_gb_s": 22.4948}, "134217728": {"time_us": 4291.92, "algbw_gb_s": 31.2722}, "268435456": {"time_us": 5159.03, "algbw_gb_s": 52.0322}}, "50": {"8192": {"time_us": 846.25, "algbw_gb_s": 0.0097}, "16384": {"time_us": 681.1, "algbw_gb_s": 0.0241}, "32768": {"time_us": 1816.03, "algbw_gb_s": 0.018}, "65536": {"time_us": 1055.13, "algbw_gb_s": 0.0621}, "131072": {"time_us": 1823.71, "algbw_gb_s": 0.0719}, "262144": {"time_us": 1819.54, "algbw_gb_s": 0.1441}, "524288": {"time_us": 1666.26, "algbw_gb_s": 0.3146}, "1048576": {"time_us": 1731.89, "algbw_gb_s": 0.6055}, "2097152": {"time_us": 1915.65, "algbw_gb_s": 1.0947}, "4194304": {"time_us": 1885.64, "algbw_gb_s": 2.2243}, "8388608": {"time_us": 1987.13, "algbw_gb_s": 4.2215}, "16777216": {"time_us": 2386.94, "algbw_gb_s": 7.0288}, "33554432": {"time_us": 1719.63, "algbw_gb_s": 19.5126}, "67108864": {"time_us": 2071.03, "algbw_gb_s": 32.4036}, "134217728": {"time_us": 2044.54, "algbw_gb_s": 65.6469}, "268435456": {"time_us": 4482.81, "algbw_gb_s": 59.8811}}, "20": {"8192": {"time_us": 965.52, "algbw_gb_s": 0.0085}, "16384": {"time_us": 873.23, "algbw_gb_s": 0.0188}, "32768": {"time_us": 1208.87, "algbw_gb_s": 0.0271}, "65536": {"time_us": 615.28, "algbw_gb_s": 0.1065}, "131072": {"time_us": 2031.91, "algbw_gb_s": 0.0645}, "262144": {"time_us": 2368.36, "algbw_gb_s": 0.1107}, "524288": {"time_us": 3284.91, "algbw_gb_s": 0.1596}, "1048576": {"time_us": 1937.68, "algbw_gb_s": 0.5412}, "2097152": {"time_us": 2302.34, "algbw_gb_s": 0.9109}, "4194304": {"time_us": 1877.07, "algbw_gb_s": 2.2345}, "8388608": {"time_us": 3020.43, "algbw_gb_s": 2.7773}, "16777216": {"time_us": 1621.66, "algbw_gb_s": 10.3457}, "33554432": {"time_us": 1160.64, "algbw_gb_s": 28.9103}, "67108864": {"time_us": 1952.32, "algbw_gb_s": 34.3739}, "134217728": {"time_us": 3001.09, "algbw_gb_s": 44.723}, "268435456": {"time_us": 5168.78, "algbw_gb_s": 51.934}}, "10": {"8192": {"time_us": 260.57, "algbw_gb_s": 0.0314}, "16384": {"time_us": 1061.74, "algbw_gb_s": 0.0154}, "32768": {"time_us": 522.68, "algbw_gb_s": 0.0627}, "65536": {"time_us": 1140.14, "algbw_gb_s": 0.0575}, "131072": {"time_us": 1018.3, "algbw_gb_s": 0.1287}, "262144": {"time_us": 1354.28, "algbw_gb_s": 0.1936}, "524288": {"time_us": 2982.29, "algbw_gb_s": 0.1758}, "1048576": {"time_us": 1074.53, "algbw_gb_s": 0.9758}, "2097152": {"time_us": 1730.43, "algbw_gb_s": 1.2119}, "4194304": {"time_us": 1940.29, "algbw_gb_s": 2.1617}, "8388608": {"time_us": 1081.98, "algbw_gb_s": 7.753}, "16777216": {"time_us": 1936.0, "algbw_gb_s": 8.6659}, "33554432": {"time_us": 1730.82, "algbw_gb_s": 19.3864}, "67108864": {"time_us": 2436.58, "algbw_gb_s": 27.5422}, "134217728": {"time_us": 4205.8, "algbw_gb_s": 31.9125}, "268435456": {"time_us": 6006.96, "algbw_gb_s": 44.6874}}}}, "reducescatter": {"tp4": {"8192": {"time_us": 20.84, "algbw_gb_s": 0.3931}, "16384": {"time_us": 17.24, "algbw_gb_s": 0.9503}, "32768": {"time_us": 17.32, "algbw_gb_s": 1.8919}, "65536": {"time_us": 17.52, "algbw_gb_s": 3.7406}, "131072": {"time_us": 17.64, "algbw_gb_s": 7.4304}, "262144": {"time_us": 17.67, "algbw_gb_s": 14.8355}, "524288": {"time_us": 28.04, "algbw_gb_s": 18.6979}, "1048576": {"time_us": 38.24, "algbw_gb_s": 27.4209}, "2097152": {"time_us": 58.84, "algbw_gb_s": 35.6416}, "4194304": {"time_us": 100.85, "algbw_gb_s": 41.5895}, "8388608": {"time_us": 189.91, "algbw_gb_s": 44.1715}, "16777216": {"time_us": 366.55, "algbw_gb_s": 45.7706}, "33554432": {"time_us": 720.32, "algbw_gb_s": 46.5827}, "67108864": {"time_us": 1421.57, "algbw_gb_s": 47.2076}, "134217728": {"time_us": 2819.32, "algbw_gb_s": 47.6064}, "268435456": {"time_us": 5552.8, "algbw_gb_s": 48.3424}}, "tp8": {"8192": {"time_us": 37.83, "algbw_gb_s": 0.2165}, "16384": {"time_us": 32.51, "algbw_gb_s": 0.504}, "32768": {"time_us": 31.88, "algbw_gb_s": 1.0279}, "65536": {"time_us": 32.76, "algbw_gb_s": 2.0005}, "131072": {"time_us": 33.52, "algbw_gb_s": 3.9103}, "262144": {"time_us": 33.25, "algbw_gb_s": 7.884}, "524288": {"time_us": 43.19, "algbw_gb_s": 12.1391}, "1048576": {"time_us": 50.49, "algbw_gb_s": 20.768}, "2097152": {"time_us": 73.49, "algbw_gb_s": 28.5366}, "4194304": {"time_us": 110.68, "algbw_gb_s": 37.8958}, "8388608": {"time_us": 206.98, "algbw_gb_s": 40.5286}, "16777216": {"time_us": 404.11, "algbw_gb_s": 41.5165}, "33554432": {"time_us": 802.49, "algbw_gb_s": 41.8129}, "67108864": {"time_us": 1592.56, "algbw_gb_s": 42.139}, "134217728": {"time_us": 3169.84, "algbw_gb_s": 42.3421}, "268435456": {"time_us": 6267.38, "algbw_gb_s": 42.8306}}, "tp16": {"NATIVE": {"8192": {"time_us": 55.17, "algbw_gb_s": 0.1485}, "16384": {"time_us": 828.95, "algbw_gb_s": 0.0198}, "32768": {"time_us": 1068.5, "algbw_gb_s": 0.0307}, "65536": {"time_us": 191.84, "algbw_gb_s": 0.3416}, "131072": {"time_us": 1590.91, "algbw_gb_s": 0.0824}, "262144": {"time_us": 1843.16, "algbw_gb_s": 0.1422}, "524288": {"time_us": 1082.03, "algbw_gb_s": 0.4845}, "1048576": {"time_us": 1586.3, "algbw_gb_s": 0.661}, "2097152": {"time_us": 113.74, "algbw_gb_s": 18.4381}, "4194304": {"time_us": 805.02, "algbw_gb_s": 5.2102}, "8388608": {"time_us": 953.87, "algbw_gb_s": 8.7943}, "16777216": {"time_us": 845.99, "algbw_gb_s": 19.8315}, "33554432": {"time_us": 1484.64, "algbw_gb_s": 22.6011}, "67108864": {"time_us": 2356.91, "algbw_gb_s": 28.4732}, "134217728": {"time_us": 2040.83, "algbw_gb_s": 65.7662}, "268435456": {"time_us": 4336.15, "algbw_gb_s": 61.9064}}, "100": {"8192": {"time_us": 1063.49, "algbw_gb_s": 0.0077}, "16384": {"time_us": 1269.55, "algbw_gb_s": 0.0129}, "32768": {"time_us": 1082.02, "algbw_gb_s": 0.0303}, "65536": {"time_us": 1866.42, "algbw_gb_s": 0.0351}, "131072": {"time_us": 1869.37, "algbw_gb_s": 0.0701}, "262144": {"time_us": 1868.4, "algbw_gb_s": 0.1403}, "524288": {"time_us": 3114.85, "algbw_gb_s": 0.1683}, "1048576": {"time_us": 3529.87, "algbw_gb_s": 0.2971}, "2097152": {"time_us": 2773.68, "algbw_gb_s": 0.7561}, "4194304": {"time_us": 2722.38, "algbw_gb_s": 1.5407}, "8388608": {"time_us": 2791.84, "algbw_gb_s": 3.0047}, "16777216": {"time_us": 1670.24, "algbw_gb_s": 10.0448}, "33554432": {"time_us": 2543.78, "algbw_gb_s": 13.1908}, "67108864": {"time_us": 3064.01, "algbw_gb_s": 21.9023}, "134217728": {"time_us": 4172.13, "algbw_gb_s": 32.1701}, "268435456": {"time_us": 4642.57, "algbw_gb_s": 57.8204}}, "50": {"8192": {"time_us": 1561.46, "algbw_gb_s": 0.0052}, "16384": {"time_us": 628.23, "algbw_gb_s": 0.0261}, "32768": {"time_us": 1491.81, "algbw_gb_s": 0.022}, "65536": {"time_us": 1841.37, "algbw_gb_s": 0.0356}, "131072": {"time_us": 680.43, "algbw_gb_s": 0.1926}, "262144": {"time_us": 2000.75, "algbw_gb_s": 0.131}, "524288": {"time_us": 2400.56, "algbw_gb_s": 0.2184}, "1048576": {"time_us": 2029.92, "algbw_gb_s": 0.5166}, "2097152": {"time_us": 2173.67, "algbw_gb_s": 0.9648}, "4194304": {"time_us": 1713.72, "algbw_gb_s": 2.4475}, "8388608": {"time_us": 1658.42, "algbw_gb_s": 5.0582}, "16777216": {"time_us": 2086.49, "algbw_gb_s": 8.0409}, "33554432": {"time_us": 1196.12, "algbw_gb_s": 28.0527}, "67108864": {"time_us": 2039.0, "algbw_gb_s": 32.9126}, "134217728": {"time_us": 2272.43, "algbw_gb_s": 59.0635}, "268435456": {"time_us": 4213.99, "algbw_gb_s": 63.701}}, "20": {"8192": {"time_us": 1118.74, "algbw_gb_s": 0.0073}, "16384": {"time_us": 1260.93, "algbw_gb_s": 0.013}, "32768": {"time_us": 1258.67, "algbw_gb_s": 0.026}, "65536": {"time_us": 758.7, "algbw_gb_s": 0.0864}, "131072": {"time_us": 1659.95, "algbw_gb_s": 0.079}, "262144": {"time_us": 1461.28, "algbw_gb_s": 0.1794}, "524288": {"time_us": 1569.1, "algbw_gb_s": 0.3341}, "1048576": {"time_us": 3022.48, "algbw_gb_s": 0.3469}, "2097152": {"time_us": 3478.46, "algbw_gb_s": 0.6029}, "4194304": {"time_us": 3019.26, "algbw_gb_s": 1.3892}, "8388608": {"time_us": 2084.14, "algbw_gb_s": 4.025}, "16777216": {"time_us": 2050.26, "algbw_gb_s": 8.183}, "33554432": {"time_us": 1739.03, "algbw_gb_s": 19.2949}, "67108864": {"time_us": 2014.62, "algbw_gb_s": 33.3109}, "134217728": {"time_us": 3315.01, "algbw_gb_s": 40.4879}, "268435456": {"time_us": 5820.63, "algbw_gb_s": 46.1179}}, "10": {"8192": {"time_us": 1230.09, "algbw_gb_s": 0.0067}, "16384": {"time_us": 2028.8, "algbw_gb_s": 0.0081}, "32768": {"time_us": 1572.17, "algbw_gb_s": 0.0208}, "65536": {"time_us": 2795.76, "algbw_gb_s": 0.0234}, "131072": {"time_us": 1615.24, "algbw_gb_s": 0.0811}, "262144": {"time_us": 1971.07, "algbw_gb_s": 0.133}, "524288": {"time_us": 2351.2, "algbw_gb_s": 0.223}, "1048576": {"time_us": 2514.01, "algbw_gb_s": 0.4171}, "2097152": {"time_us": 2413.41, "algbw_gb_s": 0.869}, "4194304": {"time_us": 2052.33, "algbw_gb_s": 2.0437}, "8388608": {"time_us": 1662.15, "algbw_gb_s": 5.0468}, "16777216": {"time_us": 2472.45, "algbw_gb_s": 6.7857}, "33554432": {"time_us": 1872.6, "algbw_gb_s": 17.9186}, "67108864": {"time_us": 3084.95, "algbw_gb_s": 21.7536}, "134217728": {"time_us": 3305.24, "algbw_gb_s": 40.6076}, "268435456": {"time_us": 6844.49, "algbw_gb_s": 39.2192}}}}};
+
   function showTab(n) {
     document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === n - 1));
     document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === n - 1));
+    if (n === 2) renderCollectiveView('allreduce');
+    if (n === 3) renderCollectiveView('allgather');
+    if (n === 4) renderCollectiveView('reducescatter');
   }
 
-  // Calculator Logic
-  function updateCalc() {
-    const tokens = parseInt(document.getElementById('calcTokens').value);
-    const hidden = parseInt(document.getElementById('calcHidden').value);
-    const dtype = parseInt(document.getElementById('calcDtype').value);
-    const rateGBs = parseFloat(document.getElementById('calcNet').value);
+  const chartInstances = {};
 
-    const bytes = tokens * hidden * dtype;
-    const mib = bytes / (1024 * 1024);
-    const timeSec = (bytes / 1e9) / rateGBs;
-    const timeMs = timeSec * 1000;
-    const totalHopsMs = timeMs * 3; // PP=4 -> 3 boundaries
+  function formatSize(b) {
+    const kb = b / 1024;
+    const mb = b / (1024 * 1024);
+    if (mb >= 1) return mb % 1 === 0 ? mb + 'M' : mb.toFixed(1) + 'M';
+    return kb % 1 === 0 ? kb + 'K' : kb.toFixed(1) + 'K';
+  }
 
-    document.getElementById('resTensor').innerText = mib.toFixed(1) + ' MiB';
-    document.getElementById('resSingleHop').innerText = timeMs.toFixed(2) + ' ms';
-    document.getElementById('resTotalHops').innerText = totalHopsMs.toFixed(2) + ' ms';
+  function getHumanLabel(s) {
+    const b = parseInt(s);
+    if (b === 8192) return "8 KiB (Min Floor)";
+    if (b === 16384) return "16 KiB (Decode Token)";
+    if (b === 134217728) return "128 MiB (8K Prefill Chunk)";
+    if (b === 268435456) return "256 MiB (Large Prefill)";
+    return formatSize(b) + "iB";
+  }
 
-    const statusEl = document.getElementById('resBubbleStatus');
-    if (timeMs > 100) {
-      statusEl.innerText = 'HIGH BUBBLE RISK';
-      statusEl.style.color = 'var(--accent-red)';
-    } else if (timeMs > 30) {
-      statusEl.innerText = 'MODERATE DELAY';
-      statusEl.style.color = 'var(--accent-amber)';
-    } else {
-      statusEl.innerText = 'HEALTHY (<15ms)';
-      statusEl.style.color = 'var(--accent-green)';
+  function renderCollectiveView(coll) {
+    const sel = document.getElementById(coll + '_tpSelect').value;
+    const data = benchData[coll];
+
+    const dlBar = document.getElementById(coll + '_downloadBar');
+    const tableContainer = document.getElementById(coll + '_tableContainer');
+    const insights = document.getElementById(coll + '_insightsContainer');
+
+    const rates = ['NATIVE', '100', '50', '20', '10'];
+    const rateNames = {
+      'NATIVE': '175G Native',
+      '100': '100G Capped',
+      '50': '50G Capped',
+      '20': '20G Capped',
+      '10': '10G Capped'
+    };
+
+    // 1. Render Download Links
+    dlBar.innerHTML = `
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp16_sweep.csv" style="background:rgba(59,130,246,0.2); border:1px solid #3b82f6; color:#93c5fd; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=16 Sweep CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp8.csv" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=8 Local CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp4.csv" style="background:rgba(139,92,246,0.2); border:1px solid #8b5cf6; color:#c4b5fd; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=4 Local CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp16_175g_native.csv" style="background:rgba(245,158,11,0.2); border:1px solid #f59e0b; color:#fcd34d; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">175G Native CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp16_100g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">100G CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp16_50g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">50G CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp16_20g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">20G CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${coll}/${coll}_tp16_10g.csv" style="background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">10G CSV &darr;</a>
+    `;
+
+    // 2. Prepare Data Points
+    const allSizes = Object.keys(data.tp4).map(Number).sort((a,b)=>a-b);
+    const labels = allSizes.map(formatSize);
+
+    // Chart Destroy helper
+    if (chartInstances[coll + '_lat']) chartInstances[coll + '_lat'].destroy();
+    if (chartInstances[coll + '_bw']) chartInstances[coll + '_bw'].destroy();
+
+    let chart1Datasets = [];
+    let chart2Datasets = [];
+    let tableHtml = '';
+
+    if (sel === 'tp16') {
+      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' (TP=16) Latency Across 5 Network Bandwidths';
+      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' (TP=16) Algorithmic Bandwidth (GB/s)';
+
+      const colors = {
+        'NATIVE': '#10b981',
+        '100': '#3b82f6',
+        '50': '#f59e0b',
+        '20': '#f97316',
+        '10': '#ef4444'
+      };
+
+      rates.forEach(r => {
+        const latData = allSizes.map(s => data.tp16[r][s] ? data.tp16[r][s].time_us : 0);
+        chart1Datasets.push({
+          label: rateNames[r],
+          data: latData,
+          borderColor: colors[r],
+          tension: 0.2
+        });
+      });
+
+      // Prefill subset for bandwidth chart (64M, 128M, 256M)
+      const subsetSizes = [33554432, 67108864, 134217728, 268435456];
+      const subsetLabels = subsetSizes.map(formatSize);
+      rates.forEach(r => {
+        const bwData = subsetSizes.map(s => data.tp16[r][s] ? data.tp16[r][s].algbw_gb_s : 0);
+        chart2Datasets.push({
+          label: rateNames[r],
+          data: bwData,
+          backgroundColor: colors[r]
+        });
+      });
+
+      tableHtml = `<table>
+        <thead>
+          <tr>
+            <th>Payload Size</th><th>Label</th>
+            <th>Native 175G</th><th>Capped 100G</th><th>Capped 50G</th><th>Capped 20G</th><th>Capped 10G</th>
+            <th>100G vs Native</th><th>10G vs Native Penalty</th>
+          </tr>
+        </thead>
+        <tbody>` +
+        allSizes.map(s => {
+          const tNat = data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0;
+          const t100 = data.tp16['100'][s] ? data.tp16['100'][s].time_us : 0;
+          const t50 = data.tp16['50'][s] ? data.tp16['50'][s].time_us : 0;
+          const t20 = data.tp16['20'][s] ? data.tp16['20'][s].time_us : 0;
+          const t10 = data.tp16['10'][s] ? data.tp16['10'][s].time_us : 0;
+          const r100 = tNat > 0 ? (t100/tNat).toFixed(2) + 'x' : '-';
+          const r10 = tNat > 0 ? (t10/tNat).toFixed(2) + 'x' : '-';
+          return `<tr>
+            <td><b>${formatSize(s)}</b></td>
+            <td>${getHumanLabel(s)}</td>
+            <td>${tNat.toFixed(2)} µs</td>
+            <td>${t100.toFixed(2)} µs</td>
+            <td>${t50.toFixed(2)} µs</td>
+            <td>${t20.toFixed(2)} µs</td>
+            <td>${t10.toFixed(2)} µs</td>
+            <td>${r100}</td>
+            <td class="${parseFloat(r10) > 1.5 ? 'highlight-red' : 'highlight-green'}"><b>${r10}</b></td>
+          </tr>`;
+        }).join('') + `</tbody></table>`;
+
+      insights.innerHTML = `
+        <div class="card">
+          <div class="card-header"><h3>TP=16 Decode Latency Floor (&alpha;-bound)</h3><span class="badge badge-hw">8K - 512K</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small payloads (8 KiB to 512 KiB), latency stays identical (~800 to 1200 µs) regardless of whether bandwidth is 10G, 50G, or 175G because host-to-NIC socket signaling overhead dominates link serialization.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>TP=16 Prefill Scalability (&beta;-bound)</h3><span class="badge badge-hw">64M - 256M</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">At 128 MiB (8K chunk) and 256 MiB, communication transitions into the bandwidth-bound regime. Algorithmic throughput exceeds 50 GB/s on the unthrottled link through NCCL's hierarchical PCIe-to-network ring aggregation.</p>
+        </div>
+      `;
+    } else if (sel === 'tp8') {
+      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' (TP=8 Node-Local) Latency (µs)';
+      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' (TP=8 Node-Local) Algorithmic Bandwidth (GB/s)';
+
+      const latData = allSizes.map(s => data.tp8[s] ? data.tp8[s].time_us : 0);
+      const bwData = allSizes.map(s => data.tp8[s] ? data.tp8[s].algbw_gb_s : 0);
+
+      chart1Datasets.push({ label: 'TP=8 Latency (µs)', data: latData, borderColor: '#3b82f6', tension: 0.2 });
+      chart2Datasets.push({ label: 'TP=8 Algorithmic BW (GB/s)', data: bwData, backgroundColor: '#3b82f6' });
+
+      tableHtml = `<table>
+        <thead><tr><th>Payload Size</th><th>Label</th><th>TP=8 Latency (µs)</th><th>Algorithmic BW (GB/s)</th><th>Bus Bandwidth (GB/s)</th></tr></thead>
+        <tbody>` +
+        allSizes.map(s => {
+          const t = data.tp8[s] ? data.tp8[s].time_us : 0;
+          const bw = data.tp8[s] ? data.tp8[s].algbw_gb_s : 0;
+          const busbw = (bw * 1.75).toFixed(2);
+          return `<tr>
+            <td><b>${formatSize(s)}</b></td>
+            <td>${getHumanLabel(s)}</td>
+            <td class="highlight-green">${t.toFixed(2)} µs</td>
+            <td>${bw.toFixed(2)} GB/s</td>
+            <td>${busbw} GB/s</td>
+          </tr>`;
+        }).join('') + `</tbody></table>`;
+
+      insights.innerHTML = `
+        <div class="card">
+          <div class="card-header"><h3>TP=8 PCIe UPI Inter-Socket Fabric</h3><span class="badge badge-hw">DUAL SOCKET</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">TP=8 operates across both AMD EPYC CPU sockets over the UPI coherence link. Small payload latency is 33 µs (zero network overhead), and peak PCIe Gen5 bandwidth stabilizes at ~23 GB/s algbw.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>TP=8 vs Multi-Node Speedup</h3><span class="badge badge-hw">COMPARISON</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small payloads (16K decode token), TP=8 is <b>25x to 35x faster</b> than TP=16 cross-node because communication completely bypasses the external network interface.</p>
+        </div>
+      `;
+    } else if (sel === 'tp4') {
+      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' (TP=4 Socket-Local) Latency (µs)';
+      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' (TP=4 Socket-Local) Algorithmic Bandwidth (GB/s)';
+
+      const latData = allSizes.map(s => data.tp4[s] ? data.tp4[s].time_us : 0);
+      const bwData = allSizes.map(s => data.tp4[s] ? data.tp4[s].algbw_gb_s : 0);
+
+      chart1Datasets.push({ label: 'TP=4 Latency (µs)', data: latData, borderColor: '#10b981', tension: 0.2 });
+      chart2Datasets.push({ label: 'TP=4 Algorithmic BW (GB/s)', data: bwData, backgroundColor: '#10b981' });
+
+      tableHtml = `<table>
+        <thead><tr><th>Payload Size</th><th>Label</th><th>TP=4 Latency (µs)</th><th>Algorithmic BW (GB/s)</th><th>Bus Bandwidth (GB/s)</th></tr></thead>
+        <tbody>` +
+        allSizes.map(s => {
+          const t = data.tp4[s] ? data.tp4[s].time_us : 0;
+          const bw = data.tp4[s] ? data.tp4[s].algbw_gb_s : 0;
+          const busbw = (bw * 1.5).toFixed(2);
+          return `<tr>
+            <td><b>${formatSize(s)}</b></td>
+            <td>${getHumanLabel(s)}</td>
+            <td class="highlight-green">${t.toFixed(2)} µs</td>
+            <td>${bw.toFixed(2)} GB/s</td>
+            <td>${busbw} GB/s</td>
+          </tr>`;
+        }).join('') + `</tbody></table>`;
+
+      insights.innerHTML = `
+        <div class="card">
+          <div class="card-header"><h3>TP=4 Single-NUMA Switch Line Rate</h3><span class="badge badge-hw">ZERO UPI</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">TP=4 confines all communication within NUMA 0 (GPUs 0,1,2,3). This eliminates cross-socket UPI traversal entirely, achieving a minimum latency floor of <b>16.3 µs</b>.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>TP=4 Optimal Partitioning</h3><span class="badge badge-hw">ARCHITECTURE</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">In LOCAL_REAL and dual-socket deployments, TP=4 is the <b>absolute latency champion</b> for decode steps, offering a 2.0x latency speedup over TP=8 and up to 70x over TP=16.</p>
+        </div>
+      `;
+    } else if (sel === 'compare') {
+      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' Latency Comparison: TP16 vs TP8 vs TP4';
+      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' Algorithmic Bandwidth Comparison';
+
+      chart1Datasets.push({ label: 'TP=4 (Single-NUMA)', data: allSizes.map(s => data.tp4[s].time_us), borderColor: '#10b981', tension: 0.2 });
+      chart1Datasets.push({ label: 'TP=8 (Cross-Socket)', data: allSizes.map(s => data.tp8[s].time_us), borderColor: '#3b82f6', tension: 0.2 });
+      chart1Datasets.push({ label: 'TP=16 (Native 175G)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0), borderColor: '#8b5cf6', tension: 0.2 });
+      chart1Datasets.push({ label: 'TP=16 (Capped 10G)', data: allSizes.map(s => data.tp16['10'][s] ? data.tp16['10'][s].time_us : 0), borderColor: '#ef4444', tension: 0.2 });
+
+      chart2Datasets.push({ label: 'TP=4', data: allSizes.map(s => data.tp4[s].algbw_gb_s), backgroundColor: '#10b981' });
+      chart2Datasets.push({ label: 'TP=8', data: allSizes.map(s => data.tp8[s].algbw_gb_s), backgroundColor: '#3b82f6' });
+      chart2Datasets.push({ label: 'TP=16 (Native)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].algbw_gb_s : 0), backgroundColor: '#8b5cf6' });
+
+      tableHtml = `<table>
+        <thead><tr><th>Payload</th><th>Phase</th><th>TP=4 (NUMA-Local)</th><th>TP=8 (Dual-Socket)</th><th>TP=16 (Cross-Node)</th><th>TP=4 vs TP=8</th><th>TP=4 vs TP=16 Speedup</th></tr></thead>
+        <tbody>` +
+        allSizes.map(s => {
+          const t4 = data.tp4[s] ? data.tp4[s].time_us : 0;
+          const t8 = data.tp8[s] ? data.tp8[s].time_us : 0;
+          const t16 = data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0;
+          const r48 = t4 > 0 ? (t8/t4).toFixed(2) + 'x' : '-';
+          const r416 = t4 > 0 ? (t16/t4).toFixed(2) + 'x' : '-';
+          return `<tr>
+            <td><b>${formatSize(s)}</b></td>
+            <td>${getHumanLabel(s)}</td>
+            <td class="highlight-green">${t4.toFixed(2)} µs</td>
+            <td>${t8.toFixed(2)} µs</td>
+            <td>${t16.toFixed(2)} µs</td>
+            <td class="highlight-green">${r48}</td>
+            <td class="highlight-green"><b>${r416}</b></td>
+          </tr>`;
+        }).join('') + `</tbody></table>`;
+
+      insights.innerHTML = `
+        <div class="card">
+          <div class="card-header"><h3>Core Architecture Takeaway: NUMA Locality</h3><span class="badge badge-hw">TOPOLOGY</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">Across all collectives (${coll.toUpperCase()}), TP=4 yields the lowest latency floor (16-18 µs), outperforming TP=8 by ~2x and TP=16 by over 20-70x on small decode packets.</p>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3>Scale-Out Scaling Law</h3><span class="badge badge-hw">DISTRIBUTED</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For large prefill batches (&gt;64 MiB), TP=16 leverages the full compute of 16 GPUs, reaching line-rate saturation when backed by &ge; 50 Gbps network fabric.</p>
+        </div>
+      `;
     }
+
+    tableContainer.innerHTML = tableHtml;
+
+    // Render Chart 1 (Latency)
+    chartInstances[coll + '_lat'] = new Chart(document.getElementById(coll + '_chartLatency'), {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: chart1Datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { type: 'logarithmic', ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          x: { ticks: { color: '#9ca3af' } }
+        },
+        plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } }
+      }
+    });
+
+    // Render Chart 2 (Bandwidth)
+    chartInstances[coll + '_bw'] = new Chart(document.getElementById(coll + '_chartBandwidth'), {
+      type: 'bar',
+      data: {
+        labels: sel === 'tp16' ? ['32M', '64M', '128M', '256M'] : labels,
+        datasets: chart2Datasets
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          y: { ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          x: { ticks: { color: '#9ca3af' } }
+        },
+        plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } }
+      }
+    });
   }
 
-  // Charts
+  // Initialize on load
   window.addEventListener('DOMContentLoaded', () => {
-    // 1. Within Node Chart
+    // Render existing Tab 1 charts
     new Chart(document.getElementById('chartWithinNode'), {
       type: 'bar',
       data: {
@@ -618,7 +782,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } }, scales: { y: { ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } } }
     });
 
-    // 2. Scale Out Chart
     new Chart(document.getElementById('chartScaleOut'), {
       type: 'line',
       data: {
@@ -630,7 +793,6 @@
       options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: 'logarithmic', ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } }, plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } } }
     });
 
-    // 3. Network Sweep Chart
     new Chart(document.getElementById('chartNetworkSweep'), {
       type: 'bar',
       data: {
@@ -640,7 +802,6 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } } }
     });
 
-    // 4. SendRecv Chart
     new Chart(document.getElementById('chartSendRecv'), {
       type: 'line',
       data: {
@@ -650,69 +811,9 @@
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { type: 'logarithmic', ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } } }
     });
 
-    // 5. Deep Dive Pair Latency
-    new Chart(document.getElementById('chartPairLatency'), {
-      type: 'line',
-      data: {
-        labels: ['16K', '128K', '512K', '64M', '128M', '256M'],
-        datasets: [
-          { label: 'TP=2 (Local Switch)', data: [11.75, 12.94, 33.37, 1892.73, 3728.91, 7360.78], borderColor: '#8b5cf6', tension: 0.2 },
-          { label: 'TP=4 (Single-NUMA)', data: [17.93, 21.21, 47.47, 2598.53, 5163.10, 10210.80], borderColor: '#10b981', tension: 0.2 },
-          { label: 'TP=8 (Cross-Socket)', data: [37.52, 39.10, 60.15, 2964.52, 5890.50, 11721.90], borderColor: '#3b82f6', tension: 0.2 },
-          { label: 'TP=16 (Cross-Node)', data: [425.74, 1618.96, 1611.87, 2269.29, 2521.72, 5044.42], borderColor: '#ef4444', tension: 0.2 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: 'logarithmic', ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } }, plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } } }
-    });
-
-    // 6. Deep Dive Pair Bandwidth
-    new Chart(document.getElementById('chartPairBandwidth'), {
-      type: 'bar',
-      data: {
-        labels: ['64 MiB', '128 MiB (8K Prefill)', '256 MiB'],
-        datasets: [
-          { label: 'TP=2 (Local Switch)', data: [35.46, 35.99, 36.47], backgroundColor: '#8b5cf6' },
-          { label: 'TP=4 (Single-NUMA)', data: [25.83, 26.00, 26.29], backgroundColor: '#10b981' },
-          { label: 'TP=8 (Cross-Socket)', data: [22.64, 22.79, 22.90], backgroundColor: '#3b82f6' },
-          { label: 'TP=16 (Cross-Node)', data: [29.57, 53.22, 53.21], backgroundColor: '#ef4444' }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } }, plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } } }
-    });
-
-    // 7. Multi-Bandwidth AllReduce Latency Chart
-    new Chart(document.getElementById('chartAllreduceNetLatency'), {
-      type: 'line',
-      data: {
-        labels: ['8K', '16K', '32K', '64K', '128K', '256K', '512K', '1M', '2M', '4M', '8M', '16M', '32M', '64M', '128M', '256M'],
-        datasets: [
-          { label: 'Native 175G', data: [875.35, 1246.64, 1731.70, 1243.02, 2562.07, 2573.75, 2027.51, 1574.11, 2284.65, 1926.86, 1507.38, 1585.11, 1731.01, 3199.90, 2413.68, 4345.41], borderColor: '#10b981', tension: 0.2 },
-          { label: 'Capped 100G', data: [825.89, 1060.85, 827.59, 951.83, 916.68, 1804.42, 1819.56, 3432.36, 2207.51, 1458.04, 1700.90, 2606.27, 1765.17, 1926.06, 3009.81, 4862.68], borderColor: '#3b82f6', tension: 0.2 },
-          { label: 'Capped 50G', data: [1077.80, 993.69, 820.47, 1143.45, 1792.27, 2014.39, 2084.30, 1645.70, 2183.71, 1490.55, 1696.21, 2006.05, 2149.43, 1919.26, 1919.92, 5179.59], borderColor: '#f59e0b', tension: 0.2 },
-          { label: 'Capped 20G', data: [803.84, 1109.31, 957.58, 1310.00, 1079.22, 1083.74, 2084.66, 1835.76, 1809.42, 2444.81, 1830.50, 1901.07, 1460.02, 2193.17, 2193.05, 4253.94], borderColor: '#f97316', tension: 0.2 },
-          { label: 'Capped 10G', data: [1049.35, 1245.80, 1304.49, 1370.15, 1870.05, 1130.40, 1049.81, 866.30, 1105.92, 1105.55, 1724.58, 1592.72, 2408.94, 2132.61, 2394.30, 5113.02], borderColor: '#ef4444', tension: 0.2 }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { y: { type: 'logarithmic', ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } }, plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } } }
-    });
-
-    // 8. Multi-Bandwidth AllReduce Bandwidth Bar Chart
-    new Chart(document.getElementById('chartAllreduceNetBandwidth'), {
-      type: 'bar',
-      data: {
-        labels: ['32 MiB', '64 MiB', '128 MiB (8K Chunk)', '256 MiB'],
-        datasets: [
-          { label: 'Native 175G', data: [19.38, 20.97, 55.61, 61.77], backgroundColor: '#10b981' },
-          { label: 'Capped 100G', data: [19.01, 34.84, 44.59, 55.20], backgroundColor: '#3b82f6' },
-          { label: 'Capped 50G', data: [15.61, 34.97, 69.91, 51.83], backgroundColor: '#f59e0b' },
-          { label: 'Capped 20G', data: [22.98, 30.60, 61.20, 63.10], backgroundColor: '#f97316' },
-          { label: 'Capped 10G', data: [13.93, 31.47, 56.06, 52.50], backgroundColor: '#ef4444' }
-        ]
-      },
-      options: { responsive: true, maintainAspectRatio: false, scales: { y: { ticks: { color: '#9ca3af' }, grid: { color: 'rgba(255,255,255,0.05)' } }, x: { ticks: { color: '#9ca3af' } } }, plugins: { legend: { labels: { color: '#9ca3af', font: { size: 10 } } } } }
-    });
+    // Render initial views for other tabs
+    renderCollectiveView('allreduce');
   });
 </script>
-
 </body>
 </html>
