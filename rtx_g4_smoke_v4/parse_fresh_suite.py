@@ -20,7 +20,7 @@ def parse_log(filepath):
     size_entries = defaultdict(list)
     with open(filepath, "r") as f:
         for line in f:
-            m = re.search(r'^\s*(\d+)\s+\d+\s+(?:[a-zA-Z0-9_\-]+)\s+(?:[a-zA-Z0-9_\-]+)\s+-1\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)\s+(\d+)', line)
+            m = re.search(r'^\s*(\d+)\s+\d+\s+\S+\s+\S+\s+-1\s+([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)', line)
             if m:
                 size_b = int(m.group(1))
                 time_us = float(m.group(2))

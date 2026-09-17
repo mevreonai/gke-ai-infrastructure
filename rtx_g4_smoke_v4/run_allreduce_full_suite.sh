@@ -141,11 +141,16 @@ run_multinode() {
 DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ============================== PHASE 1: node-local baselines =================
-# These run ONE process with -g N, so no MPI is involved and no container
-# boundary is crossed. This is why these were the only valid runs originally.
 echo ">>> [Phase 1/2] Node-local baselines <<<"
-$DOCKER_LOCAL "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS NCCL_DEBUG=INFO $NCCL_TESTS_BIN $NCCL_ARGS_LOCAL4" | tee "$BASE_DIR/tp4_local.log"
-$DOCKER_LOCAL "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS NCCL_DEBUG=INFO $NCCL_TESTS_BIN $NCCL_ARGS_LOCAL" | tee "$BASE_DIR/tp8_local.log"
+MPI_LOCAL="/usr/mpi/gcc/openmpi-4.1.9a1/bin/mpirun --prefix /usr/mpi/gcc/openmpi-4.1.9a1 --allow-run-as-root -x PATH -x LD_LIBRARY_PATH=/opt/cuda-13.0/lib64:/usr/mpi/gcc/openmpi-4.1.9a1/lib64"
+
+echo "Running TP=4 Socket-Local..."
+$MPI_LOCAL -np 4 -H localhost:4 "$NCCL_TESTS_BIN" $NCCL_ARGS | tee "$BASE_DIR/tp4_local.log"
+cp -f "$BASE_DIR/tp4_local.log" "$BASE_DIR/tp4.log"
+
+echo "Running TP=8 Node-Local..."
+$MPI_LOCAL -np 8 -H localhost:8 "$NCCL_TESTS_BIN" $NCCL_ARGS | tee "$BASE_DIR/tp8_local.log"
+cp -f "$BASE_DIR/tp8_local.log" "$BASE_DIR/tp8.log"
 
 # Record the PCIe link generation — 40 GB/s bus bandwidth is only possible on
 # Gen5 x16; on Gen4 x16 it would exceed the link and the baseline is wrong too.

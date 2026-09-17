@@ -2,1129 +2,1069 @@
   "allreduce": {
     "tp4_local": {
       "8192": {
-        "time_us": 17.6,
-        "algbw_gb_s": 0.4655
+        "time_us": 15.33,
+        "algbw_gb_s": 0.5344
       },
       "16384": {
-        "time_us": 16.4,
-        "algbw_gb_s": 0.999
+        "time_us": 16.19,
+        "algbw_gb_s": 1.012
       },
       "32768": {
-        "time_us": 17.05,
-        "algbw_gb_s": 1.9219
+        "time_us": 16.77,
+        "algbw_gb_s": 1.954
       },
       "65536": {
-        "time_us": 18.5,
-        "algbw_gb_s": 3.5425
+        "time_us": 18.07,
+        "algbw_gb_s": 3.6268
       },
       "131072": {
-        "time_us": 27.43,
-        "algbw_gb_s": 4.7784
+        "time_us": 26.62,
+        "algbw_gb_s": 4.9238
       },
       "262144": {
-        "time_us": 44.47,
-        "algbw_gb_s": 5.8949
+        "time_us": 44.04,
+        "algbw_gb_s": 5.9524
       },
       "524288": {
-        "time_us": 78.94,
-        "algbw_gb_s": 6.6416
+        "time_us": 78.88,
+        "algbw_gb_s": 6.6467
       },
       "1048576": {
-        "time_us": 90.83,
-        "algbw_gb_s": 11.5444
+        "time_us": 92.08,
+        "algbw_gb_s": 11.3877
       },
       "2097152": {
-        "time_us": 153.43,
-        "algbw_gb_s": 13.6685
+        "time_us": 153.22,
+        "algbw_gb_s": 13.6872
       },
       "4194304": {
-        "time_us": 253.54,
-        "algbw_gb_s": 16.543
+        "time_us": 254.69,
+        "algbw_gb_s": 16.4683
       },
       "8388608": {
-        "time_us": 522.06,
-        "algbw_gb_s": 16.0683
+        "time_us": 522.28,
+        "algbw_gb_s": 16.0615
       },
       "16777216": {
-        "time_us": 1005.22,
-        "algbw_gb_s": 16.6901
+        "time_us": 1006.11,
+        "algbw_gb_s": 16.6753
       },
       "33554432": {
-        "time_us": 2000.78,
-        "algbw_gb_s": 16.7707
+        "time_us": 2008.23,
+        "algbw_gb_s": 16.7085
       },
       "67108864": {
-        "time_us": 3988.8,
-        "algbw_gb_s": 16.8243
+        "time_us": 3989.19,
+        "algbw_gb_s": 16.8227
       },
       "134217728": {
-        "time_us": 7911.01,
-        "algbw_gb_s": 16.9659
+        "time_us": 7916.12,
+        "algbw_gb_s": 16.955
       },
       "268435456": {
-        "time_us": 15480.5,
-        "algbw_gb_s": 17.3402
+        "time_us": 15381.7,
+        "algbw_gb_s": 17.4516
       }
     },
     "tp8_local": {
       "8192": {
-        "time_us": 30.28,
-        "algbw_gb_s": 0.2705
+        "time_us": 27.48,
+        "algbw_gb_s": 0.2981
       },
       "16384": {
-        "time_us": 28.81,
-        "algbw_gb_s": 0.5687
+        "time_us": 28.11,
+        "algbw_gb_s": 0.5829
       },
       "32768": {
-        "time_us": 30.95,
-        "algbw_gb_s": 1.0587
+        "time_us": 30.06,
+        "algbw_gb_s": 1.0901
       },
       "65536": {
-        "time_us": 32.03,
-        "algbw_gb_s": 2.0461
+        "time_us": 35.19,
+        "algbw_gb_s": 1.8623
       },
       "131072": {
-        "time_us": 50.86,
-        "algbw_gb_s": 2.5771
+        "time_us": 49.99,
+        "algbw_gb_s": 2.622
       },
       "262144": {
-        "time_us": 88.85,
-        "algbw_gb_s": 2.9504
+        "time_us": 87.34,
+        "algbw_gb_s": 3.0014
       },
       "524288": {
-        "time_us": 162.16,
-        "algbw_gb_s": 3.2332
+        "time_us": 162.06,
+        "algbw_gb_s": 3.2351
       },
       "1048576": {
-        "time_us": 156.91,
-        "algbw_gb_s": 6.6827
+        "time_us": 138.46,
+        "algbw_gb_s": 7.5731
       },
       "2097152": {
-        "time_us": 231.31,
-        "algbw_gb_s": 9.0664
+        "time_us": 231.06,
+        "algbw_gb_s": 9.0762
       },
       "4194304": {
-        "time_us": 353.28,
-        "algbw_gb_s": 11.8725
+        "time_us": 354.55,
+        "algbw_gb_s": 11.8299
       },
       "8388608": {
-        "time_us": 657.33,
-        "algbw_gb_s": 12.7616
+        "time_us": 655.9,
+        "algbw_gb_s": 12.7895
       },
       "16777216": {
-        "time_us": 1219.24,
-        "algbw_gb_s": 13.7604
+        "time_us": 1216.73,
+        "algbw_gb_s": 13.7888
       },
       "33554432": {
-        "time_us": 2408.49,
-        "algbw_gb_s": 13.9317
+        "time_us": 2378.37,
+        "algbw_gb_s": 14.1082
       },
       "67108864": {
-        "time_us": 4805.33,
-        "algbw_gb_s": 13.9655
+        "time_us": 4639.81,
+        "algbw_gb_s": 14.4637
       },
       "134217728": {
-        "time_us": 9368.24,
-        "algbw_gb_s": 14.3269
+        "time_us": 9021.17,
+        "algbw_gb_s": 14.8781
       },
       "268435456": {
-        "time_us": 18052.3,
-        "algbw_gb_s": 14.8699
+        "time_us": 18006.1,
+        "algbw_gb_s": 14.908
       }
     },
     "tp4": {
       "NATIVE": {
-        "8192": {
-          "time_us": 197.64,
-          "algbw_gb_s": 0.0414
-        },
         "16384": {
-          "time_us": 297.05,
-          "algbw_gb_s": 0.0552
+          "time_us": 166.96,
+          "algbw_gb_s": 0.0981
         },
         "32768": {
-          "time_us": 223.53,
-          "algbw_gb_s": 0.1466
+          "time_us": 173.08,
+          "algbw_gb_s": 0.1893
         },
         "65536": {
-          "time_us": 242.74,
-          "algbw_gb_s": 0.27
+          "time_us": 184.27,
+          "algbw_gb_s": 0.3557
         },
         "131072": {
-          "time_us": 261.94,
-          "algbw_gb_s": 0.5004
+          "time_us": 192.42,
+          "algbw_gb_s": 0.6812
         },
         "262144": {
-          "time_us": 439.67,
-          "algbw_gb_s": 0.5962
+          "time_us": 339.94,
+          "algbw_gb_s": 0.7711
         },
         "524288": {
-          "time_us": 370.33,
-          "algbw_gb_s": 1.4157
+          "time_us": 318.05,
+          "algbw_gb_s": 1.6484
         },
         "1048576": {
-          "time_us": 640.23,
-          "algbw_gb_s": 1.6378
+          "time_us": 472.53,
+          "algbw_gb_s": 2.2191
         },
         "2097152": {
-          "time_us": 927.86,
-          "algbw_gb_s": 2.2602
+          "time_us": 551.35,
+          "algbw_gb_s": 3.8037
         },
         "4194304": {
-          "time_us": 1415.24,
-          "algbw_gb_s": 2.9637
+          "time_us": 806.06,
+          "algbw_gb_s": 5.2035
         },
         "8388608": {
-          "time_us": 2406.56,
-          "algbw_gb_s": 3.4857
+          "time_us": 1353.26,
+          "algbw_gb_s": 6.1988
         },
         "16777216": {
-          "time_us": 3852.79,
-          "algbw_gb_s": 4.3546
+          "time_us": 2511.19,
+          "algbw_gb_s": 6.681
         },
         "33554432": {
-          "time_us": 7023.15,
-          "algbw_gb_s": 4.7777
+          "time_us": 5251.44,
+          "algbw_gb_s": 6.3896
         },
         "67108864": {
-          "time_us": 12686.0,
-          "algbw_gb_s": 5.29
+          "time_us": 10277.4,
+          "algbw_gb_s": 6.5298
         },
         "134217728": {
-          "time_us": 23604.6,
-          "algbw_gb_s": 5.6861
+          "time_us": 20524.8,
+          "algbw_gb_s": 6.5393
         },
         "268435456": {
-          "time_us": 47289.8,
-          "algbw_gb_s": 5.6764
+          "time_us": 41383.6,
+          "algbw_gb_s": 6.4865
         }
       },
       "100": {
-        "8192": {
-          "time_us": 278.0,
-          "algbw_gb_s": 0.0295
-        },
         "16384": {
-          "time_us": 458.06,
-          "algbw_gb_s": 0.0358
+          "time_us": 154.8,
+          "algbw_gb_s": 0.1058
         },
         "32768": {
-          "time_us": 298.13,
-          "algbw_gb_s": 0.1099
+          "time_us": 172.57,
+          "algbw_gb_s": 0.1899
         },
         "65536": {
-          "time_us": 270.7,
-          "algbw_gb_s": 0.2421
+          "time_us": 178.1,
+          "algbw_gb_s": 0.368
         },
         "131072": {
-          "time_us": 341.16,
-          "algbw_gb_s": 0.3842
+          "time_us": 188.94,
+          "algbw_gb_s": 0.6937
         },
         "262144": {
-          "time_us": 567.64,
-          "algbw_gb_s": 0.4618
+          "time_us": 307.81,
+          "algbw_gb_s": 0.8516
         },
         "524288": {
-          "time_us": 589.37,
-          "algbw_gb_s": 0.8896
+          "time_us": 296.29,
+          "algbw_gb_s": 1.7695
         },
         "1048576": {
-          "time_us": 833.08,
-          "algbw_gb_s": 1.2587
+          "time_us": 460.5,
+          "algbw_gb_s": 2.277
         },
         "2097152": {
-          "time_us": 1092.37,
-          "algbw_gb_s": 1.9198
+          "time_us": 552.27,
+          "algbw_gb_s": 3.7973
         },
         "4194304": {
-          "time_us": 1968.34,
-          "algbw_gb_s": 2.1309
+          "time_us": 824.83,
+          "algbw_gb_s": 5.0851
         },
         "8388608": {
-          "time_us": 2544.49,
-          "algbw_gb_s": 3.2968
+          "time_us": 1419.35,
+          "algbw_gb_s": 5.9102
         },
         "16777216": {
-          "time_us": 3931.03,
-          "algbw_gb_s": 4.2679
+          "time_us": 2664.79,
+          "algbw_gb_s": 6.2959
         },
         "33554432": {
-          "time_us": 8426.7,
-          "algbw_gb_s": 3.9819
+          "time_us": 5024.18,
+          "algbw_gb_s": 6.6786
         },
         "67108864": {
-          "time_us": 12759.9,
-          "algbw_gb_s": 5.2594
+          "time_us": 10029.7,
+          "algbw_gb_s": 6.691
         },
         "134217728": {
-          "time_us": 25321.2,
-          "algbw_gb_s": 5.3006
+          "time_us": 20532.5,
+          "algbw_gb_s": 6.5368
         },
         "268435456": {
-          "time_us": 51422.7,
-          "algbw_gb_s": 5.2202
+          "time_us": 41775.1,
+          "algbw_gb_s": 6.4257
         }
       },
       "50": {
-        "8192": {
-          "time_us": 200.64,
-          "algbw_gb_s": 0.0408
-        },
         "16384": {
-          "time_us": 176.89,
-          "algbw_gb_s": 0.0926
+          "time_us": 162.23,
+          "algbw_gb_s": 0.101
         },
         "32768": {
-          "time_us": 227.29,
-          "algbw_gb_s": 0.1442
+          "time_us": 175.05,
+          "algbw_gb_s": 0.1872
         },
         "65536": {
-          "time_us": 261.35,
-          "algbw_gb_s": 0.2508
+          "time_us": 186.73,
+          "algbw_gb_s": 0.351
         },
         "131072": {
-          "time_us": 254.39,
-          "algbw_gb_s": 0.5152
+          "time_us": 223.98,
+          "algbw_gb_s": 0.5852
         },
         "262144": {
-          "time_us": 430.2,
-          "algbw_gb_s": 0.6094
+          "time_us": 328.85,
+          "algbw_gb_s": 0.7972
         },
         "524288": {
-          "time_us": 401.51,
-          "algbw_gb_s": 1.3058
+          "time_us": 263.88,
+          "algbw_gb_s": 1.9868
         },
         "1048576": {
-          "time_us": 689.07,
-          "algbw_gb_s": 1.5217
+          "time_us": 414.07,
+          "algbw_gb_s": 2.5324
         },
         "2097152": {
-          "time_us": 1047.63,
-          "algbw_gb_s": 2.0018
+          "time_us": 539.4,
+          "algbw_gb_s": 3.8879
         },
         "4194304": {
-          "time_us": 1656.11,
-          "algbw_gb_s": 2.5326
+          "time_us": 1063.77,
+          "algbw_gb_s": 3.9429
         },
         "8388608": {
-          "time_us": 2234.38,
-          "algbw_gb_s": 3.7543
+          "time_us": 2154.77,
+          "algbw_gb_s": 3.893
         },
         "16777216": {
-          "time_us": 7263.17,
-          "algbw_gb_s": 2.3099
+          "time_us": 4226.77,
+          "algbw_gb_s": 3.9693
         },
         "33554432": {
-          "time_us": 11098.9,
-          "algbw_gb_s": 3.0232
+          "time_us": 8448.2,
+          "algbw_gb_s": 3.9718
         },
         "67108864": {
-          "time_us": 17277.0,
-          "algbw_gb_s": 3.8843
+          "time_us": 16898.6,
+          "algbw_gb_s": 3.9713
         },
         "134217728": {
-          "time_us": 34214.8,
-          "algbw_gb_s": 3.9228
+          "time_us": 33783.2,
+          "algbw_gb_s": 3.9729
         },
         "268435456": {
-          "time_us": 68207.1,
-          "algbw_gb_s": 3.9356
+          "time_us": 67600.7,
+          "algbw_gb_s": 3.9709
         }
       },
       "20": {
-        "8192": {
-          "time_us": 462.92,
-          "algbw_gb_s": 0.0177
-        },
         "16384": {
-          "time_us": 208.12,
-          "algbw_gb_s": 0.0787
+          "time_us": 161.14,
+          "algbw_gb_s": 0.1017
         },
         "32768": {
-          "time_us": 414.32,
-          "algbw_gb_s": 0.0791
+          "time_us": 206.65,
+          "algbw_gb_s": 0.1586
         },
         "65536": {
-          "time_us": 285.82,
-          "algbw_gb_s": 0.2293
+          "time_us": 201.21,
+          "algbw_gb_s": 0.3257
         },
         "131072": {
-          "time_us": 396.3,
-          "algbw_gb_s": 0.3307
+          "time_us": 227.16,
+          "algbw_gb_s": 0.577
         },
         "262144": {
-          "time_us": 703.17,
-          "algbw_gb_s": 0.3728
+          "time_us": 382.36,
+          "algbw_gb_s": 0.6856
         },
         "524288": {
-          "time_us": 648.82,
-          "algbw_gb_s": 0.8081
+          "time_us": 395.58,
+          "algbw_gb_s": 1.3254
         },
         "1048576": {
-          "time_us": 778.65,
-          "algbw_gb_s": 1.3467
+          "time_us": 749.72,
+          "algbw_gb_s": 1.3986
         },
         "2097152": {
-          "time_us": 1402.62,
-          "algbw_gb_s": 1.4952
+          "time_us": 1336.94,
+          "algbw_gb_s": 1.5686
         },
         "4194304": {
-          "time_us": 2861.82,
-          "algbw_gb_s": 1.4656
+          "time_us": 2636.5,
+          "algbw_gb_s": 1.5909
         },
         "8388608": {
-          "time_us": 5362.97,
-          "algbw_gb_s": 1.5642
+          "time_us": 5273.27,
+          "algbw_gb_s": 1.5908
         },
         "16777216": {
-          "time_us": 10776.3,
-          "algbw_gb_s": 1.5569
+          "time_us": 10544.1,
+          "algbw_gb_s": 1.5911
         },
         "33554432": {
-          "time_us": 21196.1,
-          "algbw_gb_s": 1.583
+          "time_us": 21094.1,
+          "algbw_gb_s": 1.5907
         },
         "67108864": {
-          "time_us": 42462.1,
-          "algbw_gb_s": 1.5804
+          "time_us": 42342.0,
+          "algbw_gb_s": 1.5849
         },
         "134217728": {
-          "time_us": 84481.5,
-          "algbw_gb_s": 1.5887
+          "time_us": 84400.2,
+          "algbw_gb_s": 1.5903
         },
         "268435456": {
-          "time_us": 168884.0,
-          "algbw_gb_s": 1.5895
+          "time_us": 168829.0,
+          "algbw_gb_s": 1.59
         }
       },
       "10": {
-        "8192": {
-          "time_us": 186.95,
-          "algbw_gb_s": 0.0438
-        },
         "16384": {
-          "time_us": 292.11,
-          "algbw_gb_s": 0.0561
+          "time_us": 165.82,
+          "algbw_gb_s": 0.0988
         },
         "32768": {
-          "time_us": 235.47,
-          "algbw_gb_s": 0.1392
+          "time_us": 175.18,
+          "algbw_gb_s": 0.1871
         },
         "65536": {
-          "time_us": 224.22,
-          "algbw_gb_s": 0.2923
+          "time_us": 178.5,
+          "algbw_gb_s": 0.3671
         },
         "131072": {
-          "time_us": 330.04,
-          "algbw_gb_s": 0.3971
+          "time_us": 330.55,
+          "algbw_gb_s": 0.3965
         },
         "262144": {
-          "time_us": 662.77,
-          "algbw_gb_s": 0.3955
+          "time_us": 661.39,
+          "algbw_gb_s": 0.3964
         },
         "524288": {
-          "time_us": 655.85,
-          "algbw_gb_s": 0.7994
+          "time_us": 661.78,
+          "algbw_gb_s": 0.7922
         },
         "1048576": {
-          "time_us": 1334.59,
-          "algbw_gb_s": 0.7857
+          "time_us": 1319.39,
+          "algbw_gb_s": 0.7947
         },
         "2097152": {
-          "time_us": 2768.28,
-          "algbw_gb_s": 0.7576
+          "time_us": 2635.95,
+          "algbw_gb_s": 0.7956
         },
         "4194304": {
-          "time_us": 5332.68,
-          "algbw_gb_s": 0.7865
+          "time_us": 5277.33,
+          "algbw_gb_s": 0.7948
         },
         "8388608": {
-          "time_us": 10731.0,
-          "algbw_gb_s": 0.7817
+          "time_us": 10542.8,
+          "algbw_gb_s": 0.7957
         },
         "16777216": {
-          "time_us": 21222.6,
-          "algbw_gb_s": 0.7905
+          "time_us": 21082.4,
+          "algbw_gb_s": 0.7958
         },
         "33554432": {
-          "time_us": 42338.4,
-          "algbw_gb_s": 0.7925
+          "time_us": 42206.8,
+          "algbw_gb_s": 0.795
         },
         "67108864": {
-          "time_us": 84610.5,
-          "algbw_gb_s": 0.7932
+          "time_us": 84394.8,
+          "algbw_gb_s": 0.7952
         },
         "134217728": {
-          "time_us": 168965.0,
-          "algbw_gb_s": 0.7944
+          "time_us": 168843.0,
+          "algbw_gb_s": 0.7949
         },
         "268435456": {
-          "time_us": 337794.0,
+          "time_us": 337761.0,
           "algbw_gb_s": 0.7947
         }
       }
     },
     "tp8": {
       "NATIVE": {
-        "8192": {
-          "time_us": 415.03,
-          "algbw_gb_s": 0.0197
-        },
         "16384": {
-          "time_us": 150.67,
-          "algbw_gb_s": 0.1087
+          "time_us": 204.37,
+          "algbw_gb_s": 0.0802
         },
         "32768": {
-          "time_us": 699.43,
-          "algbw_gb_s": 0.0468
+          "time_us": 210.11,
+          "algbw_gb_s": 0.156
         },
         "65536": {
-          "time_us": 864.25,
-          "algbw_gb_s": 0.0758
+          "time_us": 247.75,
+          "algbw_gb_s": 0.2645
         },
         "131072": {
-          "time_us": 620.54,
-          "algbw_gb_s": 0.2112
+          "time_us": 240.68,
+          "algbw_gb_s": 0.5446
         },
         "262144": {
-          "time_us": 804.82,
-          "algbw_gb_s": 0.3257
+          "time_us": 272.26,
+          "algbw_gb_s": 0.9628
         },
         "524288": {
-          "time_us": 1341.16,
-          "algbw_gb_s": 0.3909
+          "time_us": 476.63,
+          "algbw_gb_s": 1.1
         },
         "1048576": {
-          "time_us": 987.79,
-          "algbw_gb_s": 1.0615
+          "time_us": 431.92,
+          "algbw_gb_s": 2.4277
         },
         "2097152": {
-          "time_us": 1885.26,
-          "algbw_gb_s": 1.1124
+          "time_us": 582.35,
+          "algbw_gb_s": 3.6012
         },
         "4194304": {
-          "time_us": 2207.88,
-          "algbw_gb_s": 1.8997
+          "time_us": 934.6,
+          "algbw_gb_s": 4.4878
         },
         "8388608": {
-          "time_us": 3279.18,
-          "algbw_gb_s": 2.5581
+          "time_us": 1714.77,
+          "algbw_gb_s": 4.892
         },
         "16777216": {
-          "time_us": 6086.06,
-          "algbw_gb_s": 2.7567
+          "time_us": 3306.36,
+          "algbw_gb_s": 5.0742
         },
         "33554432": {
-          "time_us": 7870.23,
-          "algbw_gb_s": 4.2635
+          "time_us": 6711.07,
+          "algbw_gb_s": 4.9999
         },
         "67108864": {
-          "time_us": 14695.6,
-          "algbw_gb_s": 4.5666
+          "time_us": 13168.9,
+          "algbw_gb_s": 5.096
         },
         "134217728": {
-          "time_us": 29053.7,
-          "algbw_gb_s": 4.6196
+          "time_us": 26222.1,
+          "algbw_gb_s": 5.1185
         },
         "268435456": {
-          "time_us": 56212.9,
-          "algbw_gb_s": 4.7753
+          "time_us": 52551.9,
+          "algbw_gb_s": 5.108
         }
       },
       "100": {
-        "8192": {
-          "time_us": 156.08,
-          "algbw_gb_s": 0.0525
-        },
         "16384": {
-          "time_us": 151.42,
-          "algbw_gb_s": 0.1082
+          "time_us": 208.0,
+          "algbw_gb_s": 0.0788
         },
         "32768": {
-          "time_us": 241.06,
-          "algbw_gb_s": 0.1359
+          "time_us": 210.85,
+          "algbw_gb_s": 0.1554
         },
         "65536": {
-          "time_us": 396.63,
-          "algbw_gb_s": 0.1652
+          "time_us": 293.86,
+          "algbw_gb_s": 0.223
         },
         "131072": {
-          "time_us": 418.52,
-          "algbw_gb_s": 0.3132
+          "time_us": 285.61,
+          "algbw_gb_s": 0.4589
         },
         "262144": {
-          "time_us": 760.39,
-          "algbw_gb_s": 0.3447
+          "time_us": 299.17,
+          "algbw_gb_s": 0.8762
         },
         "524288": {
-          "time_us": 667.56,
-          "algbw_gb_s": 0.7854
+          "time_us": 465.81,
+          "algbw_gb_s": 1.1255
         },
         "1048576": {
-          "time_us": 827.96,
-          "algbw_gb_s": 1.2665
+          "time_us": 468.52,
+          "algbw_gb_s": 2.2381
         },
         "2097152": {
-          "time_us": 1229.12,
-          "algbw_gb_s": 1.7062
+          "time_us": 627.58,
+          "algbw_gb_s": 3.3416
         },
         "4194304": {
-          "time_us": 2011.67,
-          "algbw_gb_s": 2.085
+          "time_us": 1007.32,
+          "algbw_gb_s": 4.1638
         },
         "8388608": {
-          "time_us": 3513.2,
-          "algbw_gb_s": 2.3877
+          "time_us": 1430.76,
+          "algbw_gb_s": 5.863
         },
         "16777216": {
-          "time_us": 5248.47,
-          "algbw_gb_s": 3.1966
+          "time_us": 2577.2,
+          "algbw_gb_s": 6.5099
         },
         "33554432": {
-          "time_us": 10313.8,
-          "algbw_gb_s": 3.2534
+          "time_us": 4967.35,
+          "algbw_gb_s": 6.755
         },
         "67108864": {
-          "time_us": 15729.5,
-          "algbw_gb_s": 4.2664
+          "time_us": 9866.14,
+          "algbw_gb_s": 6.8019
         },
         "134217728": {
-          "time_us": 28949.4,
-          "algbw_gb_s": 4.6363
+          "time_us": 19719.3,
+          "algbw_gb_s": 6.8064
         },
         "268435456": {
-          "time_us": 57902.3,
-          "algbw_gb_s": 4.636
+          "time_us": 39522.6,
+          "algbw_gb_s": 6.7919
         }
       },
       "50": {
-        "8192": {
-          "time_us": 396.58,
-          "algbw_gb_s": 0.0207
-        },
         "16384": {
-          "time_us": 149.97,
-          "algbw_gb_s": 0.1092
+          "time_us": 209.82,
+          "algbw_gb_s": 0.0781
         },
         "32768": {
-          "time_us": 254.85,
-          "algbw_gb_s": 0.1286
+          "time_us": 213.53,
+          "algbw_gb_s": 0.1535
         },
         "65536": {
-          "time_us": 509.41,
-          "algbw_gb_s": 0.1287
+          "time_us": 249.55,
+          "algbw_gb_s": 0.2626
         },
         "131072": {
-          "time_us": 633.98,
-          "algbw_gb_s": 0.2067
+          "time_us": 256.12,
+          "algbw_gb_s": 0.5118
         },
         "262144": {
-          "time_us": 702.56,
-          "algbw_gb_s": 0.3731
+          "time_us": 294.96,
+          "algbw_gb_s": 0.8887
         },
         "524288": {
-          "time_us": 931.73,
-          "algbw_gb_s": 0.5627
+          "time_us": 750.72,
+          "algbw_gb_s": 0.6984
         },
         "1048576": {
-          "time_us": 1031.82,
-          "algbw_gb_s": 1.0162
+          "time_us": 557.6,
+          "algbw_gb_s": 1.8805
         },
         "2097152": {
-          "time_us": 1382.94,
-          "algbw_gb_s": 1.5164
+          "time_us": 734.62,
+          "algbw_gb_s": 2.8547
         },
         "4194304": {
-          "time_us": 2187.78,
-          "algbw_gb_s": 1.9172
+          "time_us": 1388.67,
+          "algbw_gb_s": 3.0204
         },
         "8388608": {
-          "time_us": 3556.48,
-          "algbw_gb_s": 2.3587
+          "time_us": 2473.47,
+          "algbw_gb_s": 3.3914
         },
         "16777216": {
-          "time_us": 5736.32,
-          "algbw_gb_s": 2.9247
+          "time_us": 4918.87,
+          "algbw_gb_s": 3.4108
         },
         "33554432": {
-          "time_us": 12646.2,
-          "algbw_gb_s": 2.6533
+          "time_us": 9836.55,
+          "algbw_gb_s": 3.4112
         },
         "67108864": {
-          "time_us": 20274.3,
-          "algbw_gb_s": 3.31
+          "time_us": 19671.8,
+          "algbw_gb_s": 3.4114
         },
         "134217728": {
-          "time_us": 40702.7,
-          "algbw_gb_s": 3.2975
+          "time_us": 39378.4,
+          "algbw_gb_s": 3.4084
         },
         "268435456": {
-          "time_us": 79958.4,
-          "algbw_gb_s": 3.3572
+          "time_us": 79438.9,
+          "algbw_gb_s": 3.3791
         }
       },
       "20": {
-        "8192": {
-          "time_us": 199.84,
-          "algbw_gb_s": 0.041
-        },
         "16384": {
-          "time_us": 199.93,
-          "algbw_gb_s": 0.0819
-        },
-        "32768": {
-          "time_us": 414.28,
+          "time_us": 207.09,
           "algbw_gb_s": 0.0791
         },
+        "32768": {
+          "time_us": 209.92,
+          "algbw_gb_s": 0.1561
+        },
         "65536": {
-          "time_us": 417.0,
-          "algbw_gb_s": 0.1572
+          "time_us": 258.51,
+          "algbw_gb_s": 0.2535
         },
         "131072": {
-          "time_us": 498.4,
-          "algbw_gb_s": 0.263
+          "time_us": 255.31,
+          "algbw_gb_s": 0.5134
         },
         "262144": {
-          "time_us": 475.39,
-          "algbw_gb_s": 0.5514
+          "time_us": 385.35,
+          "algbw_gb_s": 0.6803
         },
         "524288": {
-          "time_us": 963.39,
-          "algbw_gb_s": 0.5442
+          "time_us": 785.53,
+          "algbw_gb_s": 0.6674
         },
         "1048576": {
-          "time_us": 900.92,
-          "algbw_gb_s": 1.1639
+          "time_us": 788.82,
+          "algbw_gb_s": 1.3293
         },
         "2097152": {
-          "time_us": 1613.61,
-          "algbw_gb_s": 1.2997
+          "time_us": 1551.42,
+          "algbw_gb_s": 1.3518
         },
         "4194304": {
-          "time_us": 3134.71,
-          "algbw_gb_s": 1.338
+          "time_us": 3075.1,
+          "algbw_gb_s": 1.364
         },
         "8388608": {
-          "time_us": 6147.7,
-          "algbw_gb_s": 1.3645
-        },
-        "16777216": {
-          "time_us": 12380.7,
-          "algbw_gb_s": 1.3551
-        },
-        "33554432": {
-          "time_us": 24597.7,
-          "algbw_gb_s": 1.3641
-        },
-        "67108864": {
-          "time_us": 49162.5,
-          "algbw_gb_s": 1.365
-        },
-        "134217728": {
-          "time_us": 98358.1,
+          "time_us": 6147.23,
           "algbw_gb_s": 1.3646
         },
+        "16777216": {
+          "time_us": 12316.4,
+          "algbw_gb_s": 1.3622
+        },
+        "33554432": {
+          "time_us": 24575.1,
+          "algbw_gb_s": 1.3654
+        },
+        "67108864": {
+          "time_us": 49200.1,
+          "algbw_gb_s": 1.364
+        },
+        "134217728": {
+          "time_us": 98430.3,
+          "algbw_gb_s": 1.3636
+        },
         "268435456": {
-          "time_us": 196770.0,
-          "algbw_gb_s": 1.3642
+          "time_us": 196873.0,
+          "algbw_gb_s": 1.3635
         }
       },
       "10": {
-        "8192": {
-          "time_us": 161.82,
-          "algbw_gb_s": 0.0506
-        },
         "16384": {
-          "time_us": 147.41,
-          "algbw_gb_s": 0.1111
+          "time_us": 202.41,
+          "algbw_gb_s": 0.0809
         },
         "32768": {
-          "time_us": 458.77,
-          "algbw_gb_s": 0.0714
+          "time_us": 216.28,
+          "algbw_gb_s": 0.1515
         },
         "65536": {
-          "time_us": 497.29,
-          "algbw_gb_s": 0.1318
+          "time_us": 255.36,
+          "algbw_gb_s": 0.2566
         },
         "131072": {
-          "time_us": 519.44,
-          "algbw_gb_s": 0.2523
+          "time_us": 397.58,
+          "algbw_gb_s": 0.3297
         },
         "262144": {
-          "time_us": 874.75,
-          "algbw_gb_s": 0.2997
+          "time_us": 770.94,
+          "algbw_gb_s": 0.34
         },
         "524288": {
-          "time_us": 2135.23,
-          "algbw_gb_s": 0.2455
+          "time_us": 1540.32,
+          "algbw_gb_s": 0.3404
         },
         "1048576": {
-          "time_us": 1741.07,
-          "algbw_gb_s": 0.6023
+          "time_us": 1541.54,
+          "algbw_gb_s": 0.6802
         },
         "2097152": {
-          "time_us": 3134.13,
-          "algbw_gb_s": 0.6691
+          "time_us": 3075.73,
+          "algbw_gb_s": 0.6818
         },
         "4194304": {
-          "time_us": 6142.7,
-          "algbw_gb_s": 0.6828
+          "time_us": 6151.87,
+          "algbw_gb_s": 0.6818
         },
         "8388608": {
-          "time_us": 12304.7,
-          "algbw_gb_s": 0.6817
+          "time_us": 12300.1,
+          "algbw_gb_s": 0.682
         },
         "16777216": {
-          "time_us": 24635.6,
-          "algbw_gb_s": 0.681
+          "time_us": 24580.5,
+          "algbw_gb_s": 0.6825
         },
         "33554432": {
-          "time_us": 49194.6,
+          "time_us": 49190.5,
           "algbw_gb_s": 0.6821
         },
         "67108864": {
-          "time_us": 98337.1,
-          "algbw_gb_s": 0.6824
+          "time_us": 98433.1,
+          "algbw_gb_s": 0.6818
         },
         "134217728": {
-          "time_us": 196757.0,
-          "algbw_gb_s": 0.6821
+          "time_us": 196921.0,
+          "algbw_gb_s": 0.6816
         },
         "268435456": {
-          "time_us": 393572.0,
-          "algbw_gb_s": 0.682
+          "time_us": 393861.0,
+          "algbw_gb_s": 0.6815
         }
       }
     },
     "tp16": {
       "NATIVE": {
-        "8192": {
-          "time_us": 154.68,
-          "algbw_gb_s": 0.053
-        },
         "16384": {
-          "time_us": 165.15,
-          "algbw_gb_s": 0.0992
+          "time_us": 273.2,
+          "algbw_gb_s": 0.06
         },
         "32768": {
-          "time_us": 170.3,
-          "algbw_gb_s": 0.1924
+          "time_us": 279.02,
+          "algbw_gb_s": 0.1174
         },
         "65536": {
-          "time_us": 633.18,
-          "algbw_gb_s": 0.1035
+          "time_us": 276.96,
+          "algbw_gb_s": 0.2366
         },
         "131072": {
-          "time_us": 650.44,
-          "algbw_gb_s": 0.2015
+          "time_us": 476.91,
+          "algbw_gb_s": 0.2748
         },
         "262144": {
-          "time_us": 758.89,
-          "algbw_gb_s": 0.3454
+          "time_us": 394.34,
+          "algbw_gb_s": 0.6648
         },
         "524288": {
-          "time_us": 869.78,
-          "algbw_gb_s": 0.6028
+          "time_us": 471.84,
+          "algbw_gb_s": 1.1112
         },
         "1048576": {
-          "time_us": 1244.09,
-          "algbw_gb_s": 0.8428
+          "time_us": 668.17,
+          "algbw_gb_s": 1.5693
         },
         "2097152": {
-          "time_us": 1622.95,
-          "algbw_gb_s": 1.2922
+          "time_us": 843.44,
+          "algbw_gb_s": 2.4864
         },
         "4194304": {
-          "time_us": 2343.24,
-          "algbw_gb_s": 1.79
+          "time_us": 1311.82,
+          "algbw_gb_s": 3.1973
         },
         "8388608": {
-          "time_us": 3914.56,
-          "algbw_gb_s": 2.1429
+          "time_us": 2069.61,
+          "algbw_gb_s": 4.0532
         },
         "16777216": {
-          "time_us": 6170.55,
-          "algbw_gb_s": 2.7189
+          "time_us": 3296.49,
+          "algbw_gb_s": 5.0894
         },
         "33554432": {
-          "time_us": 9052.97,
-          "algbw_gb_s": 3.7065
+          "time_us": 5571.96,
+          "algbw_gb_s": 6.022
         },
         "67108864": {
-          "time_us": 16317.7,
-          "algbw_gb_s": 4.1126
+          "time_us": 11243.0,
+          "algbw_gb_s": 5.9689
         },
         "134217728": {
-          "time_us": 31613.7,
-          "algbw_gb_s": 4.2456
+          "time_us": 23025.0,
+          "algbw_gb_s": 5.8292
         },
         "268435456": {
-          "time_us": 60561.3,
-          "algbw_gb_s": 4.4325
+          "time_us": 45885.6,
+          "algbw_gb_s": 5.8501
         }
       },
       "100": {
-        "8192": {
-          "time_us": 455.65,
-          "algbw_gb_s": 0.018
-        },
         "16384": {
-          "time_us": 208.09,
-          "algbw_gb_s": 0.0787
+          "time_us": 301.53,
+          "algbw_gb_s": 0.0543
         },
         "32768": {
-          "time_us": 216.53,
-          "algbw_gb_s": 0.1513
+          "time_us": 316.85,
+          "algbw_gb_s": 0.1034
         },
         "65536": {
-          "time_us": 1907.85,
-          "algbw_gb_s": 0.0344
+          "time_us": 320.76,
+          "algbw_gb_s": 0.2043
         },
         "131072": {
-          "time_us": 852.27,
-          "algbw_gb_s": 0.1538
+          "time_us": 470.1,
+          "algbw_gb_s": 0.2788
         },
         "262144": {
-          "time_us": 920.33,
-          "algbw_gb_s": 0.2848
+          "time_us": 446.76,
+          "algbw_gb_s": 0.5868
         },
         "524288": {
-          "time_us": 1010.15,
-          "algbw_gb_s": 0.519
+          "time_us": 616.98,
+          "algbw_gb_s": 0.8498
         },
         "1048576": {
-          "time_us": 1421.91,
-          "algbw_gb_s": 0.7374
+          "time_us": 889.2,
+          "algbw_gb_s": 1.1792
         },
         "2097152": {
-          "time_us": 1682.72,
-          "algbw_gb_s": 1.2463
+          "time_us": 941.4,
+          "algbw_gb_s": 2.2277
         },
         "4194304": {
-          "time_us": 2419.28,
-          "algbw_gb_s": 1.7337
+          "time_us": 1124.42,
+          "algbw_gb_s": 3.7302
         },
         "8388608": {
-          "time_us": 4001.5,
-          "algbw_gb_s": 2.0964
+          "time_us": 2812.06,
+          "algbw_gb_s": 2.9831
         },
         "16777216": {
-          "time_us": 6401.32,
-          "algbw_gb_s": 2.6209
+          "time_us": 4027.74,
+          "algbw_gb_s": 4.1654
         },
         "33554432": {
-          "time_us": 9675.23,
-          "algbw_gb_s": 3.4681
+          "time_us": 7230.77,
+          "algbw_gb_s": 4.6405
         },
         "67108864": {
-          "time_us": 16902.5,
-          "algbw_gb_s": 3.9704
+          "time_us": 13001.6,
+          "algbw_gb_s": 5.1616
         },
         "134217728": {
-          "time_us": 32417.8,
-          "algbw_gb_s": 4.1402
+          "time_us": 25195.1,
+          "algbw_gb_s": 5.3271
         },
         "268435456": {
-          "time_us": 64006.1,
-          "algbw_gb_s": 4.1939
+          "time_us": 50035.5,
+          "algbw_gb_s": 5.3649
         }
       },
       "50": {
-        "8192": {
-          "time_us": 476.68,
-          "algbw_gb_s": 0.0172
-        },
         "16384": {
-          "time_us": 159.51,
-          "algbw_gb_s": 0.1027
+          "time_us": 276.15,
+          "algbw_gb_s": 0.0593
         },
         "32768": {
-          "time_us": 168.66,
-          "algbw_gb_s": 0.1943
+          "time_us": 286.22,
+          "algbw_gb_s": 0.1145
         },
         "65536": {
-          "time_us": 2059.35,
-          "algbw_gb_s": 0.0318
+          "time_us": 293.53,
+          "algbw_gb_s": 0.2233
         },
         "131072": {
-          "time_us": 1134.89,
-          "algbw_gb_s": 0.1155
+          "time_us": 380.91,
+          "algbw_gb_s": 0.3441
         },
         "262144": {
-          "time_us": 900.0,
-          "algbw_gb_s": 0.2913
+          "time_us": 407.5,
+          "algbw_gb_s": 0.6433
         },
         "524288": {
-          "time_us": 1175.67,
-          "algbw_gb_s": 0.4459
+          "time_us": 474.92,
+          "algbw_gb_s": 1.104
         },
         "1048576": {
-          "time_us": 1430.72,
-          "algbw_gb_s": 0.7329
+          "time_us": 696.87,
+          "algbw_gb_s": 1.5047
         },
         "2097152": {
-          "time_us": 1704.79,
-          "algbw_gb_s": 1.2302
+          "time_us": 792.53,
+          "algbw_gb_s": 2.6461
         },
         "4194304": {
-          "time_us": 2641.06,
-          "algbw_gb_s": 1.5881
+          "time_us": 1366.23,
+          "algbw_gb_s": 3.07
         },
         "8388608": {
-          "time_us": 4868.02,
-          "algbw_gb_s": 1.7232
+          "time_us": 2638.98,
+          "algbw_gb_s": 3.1787
         },
         "16777216": {
-          "time_us": 6366.47,
-          "algbw_gb_s": 2.6352
+          "time_us": 5269.12,
+          "algbw_gb_s": 3.1841
         },
         "33554432": {
-          "time_us": 13614.3,
-          "algbw_gb_s": 2.4646
+          "time_us": 10538.4,
+          "algbw_gb_s": 3.184
         },
         "67108864": {
-          "time_us": 22466.6,
-          "algbw_gb_s": 2.9871
+          "time_us": 21062.2,
+          "algbw_gb_s": 3.1862
         },
         "134217728": {
-          "time_us": 42589.2,
-          "algbw_gb_s": 3.1514
+          "time_us": 42149.0,
+          "algbw_gb_s": 3.1844
         },
         "268435456": {
-          "time_us": 84550.5,
-          "algbw_gb_s": 3.1749
+          "time_us": 84372.8,
+          "algbw_gb_s": 3.1815
         }
       },
       "20": {
-        "8192": {
-          "time_us": 244.67,
-          "algbw_gb_s": 0.0335
-        },
         "16384": {
-          "time_us": 179.39,
-          "algbw_gb_s": 0.0913
+          "time_us": 274.81,
+          "algbw_gb_s": 0.0596
         },
         "32768": {
-          "time_us": 174.92,
-          "algbw_gb_s": 0.1873
+          "time_us": 283.83,
+          "algbw_gb_s": 0.1154
         },
         "65536": {
-          "time_us": 2287.87,
-          "algbw_gb_s": 0.0286
+          "time_us": 290.77,
+          "algbw_gb_s": 0.2254
         },
         "131072": {
-          "time_us": 879.42,
-          "algbw_gb_s": 0.149
+          "time_us": 400.82,
+          "algbw_gb_s": 0.327
         },
         "262144": {
-          "time_us": 876.32,
-          "algbw_gb_s": 0.2991
+          "time_us": 474.22,
+          "algbw_gb_s": 0.5528
         },
         "524288": {
-          "time_us": 951.83,
-          "algbw_gb_s": 0.5508
+          "time_us": 849.12,
+          "algbw_gb_s": 0.6174
         },
         "1048576": {
-          "time_us": 1708.78,
-          "algbw_gb_s": 0.6136
+          "time_us": 1722.01,
+          "algbw_gb_s": 0.6089
         },
         "2097152": {
-          "time_us": 1693.25,
-          "algbw_gb_s": 1.2385
+          "time_us": 1650.67,
+          "algbw_gb_s": 1.2705
         },
         "4194304": {
-          "time_us": 3292.49,
-          "algbw_gb_s": 1.2739
+          "time_us": 3297.82,
+          "algbw_gb_s": 1.2718
         },
         "8388608": {
-          "time_us": 6577.28,
-          "algbw_gb_s": 1.2754
+          "time_us": 6586.0,
+          "algbw_gb_s": 1.2737
         },
         "16777216": {
-          "time_us": 13218.5,
-          "algbw_gb_s": 1.2692
+          "time_us": 13177.7,
+          "algbw_gb_s": 1.2732
         },
         "33554432": {
-          "time_us": 26332.1,
-          "algbw_gb_s": 1.2743
+          "time_us": 26348.5,
+          "algbw_gb_s": 1.2735
         },
         "67108864": {
-          "time_us": 52916.1,
-          "algbw_gb_s": 1.2682
+          "time_us": 52681.2,
+          "algbw_gb_s": 1.2739
         },
         "134217728": {
-          "time_us": 105337.0,
-          "algbw_gb_s": 1.2742
+          "time_us": 105424.0,
+          "algbw_gb_s": 1.2731
         },
         "268435456": {
-          "time_us": 211696.0,
-          "algbw_gb_s": 1.268
+          "time_us": 210896.0,
+          "algbw_gb_s": 1.2728
         }
       },
       "10": {
-        "8192": {
-          "time_us": 442.69,
-          "algbw_gb_s": 0.0185
-        },
         "16384": {
-          "time_us": 148.21,
-          "algbw_gb_s": 0.1105
+          "time_us": 275.8,
+          "algbw_gb_s": 0.0594
         },
         "32768": {
-          "time_us": 161.05,
-          "algbw_gb_s": 0.2035
+          "time_us": 287.69,
+          "algbw_gb_s": 0.1139
         },
         "65536": {
-          "time_us": 431.62,
-          "algbw_gb_s": 0.1518
+          "time_us": 303.11,
+          "algbw_gb_s": 0.2162
         },
         "131072": {
-          "time_us": 845.54,
-          "algbw_gb_s": 0.155
+          "time_us": 423.46,
+          "algbw_gb_s": 0.3095
         },
         "262144": {
-          "time_us": 866.18,
-          "algbw_gb_s": 0.3026
+          "time_us": 845.2,
+          "algbw_gb_s": 0.3102
         },
         "524288": {
-          "time_us": 1666.02,
-          "algbw_gb_s": 0.3147
+          "time_us": 1651.6,
+          "algbw_gb_s": 0.3174
         },
         "1048576": {
-          "time_us": 3313.56,
-          "algbw_gb_s": 0.3164
+          "time_us": 3297.0,
+          "algbw_gb_s": 0.318
         },
         "2097152": {
-          "time_us": 3291.4,
-          "algbw_gb_s": 0.6372
+          "time_us": 3302.75,
+          "algbw_gb_s": 0.635
         },
         "4194304": {
-          "time_us": 6597.1,
-          "algbw_gb_s": 0.6358
+          "time_us": 6591.36,
+          "algbw_gb_s": 0.6363
         },
         "8388608": {
-          "time_us": 13187.2,
-          "algbw_gb_s": 0.6361
+          "time_us": 13183.0,
+          "algbw_gb_s": 0.6363
         },
         "16777216": {
-          "time_us": 26471.8,
-          "algbw_gb_s": 0.6338
+          "time_us": 26380.0,
+          "algbw_gb_s": 0.636
         },
         "33554432": {
-          "time_us": 52639.5,
-          "algbw_gb_s": 0.6374
+          "time_us": 52726.5,
+          "algbw_gb_s": 0.6364
         },
         "67108864": {
-          "time_us": 105960.0,
-          "algbw_gb_s": 0.6333
+          "time_us": 105436.0,
+          "algbw_gb_s": 0.6365
         },
         "134217728": {
-          "time_us": 210621.0,
-          "algbw_gb_s": 0.6372
+          "time_us": 210938.0,
+          "algbw_gb_s": 0.6363
         },
         "268435456": {
-          "time_us": 421666.0,
-          "algbw_gb_s": 0.6366
+          "time_us": 421903.0,
+          "algbw_gb_s": 0.6362
         }
       }
     }
