@@ -13,7 +13,10 @@ with open(html_path, "r", encoding="utf-8") as f:
 
 header_and_tab1 = "".join(lines[:297])
 
-# Replace header navigation buttons to match user specification:
+# Ensure Panel 3 mentions fresh ms numbers
+header_and_tab1 = header_and_tab1.replace("16K = 425 µs, 256M = 5.04 ms.", "16 KiB = 0.14 ms, 256 MiB = 60.5 ms.")
+
+# Replace header navigation buttons if not already updated
 old_header_tabs = """  <div class="tabs">
     <button class="tab-btn active" onclick="showTab(1)">Dashboard 1: 9-Panel Decomposition</button>
     <button class="tab-btn" onclick="showTab(2)">Dashboard 2: 3-Pair AllReduce Deep Dive</button>
@@ -30,7 +33,7 @@ new_header_tabs = """  <div class="tabs">
 
 header_and_tab1 = header_and_tab1.replace(old_header_tabs, new_header_tabs)
 
-# Let's build the HTML for Tabs 2, 3, and 4
+# Function to build Tabs 2, 3, and 4
 def build_collective_tab(tab_num, coll_key, coll_title, coll_desc):
     return f"""
 <!-- TAB {tab_num}: {coll_title} Suite -->
@@ -47,7 +50,7 @@ def build_collective_tab(tab_num, coll_key, coll_title, coll_desc):
         <option value="tp16" selected>Page 1: TP=16 Multi-Node Network Sweep (10G - 175G)</option>
         <option value="tp8">Page 2: TP=8 Multi-Node Network Sweep (10G - 175G + Node-Local)</option>
         <option value="tp4">Page 3: TP=4 Multi-Node Network Sweep (10G - 175G + Socket-Local)</option>
-        <option value="compare">Page 4: All TPs & Pair Comparison (TP16 vs TP8 vs TP4)</option>
+        <option value="compare">Page 4: All TPs & Baseline Comparison (TP16 vs TP8 vs TP4)</option>
       </select>
     </div>
   </div>
@@ -60,7 +63,7 @@ def build_collective_tab(tab_num, coll_key, coll_title, coll_desc):
     <div class="card">
       <div class="card-header">
         <h3 id="{coll_key}_chart1_title">Latency vs Payload Size (8 KiB - 256 MiB)</h3>
-        <span class="badge badge-hw">LOG SCALE (µs)</span>
+        <span class="badge badge-hw">LOG SCALE (ms)</span>
       </div>
       <div style="height: 270px;">
         <canvas id="{coll_key}_chartLatency"></canvas>
@@ -80,7 +83,7 @@ def build_collective_tab(tab_num, coll_key, coll_title, coll_desc):
   <!-- Dynamic Data Table Card -->
   <div class="card" style="margin-bottom: 20px;">
     <div class="card-header">
-      <h3 id="{coll_key}_table_title">Empirical Benchmark Data Points</h3>
+      <h3 id="{coll_key}_table_title">Empirical Benchmark Data Points (Latency in Milliseconds - ms)</h3>
       <span class="badge badge-hw" id="{coll_key}_table_badge">FRESH RUN &bull; LIVE HARDWARE</span>
     </div>
     <div id="{coll_key}_tableContainer" style="overflow-x: auto;"></div>
@@ -91,11 +94,11 @@ def build_collective_tab(tab_num, coll_key, coll_title, coll_desc):
 </div>
 """
 
-tab2_html = build_collective_tab(2, "allreduce", "AllReduce", "Measured live on 16x RTX PRO 6000 Ada Blackwell GPUs across 8 KiB to 256 MiB.")
-tab3_html = build_collective_tab(3, "allgather", "AllGather", "Measured live on 16x RTX PRO 6000 Ada Blackwell GPUs across 8 KiB to 256 MiB.")
-tab4_html = build_collective_tab(4, "reducescatter", "ReduceScatter", "Measured live on 16x RTX PRO 6000 Ada Blackwell GPUs across 8 KiB to 256 MiB.")
+tab2_html = build_collective_tab(2, "allreduce", "AllReduce", "Measured live on 16x RTX PRO 6000 Blackwell GPUs across 8 KiB to 256 MiB.")
+tab3_html = build_collective_tab(3, "allgather", "AllGather", "Measured live on 16x RTX PRO 6000 Blackwell GPUs across 8 KiB to 256 MiB.")
+tab4_html = build_collective_tab(4, "reducescatter", "ReduceScatter", "Measured live on 16x RTX PRO 6000 Blackwell GPUs across 8 KiB to 256 MiB.")
 
-# Javascript logic for rendering charts, tables, and dropdowns
+# Javascript logic for rendering charts, tables, and dropdowns (in milliseconds)
 script_js = f"""
 <script>
   const benchData = {json.dumps(bench_data)};
@@ -124,6 +127,13 @@ script_js = f"""
     if (b === 134217728) return "128 MiB (8K Prefill Chunk)";
     if (b === 268435456) return "256 MiB (Large Prefill)";
     return formatSize(b) + "iB";
+  }}
+
+  function formatMs(msVal) {{
+    if (msVal === 0 || isNaN(msVal)) return "-";
+    if (msVal < 1) return msVal.toFixed(3) + " ms";
+    if (msVal < 10) return msVal.toFixed(2) + " ms";
+    return msVal.toFixed(1) + " ms";
   }}
 
   function renderCollectiveView(coll) {{
@@ -186,11 +196,11 @@ script_js = f"""
       const curData = data[sel];
       const tpTitle = (sel === 'tp16') ? 'TP=16 (16 GPUs Multi-Node)' : ((sel === 'tp8') ? 'TP=8 (4+4 GPUs Multi-Node)' : 'TP=4 (2+2 GPUs Multi-Node)');
       
-      document.getElementById(coll + '_chart1_title').innerText = `${{coll.toUpperCase()}} (${{tpTitle}}) Latency Across 5 Bandwidths`;
+      document.getElementById(coll + '_chart1_title').innerText = `${{coll.toUpperCase()}} (${{tpTitle}}) Latency Across 5 Bandwidths (ms)`;
       document.getElementById(coll + '_chart2_title').innerText = `${{coll.toUpperCase()}} (${{tpTitle}}) Algorithmic Bandwidth (GB/s)`;
 
       rates.forEach(r => {{
-        const latData = allSizes.map(s => curData[r] && curData[r][s] ? curData[r][s].time_us : 0);
+        const latData = allSizes.map(s => curData[r] && curData[r][s] ? (curData[r][s].time_us / 1000) : 0);
         chart1Datasets.push({{
           label: rateNames[r],
           data: latData,
@@ -203,7 +213,7 @@ script_js = f"""
       if (sel === 'tp8' && data.tp8_local) {{
         chart1Datasets.push({{
           label: 'Node-Local PCIe (Dual-Socket)',
-          data: allSizes.map(s => data.tp8_local[s] ? data.tp8_local[s].time_us : 0),
+          data: allSizes.map(s => data.tp8_local[s] ? (data.tp8_local[s].time_us / 1000) : 0),
           borderColor: '#a855f7',
           borderDash: [5, 5],
           tension: 0.2
@@ -211,7 +221,7 @@ script_js = f"""
       }} else if (sel === 'tp4' && data.tp4_local) {{
         chart1Datasets.push({{
           label: 'Socket-Local NUMA0 (Zero-UPI)',
-          data: allSizes.map(s => data.tp4_local[s] ? data.tp4_local[s].time_us : 0),
+          data: allSizes.map(s => data.tp4_local[s] ? (data.tp4_local[s].time_us / 1000) : 0),
           borderColor: '#ec4899',
           borderDash: [5, 5],
           tension: 0.2
@@ -233,27 +243,27 @@ script_js = f"""
         <thead>
           <tr>
             <th>Payload Size</th><th>Label</th>
-            <th>Native 175G</th><th>Capped 100G</th><th>Capped 50G</th><th>Capped 20G</th><th>Capped 10G</th>
+            <th>Native 175G (ms)</th><th>Capped 100G (ms)</th><th>Capped 50G (ms)</th><th>Capped 20G (ms)</th><th>Capped 10G (ms)</th>
             <th>100G vs Native</th><th>10G vs Native Penalty</th>
           </tr>
         </thead>
         <tbody>` +
         allSizes.map(s => {{
-          const tNat = (curData.NATIVE && curData.NATIVE[s]) ? curData.NATIVE[s].time_us : 0;
-          const t100 = (curData['100'] && curData['100'][s]) ? curData['100'][s].time_us : 0;
-          const t50 = (curData['50'] && curData['50'][s]) ? curData['50'][s].time_us : 0;
-          const t20 = (curData['20'] && curData['20'][s]) ? curData['20'][s].time_us : 0;
-          const t10 = (curData['10'] && curData['10'][s]) ? curData['10'][s].time_us : 0;
+          const tNat = (curData.NATIVE && curData.NATIVE[s]) ? (curData.NATIVE[s].time_us / 1000) : 0;
+          const t100 = (curData['100'] && curData['100'][s]) ? (curData['100'][s].time_us / 1000) : 0;
+          const t50 = (curData['50'] && curData['50'][s]) ? (curData['50'][s].time_us / 1000) : 0;
+          const t20 = (curData['20'] && curData['20'][s]) ? (curData['20'][s].time_us / 1000) : 0;
+          const t10 = (curData['10'] && curData['10'][s]) ? (curData['10'][s].time_us / 1000) : 0;
           const r100 = tNat > 0 ? (t100/tNat).toFixed(2) + 'x' : '-';
           const r10 = tNat > 0 ? (t10/tNat).toFixed(2) + 'x' : '-';
           return `<tr>
             <td><b>${{formatSize(s)}}</b></td>
             <td>${{getHumanLabel(s)}}</td>
-            <td>${{tNat.toFixed(2)}} µs</td>
-            <td>${{t100.toFixed(2)}} µs</td>
-            <td>${{t50.toFixed(2)}} µs</td>
-            <td>${{t20.toFixed(2)}} µs</td>
-            <td>${{t10.toFixed(2)}} µs</td>
+            <td>${{formatMs(tNat)}}</td>
+            <td>${{formatMs(t100)}}</td>
+            <td>${{formatMs(t50)}}</td>
+            <td>${{formatMs(t20)}}</td>
+            <td>${{formatMs(t10)}}</td>
             <td>${{r100}}</td>
             <td class="${{parseFloat(r10) > 1.5 ? 'highlight-red' : 'highlight-green'}}"><b>${{r10}}</b></td>
           </tr>`;
@@ -262,22 +272,22 @@ script_js = f"""
       insights.innerHTML = `
         <div class="card">
           <div class="card-header"><h3>${{tpLabel}} Decode Latency Floor (&alpha;-bound)</h3><span class="badge badge-hw">8K - 512K</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small payloads, multi-node ${{tpLabel}} latency is governed by Linux kernel socket synchronization. Link bandwidth throttling (10G vs 175G) creates negligible difference until payload size reaches ~1 MiB.</p>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small decode payloads (8K - 512K), multi-node ${{tpLabel}} latency remains bounded at <b>~0.11 ms to 0.18 ms</b>. Linux TCP socket synchronization sets the floor, meaning network bandwidth caps (10G vs 175G) have minimal latency impact until payload exceeds ~1 MiB.</p>
         </div>
         <div class="card">
           <div class="card-header"><h3>${{tpLabel}} Prefill Scalability (&beta;-bound)</h3><span class="badge badge-hw">64M - 256M</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">At 256 MiB, inter-node network bandwidth is the strict bottleneck. Throttling from 175G Native to 10G Capped increases collective completion time by <b>~10x</b>, illustrating the critical necessity of high-bandwidth fabric.</p>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">At 256 MiB, the physical network link is the dominant bottleneck. Throttling from 175G Native (~50 ms) down to 10G Capped (~390 ms) causes a <b>~7.5x - 8x slowdown</b>, demonstrating why high-bandwidth interconnects are vital for multi-node LLM serving.</p>
         </div>
       `;
     }} else if (sel === 'compare') {{
-      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' Latency Comparison: Multi-Node vs Local Baselines';
+      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' Latency Comparison: Multi-Node vs Local Baselines (ms)';
       document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' Algorithmic Bandwidth Comparison';
 
-      chart1Datasets.push({{ label: 'TP=4 Socket-Local (NUMA0)', data: allSizes.map(s => data.tp4_local[s] ? data.tp4_local[s].time_us : 0), borderColor: '#10b981', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=8 Node-Local (PCIe)', data: allSizes.map(s => data.tp8_local[s] ? data.tp8_local[s].time_us : 0), borderColor: '#3b82f6', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=4 Multi-Node (175G)', data: allSizes.map(s => data.tp4.NATIVE[s] ? data.tp4.NATIVE[s].time_us : 0), borderColor: '#f59e0b', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=8 Multi-Node (175G)', data: allSizes.map(s => data.tp8.NATIVE[s] ? data.tp8.NATIVE[s].time_us : 0), borderColor: '#8b5cf6', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=16 Multi-Node (175G)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0), borderColor: '#06b6d4', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=4 Socket-Local (NUMA0)', data: allSizes.map(s => data.tp4_local[s] ? (data.tp4_local[s].time_us / 1000) : 0), borderColor: '#10b981', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=8 Node-Local (PCIe)', data: allSizes.map(s => data.tp8_local[s] ? (data.tp8_local[s].time_us / 1000) : 0), borderColor: '#3b82f6', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=4 Multi-Node (175G)', data: allSizes.map(s => data.tp4.NATIVE[s] ? (data.tp4.NATIVE[s].time_us / 1000) : 0), borderColor: '#f59e0b', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=8 Multi-Node (175G)', data: allSizes.map(s => data.tp8.NATIVE[s] ? (data.tp8.NATIVE[s].time_us / 1000) : 0), borderColor: '#8b5cf6', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=16 Multi-Node (175G)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us / 1000 : 0), borderColor: '#06b6d4', tension: 0.2 }});
 
       chart2Datasets.push({{ label: 'TP=4 Local', data: allSizes.map(s => data.tp4_local[s] ? data.tp4_local[s].algbw_gb_s : 0), backgroundColor: '#10b981' }});
       chart2Datasets.push({{ label: 'TP=8 Local', data: allSizes.map(s => data.tp8_local[s] ? data.tp8_local[s].algbw_gb_s : 0), backgroundColor: '#3b82f6' }});
@@ -287,18 +297,18 @@ script_js = f"""
         <thead><tr><th>Payload</th><th>Phase</th><th>TP=4 (NUMA-Local)</th><th>TP=8 (Node-Local)</th><th>TP=8 Multi-Node</th><th>TP=16 Multi-Node</th><th>Local vs Multi-Node Speedup</th></tr></thead>
         <tbody>` +
         allSizes.map(s => {{
-          const t4L = data.tp4_local[s] ? data.tp4_local[s].time_us : 0;
-          const t8L = data.tp8_local[s] ? data.tp8_local[s].time_us : 0;
-          const t8M = data.tp8.NATIVE[s] ? data.tp8.NATIVE[s].time_us : 0;
-          const t16M = data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0;
+          const t4L = data.tp4_local[s] ? (data.tp4_local[s].time_us / 1000) : 0;
+          const t8L = data.tp8_local[s] ? (data.tp8_local[s].time_us / 1000) : 0;
+          const t8M = data.tp8.NATIVE[s] ? (data.tp8.NATIVE[s].time_us / 1000) : 0;
+          const t16M = data.tp16.NATIVE[s] ? (data.tp16.NATIVE[s].time_us / 1000) : 0;
           const speedup = t4L > 0 && t16M > 0 ? (t16M/t4L).toFixed(1) + 'x' : '-';
           return `<tr>
             <td><b>${{formatSize(s)}}</b></td>
             <td>${{getHumanLabel(s)}}</td>
-            <td class="highlight-green">${{t4L.toFixed(2)}} µs</td>
-            <td class="highlight-green">${{t8L.toFixed(2)}} µs</td>
-            <td>${{t8M.toFixed(2)}} µs</td>
-            <td>${{t16M.toFixed(2)}} µs</td>
+            <td class="highlight-green">${{formatMs(t4L)}}</td>
+            <td class="highlight-green">${{formatMs(t8L)}}</td>
+            <td>${{formatMs(t8M)}}</td>
+            <td>${{formatMs(t16M)}}</td>
             <td class="highlight-green"><b>${{speedup}}</b></td>
           </tr>`;
         }}).join('') + `</tbody></table>`;
@@ -306,7 +316,7 @@ script_js = f"""
       insights.innerHTML = `
         <div class="card">
           <div class="card-header"><h3>Core Architecture Takeaway: NUMA Locality</h3><span class="badge badge-hw">TOPOLOGY</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">Across all collectives (${{coll.toUpperCase()}}), TP=4 yields the lowest latency floor (16-18 µs), outperforming TP=8 by ~2x and TP=16 by over 20-70x on small decode packets.</p>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">Across all collectives (${{coll.toUpperCase()}}), TP=4 yields the lowest latency floor (<b>~0.016 ms - 0.018 ms</b>), outperforming TP=8 by ~2x and multi-node TP=16 by over <b>10x - 20x</b> on small decode packets due to zero inter-socket UPI cross-talk.</p>
         </div>
         <div class="card">
           <div class="card-header"><h3>Scale-Out Scaling Law</h3><span class="badge badge-hw">DISTRIBUTED</span></div>
@@ -318,7 +328,7 @@ script_js = f"""
     // Render Table
     tableContainer.innerHTML = tableHtml;
 
-    // Render Latency Chart (Log scale)
+    // Render Latency Chart (Log scale in ms)
     const ctx1 = document.getElementById(coll + '_chartLatency').getContext('2d');
     chartInstances[coll + '_lat'] = new Chart(ctx1, {{
       type: 'line',
@@ -331,9 +341,28 @@ script_js = f"""
         maintainAspectRatio: false,
         scales: {{
           x: {{ title: {{ display: true, text: 'Payload Buffer Size', color: '#94a3b8' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }},
-          y: {{ type: 'logarithmic', title: {{ display: true, text: 'Latency (µs - Log Scale)', color: '#94a3b8' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}
+          y: {{
+            type: 'logarithmic',
+            title: {{ display: true, text: 'Latency (Milliseconds - Log Scale)', color: '#94a3b8' }},
+            grid: {{ color: 'rgba(255,255,255,0.05)' }},
+            ticks: {{
+              callback: function(value) {{
+                return Number(value).toFixed(value < 1 ? 2 : 0) + ' ms';
+              }}
+            }}
+          }}
         }},
-        plugins: {{ legend: {{ labels: {{ color: '#e2e8f0', boxWidth: 12 }} }} }}
+        plugins: {{
+          legend: {{ labels: {{ color: '#e2e8f0', boxWidth: 12 }} }},
+          tooltip: {{
+            callbacks: {{
+              label: function(ctx) {{
+                const v = ctx.parsed.y;
+                return ctx.dataset.label + ': ' + (v < 1 ? v.toFixed(3) : v.toFixed(2)) + ' ms';
+              }}
+            }}
+          }}
+        }}
       }}
     }});
 
@@ -369,4 +398,4 @@ full_html = header_and_tab1 + "\n" + tab2_html + "\n" + tab3_html + "\n" + tab4_
 with open(html_path, "w", encoding="utf-8") as f:
     f.write(full_html)
 
-print("Successfully generated complete interactive dashboard with updated TP=8 and TP=4 sweeps!")
+print("Successfully updated dashboard to milliseconds across all charts, tables, tooltips, and badges!")
