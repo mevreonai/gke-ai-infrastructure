@@ -45,8 +45,8 @@ def build_collective_tab(tab_num, coll_key, coll_title, coll_desc):
       <label style="font-size: 13px; font-weight: 600; color: var(--accent-cyan);">Select TP Configuration:</label>
       <select id="{coll_key}_tpSelect" onchange="renderCollectiveView('{coll_key}')" style="background: #131b2e; border: 1px solid var(--accent-blue); color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer;">
         <option value="tp16" selected>Page 1: TP=16 Multi-Node Network Sweep (10G - 175G)</option>
-        <option value="tp8">Page 2: TP=8 Node-Local Cross-Socket (8 GPUs)</option>
-        <option value="tp4">Page 3: TP=4 Socket-Local Single-NUMA (4 GPUs)</option>
+        <option value="tp8">Page 2: TP=8 Multi-Node Network Sweep (10G - 175G + Node-Local)</option>
+        <option value="tp4">Page 3: TP=4 Multi-Node Network Sweep (10G - 175G + Socket-Local)</option>
         <option value="compare">Page 4: All TPs & Pair Comparison (TP16 vs TP8 vs TP4)</option>
       </select>
     </div>
@@ -142,21 +142,36 @@ script_js = f"""
       '20': '20G Capped',
       '10': '10G Capped'
     }};
+    const colors = {{
+      'NATIVE': '#10b981',
+      '100': '#3b82f6',
+      '50': '#f59e0b',
+      '20': '#f97316',
+      '10': '#ef4444'
+    }};
 
-    // 1. Render Download Links
-    dlBar.innerHTML = `
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp16_sweep.csv" style="background:rgba(59,130,246,0.2); border:1px solid #3b82f6; color:#93c5fd; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=16 Sweep CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp8.csv" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=8 Local CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp4.csv" style="background:rgba(139,92,246,0.2); border:1px solid #8b5cf6; color:#c4b5fd; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=4 Local CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp16_175g_native.csv" style="background:rgba(245,158,11,0.2); border:1px solid #f59e0b; color:#fcd34d; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">175G Native CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp16_100g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">100G CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp16_50g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">50G CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp16_20g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">20G CSV &darr;</a>
-      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp16_10g.csv" style="background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">10G CSV &darr;</a>
+    // 1. Render Dynamic Download Links based on selected TP
+    let currentTpKey = (sel === 'compare') ? 'tp16' : sel;
+    let tpLabel = (sel === 'tp16') ? 'TP=16' : ((sel === 'tp8') ? 'TP=8' : ((sel === 'tp4') ? 'TP=4' : 'TP'));
+    
+    let dlHtml = `
+      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_${{currentTpKey}}_sweep.csv" style="background:rgba(59,130,246,0.2); border:1px solid #3b82f6; color:#93c5fd; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">${{tpLabel}} Full Sweep CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_${{currentTpKey}}_175g_native.csv" style="background:rgba(16,185,129,0.2); border:1px solid #10b981; color:#34d399; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">175G Native CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_${{currentTpKey}}_100g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">100G CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_${{currentTpKey}}_50g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">50G CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_${{currentTpKey}}_20g.csv" style="background:rgba(255,255,255,0.06); border:1px solid var(--border); color:#fff; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">20G CSV &darr;</a>
+      <a href="fresh_benchmark_suite/${{coll}}/${{coll}}_${{currentTpKey}}_10g.csv" style="background:rgba(239,68,68,0.2); border:1px solid #ef4444; color:#fca5a5; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">10G CSV &darr;</a>
     `;
+    if (sel === 'tp8' || sel === 'compare') {{
+      dlHtml += `<a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp8_node_local.csv" style="background:rgba(139,92,246,0.2); border:1px solid #8b5cf6; color:#c4b5fd; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=8 Local PCIe CSV &darr;</a>`;
+    }}
+    if (sel === 'tp4' || sel === 'compare') {{
+      dlHtml += `<a href="fresh_benchmark_suite/${{coll}}/${{coll}}_tp4_socket_local.csv" style="background:rgba(236,72,153,0.2); border:1px solid #ec4899; color:#fbcfe8; font-size:12px; font-weight:600; padding:6px 12px; border-radius:6px; text-decoration:none;">TP=4 Socket-Local NUMA CSV &darr;</a>`;
+    }}
+    dlBar.innerHTML = dlHtml;
 
     // 2. Prepare Data Points
-    const allSizes = Object.keys(data.tp4).map(Number).sort((a,b)=>a-b);
+    const allSizes = Object.keys(data.tp16.NATIVE).map(Number).sort((a,b)=>a-b);
     const labels = allSizes.map(formatSize);
 
     // Chart Destroy helper
@@ -167,20 +182,15 @@ script_js = f"""
     let chart2Datasets = [];
     let tableHtml = '';
 
-    if (sel === 'tp16') {{
-      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' (TP=16) Latency Across 5 Network Bandwidths';
-      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' (TP=16) Algorithmic Bandwidth (GB/s)';
-
-      const colors = {{
-        'NATIVE': '#10b981',
-        '100': '#3b82f6',
-        '50': '#f59e0b',
-        '20': '#f97316',
-        '10': '#ef4444'
-      }};
+    if (sel === 'tp16' || sel === 'tp8' || sel === 'tp4') {{
+      const curData = data[sel];
+      const tpTitle = (sel === 'tp16') ? 'TP=16 (16 GPUs Multi-Node)' : ((sel === 'tp8') ? 'TP=8 (4+4 GPUs Multi-Node)' : 'TP=4 (2+2 GPUs Multi-Node)');
+      
+      document.getElementById(coll + '_chart1_title').innerText = `${{coll.toUpperCase()}} (${{tpTitle}}) Latency Across 5 Bandwidths`;
+      document.getElementById(coll + '_chart2_title').innerText = `${{coll.toUpperCase()}} (${{tpTitle}}) Algorithmic Bandwidth (GB/s)`;
 
       rates.forEach(r => {{
-        const latData = allSizes.map(s => data.tp16[r][s] ? data.tp16[r][s].time_us : 0);
+        const latData = allSizes.map(s => curData[r] && curData[r][s] ? curData[r][s].time_us : 0);
         chart1Datasets.push({{
           label: rateNames[r],
           data: latData,
@@ -189,11 +199,29 @@ script_js = f"""
         }});
       }});
 
-      // Prefill subset for bandwidth chart (64M, 128M, 256M)
-      const subsetSizes = [33554432, 67108864, 134217728, 268435456];
-      const subsetLabels = subsetSizes.map(formatSize);
+      // Add local baseline line for comparison if TP=8 or TP=4
+      if (sel === 'tp8' && data.tp8_local) {{
+        chart1Datasets.push({{
+          label: 'Node-Local PCIe (Dual-Socket)',
+          data: allSizes.map(s => data.tp8_local[s] ? data.tp8_local[s].time_us : 0),
+          borderColor: '#a855f7',
+          borderDash: [5, 5],
+          tension: 0.2
+        }});
+      }} else if (sel === 'tp4' && data.tp4_local) {{
+        chart1Datasets.push({{
+          label: 'Socket-Local NUMA0 (Zero-UPI)',
+          data: allSizes.map(s => data.tp4_local[s] ? data.tp4_local[s].time_us : 0),
+          borderColor: '#ec4899',
+          borderDash: [5, 5],
+          tension: 0.2
+        }});
+      }}
+
+      // Bandwidth Chart (for high payload sizes)
+      const subsetSizes = [16777216, 33554432, 67108864, 134217728, 268435456];
       rates.forEach(r => {{
-        const bwData = subsetSizes.map(s => data.tp16[r][s] ? data.tp16[r][s].algbw_gb_s : 0);
+        const bwData = subsetSizes.map(s => curData[r] && curData[r][s] ? curData[r][s].algbw_gb_s : 0);
         chart2Datasets.push({{
           label: rateNames[r],
           data: bwData,
@@ -211,11 +239,11 @@ script_js = f"""
         </thead>
         <tbody>` +
         allSizes.map(s => {{
-          const tNat = data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0;
-          const t100 = data.tp16['100'][s] ? data.tp16['100'][s].time_us : 0;
-          const t50 = data.tp16['50'][s] ? data.tp16['50'][s].time_us : 0;
-          const t20 = data.tp16['20'][s] ? data.tp16['20'][s].time_us : 0;
-          const t10 = data.tp16['10'][s] ? data.tp16['10'][s].time_us : 0;
+          const tNat = (curData.NATIVE && curData.NATIVE[s]) ? curData.NATIVE[s].time_us : 0;
+          const t100 = (curData['100'] && curData['100'][s]) ? curData['100'][s].time_us : 0;
+          const t50 = (curData['50'] && curData['50'][s]) ? curData['50'][s].time_us : 0;
+          const t20 = (curData['20'] && curData['20'][s]) ? curData['20'][s].time_us : 0;
+          const t10 = (curData['10'] && curData['10'][s]) ? curData['10'][s].time_us : 0;
           const r100 = tNat > 0 ? (t100/tNat).toFixed(2) + 'x' : '-';
           const r10 = tNat > 0 ? (t10/tNat).toFixed(2) + 'x' : '-';
           return `<tr>
@@ -233,116 +261,45 @@ script_js = f"""
 
       insights.innerHTML = `
         <div class="card">
-          <div class="card-header"><h3>TP=16 Decode Latency Floor (&alpha;-bound)</h3><span class="badge badge-hw">8K - 512K</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small payloads (8 KiB to 512 KiB), latency stays identical (~800 to 1200 µs) regardless of whether bandwidth is 10G, 50G, or 175G because host-to-NIC socket signaling overhead dominates link serialization.</p>
+          <div class="card-header"><h3>${{tpLabel}} Decode Latency Floor (&alpha;-bound)</h3><span class="badge badge-hw">8K - 512K</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small payloads, multi-node ${{tpLabel}} latency is governed by Linux kernel socket synchronization. Link bandwidth throttling (10G vs 175G) creates negligible difference until payload size reaches ~1 MiB.</p>
         </div>
         <div class="card">
-          <div class="card-header"><h3>TP=16 Prefill Scalability (&beta;-bound)</h3><span class="badge badge-hw">64M - 256M</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">At 128 MiB (8K chunk) and 256 MiB, communication transitions into the bandwidth-bound regime. Algorithmic throughput exceeds 50 GB/s on the unthrottled link through NCCL's hierarchical PCIe-to-network ring aggregation.</p>
-        </div>
-      `;
-    }} else if (sel === 'tp8') {{
-      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' (TP=8 Node-Local) Latency (µs)';
-      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' (TP=8 Node-Local) Algorithmic Bandwidth (GB/s)';
-
-      const latData = allSizes.map(s => data.tp8[s] ? data.tp8[s].time_us : 0);
-      const bwData = allSizes.map(s => data.tp8[s] ? data.tp8[s].algbw_gb_s : 0);
-
-      chart1Datasets.push({{ label: 'TP=8 Latency (µs)', data: latData, borderColor: '#3b82f6', tension: 0.2 }});
-      chart2Datasets.push({{ label: 'TP=8 Algorithmic BW (GB/s)', data: bwData, backgroundColor: '#3b82f6' }});
-
-      tableHtml = `<table>
-        <thead><tr><th>Payload Size</th><th>Label</th><th>TP=8 Latency (µs)</th><th>Algorithmic BW (GB/s)</th><th>Bus Bandwidth (GB/s)</th></tr></thead>
-        <tbody>` +
-        allSizes.map(s => {{
-          const t = data.tp8[s] ? data.tp8[s].time_us : 0;
-          const bw = data.tp8[s] ? data.tp8[s].algbw_gb_s : 0;
-          const busbw = (bw * 1.75).toFixed(2);
-          return `<tr>
-            <td><b>${{formatSize(s)}}</b></td>
-            <td>${{getHumanLabel(s)}}</td>
-            <td class="highlight-green">${{t.toFixed(2)}} µs</td>
-            <td>${{bw.toFixed(2)}} GB/s</td>
-            <td>${{busbw}} GB/s</td>
-          </tr>`;
-        }}).join('') + `</tbody></table>`;
-
-      insights.innerHTML = `
-        <div class="card">
-          <div class="card-header"><h3>TP=8 PCIe UPI Inter-Socket Fabric</h3><span class="badge badge-hw">DUAL SOCKET</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">TP=8 operates across both AMD EPYC CPU sockets over the UPI coherence link. Small payload latency is 33 µs (zero network overhead), and peak PCIe Gen5 bandwidth stabilizes at ~23 GB/s algbw.</p>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>TP=8 vs Multi-Node Speedup</h3><span class="badge badge-hw">COMPARISON</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">For small payloads (16K decode token), TP=8 is <b>25x to 35x faster</b> than TP=16 cross-node because communication completely bypasses the external network interface.</p>
-        </div>
-      `;
-    }} else if (sel === 'tp4') {{
-      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' (TP=4 Socket-Local) Latency (µs)';
-      document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' (TP=4 Socket-Local) Algorithmic Bandwidth (GB/s)';
-
-      const latData = allSizes.map(s => data.tp4[s] ? data.tp4[s].time_us : 0);
-      const bwData = allSizes.map(s => data.tp4[s] ? data.tp4[s].algbw_gb_s : 0);
-
-      chart1Datasets.push({{ label: 'TP=4 Latency (µs)', data: latData, borderColor: '#10b981', tension: 0.2 }});
-      chart2Datasets.push({{ label: 'TP=4 Algorithmic BW (GB/s)', data: bwData, backgroundColor: '#10b981' }});
-
-      tableHtml = `<table>
-        <thead><tr><th>Payload Size</th><th>Label</th><th>TP=4 Latency (µs)</th><th>Algorithmic BW (GB/s)</th><th>Bus Bandwidth (GB/s)</th></tr></thead>
-        <tbody>` +
-        allSizes.map(s => {{
-          const t = data.tp4[s] ? data.tp4[s].time_us : 0;
-          const bw = data.tp4[s] ? data.tp4[s].algbw_gb_s : 0;
-          const busbw = (bw * 1.5).toFixed(2);
-          return `<tr>
-            <td><b>${{formatSize(s)}}</b></td>
-            <td>${{getHumanLabel(s)}}</td>
-            <td class="highlight-green">${{t.toFixed(2)}} µs</td>
-            <td>${{bw.toFixed(2)}} GB/s</td>
-            <td>${{busbw}} GB/s</td>
-          </tr>`;
-        }}).join('') + `</tbody></table>`;
-
-      insights.innerHTML = `
-        <div class="card">
-          <div class="card-header"><h3>TP=4 Single-NUMA Switch Line Rate</h3><span class="badge badge-hw">ZERO UPI</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">TP=4 confines all communication within NUMA 0 (GPUs 0,1,2,3). This eliminates cross-socket UPI traversal entirely, achieving a minimum latency floor of <b>16.3 µs</b>.</p>
-        </div>
-        <div class="card">
-          <div class="card-header"><h3>TP=4 Optimal Partitioning</h3><span class="badge badge-hw">ARCHITECTURE</span></div>
-          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">In LOCAL_REAL and dual-socket deployments, TP=4 is the <b>absolute latency champion</b> for decode steps, offering a 2.0x latency speedup over TP=8 and up to 70x over TP=16.</p>
+          <div class="card-header"><h3>${{tpLabel}} Prefill Scalability (&beta;-bound)</h3><span class="badge badge-hw">64M - 256M</span></div>
+          <p style="font-size:12px; color:var(--text-muted); line-height:1.6;">At 256 MiB, inter-node network bandwidth is the strict bottleneck. Throttling from 175G Native to 10G Capped increases collective completion time by <b>~10x</b>, illustrating the critical necessity of high-bandwidth fabric.</p>
         </div>
       `;
     }} else if (sel === 'compare') {{
-      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' Latency Comparison: TP16 vs TP8 vs TP4';
+      document.getElementById(coll + '_chart1_title').innerText = coll.toUpperCase() + ' Latency Comparison: Multi-Node vs Local Baselines';
       document.getElementById(coll + '_chart2_title').innerText = coll.toUpperCase() + ' Algorithmic Bandwidth Comparison';
 
-      chart1Datasets.push({{ label: 'TP=4 (Single-NUMA)', data: allSizes.map(s => data.tp4[s].time_us), borderColor: '#10b981', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=8 (Cross-Socket)', data: allSizes.map(s => data.tp8[s].time_us), borderColor: '#3b82f6', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=16 (Native 175G)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0), borderColor: '#8b5cf6', tension: 0.2 }});
-      chart1Datasets.push({{ label: 'TP=16 (Capped 10G)', data: allSizes.map(s => data.tp16['10'][s] ? data.tp16['10'][s].time_us : 0), borderColor: '#ef4444', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=4 Socket-Local (NUMA0)', data: allSizes.map(s => data.tp4_local[s] ? data.tp4_local[s].time_us : 0), borderColor: '#10b981', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=8 Node-Local (PCIe)', data: allSizes.map(s => data.tp8_local[s] ? data.tp8_local[s].time_us : 0), borderColor: '#3b82f6', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=4 Multi-Node (175G)', data: allSizes.map(s => data.tp4.NATIVE[s] ? data.tp4.NATIVE[s].time_us : 0), borderColor: '#f59e0b', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=8 Multi-Node (175G)', data: allSizes.map(s => data.tp8.NATIVE[s] ? data.tp8.NATIVE[s].time_us : 0), borderColor: '#8b5cf6', tension: 0.2 }});
+      chart1Datasets.push({{ label: 'TP=16 Multi-Node (175G)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0), borderColor: '#06b6d4', tension: 0.2 }});
 
-      chart2Datasets.push({{ label: 'TP=4', data: allSizes.map(s => data.tp4[s].algbw_gb_s), backgroundColor: '#10b981' }});
-      chart2Datasets.push({{ label: 'TP=8', data: allSizes.map(s => data.tp8[s].algbw_gb_s), backgroundColor: '#3b82f6' }});
-      chart2Datasets.push({{ label: 'TP=16 (Native)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].algbw_gb_s : 0), backgroundColor: '#8b5cf6' }});
+      chart2Datasets.push({{ label: 'TP=4 Local', data: allSizes.map(s => data.tp4_local[s] ? data.tp4_local[s].algbw_gb_s : 0), backgroundColor: '#10b981' }});
+      chart2Datasets.push({{ label: 'TP=8 Local', data: allSizes.map(s => data.tp8_local[s] ? data.tp8_local[s].algbw_gb_s : 0), backgroundColor: '#3b82f6' }});
+      chart2Datasets.push({{ label: 'TP=16 Multi-Node (175G)', data: allSizes.map(s => data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].algbw_gb_s : 0), backgroundColor: '#06b6d4' }});
 
       tableHtml = `<table>
-        <thead><tr><th>Payload</th><th>Phase</th><th>TP=4 (NUMA-Local)</th><th>TP=8 (Dual-Socket)</th><th>TP=16 (Cross-Node)</th><th>TP=4 vs TP=8</th><th>TP=4 vs TP=16 Speedup</th></tr></thead>
+        <thead><tr><th>Payload</th><th>Phase</th><th>TP=4 (NUMA-Local)</th><th>TP=8 (Node-Local)</th><th>TP=8 Multi-Node</th><th>TP=16 Multi-Node</th><th>Local vs Multi-Node Speedup</th></tr></thead>
         <tbody>` +
         allSizes.map(s => {{
-          const t4 = data.tp4[s] ? data.tp4[s].time_us : 0;
-          const t8 = data.tp8[s] ? data.tp8[s].time_us : 0;
-          const t16 = data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0;
-          const r48 = t4 > 0 ? (t8/t4).toFixed(2) + 'x' : '-';
-          const r416 = t4 > 0 ? (t16/t4).toFixed(2) + 'x' : '-';
+          const t4L = data.tp4_local[s] ? data.tp4_local[s].time_us : 0;
+          const t8L = data.tp8_local[s] ? data.tp8_local[s].time_us : 0;
+          const t8M = data.tp8.NATIVE[s] ? data.tp8.NATIVE[s].time_us : 0;
+          const t16M = data.tp16.NATIVE[s] ? data.tp16.NATIVE[s].time_us : 0;
+          const speedup = t4L > 0 && t16M > 0 ? (t16M/t4L).toFixed(1) + 'x' : '-';
           return `<tr>
             <td><b>${{formatSize(s)}}</b></td>
             <td>${{getHumanLabel(s)}}</td>
-            <td class="highlight-green">${{t4.toFixed(2)}} µs</td>
-            <td>${{t8.toFixed(2)}} µs</td>
-            <td>${{t16.toFixed(2)}} µs</td>
-            <td class="highlight-green">${{r48}}</td>
-            <td class="highlight-green"><b>${{r416}}</b></td>
+            <td class="highlight-green">${{t4L.toFixed(2)}} µs</td>
+            <td class="highlight-green">${{t8L.toFixed(2)}} µs</td>
+            <td>${{t8M.toFixed(2)}} µs</td>
+            <td>${{t16M.toFixed(2)}} µs</td>
+            <td class="highlight-green"><b>${{speedup}}</b></td>
           </tr>`;
         }}).join('') + `</tbody></table>`;
 
@@ -358,10 +315,12 @@ script_js = f"""
       `;
     }}
 
+    // Render Table
     tableContainer.innerHTML = tableHtml;
 
-    // Render Chart 1 (Latency)
-    chartInstances[coll + '_lat'] = new Chart(document.getElementById(coll + '_chartLatency'), {{
+    // Render Latency Chart (Log scale)
+    const ctx1 = document.getElementById(coll + '_chartLatency').getContext('2d');
+    chartInstances[coll + '_lat'] = new Chart(ctx1, {{
       type: 'line',
       data: {{
         labels: labels,
@@ -371,87 +330,43 @@ script_js = f"""
         responsive: true,
         maintainAspectRatio: false,
         scales: {{
-          y: {{ type: 'logarithmic', ticks: {{ color: '#9ca3af' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }},
-          x: {{ ticks: {{ color: '#9ca3af' }} }}
+          x: {{ title: {{ display: true, text: 'Payload Buffer Size', color: '#94a3b8' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }},
+          y: {{ type: 'logarithmic', title: {{ display: true, text: 'Latency (µs - Log Scale)', color: '#94a3b8' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}
         }},
-        plugins: {{ legend: {{ labels: {{ color: '#9ca3af', font: {{ size: 10 }} }} }} }}
+        plugins: {{ legend: {{ labels: {{ color: '#e2e8f0', boxWidth: 12 }} }} }}
       }}
     }});
 
-    // Render Chart 2 (Bandwidth)
-    chartInstances[coll + '_bw'] = new Chart(document.getElementById(coll + '_chartBandwidth'), {{
+    // Render Bandwidth Chart
+    const ctx2 = document.getElementById(coll + '_chartBandwidth').getContext('2d');
+    chartInstances[coll + '_bw'] = new Chart(ctx2, {{
       type: 'bar',
       data: {{
-        labels: sel === 'tp16' ? ['32M', '64M', '128M', '256M'] : labels,
+        labels: (sel === 'tp16' || sel === 'tp8' || sel === 'tp4') ? ['16M', '32M', '64M', '128M', '256M'] : labels,
         datasets: chart2Datasets
       }},
       options: {{
         responsive: true,
         maintainAspectRatio: false,
         scales: {{
-          y: {{ ticks: {{ color: '#9ca3af' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }},
-          x: {{ ticks: {{ color: '#9ca3af' }} }}
+          x: {{ title: {{ display: true, text: 'Buffer Size', color: '#94a3b8' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }},
+          y: {{ title: {{ display: true, text: 'Algorithmic Bandwidth (GB/s)', color: '#94a3b8' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}
         }},
-        plugins: {{ legend: {{ labels: {{ color: '#9ca3af', font: {{ size: 10 }} }} }} }}
+        plugins: {{ legend: {{ labels: {{ color: '#e2e8f0', boxWidth: 12 }} }} }}
       }}
     }});
   }}
 
-  // Initialize on load
+  // Initialize Tab 2 on page load
   window.addEventListener('DOMContentLoaded', () => {{
-    // Render existing Tab 1 charts
-    new Chart(document.getElementById('chartWithinNode'), {{
-      type: 'bar',
-      data: {{
-        labels: ['16K Latency (µs)', '128M AlgBW (GB/s)'],
-        datasets: [
-          {{ label: 'TP4 (Single-NUMA)', data: [17.93, 26.00], backgroundColor: '#10b981' }},
-          {{ label: 'TP8 (Cross-Socket)', data: [37.52, 22.79], backgroundColor: '#3b82f6' }}
-        ]
-      }},
-      options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ labels: {{ color: '#9ca3af', font: {{ size: 10 }} }} }} }}, scales: {{ y: {{ ticks: {{ color: '#9ca3af' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}, x: {{ ticks: {{ color: '#9ca3af' }} }} }} }}
-    }});
-
-    new Chart(document.getElementById('chartScaleOut'), {{
-      type: 'line',
-      data: {{
-        labels: ['16K', '128K', '512K', '64M', '128M', '256M'],
-        datasets: [
-          {{ label: 'TP16 (2 Nodes x 8 GPUs)', data: [425.74, 1618.96, 1611.87, 2269.29, 2521.72, 5044.42], borderColor: '#06b6d4', backgroundColor: 'rgba(6, 182, 212, 0.1)', fill: true, tension: 0.2 }}
-        ]
-      }},
-      options: {{ responsive: true, maintainAspectRatio: false, scales: {{ y: {{ type: 'logarithmic', ticks: {{ color: '#9ca3af' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}, x: {{ ticks: {{ color: '#9ca3af' }} }} }}, plugins: {{ legend: {{ labels: {{ color: '#9ca3af', font: {{ size: 10 }} }} }} }} }}
-    }});
-
-    new Chart(document.getElementById('chartNetworkSweep'), {{
-      type: 'bar',
-      data: {{
-        labels: ['Native', '100G', '50G', '20G', '10G'],
-        datasets: [{{ label: 'iperf3 Throughput (Gbps)', data: [173.58, 58.75, 33.77, 16.80, 9.02], backgroundColor: ['#10b981', '#3b82f6', '#f59e0b', '#f97316', '#ef4444'] }}]
-      }},
-      options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ display: false }} }}, scales: {{ y: {{ ticks: {{ color: '#9ca3af' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}, x: {{ ticks: {{ color: '#9ca3af' }} }} }} }}
-    }});
-
-    new Chart(document.getElementById('chartSendRecv'), {{
-      type: 'line',
-      data: {{
-        labels: ['Native', '100G', '50G', '20G', '10G'],
-        datasets: [{{ label: '256 MiB Latency (ms)', data: [10, 23, 45, 110, 217], borderColor: '#ef4444', backgroundColor: 'rgba(239, 68, 68, 0.1)', fill: true, tension: 0.2 }}]
-      }},
-      options: {{ responsive: true, maintainAspectRatio: false, plugins: {{ legend: {{ display: false }} }}, scales: {{ y: {{ type: 'logarithmic', ticks: {{ color: '#9ca3af' }}, grid: {{ color: 'rgba(255,255,255,0.05)' }} }}, x: {{ ticks: {{ color: '#9ca3af' }} }} }} }}
-    }});
-
-    // Render initial views for other tabs
     renderCollectiveView('allreduce');
   }});
 </script>
-</body>
-</html>
 """
 
-full_html = header_and_tab1 + tab2_html + tab3_html + tab4_html + script_js
+full_html = header_and_tab1 + "\n" + tab2_html + "\n" + tab3_html + "\n" + tab4_html + "\n" + script_js + "\n</body>\n</html>"
 
 with open(html_path, "w", encoding="utf-8") as f:
     f.write(full_html)
 
-print("Successfully generated complete interactive dashboard with 4 tabs and fresh live benchmarks!")
+print("Successfully generated complete interactive dashboard with updated TP=8 and TP=4 sweeps!")
