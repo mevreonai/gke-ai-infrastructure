@@ -1,37 +1,21 @@
-#!/bin/bash
+#!/usr/bin/env bash
+# ==============================================================================
+# AllGather & ReduceScatter Benchmark Suite — Corrected & Gated
+# Runs host-native OpenMPI binaries with hard gates and HTB burst sizing
+# ==============================================================================
 set -euo pipefail
 
-# 1. Setup Docker wrapper scripts on both Node 0 and Node 1
-setup_wrappers() {
-    echo "=== Setting up all_gather_perf_docker and reduce_scatter_perf_docker ==="
-    cat << 'EOF' > /tmp/all_gather_perf_docker
-#!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
-EOF
-    sudo install -m 755 /tmp/all_gather_perf_docker /usr/local/bin/all_gather_perf_docker
+BASE_DIR="${1:-/home/ayu23/rtx_g4_smoke/fresh_benchmark_suite}"
+mkdir -p "$BASE_DIR/allgather" "$BASE_DIR/reducescatter"
 
-    cat << 'EOF' > /tmp/reduce_scatter_perf_docker
-#!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
-EOF
-    sudo install -m 755 /tmp/reduce_scatter_perf_docker /usr/local/bin/reduce_scatter_perf_docker
-
-    # Copy to Node 1
-    scp -o StrictHostKeyChecking=no /tmp/all_gather_perf_docker 10.128.0.40:/tmp/
-    scp -o StrictHostKeyChecking=no /tmp/reduce_scatter_perf_docker 10.128.0.40:/tmp/
-    ssh -o StrictHostKeyChecking=no 10.128.0.40 "
-        sudo install -m 755 /tmp/all_gather_perf_docker /usr/local/bin/all_gather_perf_docker
-        sudo install -m 755 /tmp/reduce_scatter_perf_docker /usr/local/bin/reduce_scatter_perf_docker
-    "
-}
-
-setup_wrappers
-
-RESULTS_DIR="/home/ayu23/rtx_g4_smoke/allgather_reducescatter_sweep"
-mkdir -p "$RESULTS_DIR"
 HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
 NODE1_IP="10.128.0.40"
 IFACE="ens3"
+BIN_DIR="/home/ayu23/rtx_g4_smoke/nccl-tests/build"
+
+# nccl-tests args. -c 0 disables per-iteration host-side verification overhead
+NCCL_ARGS="-b 8K -e 256M -f 2 -g 1 -n 50 -w 20 -c 0"
+NCCL_ARGS_LOCAL="-b 8K -e 256M -f 2 -g 8 -n 50 -w 20 -c 0"
 
 cleanup_tc() {
     sudo tc qdisc del dev "$IFACE" root 2>/dev/null || true
@@ -43,64 +27,86 @@ apply_tc() {
     local rate="$1"
     cleanup_tc
     if [ "$rate" != "NATIVE" ]; then
-        echo "=== Applying traffic cap: ${rate}Gbit on $IFACE ==="
-        sudo tc qdisc add dev "$IFACE" root handle 1: htb default 10
-        sudo tc class add dev "$IFACE" parent 1: classid 1:10 htb rate "${rate}gbit" ceil "${rate}gbit"
-        ssh -o StrictHostKeyChecking=no "$NODE1_IP" "
-            sudo tc qdisc add dev '$IFACE' root handle 1: htb default 10
-            sudo tc class add dev '$IFACE' parent 1: classid 1:10 htb rate ${rate}gbit ceil ${rate}gbit
-        "
+        echo "=== [tc] Applying ${rate}Gbps egress cap on $IFACE (both nodes) ==="
+        local burst=$(( rate * 1024 * 16 ))
+        for host in LOCAL "$NODE1_IP"; do
+            local cmd="sudo tc qdisc add dev '$IFACE' root handle 1: htb default 10 && \
+                       sudo tc class add dev '$IFACE' parent 1: classid 1:10 htb \
+                            rate ${rate}gbit ceil ${rate}gbit burst ${burst}b cburst ${burst}b"
+            if [ "$host" = "LOCAL" ]; then eval "$cmd"; else ssh -o StrictHostKeyChecking=no "$host" "$cmd"; fi
+        done
         sleep 2
     else
-        echo "=== Running on unthrottled GCP_NATIVE (173.58 Gbps) ==="
+        echo "=== [tc] Unthrottled native link ==="
     fi
 }
 
-RATES="NATIVE 100 50 20 10"
+tc_bytes() { sudo tc -s class show dev "$IFACE" 2>/dev/null | awk '/Sent/{print $2; exit}' || echo 0; }
 
-# 2. Run AllGather Sweep
-echo "=========================================================="
-echo "Starting Multi-Node AllGather (TP=16) Bandwidth Sweep"
-echo "Message size: 8 KiB to 256 MiB (-b 8K -e 256M -f 2)"
-echo "=========================================================="
+run_multinode() {
+    local coll="$1" np="$2" ppr="$3" rate="$4" log="$5"
+    local bin="$BIN_DIR/${coll}_perf"
 
-for RATE in $RATES; do
-    echo "--- AllGather at RATE=$RATE ---"
-    apply_tc "$RATE"
-    OUTLOG="$RESULTS_DIR/allgather_tp16_${RATE}.log"
+    local before after
+    before=$(tc_bytes)
+
     /usr/mpi/gcc/openmpi-4.1.9a1/bin/mpirun \
-        --prefix /usr/mpi/gcc/openmpi-4.1.9a1 \
-        --allow-run-as-root \
-        --hostfile "$HOSTFILE" \
-        -np 16 --map-by ppr:8:node --bind-to none \
-        -x PATH -x LD_LIBRARY_PATH \
+        --prefix /usr/mpi/gcc/openmpi-4.1.9a1 --allow-run-as-root \
+        --mca pml ob1 --mca btl tcp,self --mca btl_tcp_if_include "$IFACE" \
+        --hostfile "$HOSTFILE" -np "$np" --map-by "ppr:${ppr}:node:PE=4" --bind-to core \
+        -x PATH -x LD_LIBRARY_PATH=/opt/cuda-13.0/lib64:/usr/mpi/gcc/openmpi-4.1.9a1/lib64 \
         -x NCCL_SOCKET_IFNAME="$IFACE" \
-        -x NCCL_DEBUG=WARN \
-        /usr/local/bin/all_gather_perf_docker -b 8K -e 256M -f 2 -g 1 | tee "$OUTLOG"
-    echo "Finished AllGather RATE=$RATE"
+        -x NCCL_DEBUG=INFO -x NCCL_DEBUG_SUBSYS=INIT,GRAPH,NET \
+        -x NCCL_ALGO=Ring \
+        "$bin" $NCCL_ARGS 2>&1 | tee "$log"
+
+    after=$(tc_bytes)
+
+    # GATE 1: Expected rank count across 1 job header
+    local nranks nheaders
+    nranks=$(grep -cE "Rank +[0-9]+ .*Pid" "$log" || true)
+    nheaders=$(grep -c "nThread" "$log" || true)
+    if [ "$nranks" -ne "$np" ] || [ "$nheaders" -ne 1 ]; then
+        echo "FATAL: expected $np ranks in 1 job; found $nranks rank lines across $nheaders job headers." >&2
+        exit 1
+    fi
+
+    # GATE 2: Inter-node NET hop verified
+    if ! grep -qE "via NET|\[send\] via NET|NET/(Socket|IB)" "$log"; then
+        echo "FATAL: no inter-node NET hop found in topology dump." >&2
+        exit 1
+    fi
+
+    # GATE 3: TC shaper byte counter verification
+    if [ "$rate" != "NATIVE" ] && [ "$after" = "$before" ]; then
+        echo "FATAL: tc byte counter did not move during a capped run." >&2
+        exit 1
+    fi
+    echo "OK: [$coll] $np ranks, 1 job, NET hops present, tc counted $((after-before)) bytes."
+}
+
+DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c"
+
+# Phase 1: Local Baselines
+echo ">>> [Phase 1/2] Node-Local Baselines <<<"
+for coll in all_gather reduce_scatter; do
+    coll_short="${coll//_/}"
+    bin="$BIN_DIR/${coll}_perf"
+    $DOCKER_LOCAL "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS NCCL_DEBUG=INFO $bin $NCCL_ARGS_LOCAL" | tee "$BASE_DIR/$coll_short/tp8.log"
 done
 
-# 3. Run ReduceScatter Sweep
-echo "=========================================================="
-echo "Starting Multi-Node ReduceScatter (TP=16) Bandwidth Sweep"
-echo "Message size: 8 KiB to 256 MiB (-b 8K -e 256M -f 2)"
-echo "=========================================================="
-
-for RATE in $RATES; do
-    echo "--- ReduceScatter at RATE=$RATE ---"
+# Phase 2: Multi-Node Sweeps
+echo ">>> [Phase 2/2] Multi-Node Sweeps <<<"
+for RATE in NATIVE 100 50 20 10; do
+    echo "===================== NETWORK RATE: $RATE ====================="
     apply_tc "$RATE"
-    OUTLOG="$RESULTS_DIR/reducescatter_tp16_${RATE}.log"
-    /usr/mpi/gcc/openmpi-4.1.9a1/bin/mpirun \
-        --prefix /usr/mpi/gcc/openmpi-4.1.9a1 \
-        --allow-run-as-root \
-        --hostfile "$HOSTFILE" \
-        -np 16 --map-by ppr:8:node --bind-to none \
-        -x PATH -x LD_LIBRARY_PATH \
-        -x NCCL_SOCKET_IFNAME="$IFACE" \
-        -x NCCL_DEBUG=WARN \
-        /usr/local/bin/reduce_scatter_perf_docker -b 8K -e 256M -f 2 -g 1 | tee "$OUTLOG"
-    echo "Finished ReduceScatter RATE=$RATE"
+    for coll in all_gather reduce_scatter; do
+        coll_short="${coll//_/}"
+        run_multinode "$coll" 16 8 "$RATE" "$BASE_DIR/$coll_short/tp16_${RATE}.log"
+        run_multinode "$coll"  8 4 "$RATE" "$BASE_DIR/$coll_short/tp8_${RATE}.log"
+        run_multinode "$coll"  4 2 "$RATE" "$BASE_DIR/$coll_short/tp4_${RATE}.log"
+    done
 done
 
 cleanup_tc
-echo "ALLGATHER AND REDUCE_SCATTER SWEEPS COMPLETED SUCCESSFULLY!"
+echo "ALLGATHER & REDUCESCATTER BENCHMARKS COMPLETED AND GATED!"
