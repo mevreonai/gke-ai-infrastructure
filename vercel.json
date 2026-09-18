@@ -1,0 +1,11 @@
+{
+  "buildCommand": null,
+  "outputDirectory": "rtx_g4_smoke_v4/results",
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/$1"
+    }
+  ]
+}
