@@ -1,16 +1,16 @@
-topology,local_baseline_type,collective,size_bytes,payload_label,description,local_latency_ms,local_algbw_gbs,multi_native_175g_ms,multi_native_algbw_gbs,multi_100g_ms,multi_100g_algbw_gbs,multi_50g_ms,multi_50g_algbw_gbs,multi_20g_ms,multi_20g_algbw_gbs,multi_10g_ms,multi_10g_algbw_gbs,multi_native_vs_local,multi_10g_vs_local
-TP=4,Socket-Local Single-NUMA,ReduceScatter,16384,16 KiB,Batch-1 Token Decode,0.011,1.53,0.077,0.21,0.078,0.21,0.076,0.22,0.075,0.22,0.08,0.2,7.19x,7.53x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,32768,32 KiB,32 KiB,0.011,2.85,0.088,0.37,0.105,0.31,0.086,0.38,0.087,0.38,0.087,0.38,7.70x,7.59x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,65536,64 KiB,64 KiB,0.012,5.25,0.089,0.73,0.108,0.61,0.091,0.72,0.092,0.71,0.09,0.73,7.15x,7.22x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,131072,128 KiB,Small Activation,0.018,7.49,0.1,1.31,0.114,1.15,0.098,1.34,0.099,1.32,0.164,0.8,5.72x,9.40x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,262144,256 KiB,256 KiB,0.028,9.46,0.16,1.64,0.194,1.35,0.16,1.64,0.165,1.59,0.33,0.79,5.76x,11.90x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,524288,512 KiB,512 KiB,0.048,10.86,0.141,3.71,0.163,3.23,0.14,3.74,0.165,3.18,0.329,1.59,2.92x,6.82x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,1048576,1 MiB,1 MiB Tensor,0.054,19.44,0.225,4.66,0.253,4.14,0.221,4.75,0.342,3.07,0.677,1.55,4.17x,12.56x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,2097152,2 MiB,2 MiB,0.088,23.75,0.285,7.36,0.277,7.56,0.33,6.35,0.668,3.14,1.318,1.59,3.23x,14.93x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,4194304,4 MiB,4 MiB,0.144,29.11,0.417,10.06,0.398,10.55,0.534,7.85,1.318,3.18,2.638,1.59,2.89x,18.30x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,8388608,8 MiB,8 MiB,0.288,29.16,0.73,11.49,0.67,12.52,1.074,7.81,2.631,3.19,5.271,1.59,2.54x,18.32x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,16777216,16 MiB,16 MiB Activation,0.547,30.65,1.393,12.04,1.233,13.61,2.121,7.91,5.262,3.19,10.542,1.59,2.55x,19.26x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,33554432,32 MiB,32 MiB,1.078,31.12,2.64,12.71,2.414,13.9,4.225,7.94,10.54,3.18,21.093,1.59,2.45x,19.57x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,67108864,64 MiB,64 MiB Chunk,2.141,31.34,5.335,12.58,4.979,13.48,8.451,7.94,21.089,3.18,42.193,1.59,2.49x,19.71x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,134217728,128 MiB,8K Prefill Chunk (128 MiB),4.262,31.49,10.688,12.56,9.672,13.88,16.909,7.94,42.192,3.18,84.427,1.59,2.51x,19.81x
-TP=4,Socket-Local Single-NUMA,ReduceScatter,268435456,256 MiB,Large Prefill (256 MiB),8.479,31.66,20.978,12.8,18.952,14.16,33.786,7.95,84.503,3.18,168.884,1.59,2.47x,19.92x
+size_bytes,payload_label,description,tp4_local_latency_ms,tp4_local_algbw_gbs,tp4_multi_native_175g_ms,tp4_multi_native_algbw_gbs,tp4_multi_100g_ms,tp4_multi_100g_algbw_gbs,tp4_multi_50g_ms,tp4_multi_50g_algbw_gbs,tp4_multi_20g_ms,tp4_multi_20g_algbw_gbs,tp4_multi_10g_ms,tp4_multi_10g_algbw_gbs,tp4_multi_native_vs_local,tp4_multi_10g_vs_local
+16384,16.0 KiB,"Batch-1 Token Decode (16 KiB)",0.0113,1.46,0.0966,0.17,0.3136,0.05,0.107,0.15,0.1207,0.14,0.1217,0.13,8.55x,10.77x
+32768,32.0 KiB,"32.0 KiB",0.0116,2.82,0.1492,0.22,0.171,0.19,0.1568,0.21,0.2361,0.14,0.171,0.19,12.86x,14.74x
+65536,64.0 KiB,"64.0 KiB",0.0125,5.24,0.1527,0.43,0.1577,0.42,0.1649,0.4,0.2293,0.29,0.1892,0.35,12.22x,15.14x
+131072,128.0 KiB,"Small Activation (128 KiB)",0.0174,7.54,0.1673,0.78,0.1917,0.68,0.1801,0.73,0.2705,0.48,0.1767,0.74,9.61x,10.16x
+262144,256.0 KiB,"256.0 KiB",0.0275,9.55,0.2505,1.05,0.3067,0.85,0.2439,1.07,0.3229,0.81,0.3259,0.8,9.11x,11.85x
+524288,512.0 KiB,"512.0 KiB",0.0477,10.98,0.2535,2.07,0.3256,1.61,0.2851,1.84,0.3627,1.45,0.3674,1.43,5.31x,7.70x
+1048576,1.0 MiB,"1 MiB Tensor",0.0538,19.51,0.3983,2.63,0.4551,2.3,0.3735,2.81,0.4786,2.19,0.671,1.56,7.40x,12.47x
+2097152,2.0 MiB,"2.0 MiB",0.0877,23.9,0.5456,3.84,0.6041,3.47,0.6026,3.48,0.6313,3.32,1.6993,1.23,6.22x,19.38x
+4194304,4.0 MiB,"4.0 MiB",0.143,29.33,1.2193,3.44,0.9529,4.4,0.9549,4.39,1.6272,2.58,4.2336,0.99,8.53x,29.61x
+8388608,8.0 MiB,"8.0 MiB",0.2857,29.36,1.3459,6.23,1.41,5.95,1.587,5.29,2.7473,3.05,6.311,1.33,4.71x,22.09x
+16777216,16.0 MiB,"16 MiB Activation",0.5455,30.76,2.3422,7.16,2.7275,6.15,3.1176,5.38,5.4473,3.08,12.2385,1.37,4.29x,22.44x
+33554432,32.0 MiB,"32.0 MiB",1.0733,31.26,4.243,7.91,4.8583,6.91,5.4244,6.19,10.8006,3.11,23.6175,1.42,3.95x,22.00x
+67108864,64.0 MiB,"64 MiB Chunk",2.1384,31.38,7.7641,8.64,9.6256,6.97,9.5325,7.04,21.3272,3.15,45.9882,1.46,3.63x,21.51x
+134217728,128.0 MiB,"8K Prefill Chunk (128 MiB)",4.2679,31.45,15.3359,8.75,19.0526,7.04,18.1591,7.39,42.6165,3.15,88.575,1.52,3.59x,20.75x
+268435456,256.0 MiB,"Large Prefill (256 MiB)",8.5103,31.54,30.7474,8.73,38.1327,7.04,36.5445,7.35,84.9922,3.16,174.109,1.54,3.61x,20.46x
