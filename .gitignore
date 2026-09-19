@@ -45,6 +45,7 @@ ehthumbs.db
 
 # Temporary logs & caches
 *.log
+*.zip
 .cache/
 .pytest_cache/
 tmp/
