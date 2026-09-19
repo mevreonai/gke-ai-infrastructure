@@ -1,31 +1,58 @@
-# V5 RTX PRO 6000 Serving Analysis (V6 Qualification Run)
+# V5 RTX PRO 6000 serving analysis
 
-> **Evidence Guardrail:** MEASURED-48B surrogate (`moonshotai/Kimi-Linear-48B-A3B-Instruct` at `e1df551a447157d4658b573f9a695d57658590e9`). No absolute K3 extrapolation.
+> MEASURED-48B surrogate. No absolute K3 extrapolation.
 
-## What this analysis answers
+## What this analysis can answer
 - TP4 vs TP8 matched runtime deltas
-- Context scaling from 8K to 512K tokens
-- Concurrency scaling (c=1 vs c=8)
-- Memory and queueing behavior under warm serving
+- chunk-size tradeoffs
+- closed-loop batching frontier
+- open-loop queueing/capacity behavior when generated-load tests are run
+- prefix cold-vs-repeat behavior
 
-## TP4 vs TP8 Matched Comparison Points
+## TP4 vs TP8 matched points
 
-| Input Tokens | Concurrency | TTFT Ratio (TP8 / TP4) | TPOT Ratio (TP8 / TP4) | Throughput Ratio (TP8 / TP4) | Architectural Reason |
-|---:|---:|---:|---:|---:|:---|
-| **8,192** | 1 | 1.215 | 1.429 | 0.717 | TP4 avoids cross-socket UPI traffic; 4 GPUs in single NUMA node faster for decode |
-| **8,192** | 8 | 1.101 | 1.320 | 0.792 | TP4 retains throughput advantage under moderate concurrency |
-| **131,072** | 1 | 1.070 | 1.378 | 0.902 | TP4 decode remains ~38% faster (5.10 ms vs 7.02 ms) |
-| **524,288** | 1 | **0.888** | 1.254 | **1.119** | **Prefill flip point**: 8 GPUs deliver 11.2% faster prefill on 512K tokens due to raw compute |
+| Input | C | TTFT TP8/TP4 | TPOT TP8/TP4 | Throughput TP8/TP4 |
+|---:|---:|---:|---:|---:|
+| 8192 | 1 | 1.193 | 1.427 | 0.720 |
+| 8192 | 8 | 1.083 | 1.302 | 0.803 |
+| 131072 | 1 | 1.063 | 1.384 | 0.907 |
+| 524288 | 1 | 0.883 | 1.250 | 1.126 |
+| 8192 | 1 | 1.204 | 1.420 | 0.736 |
+| 131072 | 1 | 1.062 | 1.383 | 0.907 |
+| 524288 | 1 | 0.881 | 1.248 | 1.128 |
+| 1000000 | 1 | 0.802 | 1.179 | 1.246 |
 
-## Closed-Loop Concurrency Frontier
+## Closed-loop concurrency frontier
 
-| Configuration | Context | Concurrency | Req/s | Output tok/s | TTFT ms | TPOT ms | Waiting Peak | Peak KV Usage | Preemptions |
-|:---|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| **TP4** | 8K | 1 | 0.73 | 187.34 | 223.33 | 4.48 | 0 | 0.1% | 0 |
-| **TP4** | 8K | 8 | 2.18 | 558.84 | 951.85 | 10.62 | 5 | 1.0% | 0 |
-| **TP4** | 128K | 1 | 0.19 | 24.71 | 4,533.15 | 5.10 | 0 | 1.6% | 0 |
-| **TP4** | 512K | 1 | 0.03 | 1.97 | 31,954.16 | 7.60 | 0 | 6.5% | 0 |
-| **TP8** | 8K | 1 | 0.52 | 134.38 | 271.26 | 6.41 | 0 | 0.1% | 0 |
-| **TP8** | 8K | 8 | 1.73 | 442.55 | 1,047.63 | 14.01 | 6 | 0.9% | 0 |
-| **TP8** | 128K | 1 | 0.17 | 22.29 | 4,850.44 | 7.02 | 0 | 1.6% | 0 |
-| **TP8** | 512K | 1 | 0.03 | 2.21 | 28,387.09 | 9.53 | 0 | 6.4% | 0 |
+This is a backlog/saturation test, not a production user-arrival model. Generate open-loop cases with `13_generate_load_cases.py` before claiming a capacity knee.
+
+### Context 8192
+| C | Req/s | Out tok/s | TTFT ms | TPOT ms | Wait peak | KV peak | Preempt |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0.733 | 187.599 | 224.911 | 4.469 | 0.000 | 0.001 | 0.000 |
+| 4 | 1.622 | 415.283 | 610.831 | 7.268 | 2.000 | 0.005 | 0.000 |
+| 8 | 2.186 | 559.731 | 916.484 | 10.732 | 5.000 | 0.010 | 0.000 |
+| 16 | 2.630 | 673.242 | 1155.821 | 19.268 | 13.000 | 0.020 | 0.000 |
+| 32 | 3.025 | 774.404 | 1623.746 | 34.965 | 27.000 | 0.040 | 0.000 |
+
+### Context 131072
+| C | Req/s | Out tok/s | TTFT ms | TPOT ms | Wait peak | KV peak | Preempt |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0.193 | 24.670 | 4538.780 | 5.114 | 0.000 | 0.016 | 0.000 |
+| 4 | 0.212 | 27.200 | 10596.028 | 64.369 | 3.000 | 0.065 | 0.000 |
+| 8 | 0.218 | 27.957 | 12722.521 | 186.978 | 7.000 | 0.131 | 0.000 |
+| 16 | 0.221 | 28.236 | 37256.562 | 242.850 | 15.000 | 0.146 | 0.000 |
+
+### Context 524288
+| C | Req/s | Out tok/s | TTFT ms | TPOT ms | Wait peak | KV peak | Preempt |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0.031 | 1.969 | 32028.529 | 7.559 | 0.000 | 0.065 | 0.000 |
+| 2 | 0.031 | 2.006 | 40299.165 | 367.402 | 1.000 | 0.128 | 0.000 |
+| 4 | 0.031 | 2.012 | 87703.848 | 433.953 | 3.000 | 0.129 | 0.000 |
+
+### Context 1000000
+| C | Req/s | Out tok/s | TTFT ms | TPOT ms | Wait peak | KV peak | Preempt |
+|---:|---:|---:|---:|---:|---:|---:|---:|
+| 1 | 0.011 | 0.341 | 93460.375 | 10.201 | 0.000 | 0.123 | 0.000 |
+| 2 | 0.011 | 0.346 | 150654.326 | 239.252 | 1.000 | 0.155 | 0.000 |
+| 4 | 0.011 | 0.346 | 231503.504 | 267.686 | 3.000 | 0.155 | 0.000 |
