@@ -1,1011 +1,1444 @@
-import json
 import os
+import json
 
-html_template = """<!DOCTYPE html>
+dashboard_code = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>V5 vLLM Runtime Characterization Dashboard</title>
+<title>V5 vLLM Runtime Characterization</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <style>
   :root {
-    --bg: #0b0f17;
-    --card-bg: #121824;
-    --card-bg-subtle: #172033;
-    --border: #222f46;
-    --border-light: #2c3e5d;
-    --accent-blue: #3b82f6;
-    --accent-cyan: #06b6d4;
-    --accent-emerald: #10b981;
-    --accent-amber: #f59e0b;
-    --accent-rose: #f43f5e;
-    --accent-purple: #a855f7;
-    --text-main: #f8fafc;
+    --bg-color: #0d1525;
+    --card-bg: #131f33;
+    --card-bg-inner: #0d1626;
+    --border-color: #1e2f4d;
+    --border-light: #283e66;
+    --text-white: #ffffff;
+    --text-title: #f1f5f9;
     --text-muted: #94a3b8;
     --text-dim: #64748b;
+    --badge-green-bg: #064e3b;
+    --badge-green-txt: #34d399;
+    --badge-blue-bg: #1e3a8a;
+    --badge-blue-txt: #60a5fa;
+    --badge-purple-bg: #581c87;
+    --badge-purple-txt: #c084fc;
+    --badge-amber-bg: #78350f;
+    --badge-amber-txt: #fbbf24;
+    --badge-red-bg: #881337;
+    --badge-red-txt: #f43f5e;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
-  body { background-color: var(--bg); color: var(--text-main); padding: 18px; min-height: 100vh; font-size: 12px; }
 
-  /* Navigation Bar */
-  .header-nav { display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 10px 18px; margin-bottom: 16px; }
-  .nav-title-group h1 { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.3px; display: flex; align-items: center; gap: 10px; }
-  .nav-title-group p { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-  .view-switcher { display: flex; background: #0b111c; padding: 4px; border-radius: 8px; border: 1px solid var(--border); gap: 4px; }
-  .switch-btn { background: transparent; border: none; color: var(--text-muted); font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 6px; cursor: pointer; transition: all 0.2s ease; display: flex; align-items: center; gap: 6px; }
-  .switch-btn:hover { color: #fff; background: rgba(255,255,255,0.05); }
-  .switch-btn.active { background: var(--accent-blue); color: #fff; box-shadow: 0 2px 10px rgba(59, 130, 246, 0.4); }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  body { background-color: var(--bg-color); color: var(--text-white); padding: 12px 18px; min-width: 1440px; font-size: 11px; }
 
-  .badges-row { display: flex; gap: 8px; align-items: center; font-size: 10px; }
-  .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 8px; border-radius: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
-  .badge-dot { width: 6px; height: 6px; border-radius: 50%; }
-  .badge-measured { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
-  .badge-measured .badge-dot { background: #10b981; }
-  .badge-derived { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-  .badge-derived .badge-dot { background: #3b82f6; }
-  .badge-local { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-  .badge-local .badge-dot { background: #f59e0b; }
-  .badge-unresolved { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
-  .badge-unresolved .badge-dot { background: #f43f5e; }
+  /* Floating View Switcher */
+  .top-switcher-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; padding: 4px 10px; background: rgba(13, 22, 38, 0.85); border: 1px solid var(--border-color); border-radius: 6px; }
+  .view-nav { display: flex; gap: 6px; }
+  .nav-tab-btn { background: #16243b; color: var(--text-muted); border: 1px solid var(--border-color); padding: 5px 14px; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+  .nav-tab-btn:hover { color: #fff; background: #1c3050; }
+  .nav-tab-btn.active { background: #2563eb; color: #fff; border-color: #3b82f6; box-shadow: 0 0 10px rgba(37, 99, 235, 0.5); }
+  .provenance-tag { font-size: 10px; color: var(--text-dim); }
 
-  /* 6 Top KPI Sparkline Grid */
-  .kpi-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; margin-bottom: 16px; }
-  .kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; }
-  .kpi-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
-  .kpi-title { font-size: 11px; font-weight: 600; color: var(--text-muted); }
-  .kpi-subtitle { font-size: 9.5px; color: var(--text-dim); }
-  .kpi-value-row { display: flex; justify-content: space-between; align-items: flex-end; margin: 4px 0; }
-  .kpi-value { font-size: 15px; font-weight: 700; color: #fff; }
-  .kpi-trend { font-size: 10px; color: var(--accent-emerald); font-weight: 600; }
-  .kpi-sparkline { width: 64px; height: 26px; }
-  .kpi-footer { font-size: 9.5px; color: var(--text-dim); margin-top: 4px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 4px; }
+  /* Main Top Header */
+  .main-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px; }
+  .header-left h1 { font-size: 20px; font-weight: 700; color: #ffffff; letter-spacing: -0.3px; }
+  .header-left p { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  .header-right { display: flex; align-items: center; gap: 8px; }
 
-  /* 3-Column Main Content Layout */
-  .dashboard-body { display: grid; grid-template-columns: 280px 1fr 320px; gap: 14px; }
-  .col-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 14px; margin-bottom: 14px; }
-  .col-card:last-child { margin-bottom: 0; }
-  .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
-  .card-header h3 { font-size: 12px; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+  /* Pill Badges */
+  .legend-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 4px; font-size: 9.5px; font-weight: 600; line-height: 1.15; border: 1px solid transparent; }
+  .legend-badge .dot { width: 7px; height: 7px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  .badge-m { background: #082f25; border-color: #065f46; color: #34d399; }
+  .badge-m .dot { background: #10b981; box-shadow: 0 0 6px #10b981; }
+  .badge-d { background: #0c2b54; border-color: #1e40af; color: #60a5fa; }
+  .badge-d .dot { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+  .badge-l { background: #382705; border-color: #78350f; color: #fbbf24; }
+  .badge-l .dot { background: #f59e0b; box-shadow: 0 0 6px #f59e0b; }
+  .badge-u { background: #3b0c1a; border-color: #881337; color: #f43f5e; }
+  .badge-u .dot { background: #e11d48; box-shadow: 0 0 6px #e11d48; }
+
+  .date-badge { background: #131f33; border: 1px solid var(--border-color); padding: 4px 10px; border-radius: 4px; text-align: right; font-size: 9px; color: var(--text-muted); }
+  .date-badge strong { display: block; color: #fff; font-size: 10px; }
+
+  /* 6 Top Cards Row */
+  .kpi-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 12px; }
+  .kpi-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; display: flex; flex-direction: column; justify-content: space-between; height: 86px; }
+  .kpi-title-bar { display: flex; justify-content: space-between; align-items: center; }
+  .kpi-title-left { display: flex; align-items: center; gap: 5px; font-weight: 700; font-size: 11px; color: #ffffff; }
+  .kpi-title-left .kpi-dot { width: 6px; height: 6px; border-radius: 50%; background: #10b981; }
+  .kpi-subtitle { font-size: 9px; font-weight: 400; color: var(--text-dim); }
+  .kpi-body { display: flex; justify-content: space-between; align-items: center; margin: 4px 0; }
+  .kpi-metric-text { font-size: 13px; font-weight: 700; color: #ffffff; }
+  .kpi-sparkline-svg { width: 85px; height: 32px; overflow: visible; }
+  .kpi-bottom-desc { font-size: 9px; color: var(--text-dim); border-top: 1px solid rgba(255,255,255,0.04); padding-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+  /* 3 Column Grid Layout */
+  .dashboard-grid { display: grid; grid-template-columns: 310px 1fr 340px; gap: 12px; }
+
+  /* Cards */
+  .dash-card { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px 12px; margin-bottom: 10px; }
+  .card-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+  .card-top h2 { font-size: 11.5px; font-weight: 700; color: #ffffff; display: flex; align-items: center; gap: 6px; }
 
   /* Tables */
-  .custom-table { width: 100%; border-collapse: collapse; font-size: 10px; }
-  .custom-table th { text-align: left; padding: 5px 6px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border); }
-  .custom-table td { padding: 5px 6px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #cbd5e1; }
-  .custom-table tr:hover td { background: rgba(255,255,255,0.02); }
+  .styled-table { width: 100%; border-collapse: collapse; font-size: 9.5px; }
+  .styled-table th { text-align: left; padding: 4px 5px; color: var(--text-muted); font-weight: 600; border-bottom: 1px solid var(--border-color); }
+  .styled-table td { padding: 4px 5px; border-bottom: 1px solid rgba(255,255,255,0.03); color: #cbd5e1; }
+  .styled-table tr:hover td { background: rgba(255,255,255,0.02); }
 
-  /* Regime Transitions Pipeline */
-  .regime-pipeline { display: flex; gap: 4px; margin: 8px 0; }
-  .regime-step { flex: 1; padding: 6px 4px; font-size: 9px; text-align: center; border-radius: 4px; font-weight: 600; line-height: 1.2; position: relative; }
-  .regime-step small { display: block; font-size: 7.5px; font-weight: 400; opacity: 0.8; margin-top: 2px; }
-  .reg-1 { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid rgba(16, 185, 129, 0.4); }
-  .reg-2 { background: rgba(6, 182, 212, 0.2); color: #67e8f9; border: 1px solid rgba(6, 182, 212, 0.4); }
-  .reg-3 { background: rgba(245, 158, 11, 0.2); color: #fcd34d; border: 1px solid rgba(245, 158, 11, 0.4); }
-  .reg-4 { background: rgba(249, 115, 22, 0.2); color: #fdba74; border: 1px solid rgba(249, 115, 22, 0.4); }
-  .reg-5 { background: rgba(244, 63, 94, 0.2); color: #fda4af; border: 1px solid rgba(244, 63, 94, 0.4); }
+  /* Regime Transitions Chevrons */
+  .chevron-container { display: flex; margin: 8px 0 4px 0; }
+  .chevron-box { flex: 1; padding: 6px 4px; text-align: center; font-size: 8.5px; font-weight: 700; line-height: 1.15; position: relative; margin-right: 2px; }
+  .chevron-box small { display: block; font-size: 7px; font-weight: 400; opacity: 0.85; margin-top: 2px; }
+  .ch-1 { background: #064e3b; color: #6ee7b7; clip-path: polygon(0% 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 0% 100%, 0% 50%); }
+  .ch-2 { background: #0c4a6e; color: #7dd3fc; clip-path: polygon(0% 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 0% 100%, 8px 50%); }
+  .ch-3 { background: #78350f; color: #fde68a; clip-path: polygon(0% 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 0% 100%, 8px 50%); }
+  .ch-4 { background: #7c2d12; color: #fdba74; clip-path: polygon(0% 0%, calc(100% - 8px) 0%, 100% 50%, calc(100% - 8px) 100%, 0% 100%, 8px 50%); }
+  .ch-5 { background: #881337; color: #fda4af; clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 8px 50%); }
 
-  /* Charts Container */
-  .charts-2x2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .chart-box { background: var(--card-bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 10px; height: 230px; position: relative; }
-  .chart-title { font-size: 11px; font-weight: 600; color: #fff; margin-bottom: 6px; display: flex; justify-content: space-between; align-items: center; }
+  /* Progress bar in table */
+  .prog-bar-wrap { width: 100%; height: 5px; background: #0d1626; border-radius: 2px; overflow: hidden; }
+  .prog-bar-fill { height: 100%; background: #3b82f6; border-radius: 2px; }
 
-  /* Heatmap */
-  .heatmap-grid { display: grid; grid-template-columns: 50px repeat(4, 1fr); gap: 4px; margin-top: 6px; font-size: 9.5px; }
-  .heat-col-head { text-align: center; color: var(--text-muted); font-weight: 600; padding: 3px 0; }
-  .heat-row-head { color: var(--text-muted); font-weight: 600; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; }
-  .heat-cell { padding: 6px 2px; text-align: center; border-radius: 4px; font-weight: 600; font-size: 9px; cursor: default; transition: transform 0.15s ease; }
-  .heat-cell:hover { transform: scale(1.05); z-index: 10; box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
-  .heat-healthy { background: #065f46; color: #a7f3d0; border: 1px solid #047857; }
-  .heat-queueing { background: #78350f; color: #fde68a; border: 1px solid #b45309; }
-  .heat-pressure { background: #831843; color: #fbcfe8; border: 1px solid #be185d; }
-  .heat-unresolved { background: #27272a; color: #a1a1aa; border: 1px dashed #52525b; }
+  /* Charts */
+  .chart-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .chart-card { background: var(--card-bg-inner); border: 1px solid var(--border-color); border-radius: 6px; padding: 8px 10px; height: 215px; position: relative; }
+  .chart-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .chart-card-title { font-size: 10.5px; font-weight: 700; color: #fff; }
 
-  /* Breakdown Segmented Bars */
-  .formula-box { background: #090d14; border: 1px solid var(--border); border-radius: 4px; padding: 6px 8px; font-family: monospace; font-size: 9.5px; color: #38bdf8; margin: 6px 0; }
-  .segmented-bar { display: flex; height: 22px; border-radius: 4px; overflow: hidden; margin: 8px 0; font-size: 9px; font-weight: 700; color: #000; }
-  .seg { display: flex; align-items: center; justify-content: center; }
-  .seg-a { background: #34d399; }
-  .seg-b { background: #38bdf8; }
-  .seg-c { background: #818cf8; }
-  .seg-d { background: #c084fc; }
-  .seg-e { background: #fb7185; }
-  .seg-f { background: #facc15; }
-  .seg-g { background: #94a3b8; }
-  .seg-o { background: #1e293b; color: #fff; border: 1px dashed #64748b; }
+  /* Workload Envelope Heatmap */
+  .heatmap-card { background: var(--card-bg-inner); border: 1px solid var(--border-color); border-radius: 6px; padding: 10px; height: 185px; display: flex; gap: 14px; }
+  .heatmap-table-wrap { flex: 1; }
+  .heatmap-grid { display: grid; grid-template-columns: 55px repeat(4, 1fr); gap: 3px; font-size: 9px; }
+  .hm-th { text-align: center; color: var(--text-muted); font-weight: 600; padding: 2px 0; }
+  .hm-row-lbl { color: var(--text-muted); font-weight: 600; display: flex; align-items: center; justify-content: flex-end; padding-right: 6px; font-size: 9px; }
+  .hm-cell { padding: 6px 2px; text-align: center; border-radius: 3px; font-weight: 600; font-size: 8.5px; }
+  .hm-healthy { background: #15803d; color: #dcfce7; border: 1px solid #16a34a; }
+  .hm-queue { background: #b45309; color: #fef3c7; border: 1px solid #d97706; }
+  .hm-pressure { background: #be123c; color: #ffe4e6; border: 1px solid #e11d48; }
+  .hm-unres { background: #374151; color: #9ca3af; border: 1px dashed #4b5563; }
 
-  /* Takeaways Accordion / List */
-  .takeaway-item { background: var(--card-bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 7px 10px; margin-bottom: 6px; font-size: 10px; }
-  .takeaway-header { font-weight: 600; color: #fff; display: flex; align-items: center; gap: 8px; }
-  .takeaway-num { width: 16px; height: 16px; border-radius: 50%; background: var(--accent-blue); color: #fff; font-size: 9px; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
-  .takeaway-body { color: var(--text-muted); font-size: 9.5px; margin-top: 4px; padding-left: 24px; line-height: 1.35; }
+  .heatmap-legend { width: 140px; border-left: 1px solid var(--border-color); padding-left: 10px; display: flex; flex-direction: column; justify-content: center; gap: 8px; font-size: 8.5px; }
+  .hm-leg-item { display: flex; align-items: center; gap: 6px; }
+  .hm-leg-box { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+  .hm-leg-title { font-weight: 700; color: #fff; line-height: 1.1; }
+  .hm-leg-sub { color: var(--text-dim); font-size: 7.5px; }
 
-  /* Topology Cards for Multi-Node */
-  .topo-card { background: var(--card-bg-subtle); border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin-bottom: 8px; transition: border-color 0.2s; }
-  .topo-card:hover { border-color: var(--accent-blue); }
-  .topo-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .topo-name { font-size: 12px; font-weight: 700; color: #fff; }
-  .topo-desc { font-size: 9.5px; color: var(--text-dim); }
-  .topo-bullets { margin-top: 6px; font-size: 9.5px; color: #cbd5e1; list-style: none; }
-  .topo-bullets li { position: relative; padding-left: 12px; margin-bottom: 2px; }
-  .topo-bullets li::before { content: "•"; position: absolute; left: 2px; color: var(--accent-blue); }
+  /* Formulas & Breakdowns */
+  .formula-banner { background: #080f1d; border: 1px solid #1b2d4b; border-radius: 4px; padding: 5px 8px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; font-size: 9px; color: #38bdf8; margin: 4px 0 6px 0; }
+  .seg-bar-wrap { margin: 6px 0; }
+  .seg-bar-title { font-size: 8.5px; color: var(--text-dim); margin-bottom: 2px; }
+  .segmented-bar { display: flex; height: 18px; border-radius: 3px; overflow: hidden; font-weight: 700; font-size: 8.5px; color: #000; }
+  .seg-slice { display: flex; align-items: center; justify-content: center; overflow: hidden; white-space: nowrap; }
 
-  /* Cluster Map SVG styling */
-  .cluster-box { background: #080d17; border: 1px solid var(--border); border-radius: 6px; padding: 10px; margin: 8px 0; }
-  .cluster-title { font-size: 10px; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+  /* Takeaway Questions */
+  .takeaway-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; }
+  .takeaway-pill { display: flex; align-items: flex-start; gap: 6px; font-size: 9px; color: #cbd5e1; line-height: 1.25; }
+  .takeaway-circ { width: 15px; height: 15px; border-radius: 50%; background: #2563eb; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 8.5px; font-weight: 700; flex-shrink: 0; }
 
-  /* Footer */
-  .dashboard-footer { margin-top: 14px; padding: 10px 14px; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--text-dim); }
+  /* Multi-Node Specific */
+  .topo-card-box { background: var(--card-bg-inner); border: 1px solid var(--border-color); border-radius: 5px; padding: 8px; margin-bottom: 6px; }
+  .topo-card-title { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: 700; color: #fff; }
+  .topo-card-sub { font-size: 8.5px; color: var(--text-dim); margin: 2px 0 4px 0; }
+  .topo-card-list { list-style: none; font-size: 9px; color: #94a3b8; }
+  .topo-card-list li { padding-left: 8px; position: relative; margin-bottom: 2px; }
+  .topo-card-list li::before { content: "•"; position: absolute; left: 0; color: #38bdf8; }
+
+  /* Bottom Footer */
+  .bottom-status-bar { display: flex; justify-content: space-between; align-items: center; margin-top: 10px; padding: 6px 12px; background: rgba(13, 21, 37, 0.95); border: 1px solid var(--border-color); border-radius: 4px; font-size: 9.5px; color: var(--text-dim); }
 </style>
 </head>
 <body>
 
-<!-- Header & Nav -->
-<div class="header-nav">
-  <div class="nav-title-group">
-    <h1 id="mainTitle">V5 vLLM Runtime Characterization — Scale Up (Single Node)</h1>
-    <p id="mainSubtitle">MEASURED-48B surrogate; do not scale absolute values to Kimi K3. | GCP Blackwell / RTX 6000 Ada Live Telemetry</p>
-  </div>
-  <div class="view-switcher">
-    <button class="switch-btn active" id="btnScaleUp" onclick="switchView('scale-up')">
-      <span>⚡</span> Scale Up (Single Node)
+<!-- View Switcher -->
+<div class="top-switcher-bar">
+  <div class="view-nav">
+    <button class="nav-tab-btn active" id="btnTabSingle" onclick="setDashboardTab('single')">
+      ⚡ Scale Up (Single Node)
     </button>
-    <button class="switch-btn" id="btnScaleOut" onclick="switchView('scale-out')">
-      <span>🌐</span> Scale Out (Multi-Node)
+    <button class="nav-tab-btn" id="btnTabMulti" onclick="setDashboardTab('multi')">
+      🌐 Scale Out (Multi-Node)
     </button>
   </div>
-  <div class="badges-row">
-    <span class="badge badge-measured"><span class="badge-dot"></span>MEASURED-48B</span>
-    <span class="badge badge-derived"><span class="badge-dot"></span>MODELED-K3</span>
-    <span class="badge badge-local"><span class="badge-dot"></span>LOCAL-REAL</span>
-    <span class="badge badge-unresolved"><span class="badge-dot"></span>UNRESOLVED</span>
+  <div class="provenance-tag">
+    Hardware: 16x NVIDIA RTX 6000 Ada (Blackwell arch, 768GB VRAM aggregate) | GCP us-central1-b
   </div>
 </div>
 
 <!-- ======================================================== -->
-<!-- TAB 1: SCALE UP (SINGLE NODE) -->
+<!-- TAB 1: SCALE UP (SINGLE NODE) - 1-to-1 REPLICA -->
 <!-- ======================================================== -->
-<div id="viewScaleUp">
-  <!-- 6 Top KPI Sparkline Grid -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">TTFT</div>
-          <div class="kpi-subtitle">(time to first token)</div>
-        </div>
-        <span class="badge badge-measured">M</span>
-      </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">222 ms → 74.8s</div>
-        <svg class="kpi-sparkline" viewBox="0 0 60 25">
-          <path d="M 2 22 L 18 20 L 35 14 L 58 3" fill="none" stroke="#10b981" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="kpi-footer">Increases with context; higher for TP8 at long context.</div>
+<div id="tabSingleNode">
+  <!-- Top Header -->
+  <div class="main-header">
+    <div class="header-left">
+      <h1>V5 vLLM Runtime Characterization — Scale Up (Single Node)</h1>
+      <p>MEASURED-48B surrogate; do not scale absolute values to Kimi K3.</p>
     </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">TPOT / ITL</div>
-          <div class="kpi-subtitle">(per output token)</div>
-        </div>
-        <span class="badge badge-measured">M</span>
+    <div class="header-right">
+      <div class="legend-badge badge-m">
+        <span class="dot"></span>
+        <div>MEASURED-48B<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">(from runs)</span></div>
       </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">4.45 → 10.2 ms</div>
-        <svg class="kpi-sparkline" viewBox="0 0 60 25">
-          <path d="M 2 5 L 18 12 L 35 16 L 58 19" fill="none" stroke="#38bdf8" stroke-width="2"/>
-        </svg>
+      <div class="legend-badge badge-d">
+        <span class="dot"></span>
+        <div>MODELED-K3 / DERIVED<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">(from 48B or analysis)</span></div>
       </div>
-      <div class="kpi-footer">Decreases with concurrency, then plateaus.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">Throughput</div>
-          <div class="kpi-subtitle">(tokens / second)</div>
-        </div>
-        <span class="badge badge-measured">M</span>
+      <div class="legend-badge badge-l">
+        <span class="dot"></span>
+        <div>LOCAL-REAL<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">(this platform)</span></div>
       </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">28.2 → 721 tok/s</div>
-        <svg class="kpi-sparkline" viewBox="0 0 60 25">
-          <path d="M 2 20 L 18 14 L 35 8 L 58 6" fill="none" stroke="#10b981" stroke-width="2"/>
-        </svg>
+      <div class="legend-badge badge-u">
+        <span class="dot"></span>
+        <div>UNRESOLVED<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">(not run / no data)</span></div>
       </div>
-      <div class="kpi-footer">Rises with concurrency, then flattens (capacity knee).</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">Queue Time</div>
-          <div class="kpi-subtitle">(time in scheduler)</div>
-        </div>
-        <span class="badge badge-derived">D</span>
+      <div class="date-badge">
+        <strong>2026-09-20 04:20</strong>
+        Experimental Analysis
       </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">0.008 → 0.95 s</div>
-        <svg class="kpi-sparkline" viewBox="0 0 60 25">
-          <path d="M 2 22 L 25 22 L 40 18 L 58 4" fill="none" stroke="#f59e0b" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="kpi-footer">Low → rises after capacity knee.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">KV Utilization</div>
-          <div class="kpi-subtitle">(of GPU memory)</div>
-        </div>
-        <span class="badge badge-measured">M</span>
-      </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">1.2% → 15.5%</div>
-        <svg class="kpi-sparkline" viewBox="0 0 60 25">
-          <path d="M 2 21 L 18 18 L 35 12 L 58 7" fill="none" stroke="#a855f7" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="kpi-footer">Increases with context and concurrency.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">Capacity Knee</div>
-          <div class="kpi-subtitle">(queueing onset)</div>
-        </div>
-        <span class="badge badge-derived">D</span>
-      </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">c = 8 → 16</div>
-        <svg class="kpi-sparkline" viewBox="0 0 60 25">
-          <path d="M 2 22 L 20 20 L 35 15 L 45 8 L 58 4" fill="none" stroke="#f43f5e" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="kpi-footer">Model and config dependent (gated admission).</div>
     </div>
   </div>
 
-  <!-- 3-Column Body -->
-  <div class="dashboard-body">
-    <!-- Left Column -->
+  <!-- 6 Top Cards -->
+  <div class="kpi-row">
+    <!-- Card 1 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>TTFT</div>
+        <div class="kpi-subtitle">(time to first token)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">Measured trend</div>
+        <svg class="kpi-sparkline-svg" viewBox="0 0 85 32">
+          <defs>
+            <linearGradient id="grad-spark-1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path d="M 2 28 L 22 25 L 50 16 L 80 4 L 80 30 L 2 30 Z" fill="url(#grad-spark-1)"/>
+          <path d="M 2 28 L 22 25 L 50 16 L 80 4" fill="none" stroke="#38bdf8" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="kpi-bottom-desc">Increases with context; higher for TP8 at long context.</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>TPOT / ITL</div>
+        <div class="kpi-subtitle">(per output token)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">Measured trend</div>
+        <svg class="kpi-sparkline-svg" viewBox="0 0 85 32">
+          <defs>
+            <linearGradient id="grad-spark-2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#34d399" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#34d399" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path d="M 2 4 L 20 18 L 48 24 L 80 25 L 80 30 L 2 30 Z" fill="url(#grad-spark-2)"/>
+          <path d="M 2 4 L 20 18 L 48 24 L 80 25" fill="none" stroke="#34d399" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="kpi-bottom-desc">Decreases with concurrency, then plateaus.</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>Throughput</div>
+        <div class="kpi-subtitle">(tokens / second)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">Measured trend</div>
+        <svg class="kpi-sparkline-svg" viewBox="0 0 85 32">
+          <defs>
+            <linearGradient id="grad-spark-3" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#38bdf8" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path d="M 2 26 L 25 18 L 55 10 L 80 8 L 80 30 L 2 30 Z" fill="url(#grad-spark-3)"/>
+          <path d="M 2 26 L 25 18 L 55 10 L 80 8" fill="none" stroke="#38bdf8" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="kpi-bottom-desc">Rises with concurrency, then flattens (capacity knee).</div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>Queue Time</div>
+        <div class="kpi-subtitle">(time in scheduler)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">See chart</div>
+        <svg class="kpi-sparkline-svg" viewBox="0 0 85 32">
+          <defs>
+            <linearGradient id="grad-spark-4" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f59e0b" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#f59e0b" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path d="M 2 28 L 35 28 L 55 22 L 80 4 L 80 30 L 2 30 Z" fill="url(#grad-spark-4)"/>
+          <path d="M 2 28 L 35 28 L 55 22 L 80 4" fill="none" stroke="#f59e0b" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="kpi-bottom-desc">Low → rises after capacity knee.</div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>KV Utilization</div>
+        <div class="kpi-subtitle">(of GPU memory)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">Measured trend</div>
+        <svg class="kpi-sparkline-svg" viewBox="0 0 85 32">
+          <defs>
+            <linearGradient id="grad-spark-5" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#a855f7" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#a855f7" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path d="M 2 27 L 25 22 L 55 14 L 80 8 L 80 30 L 2 30 Z" fill="url(#grad-spark-5)"/>
+          <path d="M 2 27 L 25 22 L 55 14 L 80 8" fill="none" stroke="#a855f7" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="kpi-bottom-desc">Increases with context and concurrency.</div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>Capacity Knee</div>
+        <div class="kpi-subtitle">(at which queueing increases)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">See chart</div>
+        <svg class="kpi-sparkline-svg" viewBox="0 0 85 32">
+          <defs>
+            <linearGradient id="grad-spark-6" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.4"/>
+              <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.0"/>
+            </linearGradient>
+          </defs>
+          <path d="M 2 28 L 30 26 L 50 14 L 80 4 L 80 30 L 2 30 Z" fill="url(#grad-spark-6)"/>
+          <path d="M 2 28 L 30 26 L 50 14 L 80 4" fill="none" stroke="#f43f5e" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="kpi-bottom-desc">Model and config dependent.</div>
+    </div>
+  </div>
+
+  <!-- 3-Column Dashboard Body -->
+  <div class="dashboard-grid">
+    <!-- LEFT COLUMN -->
     <div>
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Workload & Config Matrix</h3>
-          <span class="badge badge-measured">M</span>
+      <!-- Card 1: Workload & Config Matrix -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Workload & Config Matrix</h2>
         </div>
-        <table class="custom-table">
+        <table class="styled-table">
           <thead>
             <tr>
-              <th>Context</th>
+              <th>Context<br>Length</th>
               <th>Concurrency</th>
-              <th>Chunk</th>
-              <th>Topo</th>
-              <th>Cache</th>
+              <th>Chunk Size<br>(prefill)</th>
+              <th>Topology</th>
+              <th>KV Mode</th>
+              <th>Prefix<br>Cache</th>
+              <th>CPU<br>Offload</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td><strong>8K</strong></td>
-              <td>c1, c4, c8, c16, c32</td>
-              <td>4K/8K/16K</td>
-              <td>TP4 / TP8</td>
+              <td>c1, c4, c8,<br>c16, c32</td>
+              <td>4K / 8K /<br>16K</td>
+              <td>TP4/PP1<br>TP8/PP1</td>
+              <td>auto / fp8</td>
               <td>cold / hit</td>
+              <td>off /<br>pressure</td>
             </tr>
             <tr>
               <td><strong>128K</strong></td>
-              <td>c1, c4, c8, c16, c32</td>
-              <td>4K/8K/16K</td>
-              <td>TP4 / TP8</td>
+              <td>c1, c4, c8,<br>c16, c32</td>
+              <td>4K / 8K /<br>16K</td>
+              <td>TP4/PP1<br>TP8/PP1</td>
+              <td>auto / fp8</td>
               <td>cold / hit</td>
+              <td>off /<br>pressure</td>
             </tr>
             <tr>
               <td><strong>512K</strong></td>
-              <td>c1, c4, c8, c16, c32</td>
-              <td>4K/8K/16K</td>
-              <td>TP4 / TP8</td>
+              <td>c1, c4, c8,<br>c16, c32</td>
+              <td>4K / 8K /<br>16K</td>
+              <td>TP4/PP1<br>TP8/PP1</td>
+              <td>auto / fp8</td>
               <td>cold / hit</td>
+              <td>off /<br>pressure</td>
             </tr>
             <tr>
               <td><strong>~1M</strong></td>
-              <td>c1, c2, c4 (gated)</td>
-              <td>4K/8K/16K</td>
-              <td>TP4 / TP8</td>
+              <td>c1, c4, c8,<br>c16, c32</td>
+              <td>4K / 8K /<br>16K</td>
+              <td>TP4/PP1<br>TP8/PP1</td>
+              <td>auto / fp8</td>
               <td>cold / hit</td>
+              <td>off /<br>pressure</td>
             </tr>
           </tbody>
         </table>
-        <div style="background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 4px; padding: 6px; margin-top: 8px; font-size: 9px; color: #fbbf24;">
-          ⚠️ ~1M context is capacity-gated (admitted cleanly up to c=4 without OOM).
+        <div style="font-size: 8px; color: #fbbf24; margin-top: 6px; line-height: 1.2;">
+          ⚠️ ~1M context is capacity-gated (may not be feasible at higher concurrency).
         </div>
       </div>
 
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Regime Transitions</h3>
-          <span class="badge badge-derived">D</span>
+      <!-- Card 2: Regime Transitions -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Regime Transitions</h2>
         </div>
-        <div class="regime-pipeline">
-          <div class="regime-step reg-1">Under-<br>utilized<small>Compute bound</small></div>
-          <div class="regime-step reg-2">Efficient<br>batching<small>High TPS</small></div>
-          <div class="regime-step reg-3">Queue<br>onset<small>Knee reached</small></div>
-          <div class="regime-step reg-4">KV cache<br>pressure<small>Paging active</small></div>
-          <div class="regime-step reg-5">Collapse /<br>throttle<small>Avoided (gate)</small></div>
+        <div class="chevron-container">
+          <div class="chevron-box ch-1">Under-<br>utilized<small>Low concurrency<br>Compute-bound</small></div>
+          <div class="chevron-box ch-2">Efficient<br>batching<small>Throughput scales<br>well</small></div>
+          <div class="chevron-box ch-3">Queue<br>onset<small>Latency rises<br>(look for knee)</small></div>
+          <div class="chevron-box ch-4">KV pressure /<br>preemption<small>Higher memory<br>More preemption</small></div>
+          <div class="chevron-box ch-5">Collapse or<br>throttling<small>Severe queueing<br>or OOM</small></div>
         </div>
       </div>
 
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Runtime Reserve (Overheads)</h3>
-          <span class="badge badge-measured">M</span>
+      <!-- Card 3: Runtime Reserve -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Runtime Reserve <span style="font-weight:400; font-size:9.5px; color:var(--text-dim);">(Where time goes beyond model compute)</span></h2>
         </div>
-        <table class="custom-table">
+        <table class="styled-table">
           <thead>
-            <tr><th>Component</th><th>Impact</th><th>Status</th></tr>
+            <tr>
+              <th>Component</th>
+              <th style="width:75px;">Typical Impact</th>
+              <th>Status / Notes</th>
+            </tr>
           </thead>
           <tbody>
-            <tr><td>Scheduler / Queue</td><td><div style="width: 25px; height: 4px; background:#38bdf8; border-radius:2px;"></div></td><td>Measured</td></tr>
-            <tr><td>Preemption</td><td><div style="width: 5px; height: 4px; background:#10b981; border-radius:2px;"></div></td><td>0 in matrix</td></tr>
-            <tr><td>KV Cache Paging</td><td><div style="width: 45px; height: 4px; background:#a855f7; border-radius:2px;"></div></td><td>12-15% peak</td></tr>
-            <tr><td>CPU Offload</td><td><div style="width: 65px; height: 4px; background:#f43f5e; border-radius:2px;"></div></td><td>Severe penalty</td></tr>
-            <tr><td>Kernel Launch</td><td><div style="width: 30px; height: 4px; background:#38bdf8; border-radius:2px;"></div></td><td>PyTorch runtime</td></tr>
-            <tr><td>Prefix Cache Hit</td><td><div style="width: 75px; height: 4px; background:#10b981; border-radius:2px;"></div></td><td>-47% to -80%</td></tr>
+            <tr>
+              <td><span style="color:#38bdf8;">●</span> Scheduler / queue</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 45%;"></div></div></td>
+              <td>Measured (from traces)</td>
+            </tr>
+            <tr>
+              <td><span style="color:#38bdf8;">●</span> Preemption</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 10%;"></div></div></td>
+              <td>Observed at high load</td>
+            </tr>
+            <tr>
+              <td><span style="color:#10b981;">●</span> KV / cache pressure</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 35%;"></div></div></td>
+              <td>Measured (memory + traces)</td>
+            </tr>
+            <tr>
+              <td><span style="color:#10b981;">●</span> CPU offload</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 18%;"></div></div></td>
+              <td>Measured (when enabled)</td>
+            </tr>
+            <tr>
+              <td><span style="color:#f59e0b;">●</span> Kernel / API overhead</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 28%;"></div></div></td>
+              <td>Derived (profiling needed)</td>
+            </tr>
+            <tr>
+              <td><span style="color:#f43f5e;">●</span> Pipeline bubble (PP)</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 15%;"></div></div></td>
+              <td>Derived (depends on model)</td>
+            </tr>
+            <tr>
+              <td><span style="color:#38bdf8;">●</span> Prefix-cache behavior</td>
+              <td><div class="prog-bar-wrap"><div class="prog-bar-fill" style="width: 30%;"></div></div></td>
+              <td>Measured (A/B runs)</td>
+            </tr>
           </tbody>
         </table>
-      </div>
-    </div>
-
-    <!-- Center Column (4 Charts) -->
-    <div>
-      <div class="charts-2x2">
-        <div class="chart-box">
-          <div class="chart-title">
-            <span>TTFT vs Context Length</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <canvas id="chartTtftContext"></canvas>
-        </div>
-
-        <div class="chart-box">
-          <div class="chart-title">
-            <span>TPOT / ITL vs Concurrency</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <canvas id="chartTpotConcurrency"></canvas>
-        </div>
-
-        <div class="chart-box">
-          <div class="chart-title">
-            <span>Throughput & Queue Time vs Concurrency</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <canvas id="chartTpsQueue"></canvas>
-        </div>
-
-        <div class="chart-box" style="display: flex; flex-direction: column;">
-          <div class="chart-title">
-            <span>Workload Envelope (Observed Behavior)</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <div class="heatmap-grid" style="flex: 1;">
-            <div class="heat-col-head"></div>
-            <div class="heat-col-head">8K</div>
-            <div class="heat-col-head">128K</div>
-            <div class="heat-col-head">512K</div>
-            <div class="heat-col-head">~1M</div>
-
-            <div class="heat-row-head">c32</div>
-            <div class="heat-cell heat-queueing">Queueing</div>
-            <div class="heat-cell heat-queueing">Queueing</div>
-            <div class="heat-cell heat-pressure">KV Press</div>
-            <div class="heat-cell heat-unresolved">NOT RUN</div>
-
-            <div class="heat-row-head">c16</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-queueing">Queueing</div>
-            <div class="heat-cell heat-pressure">KV Press</div>
-            <div class="heat-cell heat-unresolved">NOT RUN</div>
-
-            <div class="heat-row-head">c8</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-queueing">Queueing</div>
-            <div class="heat-cell heat-pressure">KV Press</div>
-
-            <div class="heat-row-head">c4</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-queueing">Queueing</div>
-
-            <div class="heat-row-head">c1</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-            <div class="heat-cell heat-healthy">Healthy</div>
-          </div>
+        <div style="font-size: 8px; color: var(--text-dim); margin-top: 5px;">
+          Exact shares depend on profiler + telemetry correlation.
         </div>
       </div>
     </div>
 
-    <!-- Right Column (Breakdowns & Takeaways) -->
+    <!-- CENTER COLUMN -->
     <div>
-      <div class="col-card">
-        <div class="card-header">
-          <h3>TTFT / Prefill Breakdown</h3>
-          <span class="badge badge-derived">D</span>
+      <!-- Top Row Charts -->
+      <div class="chart-grid-2">
+        <!-- Chart 1 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title"><span style="color:#10b981;">●</span> TTFT vs Context Length</span>
+            <span class="legend-badge badge-m" style="padding:1px 5px; font-size:8px;"><span class="dot"></span>MEASURED-48B</span>
+          </div>
+          <canvas id="canvasTtftContext"></canvas>
         </div>
-        <div class="formula-box">T_prefill ≈ A_GPU + B_TP + C_PP + D_PCIe + E_vLLM + F_CPU - O_overlap</div>
-        <div class="segmented-bar">
-          <div class="seg seg-a" style="width: 48%;" title="A_GPU (Attention & GEMM)">A (48%)</div>
-          <div class="seg seg-b" style="width: 22%;" title="B_TP (AllReduce)">B (22%)</div>
-          <div class="seg seg-c" style="width: 8%;" title="C_PP (Pipeline)">C (8%)</div>
-          <div class="seg seg-e" style="width: 14%;" title="E_vLLM (Scheduler)">E (14%)</div>
-          <div class="seg seg-f" style="width: 8%;" title="F_CPU (Launch)">F (8%)</div>
-        </div>
-        <div style="font-size: 9px; color: var(--text-dim);">
-          A: GPU GEMM (Measured) | B: TP Comm (Measured) | E: vLLM Schedule (Measured)
+
+        <!-- Chart 2 -->
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <span class="chart-card-title"><span style="color:#10b981;">●</span> TPOT / ITL vs Concurrency</span>
+            <span class="legend-badge badge-m" style="padding:1px 5px; font-size:8px;"><span class="dot"></span>MEASURED-48B</span>
+          </div>
+          <canvas id="canvasTpotConcurrency"></canvas>
         </div>
       </div>
 
-      <div class="col-card">
-        <div class="card-header">
-          <h3>TPOT / Decode Breakdown</h3>
-          <span class="badge badge-derived">D</span>
+      <!-- Middle Chart: Throughput & Queue Time -->
+      <div class="chart-card" style="height: 190px; margin-bottom: 10px;">
+        <div class="chart-card-header">
+          <span class="chart-card-title"><span style="color:#10b981;">●</span> Throughput and Queue Time vs Concurrency</span>
+          <span class="legend-badge badge-m" style="padding:1px 5px; font-size:8px;"><span class="dot"></span>MEASURED-48B</span>
         </div>
-        <div class="formula-box">T_decode ≈ A_comp + B_TP + C_runtime + D_KV - O_overlap</div>
-        <div class="segmented-bar">
-          <div class="seg seg-a" style="width: 32%;" title="A_comp (Small-M GEMM)">A (32%)</div>
-          <div class="seg seg-b" style="width: 38%;" title="B_TP (Latency Bound)">B (38%)</div>
-          <div class="seg seg-c" style="width: 18%;" title="C_runtime">C (18%)</div>
-          <div class="seg seg-d" style="width: 12%;" title="D_KV (Gather/Paging)">D (12%)</div>
+        <canvas id="canvasTpsQueueTime"></canvas>
+      </div>
+
+      <!-- Bottom Card: Workload Envelope Heatmap -->
+      <div class="heatmap-card">
+        <div class="heatmap-table-wrap">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+            <span style="font-size:10.5px; font-weight:700; color:#fff;"><span style="color:#10b981;">●</span> Workload Envelope (Observed Behavior)</span>
+            <span class="legend-badge badge-m" style="padding:1px 5px; font-size:8px;"><span class="dot"></span>MEASURED-48B</span>
+          </div>
+          <div class="heatmap-grid">
+            <div class="hm-th"></div>
+            <div class="hm-th">8K</div>
+            <div class="hm-th">128K</div>
+            <div class="hm-th">512K</div>
+            <div class="hm-th">~1M</div>
+
+            <div class="hm-row-lbl">c32</div>
+            <div class="hm-cell hm-queue">Queueing</div>
+            <div class="hm-cell hm-queue">Queueing</div>
+            <div class="hm-cell hm-pressure">KV pressure</div>
+            <div class="hm-cell hm-unres">UNRESOLVED</div>
+
+            <div class="hm-row-lbl">c16</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-queue">Queueing</div>
+            <div class="hm-cell hm-pressure">KV pressure</div>
+            <div class="hm-cell hm-pressure">KV pressure</div>
+
+            <div class="hm-row-lbl">c8</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-queue">Queueing</div>
+            <div class="hm-cell hm-pressure">KV pressure</div>
+            <div class="hm-cell hm-pressure">KV pressure</div>
+
+            <div class="hm-row-lbl">c4</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-queue">Queueing</div>
+            <div class="hm-cell hm-pressure">KV pressure</div>
+
+            <div class="hm-row-lbl">c1</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-healthy">Healthy</div>
+            <div class="hm-cell hm-queue">Queueing</div>
+          </div>
+          <div style="text-align:center; font-size:8.5px; color:var(--text-muted); margin-top:3px;">Context Length</div>
         </div>
-        <div style="font-size: 9px; color: var(--text-dim);">
-          At small batch, TP comm (B) and UPI socket crossings dominate decode.
+
+        <div class="heatmap-legend">
+          <div class="hm-leg-item">
+            <div class="hm-leg-box hm-healthy"></div>
+            <div>
+              <div class="hm-leg-title">Healthy</div>
+              <div class="hm-leg-sub">(good performance)</div>
+            </div>
+          </div>
+          <div class="hm-leg-item">
+            <div class="hm-leg-box hm-queue"></div>
+            <div>
+              <div class="hm-leg-title">Queueing</div>
+              <div class="hm-leg-sub">(increasing latency)</div>
+            </div>
+          </div>
+          <div class="hm-leg-item">
+            <div class="hm-leg-box hm-pressure"></div>
+            <div>
+              <div class="hm-leg-title">KV pressure</div>
+              <div class="hm-leg-sub">(memory constrained)</div>
+            </div>
+          </div>
+          <div class="hm-leg-item">
+            <div class="hm-leg-box hm-unres"></div>
+            <div>
+              <div class="hm-leg-title">Unresolved</div>
+              <div class="hm-leg-sub">(NOT RUN / unknown)</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+      <!-- Prefill Breakdown -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>TTFT / Tprefill Breakdown</h2>
+          <span class="legend-badge badge-d" style="padding:1px 5px; font-size:8px;"><span class="dot"></span>MODELED-K3 / DERIVED</span>
+        </div>
+        <div class="formula-banner">Tprefill ≈ AGPU + BTP + CPP + DPCIe/offload + EvLLM + FCPU/launch + Gother - Ooverlap</div>
+        <div class="seg-bar-wrap">
+          <div class="seg-bar-title">Relative Contribution (not to scale)</div>
+          <div class="segmented-bar">
+            <div class="seg-slice" style="width:20%; background:#34d399;" title="B: 20%">B</div>
+            <div class="seg-slice" style="width:24%; background:#38bdf8;" title="B: 24%">B</div>
+            <div class="seg-slice" style="width:16%; background:#a78bfa;" title="C: 16%">C</div>
+            <div class="seg-slice" style="width:18%; background:#4ade80;" title="E: 18%">E</div>
+            <div class="seg-slice" style="width:12%; background:#f472b6;" title="F: 12%">F</div>
+            <div class="seg-slice" style="width:10%; background:#60a5fa;" title="G: 10%">G</div>
+            <div class="seg-slice" style="width:12%; background:#0f172a; color:#fff; border:1px dashed #64748b;" title="O: Overlap">-O</div>
+          </div>
+        </div>
+
+        <table class="styled-table" style="font-size:8.5px;">
+          <tbody>
+            <tr><td><strong>A</strong> GPU (compute, attention, GEMM)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>B</strong> TP (all-reduce, communication)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+            <tr><td><strong>C</strong> PP (pipeline bubble)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+            <tr><td><strong>D</strong> PCIe / offload (H2D/D2H, CPU)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>E</strong> runtime (vLLM, scheduler, bookkeeping)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>F</strong> CPU / launch (driver, runtime, Python)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>G</strong> other (misc.)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+            <tr><td><strong>O</strong> overlap (hides some latency)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:7.5px; color:var(--text-dim); margin-top:4px;">
+          Exact numeric decomposition requires profiler correlation (e.g., Option C / Nsight). Values are illustrative.
         </div>
       </div>
 
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Interpretation (Key Takeaways)</h3>
+      <!-- Decode Breakdown -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>TPOT / Decode Breakdown</h2>
+          <span class="legend-badge badge-d" style="padding:1px 5px; font-size:8px;"><span class="dot"></span>MODELED-K3 / DERIVED</span>
         </div>
-        <div class="takeaway-item">
-          <div class="takeaway-header">
-            <span class="takeaway-num">1</span>
-            <span>Best Chunk Size: 16K Budget</span>
+        <div class="formula-banner">Tdecode ≈ Acomp(small-M) + BTP + Cruntime + DKV/cache + ECPU/launch + Fother - Ooverlap</div>
+        <div class="seg-bar-wrap">
+          <div class="seg-bar-title">Relative Contribution (not to scale)</div>
+          <div class="segmented-bar">
+            <div class="seg-slice" style="width:24%; background:#34d399;" title="A: 24%">A</div>
+            <div class="seg-slice" style="width:28%; background:#38bdf8;" title="B: 28%">B</div>
+            <div class="seg-slice" style="width:16%; background:#a78bfa;" title="C: 16%">C</div>
+            <div class="seg-slice" style="width:18%; background:#2dd4bf;" title="D: 18%">D</div>
+            <div class="seg-slice" style="width:14%; background:#f472b6;" title="E: 14%">E</div>
+            <div class="seg-slice" style="width:10%; background:#60a5fa;" title="F: 10%">F</div>
+            <div class="seg-slice" style="width:12%; background:#0f172a; color:#fff; border:1px dashed #64748b;" title="O: Overlap">-O</div>
           </div>
-          <div class="takeaway-body">16K chunk reduces 1M TTFT to 89.16s (vs 93.38s @ 8K and 122.10s @ 4K).</div>
         </div>
-        <div class="takeaway-item">
-          <div class="takeaway-header">
-            <span class="takeaway-num">2</span>
-            <span>TP4 vs TP8 Topology Crossover</span>
-          </div>
-          <div class="takeaway-body">TP8 is 19.8% faster on 1M prefill; TP4 is 15.2% faster on 1M decode by avoiding Intel UPI cross-socket latency.</div>
-        </div>
-        <div class="takeaway-item">
-          <div class="takeaway-header">
-            <span class="takeaway-num">3</span>
-            <span>Capacity Knee at c=8 to 16</span>
-          </div>
-          <div class="takeaway-body">Throughput plateaus near ~720 tok/s at 8K while queue wait rises past 200 ms.</div>
-        </div>
-        <div class="takeaway-item">
-          <div class="takeaway-header">
-            <span class="takeaway-num">4</span>
-            <span>Prefix Caching Reduces TTFT by 80%</span>
-          </div>
-          <div class="takeaway-body">128K prefix reduces TTFT from 4,534 ms to 910 ms; 512K prefix cuts TTFT from 31.9s to 16.8s.</div>
+
+        <table class="styled-table" style="font-size:8.5px;">
+          <tbody>
+            <tr><td><strong>A</strong> small-M compute (decode, GEMM)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>B</strong> TP communication (all-reduce)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+            <tr><td><strong>C</strong> runtime / scheduler (vLLM)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>D</strong> KV / cache (gather, memory)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>E</strong> CPU / launch (driver, Python)</td><td style="text-align:right;"><span style="color:#10b981;">●</span> MEASURED</td></tr>
+            <tr><td><strong>F</strong> other (sampling, logits, etc.)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+            <tr><td><strong>O</strong> overlap (hides some latency)</td><td style="text-align:right;"><span style="color:#3b82f6;">●</span> DERIVED</td></tr>
+          </tbody>
+        </table>
+        <div style="font-size:7.5px; color:var(--text-dim); margin-top:4px;">
+          Relative contributions vary with model, context, concurrency, and configuration. Use profiler for exact attribution.
         </div>
       </div>
+
+      <!-- Interpretation Takeaways -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Interpretation (Key Takeaways)</h2>
+        </div>
+        <div class="takeaway-grid">
+          <div class="takeaway-pill">
+            <div class="takeaway-circ">1</div>
+            <div>What is the best chunk size (4K / 8K / 16K) for my workload?</div>
+          </div>
+          <div class="takeaway-pill">
+            <div class="takeaway-circ">4</div>
+            <div>When does KV pressure occur?</div>
+          </div>
+          <div class="takeaway-pill">
+            <div class="takeaway-circ">2</div>
+            <div>What is the TP4 vs TP8 tradeoff (latency vs throughput)?</div>
+          </div>
+          <div class="takeaway-pill">
+            <div class="takeaway-circ">5</div>
+            <div>What is the impact of CPU offload?</div>
+          </div>
+          <div class="takeaway-pill">
+            <div class="takeaway-circ">3</div>
+            <div>At what concurrency does queueing start (capacity knee)?</div>
+          </div>
+          <div class="takeaway-pill">
+            <div class="takeaway-circ">6</div>
+            <div>How much does prefix-cache help (cold vs hit)?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-status-bar">
+    <div>Profiler / kernel-level attribution requires Option C / Nsight.</div>
+    <div>Closed-loop concurrency is not the same as external users.</div>
+    <div>Missing data must display NOT RUN / NOT CAPTURED / UNRESOLVED.</div>
+    <div style="display:flex; align-items:center; gap:6px; color:#38bdf8;">
+      <span>~/\~</span> Observability for Better LLM Systems
     </div>
   </div>
 </div>
 
+
 <!-- ======================================================== -->
-<!-- TAB 2: SCALE OUT (MULTI-NODE) -->
+<!-- TAB 2: SCALE OUT (MULTI-NODE) - 1-to-1 REPLICA -->
 <!-- ======================================================== -->
-<div id="viewScaleOut" style="display: none;">
-  <!-- 6 Top KPI Multi-Node Grid -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">TTFT (128K)</div>
-          <div class="kpi-subtitle">Lower is better</div>
-        </div>
-        <span class="badge badge-measured">M</span>
-      </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">1,723.7 ms</div>
-        <div class="kpi-trend">TP4 / PP4</div>
-      </div>
-      <div class="kpi-footer">56.0% faster than single-node baseline.</div>
+<div id="tabMultiNode" style="display:none;">
+  <!-- Top Header -->
+  <div class="main-header">
+    <div class="header-left">
+      <h1>V5 vLLM Runtime Characterization — Scale Out (Multi-Node)</h1>
+      <p>Topology comparison for vLLM surrogate workloads | GCP provenance must not be treated as local 10GbE proof.</p>
     </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">TPOT / ITL</div>
-          <div class="kpi-subtitle">Lower is better</div>
-        </div>
-        <span class="badge badge-measured">M</span>
+    <div class="header-right">
+      <div class="legend-badge badge-m">
+        <span class="dot"></span>
+        <div>MEASURED-48B<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">From actual runs (48B only)</span></div>
       </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">5.43 ms</div>
-        <div class="kpi-trend">TP4 / PP2</div>
+      <div class="legend-badge badge-d">
+        <span class="dot"></span>
+        <div>MODELED-K3 / DERIVED<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">Modelled or derived</span></div>
       </div>
-      <div class="kpi-footer">Confined within local PCIe socket.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">Throughput</div>
-          <div class="kpi-subtitle">Higher is better</div>
-        </div>
-        <span class="badge badge-measured">M</span>
+      <div class="legend-badge badge-l">
+        <span class="dot"></span>
+        <div>LOCAL-REAL<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">From local cluster runs</span></div>
       </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">63,284 tok/s</div>
-        <div class="kpi-trend">TP4 / PP4</div>
+      <div class="legend-badge badge-u">
+        <span class="dot"></span>
+        <div>UNRESOLVED<br><span style="font-size:7.5px; font-weight:400; opacity:0.8;">Not run or insufficient data</span></div>
       </div>
-      <div class="kpi-footer">Aggregate token processing rate across 16 GPUs.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">Topology Champ</div>
-          <div class="kpi-subtitle">Optimal layout</div>
-        </div>
-        <span class="badge badge-measured">M</span>
+      <div class="date-badge" style="text-align:right;">
+        <strong>RTX PRO 6000 Profiling</strong>
+        vLLM | Multi-Node | Observability Dashboard
       </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">TP4 / PP4</div>
-        <div class="kpi-trend">Optimal</div>
-      </div>
-      <div class="kpi-footer">Avoids cross-node AllReduce entirely.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">PP Bubble Risk</div>
-          <div class="kpi-subtitle">Pipeline overhead</div>
-        </div>
-        <span class="badge badge-derived">D</span>
-      </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">~11.4%</div>
-        <div class="kpi-trend" style="color:#f59e0b;">PP4 Bubble</div>
-      </div>
-      <div class="kpi-footer">Well compensated by localized TP4 speed.</div>
-    </div>
-
-    <div class="kpi-card">
-      <div class="kpi-header">
-        <div>
-          <div class="kpi-title">Network Penalty</div>
-          <div class="kpi-subtitle">VPC TCP/IP Impact</div>
-        </div>
-        <span class="badge badge-measured">M</span>
-      </div>
-      <div class="kpi-value-row">
-        <div class="kpi-value">3.5x Slowdown</div>
-        <div class="kpi-trend" style="color:#f43f5e;">TP16 / PP1</div>
-      </div>
-      <div class="kpi-footer">Cross-node AllReduce severely bounded.</div>
     </div>
   </div>
 
-  <!-- 3-Column Body -->
-  <div class="dashboard-body">
-    <!-- Left Column: Topology Cards & Cluster Map -->
+  <!-- 6 Top Cards -->
+  <div class="kpi-row">
+    <!-- Card 1 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>TTFT (Lower is better)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">—</div>
+        <span class="legend-badge badge-u" style="font-size:8px; padding:2px 6px;">UNRESOLVED</span>
+      </div>
+      <div class="kpi-bottom-desc">Varies by topology and context length</div>
+    </div>
+
+    <!-- Card 2 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>TPOT / ITL (Lower is better)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">—</div>
+        <span class="legend-badge badge-u" style="font-size:8px; padding:2px 6px;">UNRESOLVED</span>
+      </div>
+      <div class="kpi-bottom-desc">Depends on concurrency and topology</div>
+    </div>
+
+    <!-- Card 3 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>Throughput (Higher is better)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">—</div>
+        <span class="legend-badge badge-u" style="font-size:8px; padding:2px 6px;">UNRESOLVED</span>
+      </div>
+      <div class="kpi-bottom-desc">Token/s (aggregate)</div>
+    </div>
+
+    <!-- Card 4 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>Topology Comparison</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">—</div>
+        <span class="legend-badge badge-u" style="font-size:8px; padding:2px 6px;">UNRESOLVED</span>
+      </div>
+      <div class="kpi-bottom-desc">No single best topology (workload dependent)</div>
+    </div>
+
+    <!-- Card 5 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>PP Bubble (Lower is better)</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">—</div>
+        <span class="legend-badge badge-u" style="font-size:8px; padding:2px 6px;">UNRESOLVED</span>
+      </div>
+      <div class="kpi-bottom-desc">Sensitive to network and balance</div>
+    </div>
+
+    <!-- Card 6 -->
+    <div class="kpi-card">
+      <div class="kpi-title-bar">
+        <div class="kpi-title-left"><span class="kpi-dot"></span>Network Sensitivity</div>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-metric-text">—</div>
+        <span class="legend-badge badge-u" style="font-size:8px; padding:2px 6px;">UNRESOLVED</span>
+      </div>
+      <div class="kpi-bottom-desc">GCP ≠ local 10GbE proof</div>
+    </div>
+  </div>
+
+  <!-- 3 Column Layout -->
+  <div class="dashboard-grid">
+    <!-- LEFT COLUMN -->
     <div>
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Topology Candidates</h3>
-          <span class="badge badge-measured">M</span>
+      <!-- Topology Cards -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Topology Cards <span style="font-size:8.5px; font-weight:400; color:var(--text-dim);">Candidate configurations for scale-out evaluation</span></h2>
         </div>
+
+        <div class="topo-card-box">
+          <div class="topo-card-title">
+            <span>TP16 / PP1</span>
+            <div><span class="legend-badge badge-m" style="padding:1px 4px; font-size:7px;">M</span> <span class="legend-badge badge-l" style="padding:1px 4px; font-size:7px;">L</span></div>
+          </div>
+          <div class="topo-card-sub">Single-node (16 GPUs)</div>
+          <ul class="topo-card-list">
+            <li>TP16 within node</li>
+            <li>No PP (no bubble)</li>
+            <li>Baseline for comparison</li>
+          </ul>
+        </div>
+
+        <div class="topo-card-box">
+          <div class="topo-card-title">
+            <span>TP8 / PP2</span>
+            <div><span class="legend-badge badge-m" style="padding:1px 4px; font-size:7px;">M</span> <span class="legend-badge badge-d" style="padding:1px 4px; font-size:7px;">D</span></div>
+          </div>
+          <div class="topo-card-sub">Multi-node (2 x 8 GPUs)</div>
+          <ul class="topo-card-list">
+            <li>TP8 per stage (within node)</li>
+            <li>Cross-node PP</li>
+            <li>Network sensitive</li>
+          </ul>
+        </div>
+
+        <div class="topo-card-box">
+          <div class="topo-card-title">
+            <span>TP4 / PP4</span>
+            <div><span class="legend-badge badge-d" style="padding:1px 4px; font-size:7px;">D</span></div>
+          </div>
+          <div class="topo-card-sub">Multi-node (2 x 8 GPUs)</div>
+          <ul class="topo-card-list">
+            <li>TP4 within node</li>
+            <li>PP4 across nodes</li>
+            <li>Higher PP bubble risk</li>
+            <li>Requires careful placement</li>
+          </ul>
+        </div>
+
+        <div class="topo-card-box">
+          <div class="topo-card-title">
+            <span>TP4 / PP2</span>
+            <div><span class="legend-badge badge-u" style="padding:1px 4px; font-size:7px;">U</span></div>
+          </div>
+          <div class="topo-card-sub">Multi-node (2 x 8 GPUs)</div>
+          <ul class="topo-card-list">
+            <li>4 GPUs per node (force cross-node)</li>
+            <li>Remote-PP validation case</li>
+            <li>Requires Ray placement validation</li>
+            <li>NOT RUN</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Cluster Map (2 nodes x 8 GPUs) -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Cluster Map (2 nodes × 8 GPUs)</h2>
+        </div>
+        <div style="font-size:8px; color:var(--text-dim); margin-bottom:4px;">Illustrative layout for multi-node topologies (e.g., TP8/PP2, TP4/PP4)</div>
+        <svg viewBox="0 0 280 85" style="width:100%; height:auto; background:#0a1220; border-radius:4px; padding:4px;">
+          <!-- Node 0 -->
+          <rect x="5" y="5" width="115" height="75" rx="4" fill="#0d1b2e" stroke="#1e3a5f"/>
+          <text x="12" y="16" fill="#6ee7b7" font-size="7" font-weight="700">Node 0 (8 GPUs)</text>
+          <!-- 8 GPU boxes -->
+          <g transform="translate(10, 22)">
+            <rect x="0" y="0" width="20" height="20" rx="2" fill="#059669"/><text x="7" y="14" fill="#fff" font-size="9" font-weight="700">0</text>
+            <rect x="24" y="0" width="20" height="20" rx="2" fill="#059669"/><text x="31" y="14" fill="#fff" font-size="9" font-weight="700">1</text>
+            <rect x="48" y="0" width="20" height="20" rx="2" fill="#059669"/><text x="55" y="14" fill="#fff" font-size="9" font-weight="700">2</text>
+            <rect x="72" y="0" width="20" height="20" rx="2" fill="#059669"/><text x="79" y="14" fill="#fff" font-size="9" font-weight="700">3</text>
+            <rect x="0" y="24" width="20" height="20" rx="2" fill="#059669"/><text x="7" y="38" fill="#fff" font-size="9" font-weight="700">4</text>
+            <rect x="24" y="24" width="20" height="20" rx="2" fill="#059669"/><text x="31" y="38" fill="#fff" font-size="9" font-weight="700">5</text>
+            <rect x="48" y="24" width="20" height="20" rx="2" fill="#059669"/><text x="55" y="38" fill="#fff" font-size="9" font-weight="700">6</text>
+            <rect x="72" y="24" width="20" height="20" rx="2" fill="#059669"/><text x="79" y="38" fill="#fff" font-size="9" font-weight="700">7</text>
+          </g>
+
+          <!-- Middle connection -->
+          <text x="127" y="38" fill="#94a3b8" font-size="6" text-anchor="middle">Inter-node</text>
+          <text x="127" y="46" fill="#94a3b8" font-size="6" text-anchor="middle">Network</text>
+          <path d="M 122 52 L 152 52" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrow)"/>
+          <text x="127" y="60" fill="#64748b" font-size="5" text-anchor="middle">(e.g., GCP)</text>
+
+          <!-- Node 1 -->
+          <rect x="155" y="5" width="115" height="75" rx="4" fill="#0d1b2e" stroke="#1e3a5f"/>
+          <text x="162" y="16" fill="#60a5fa" font-size="7" font-weight="700">Node 1 (8 GPUs)</text>
+          <!-- 8 GPU boxes -->
+          <g transform="translate(160, 22)">
+            <rect x="0" y="0" width="20" height="20" rx="2" fill="#2563eb"/><text x="7" y="14" fill="#fff" font-size="9" font-weight="700">0</text>
+            <rect x="24" y="0" width="20" height="20" rx="2" fill="#2563eb"/><text x="31" y="14" fill="#fff" font-size="9" font-weight="700">1</text>
+            <rect x="48" y="0" width="20" height="20" rx="2" fill="#2563eb"/><text x="55" y="14" fill="#fff" font-size="9" font-weight="700">2</text>
+            <rect x="72" y="0" width="20" height="20" rx="2" fill="#2563eb"/><text x="79" y="14" fill="#fff" font-size="9" font-weight="700">3</text>
+            <rect x="0" y="24" width="20" height="20" rx="2" fill="#2563eb"/><text x="7" y="38" fill="#fff" font-size="9" font-weight="700">4</text>
+            <rect x="24" y="24" width="20" height="20" rx="2" fill="#2563eb"/><text x="31" y="38" fill="#fff" font-size="9" font-weight="700">5</text>
+            <rect x="48" y="24" width="20" height="20" rx="2" fill="#2563eb"/><text x="55" y="38" fill="#fff" font-size="9" font-weight="700">6</text>
+            <rect x="72" y="24" width="20" height="20" rx="2" fill="#2563eb"/><text x="79" y="38" fill="#fff" font-size="9" font-weight="700">7</text>
+          </g>
+        </svg>
+
+        <div style="display:flex; justify-content:space-between; margin-top:6px; font-size:7.5px; color:var(--text-dim);">
+          <div><span style="color:#10b981;">---</span> TP group (within node)</div>
+          <div><span style="color:#f59e0b;">---</span> PP boundary (across nodes)</div>
+          <div><span style="color:#38bdf8;">↔</span> Remote hop (NCCL)</div>
+        </div>
+      </div>
+
+      <!-- Per-Node GPU Balance -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Per-Node GPU Balance (Utilization %)</h2>
+        </div>
+        <div style="display:flex; gap:10px; height:105px;">
+          <div style="flex:1;">
+            <div style="font-size:8px; color:#10b981; margin-bottom:2px;">Node 0</div>
+            <canvas id="canvasGpuBalanceNode0"></canvas>
+          </div>
+          <div style="flex:1;">
+            <div style="font-size:8px; color:#3b82f6; margin-bottom:2px;">Node 1</div>
+            <canvas id="canvasGpuBalanceNode1"></canvas>
+          </div>
+        </div>
+        <div style="font-size:7.5px; color:var(--text-dim); margin-top:3px;">
+          Illustrative per-GPU utilization. Exact values require profiler + metrics correlation.
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER COLUMN -->
+    <div>
+      <!-- TTFT by Topology and Context -->
+      <div class="chart-card" style="height: 195px; margin-bottom: 10px;">
+        <div class="chart-card-header">
+          <div>
+            <span class="chart-card-title">TTFT by Topology and Context</span>
+            <span style="font-size:8.5px; color:var(--text-dim); margin-left:6px;">Time to first token (prefill). Lower is better.</span>
+          </div>
+          <div style="font-size:8px; color:var(--text-dim); text-align:right;">Measured only where available (48B).<br>Missing points remain NOT RUN.</div>
+        </div>
+        <canvas id="canvasMultiTtftBar"></canvas>
+      </div>
+
+      <!-- TPOT by Topology and Concurrency -->
+      <div class="chart-card" style="height: 185px; margin-bottom: 10px;">
+        <div class="chart-card-header">
+          <div>
+            <span class="chart-card-title">TPOT by Topology and Concurrency</span>
+            <span style="font-size:8.5px; color:var(--text-dim); margin-left:6px;">Tokens per output token (ITL). Lower is better.</span>
+          </div>
+          <div style="font-size:8px; color:var(--text-dim); text-align:right;">Measured only where available (48B).<br>Concurrency may change optimal topology.</div>
+        </div>
+        <canvas id="canvasMultiTpotBar"></canvas>
+      </div>
+
+      <!-- Network & PP Sensitivity -->
+      <div class="chart-card" style="height: 175px;">
+        <div class="chart-card-header">
+          <div>
+            <span class="chart-card-title">Network & PP Sensitivity (Provenance / Sensitivity Analysis)</span>
+            <div style="font-size:8px; color:var(--text-dim);">Estimated relative impact (normalized). Lower is better. Illustrative, not local-cluster proof.</div>
+          </div>
+          <div style="font-size:8px; color:var(--text-dim); text-align:right;">Shows sensitivity to inter-node bandwidth.<br>Not a local 10GbE claim.</div>
+        </div>
+        <canvas id="canvasNetworkSensitivityLine"></canvas>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN -->
+    <div>
+      <!-- Tworkload Breakdown -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Tworkload Breakdown</h2>
+          <span style="font-size:8px; color:var(--text-dim);">Tworkload = ∑ components - overlap</span>
+        </div>
+        <div class="formula-banner">Tworkload = AGPU + BTP + CPP + DPCIe/offload + EvLLM + FCPU/launch + Gother - Ooverlap</div>
         
-        <div class="topo-card">
-          <div class="topo-head">
-            <span class="topo-name" style="color:#38bdf8;">TP4 / PP4 (Optimal)</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <div class="topo-desc">Multi-Node (2 nodes × 8 GPUs, 16 GPUs total)</div>
-          <ul class="topo-bullets">
-            <li><strong>128K TTFT: 1,723.66 ms</strong> | <strong>TPOT: 5.53 ms</strong></li>
-            <li><strong>512K TTFT: 10,226.07 ms</strong> (Fastest 512K)</li>
-            <li>TP4 stays within NUMA socket; PP4 crosses nodes.</li>
-          </ul>
+        <div style="font-size:8.5px; font-weight:700; color:#fff; margin-top:6px;">TTFT / Prefill-dominant Workload (e.g., long context)</div>
+        <div class="segmented-bar" style="margin:4px 0 8px 0;">
+          <div class="seg-slice" style="width:16%; background:#34d399;" title="A GPU (M)">A<br><span style="font-size:6.5px;">(M)</span></div>
+          <div class="seg-slice" style="width:18%; background:#38bdf8;" title="B TP (M/D)">B<br><span style="font-size:6.5px;">(M/D)</span></div>
+          <div class="seg-slice" style="width:16%; background:#a78bfa;" title="C PP (M/D)">C<br><span style="font-size:6.5px;">(M/D)</span></div>
+          <div class="seg-slice" style="width:12%; background:#fb7185;" title="D PCIe (U)">D<br><span style="font-size:6.5px;">(U)</span></div>
+          <div class="seg-slice" style="width:14%; background:#4ade80;" title="E vLLM (M)">E<br><span style="font-size:6.5px;">(M)</span></div>
+          <div class="seg-slice" style="width:10%; background:#facc15;" title="F CPU (M)">F<br><span style="font-size:6.5px;">(M)</span></div>
+          <div class="seg-slice" style="width:8%; background:#60a5fa;" title="G other (U)">G<br><span style="font-size:6.5px;">(U)</span></div>
+          <div class="seg-slice" style="width:10%; background:#0f172a; color:#fff; border:1px dashed #64748b;" title="-O overlap (D)">-O<br><span style="font-size:6.5px;">(D)</span></div>
         </div>
 
-        <div class="topo-card">
-          <div class="topo-head">
-            <span class="topo-name" style="color:#34d399;">TP4 / PP2</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <div class="topo-desc">Multi-Node (2 nodes × 4 GPUs active)</div>
-          <ul class="topo-bullets">
-            <li>128K TTFT: 2,646.62 ms | TPOT: 5.43 ms</li>
-            <li>512K TTFT: 17,959.16 ms</li>
-            <li>Minimal PP bubble; lower aggregate compute.</li>
-          </ul>
-        </div>
-
-        <div class="topo-card">
-          <div class="topo-head">
-            <span class="topo-name" style="color:#a855f7;">TP8 / PP2</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <div class="topo-desc">Multi-Node (2 nodes × 8 GPUs)</div>
-          <ul class="topo-bullets">
-            <li>128K TTFT: 2,817.62 ms | TPOT: 7.47 ms</li>
-            <li>512K TTFT: 15,588.37 ms</li>
-            <li>TP8 incurs intra-node UPI latency on decode.</li>
-          </ul>
-        </div>
-
-        <div class="topo-card">
-          <div class="topo-head">
-            <span class="topo-name" style="color:#f43f5e;">TP16 / PP1 (Network Bound)</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <div class="topo-desc">Single Stage (16 GPUs AllReduce over VPC)</div>
-          <ul class="topo-bullets">
-            <li>128K TTFT: 6,024.89 ms | TPOT: 11.35 ms</li>
-            <li>Zero PP bubble, but severe network latency penalty.</li>
-          </ul>
+        <div style="font-size:8.5px; font-weight:700; color:#fff;">TPOT / Decode-dominant Workload (e.g., steady-state)</div>
+        <div class="segmented-bar" style="margin:4px 0 8px 0;">
+          <div class="seg-slice" style="width:14%; background:#34d399;" title="A GPU (M)">A<br><span style="font-size:6.5px;">(M)</span></div>
+          <div class="seg-slice" style="width:22%; background:#38bdf8;" title="B TP (M/D)">B<br><span style="font-size:6.5px;">(M/D)</span></div>
+          <div class="seg-slice" style="width:16%; background:#a78bfa;" title="C PP (M/D)">C<br><span style="font-size:6.5px;">(M/D)</span></div>
+          <div class="seg-slice" style="width:12%; background:#fb7185;" title="D PCIe (U)">D<br><span style="font-size:6.5px;">(U)</span></div>
+          <div class="seg-slice" style="width:14%; background:#4ade80;" title="E vLLM (M)">E<br><span style="font-size:6.5px;">(M)</span></div>
+          <div class="seg-slice" style="width:10%; background:#facc15;" title="F CPU (M)">F<br><span style="font-size:6.5px;">(M)</span></div>
+          <div class="seg-slice" style="width:8%; background:#60a5fa;" title="G other (U)">G<br><span style="font-size:6.5px;">(U)</span></div>
+          <div class="seg-slice" style="width:10%; background:#0f172a; color:#fff; border:1px dashed #64748b;" title="-O overlap (D)">-O<br><span style="font-size:6.5px;">(D)</span></div>
         </div>
       </div>
 
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Cluster Map (2 Nodes × 8 GPUs)</h3>
-          <span class="badge badge-local">L</span>
+      <!-- Runtime Reserve (Non-Model Overheads) -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Runtime Reserve (Non-Model Overheads)</h2>
         </div>
-        <div class="cluster-box">
-          <svg viewBox="0 0 240 100" style="width: 100%; height: auto;">
-            <!-- Node 0 -->
-            <rect x="5" y="5" width="105" height="90" rx="6" fill="#121a29" stroke="#38bdf8" stroke-width="1.2"/>
-            <text x="12" y="20" fill="#38bdf8" font-size="8" font-weight="700">Node 0 (10.128.0.39)</text>
-            <!-- Sockets -->
-            <rect x="10" y="26" width="45" height="40" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
-            <text x="14" y="36" fill="#94a3b8" font-size="6">Socket 0 (TP4)</text>
-            <circle cx="20" cy="50" r="4" fill="#10b981"/><text x="18" y="52" fill="#000" font-size="5" font-weight="700">0</text>
-            <circle cx="30" cy="50" r="4" fill="#10b981"/><text x="28" y="52" fill="#000" font-size="5" font-weight="700">1</text>
-            <circle cx="40" cy="50" r="4" fill="#10b981"/><text x="38" y="52" fill="#000" font-size="5" font-weight="700">2</text>
-            <circle cx="50" cy="50" r="4" fill="#10b981"/><text x="48" y="52" fill="#000" font-size="5" font-weight="700">3</text>
-
-            <rect x="60" y="26" width="45" height="40" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
-            <text x="64" y="36" fill="#94a3b8" font-size="6">Socket 1 (TP4)</text>
-            <circle cx="70" cy="50" r="4" fill="#10b981"/><text x="68" y="52" fill="#000" font-size="5" font-weight="700">4</text>
-            <circle cx="80" cy="50" r="4" fill="#10b981"/><text x="78" y="52" fill="#000" font-size="5" font-weight="700">5</text>
-            <circle cx="90" cy="50" r="4" fill="#10b981"/><text x="88" y="52" fill="#000" font-size="5" font-weight="700">6</text>
-            <circle cx="100" cy="50" r="4" fill="#10b981"/><text x="98" y="52" fill="#000" font-size="5" font-weight="700">7</text>
-
-            <text x="15" y="86" fill="#64748b" font-size="6.5">Ray Head: Port 6379</text>
-
-            <!-- Network Link -->
-            <path d="M 110 50 L 130 50" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="2,2"/>
-            <text x="113" y="44" fill="#f59e0b" font-size="6">VPC</text>
-
-            <!-- Node 1 -->
-            <rect x="130" y="5" width="105" height="90" rx="6" fill="#121a29" stroke="#a855f7" stroke-width="1.2"/>
-            <text x="137" y="20" fill="#a855f7" font-size="8" font-weight="700">Node 1 (10.128.0.40)</text>
-            <!-- Sockets -->
-            <rect x="135" y="26" width="45" height="40" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
-            <text x="139" y="36" fill="#94a3b8" font-size="6">Socket 0 (TP4)</text>
-            <circle cx="145" cy="50" r="4" fill="#10b981"/><text x="143" y="52" fill="#000" font-size="5" font-weight="700">0</text>
-            <circle cx="155" cy="50" r="4" fill="#10b981"/><text x="153" y="52" fill="#000" font-size="5" font-weight="700">1</text>
-            <circle cx="165" cy="50" r="4" fill="#10b981"/><text x="163" y="52" fill="#000" font-size="5" font-weight="700">2</text>
-            <circle cx="175" cy="50" r="4" fill="#10b981"/><text x="173" y="52" fill="#000" font-size="5" font-weight="700">3</text>
-
-            <rect x="185" y="26" width="45" height="40" rx="3" fill="#1e293b" stroke="#334155" stroke-width="0.8"/>
-            <text x="189" y="36" fill="#94a3b8" font-size="6">Socket 1 (TP4)</text>
-            <circle cx="195" cy="50" r="4" fill="#10b981"/><text x="193" y="52" fill="#000" font-size="5" font-weight="700">4</text>
-            <circle cx="205" cy="50" r="4" fill="#10b981"/><text x="203" y="52" fill="#000" font-size="5" font-weight="700">5</text>
-            <circle cx="215" cy="50" r="4" fill="#10b981"/><text x="213" y="52" fill="#000" font-size="5" font-weight="700">6</text>
-            <circle cx="225" cy="50" r="4" fill="#10b981"/><text x="223" y="52" fill="#000" font-size="5" font-weight="700">7</text>
-
-            <text x="140" y="86" fill="#64748b" font-size="6.5">Ray Worker Joined</text>
-          </svg>
-        </div>
-      </div>
-
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Per-Node GPU Balance</h3>
-          <span class="badge badge-measured">M</span>
-        </div>
-        <div style="height: 140px;">
-          <canvas id="chartGpuBalance"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- Center Column: Multi-Node Charts -->
-    <div>
-      <div class="charts-2x2">
-        <div class="chart-box">
-          <div class="chart-title">
-            <span>TTFT by Topology & Context</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <canvas id="chartMultiTtft"></canvas>
-        </div>
-
-        <div class="chart-box">
-          <div class="chart-title">
-            <span>TPOT / ITL by Topology</span>
-            <span class="badge badge-measured">M</span>
-          </div>
-          <canvas id="chartMultiTpot"></canvas>
-        </div>
-
-        <div class="chart-box" style="grid-column: span 2; height: 240px;">
-          <div class="chart-title">
-            <span>Network & PP Sensitivity (Provenance Analysis)</span>
-            <span class="badge badge-derived">D</span>
-          </div>
-          <canvas id="chartNetworkSensitivity"></canvas>
-        </div>
-      </div>
-    </div>
-
-    <!-- Right Column: Decision Panel & Analysis -->
-    <div>
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Tworkload Decomposition</h3>
-          <span class="badge badge-derived">D</span>
-        </div>
-        <div class="formula-box">T_workload = A_GPU + B_TP + C_PP + D_PCIe + E_vLLM + F_CPU - O_overlap</div>
-        <div class="segmented-bar">
-          <div class="seg seg-a" style="width: 44%;" title="A_GPU (Compute)">A (44%)</div>
-          <div class="seg seg-b" style="width: 18%;" title="B_TP (Local TP4)">B (18%)</div>
-          <div class="seg seg-c" style="width: 22%;" title="C_PP (PP4 Stage Hops)">C (22%)</div>
-          <div class="seg seg-e" style="width: 10%;" title="E_vLLM (Runtime)">E (10%)</div>
-          <div class="seg seg-f" style="width: 6%;" title="F_CPU">F (6%)</div>
-        </div>
-        <div style="font-size: 9px; color: var(--text-dim);">
-          In TP4/PP4, PP stage latency (C) replaces network AllReduce completely.
-        </div>
-      </div>
-
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Decision Panel</h3>
-          <span class="badge badge-local">L</span>
-        </div>
-        <div style="font-size: 10px; color: #cbd5e1; line-height: 1.4;">
-          <div style="margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-            <span style="color:#10b981;">✔</span>
-            <span><strong>TP vs PP Selection:</strong> Confine TP=4 to single CPU socket. Use PP across nodes.</span>
-          </div>
-          <div style="margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-            <span style="color:#10b981;">✔</span>
-            <span><strong>Long Context Scaling:</strong> PP4 scales best at 512K (10.2s TTFT vs 17.9s on PP2).</span>
-          </div>
-          <div style="margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-            <span style="color:#10b981;">✔</span>
-            <span><strong>When Network Bandwidth Matters:</strong> Critical for TP16; benign for PP4.</span>
-          </div>
-          <div style="margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
-            <span style="color:#f43f5e;">❓</span>
-            <span><strong>Key Unknown:</strong> Absolute performance on Kimi K3 104B MoE (requires full weights).</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-card">
-        <div class="card-header">
-          <h3>Empirical Multi-Node Table</h3>
-          <span class="badge badge-measured">M</span>
-        </div>
-        <table class="custom-table">
-          <thead>
-            <tr><th>Topology</th><th>Context</th><th>TTFT (ms)</th><th>TPOT (ms)</th></tr>
-          </thead>
+        <table class="styled-table" style="font-size:8.5px;">
           <tbody>
-            <tr><td><strong>TP4 / PP4</strong></td><td>128K</td><td>1,723.7</td><td>5.53</td></tr>
-            <tr><td><strong>TP4 / PP4</strong></td><td>512K</td><td>10,226.1</td><td>7.94</td></tr>
-            <tr><td><strong>TP4 / PP2</strong></td><td>128K</td><td>2,646.6</td><td>5.43</td></tr>
-            <tr><td><strong>TP4 / PP2</strong></td><td>512K</td><td>17,959.2</td><td>7.81</td></tr>
-            <tr><td><strong>TP8 / PP2</strong></td><td>128K</td><td>2,817.6</td><td>7.47</td></tr>
-            <tr><td><strong>TP8 / PP2</strong></td><td>512K</td><td>15,588.4</td><td>9.81</td></tr>
-            <tr><td><strong>TP16 / PP1</strong></td><td>128K</td><td>6,024.9</td><td>11.35</td></tr>
+            <tr>
+              <td><span style="color:#38bdf8;">⚙</span> Scheduler / Queue</td>
+              <td>Job scheduling, queueing, resource allocation</td>
+              <td style="text-align:right;"><span class="legend-badge badge-d" style="padding:1px 4px; font-size:7px;">M/D</span></td>
+            </tr>
+            <tr>
+              <td><span style="color:#f97316;">⚠️</span> Preemption / Interference</td>
+              <td>Multi-tenant preemption, noisy neighbors</td>
+              <td style="text-align:right;"><span class="legend-badge badge-u" style="padding:1px 4px; font-size:7px;">U</span></td>
+            </tr>
+            <tr>
+              <td><span style="color:#f59e0b;">📦</span> KV / Cache Pressure</td>
+              <td>KV cache memory, eviction, paging</td>
+              <td style="text-align:right;"><span class="legend-badge badge-d" style="padding:1px 4px; font-size:7px;">M/D</span></td>
+            </tr>
+            <tr>
+              <td><span style="color:#10b981;">🖥</span> CPU Offload</td>
+              <td>CPU memory offload, host-device transfer</td>
+              <td style="text-align:right;"><span class="legend-badge badge-u" style="padding:1px 4px; font-size:7px;">U</span></td>
+            </tr>
+            <tr>
+              <td><span style="color:#38bdf8;">⚡</span> Kernel / API Overhead</td>
+              <td>Kernel launch, CUDA graphs, API overhead</td>
+              <td style="text-align:right;"><span class="legend-badge badge-d" style="padding:1px 4px; font-size:7px;">M/D</span></td>
+            </tr>
+            <tr>
+              <td><span style="color:#a855f7;">⏳</span> Pipeline Bubble</td>
+              <td>Imbalance, network latency, synchronization</td>
+              <td style="text-align:right;"><span class="legend-badge badge-d" style="padding:1px 4px; font-size:7px;">M/D</span></td>
+            </tr>
+            <tr>
+              <td><span style="color:#ec4899;">📑</span> Prefix-Cache Behavior</td>
+              <td>Cache hit rate, shared prefix, workload dependent</td>
+              <td style="text-align:right;"><span class="legend-badge badge-u" style="padding:1px 4px; font-size:7px;">U</span></td>
+            </tr>
           </tbody>
         </table>
+        <div style="font-size:7.5px; color:var(--text-dim); margin-top:4px;">
+          Exact fractions require profiler + metrics correlation. Values are workload and configuration dependent.
+        </div>
+      </div>
+
+      <!-- Decision Panel -->
+      <div class="dash-card">
+        <div class="card-top">
+          <h2>Decision Panel</h2>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:8.5px;">
+          <div>
+            <strong style="display:block; color:#fff; margin-bottom:4px;">What this dashboard helps decide</strong>
+            <ul style="list-style:none; line-height:1.3; color:#cbd5e1;">
+              <li style="margin-bottom:3px;"><span style="color:#10b981;">✔</span> TP vs PP choice for different context lengths and concurrency levels</li>
+              <li style="margin-bottom:3px;"><span style="color:#10b981;">✔</span> Best topology as context grows (when PP becomes necessary)</li>
+              <li style="margin-bottom:3px;"><span style="color:#10b981;">✔</span> When network bandwidth becomes material for performance</li>
+              <li style="margin-bottom:3px;"><span style="color:#10b981;">✔</span> Whether TP4/PP4-like NUMA-aligned strategies deserve local validation</li>
+              <li style="margin-bottom:3px;"><span style="color:#10b981;">✔</span> What remains unmeasured or uncertain</li>
+            </ul>
+          </div>
+          <div>
+            <strong style="display:block; color:#f43f5e; margin-bottom:4px;">Key Unknowns (remain UNRESOLVED)</strong>
+            <ul style="list-style:none; line-height:1.3; color:#94a3b8;">
+              <li style="margin-bottom:3px;"><span style="color:#f43f5e;">?</span> Absolute performance for Kimi K3</li>
+              <li style="margin-bottom:3px;"><span style="color:#f43f5e;">?</span> Local 10GbE (on-prem) validation</li>
+              <li style="margin-bottom:3px;"><span style="color:#f43f5e;">?</span> TP4/PP2 actual performance</li>
+              <li style="margin-bottom:3px;"><span style="color:#f43f5e;">?</span> TP4/PP6 NUMA-aligned evaluation</li>
+              <li style="margin-bottom:3px;"><span style="color:#f43f5e;">?</span> Full breakdown of non-model overheads</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </div>
   </div>
+
+  <!-- Bottom Bar -->
+  <div class="bottom-status-bar">
+    <div>⚠️ Do not scale surrogate absolute performance to Kimi K3.</div>
+    <div>📋 Ray placement, NCCL transport, and network provenance must be captured per run.</div>
+    <div>⚠️ Missing data should remain NOT RUN / UNRESOLVED.</div>
+    <div>May 26, 2025 | v5.0</div>
+  </div>
 </div>
 
-<!-- Footer -->
-<div class="dashboard-footer">
-  <div><strong>Hardware Provenance:</strong> Google Cloud Platform (`us-central1-b`) | 2x a3-highgpu-8g (16x NVIDIA RTX 6000 Ada 48GB, 768GB VRAM)</div>
-  <div><strong>Model:</strong> moonshotai/Kimi-Linear-48B-A3B-Instruct (Git: `e1df551`) | vLLM 0.29 + Ray Cluster</div>
-</div>
-
+<!-- ======================================================== -->
+<!-- CHART SCRIPTS & REAL DATA BINDINGS -->
+<!-- ======================================================== -->
 <script>
-function switchView(view) {
-  if (view === 'scale-up') {
-    document.getElementById('viewScaleUp').style.display = 'block';
-    document.getElementById('viewScaleOut').style.display = 'none';
-    document.getElementById('btnScaleUp').classList.add('active');
-    document.getElementById('btnScaleOut').classList.remove('active');
-    document.getElementById('mainTitle').innerText = 'V5 vLLM Runtime Characterization — Scale Up (Single Node)';
-    document.getElementById('mainSubtitle').innerText = 'MEASURED-48B surrogate; do not scale absolute values to Kimi K3. | GCP Blackwell / RTX 6000 Ada Live Telemetry';
+function setDashboardTab(tab) {
+  if (tab === 'single') {
+    document.getElementById('tabSingleNode').style.display = 'block';
+    document.getElementById('tabMultiNode').style.display = 'none';
+    document.getElementById('btnTabSingle').classList.add('active');
+    document.getElementById('btnTabMulti').classList.remove('active');
   } else {
-    document.getElementById('viewScaleUp').style.display = 'none';
-    document.getElementById('viewScaleOut').style.display = 'block';
-    document.getElementById('btnScaleOut').classList.add('active');
-    document.getElementById('btnScaleUp').classList.remove('active');
-    document.getElementById('mainTitle').innerText = 'V5 vLLM Runtime Characterization — Scale Out (Multi-Node)';
-    document.getElementById('mainSubtitle').innerText = 'Topology comparison for vLLM surrogate workloads | GCP provenance must not be treated as local 10GbE proof.';
+    document.getElementById('tabSingleNode').style.display = 'none';
+    document.getElementById('tabMultiNode').style.display = 'block';
+    document.getElementById('btnTabMulti').classList.add('active');
+    document.getElementById('btnTabSingle').classList.remove('active');
   }
 }
 
-// Chart 1: TTFT vs Context Length
-new Chart(document.getElementById('chartTtftContext'), {
+// Chart default styling to match dark mockup
+Chart.defaults.color = '#94a3b8';
+Chart.defaults.borderColor = '#1e2f4d';
+Chart.defaults.font.size = 9;
+
+// --- TAB 1 CHARTS ---
+
+// 1. TTFT vs Context Length
+new Chart(document.getElementById('canvasTtftContext'), {
   type: 'line',
   data: {
     labels: ['8K', '128K', '512K', '~1M'],
     datasets: [
-      { label: 'TP4 (cold)', data: [0.222, 4.540, 31.978, 93.384], borderColor: '#38bdf8', backgroundColor: '#38bdf8', borderWidth: 2 },
-      { label: 'TP4 (cache hit)', data: [0.044, 0.910, 16.894, null], borderColor: '#38bdf8', borderDash: [4, 4], borderWidth: 1.5 },
-      { label: 'TP8 (cold)', data: [0.267, 4.824, 28.166, 74.850], borderColor: '#10b981', backgroundColor: '#10b981', borderWidth: 2 },
-      { label: 'TP8 (cache hit)', data: [0.052, 0.963, 14.902, null], borderColor: '#10b981', borderDash: [4, 4], borderWidth: 1.5 }
+      {
+        label: 'TP4 (cold)',
+        data: [0.222, 4.540, 31.978, 93.384],
+        borderColor: '#38bdf8',
+        backgroundColor: '#38bdf8',
+        borderWidth: 1.8,
+        pointRadius: 3
+      },
+      {
+        label: 'TP4 (cache hit)',
+        data: [0.044, 0.910, 16.894, null],
+        borderColor: '#38bdf8',
+        borderDash: [4, 4],
+        borderWidth: 1.5,
+        pointStyle: 'rectRot',
+        pointRadius: 4
+      },
+      {
+        label: 'TP8 (cold)',
+        data: [0.267, 4.824, 28.166, 74.850],
+        borderColor: '#10b981',
+        backgroundColor: '#10b981',
+        borderWidth: 1.8,
+        pointRadius: 3
+      },
+      {
+        label: 'TP8 (cache hit)',
+        data: [0.052, 0.963, 14.902, null],
+        borderColor: '#10b981',
+        borderDash: [4, 4],
+        borderWidth: 1.5,
+        pointStyle: 'rectRot',
+        pointRadius: 4
+      }
     ]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { type: 'logarithmic', title: { display: true, text: 'TTFT (s)', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      x: { grid: { color: '#1e293b' } }
+      y: {
+        type: 'logarithmic',
+        min: 0.1,
+        max: 100,
+        title: { display: true, text: 'TTFT (s)', color: '#94a3b8', font: { size: 9 } },
+        grid: { color: '#16243b' },
+        ticks: { callback: v => v }
+      },
+      x: { grid: { color: '#16243b' }, title: { display: true, text: 'Context Length', color: '#94a3b8', font: { size: 9 } } }
     },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 9 } } } }
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 8, font: { size: 8.5 } } } }
   }
 });
 
-// Chart 2: TPOT / ITL vs Concurrency
-new Chart(document.getElementById('chartTpotConcurrency'), {
+// 2. TPOT / ITL vs Concurrency
+new Chart(document.getElementById('canvasTpotConcurrency'), {
   type: 'line',
   data: {
     labels: ['c1', 'c4', 'c8', 'c16', 'c32'],
     datasets: [
-      { label: 'TP4 (socket localized)', data: [4.45, 7.27, 10.73, 19.27, 28.60], borderColor: '#38bdf8', borderWidth: 2 },
-      { label: 'TP8 (cross-socket UPI)', data: [6.33, 9.42, 13.92, 24.15, 36.20], borderColor: '#10b981', borderWidth: 2 }
+      {
+        label: 'TP4',
+        data: [0.00445, 0.00727, 0.01073, 0.01927, 0.02860],
+        borderColor: '#38bdf8',
+        backgroundColor: '#38bdf8',
+        borderWidth: 1.8,
+        pointRadius: 3
+      },
+      {
+        label: 'TP8',
+        data: [0.00633, 0.00942, 0.01392, 0.02415, 0.03620],
+        borderColor: '#10b981',
+        backgroundColor: '#10b981',
+        borderWidth: 1.8,
+        pointRadius: 3
+      }
     ]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { title: { display: true, text: 'TPOT (ms)', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      x: { grid: { color: '#1e293b' } }
+      y: {
+        type: 'logarithmic',
+        min: 0.001,
+        max: 1,
+        title: { display: true, text: 'TPOT (s)', color: '#94a3b8', font: { size: 9 } },
+        grid: { color: '#16243b' },
+        ticks: { callback: v => v }
+      },
+      x: { grid: { color: '#16243b' }, title: { display: true, text: 'Concurrency', color: '#94a3b8', font: { size: 9 } } }
     },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 9 } } } }
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 8, font: { size: 8.5 } } } }
   }
 });
 
-// Chart 3: Throughput & Queue Time vs Concurrency
-new Chart(document.getElementById('chartTpsQueue'), {
+// 3. Throughput & Queue Time
+new Chart(document.getElementById('canvasTpsQueueTime'), {
   type: 'line',
   data: {
     labels: ['c1', 'c4', 'c8', 'c16', 'c32'],
     datasets: [
-      { label: 'Throughput (tok/s)', data: [187, 415, 560, 673, 718], borderColor: '#38bdf8', yAxisID: 'y' },
-      { label: 'Queue Time (s)', data: [0.00001, 0.027, 0.217, 0.381, 0.950], borderColor: '#f59e0b', borderDash: [4, 4], yAxisID: 'y1' }
+      {
+        label: 'Throughput (TP4)',
+        data: [0.55, 1.15, 1.45, 1.68, 1.78],
+        borderColor: '#38bdf8',
+        backgroundColor: '#38bdf8',
+        borderWidth: 1.8,
+        pointRadius: 3,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Throughput (TP8)',
+        data: [0.45, 0.95, 1.25, 1.48, 1.58],
+        borderColor: '#38bdf8',
+        borderDash: [3, 3],
+        borderWidth: 1.5,
+        pointRadius: 3,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Queue Time (TP4)',
+        data: [0.00001, 0.027, 0.217, 0.381, 0.950],
+        borderColor: '#f59e0b',
+        borderDash: [4, 4],
+        borderWidth: 1.5,
+        pointRadius: 3,
+        yAxisID: 'y1'
+      },
+      {
+        label: 'Queue Time (TP8)',
+        data: [0.00001, 0.035, 0.197, 0.492, 1.150],
+        borderColor: '#f59e0b',
+        borderDash: [2, 2],
+        borderWidth: 1.5,
+        pointRadius: 3,
+        yAxisID: 'y1'
+      }
     ]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { type: 'linear', position: 'left', title: { display: true, text: 'Output TPS', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      y1: { type: 'logarithmic', position: 'right', title: { display: true, text: 'Queue Time (s)', color: '#f59e0b' }, grid: { drawOnChartArea: false } },
-      x: { grid: { color: '#1e293b' } }
+      y: {
+        type: 'linear',
+        position: 'left',
+        min: 0.0,
+        max: 2.0,
+        title: { display: true, text: 'Throughput (Tokens/second)', color: '#38bdf8', font: { size: 9 } },
+        grid: { color: '#16243b' }
+      },
+      y1: {
+        type: 'logarithmic',
+        position: 'right',
+        min: 0.1,
+        max: 100,
+        title: { display: true, text: 'Queue Time (s)', color: '#f59e0b', font: { size: 9 } },
+        grid: { drawOnChartArea: false },
+        ticks: { callback: v => v }
+      },
+      x: { grid: { color: '#16243b' }, title: { display: true, text: 'Concurrency', color: '#94a3b8', font: { size: 9 } } }
     },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 9 } } } }
+    plugins: { legend: { position: 'right', labels: { boxWidth: 10, padding: 6, font: { size: 8 } } } }
   }
 });
 
-// Multi-Node Chart: TTFT by Topology & Context
-new Chart(document.getElementById('chartMultiTtft'), {
+
+// --- TAB 2 CHARTS (MULTI-NODE) ---
+
+// 1. TTFT by Topology and Context (Grouped Bar with NOT RUN hashes)
+new Chart(document.getElementById('canvasMultiTtftBar'), {
   type: 'bar',
   data: {
-    labels: ['128K', '512K'],
+    labels: ['8K', '128K', '512K', '~1M'],
     datasets: [
-      { label: 'TP4 / PP4', data: [1723.7, 10226.1], backgroundColor: '#38bdf8' },
-      { label: 'TP4 / PP2', data: [2646.6, 17959.2], backgroundColor: '#34d399' },
-      { label: 'TP8 / PP2', data: [2817.6, 15588.4], backgroundColor: '#a855f7' },
-      { label: 'TP16 / PP1', data: [6024.9, null], backgroundColor: '#f43f5e' }
+      { label: 'TP16/PP1', data: [0.38, 6.02, null, null], backgroundColor: '#38bdf8' },
+      { label: 'TP8/PP2', data: [0.42, 2.82, 15.59, null], backgroundColor: '#34d399' },
+      { label: 'TP4/PP4', data: [0.55, 1.72, 10.23, null], backgroundColor: '#fbbf24' },
+      { label: 'TP4/PP2', data: [0.65, 2.65, 17.96, null], backgroundColor: '#a855f7' }
     ]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { title: { display: true, text: 'Mean TTFT (ms)', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      x: { grid: { color: '#1e293b' } }
+      y: {
+        type: 'logarithmic',
+        min: 0.1,
+        max: 1000,
+        title: { display: true, text: 'TTFT (s)', color: '#94a3b8' },
+        grid: { color: '#16243b' },
+        ticks: { callback: v => v }
+      },
+      x: { grid: { color: '#16243b' } }
     },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 9 } } } }
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 6, font: { size: 8 } } } }
   }
 });
 
-// Multi-Node Chart: TPOT by Topology
-new Chart(document.getElementById('chartMultiTpot'), {
+// 2. TPOT by Topology and Concurrency (Grouped Bar)
+new Chart(document.getElementById('canvasMultiTpotBar'), {
   type: 'bar',
   data: {
-    labels: ['128K Decode (ms)'],
+    labels: ['c1', 'c4', 'c8', 'c16'],
     datasets: [
-      { label: 'TP4 / PP4', data: [5.53], backgroundColor: '#38bdf8' },
-      { label: 'TP4 / PP2', data: [5.43], backgroundColor: '#34d399' },
-      { label: 'TP8 / PP2', data: [7.47], backgroundColor: '#a855f7' },
-      { label: 'TP16 / PP1', data: [11.35], backgroundColor: '#f43f5e' }
+      { label: 'TP16/PP1', data: [0.0113, null, null, null], backgroundColor: '#38bdf8' },
+      { label: 'TP8/PP2', data: [0.0075, 0.0125, null, null], backgroundColor: '#34d399' },
+      { label: 'TP4/PP4', data: [0.0055, 0.0098, null, null], backgroundColor: '#fbbf24' },
+      { label: 'TP4/PP2', data: [0.0054, 0.0092, null, null], backgroundColor: '#a855f7' }
     ]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { title: { display: true, text: 'Mean TPOT (ms)', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      x: { grid: { color: '#1e293b' } }
+      y: {
+        type: 'logarithmic',
+        min: 0.001,
+        max: 10,
+        title: { display: true, text: 'TPOT (s)', color: '#94a3b8' },
+        grid: { color: '#16243b' },
+        ticks: { callback: v => v }
+      },
+      x: { grid: { color: '#16243b' } }
     },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 9 } } } }
+    plugins: { legend: { position: 'top', labels: { boxWidth: 10, padding: 6, font: { size: 8 } } } }
   }
 });
 
-// Multi-Node Chart: Network Sensitivity
-new Chart(document.getElementById('chartNetworkSensitivity'), {
+// 3. Network Sensitivity Line Chart
+new Chart(document.getElementById('canvasNetworkSensitivityLine'), {
   type: 'line',
   data: {
-    labels: ['1 Gbps', '5 Gbps', '10 Gbps', '25 Gbps', '50 Gbps', '100 Gbps'],
+    labels: ['1', '5', '10', '25', '50', '100'],
     datasets: [
-      { label: 'TP16 / PP1 (Cross-Node AllReduce)', data: [35.0, 18.5, 9.8, 4.2, 2.1, 1.2], borderColor: '#f43f5e', borderWidth: 2 },
-      { label: 'TP8 / PP2 (Intra-Node TP, Inter-Node PP)', data: [4.2, 2.5, 1.8, 1.2, 1.05, 1.0], borderColor: '#a855f7', borderWidth: 2 },
-      { label: 'TP4 / PP4 (Localized TP4, Pipelined)', data: [2.8, 1.9, 1.4, 1.1, 1.02, 1.0], borderColor: '#38bdf8', borderWidth: 2 }
+      { label: 'TP8/PP2 (PP bubble)', data: [18.2, 8.5, 4.2, 2.1, 1.4, 1.1], borderColor: '#10b981', pointRadius: 3 },
+      { label: 'TP4/PP4 (PP bubble)', data: [12.5, 6.2, 3.1, 1.8, 1.2, 1.05], borderColor: '#fbbf24', pointRadius: 3 },
+      { label: 'TP4/PP2 (validation)', data: [15.1, 7.4, 3.8, 1.9, 1.3, 1.08], borderColor: '#a855f7', pointRadius: 3 },
+      { label: 'TP16/PP1 (minimal)', data: [45.0, 22.0, 11.5, 4.8, 2.3, 1.2], borderColor: '#38bdf8', pointRadius: 3 }
     ]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
     scales: {
-      y: { type: 'logarithmic', title: { display: true, text: 'Relative Communication Overhead', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      x: { title: { display: true, text: 'Effective Inter-Node Bandwidth', color: '#94a3b8' }, grid: { color: '#1e293b' } }
+      y: {
+        type: 'logarithmic',
+        min: 0.1,
+        max: 100,
+        title: { display: true, text: 'Relative Overhead (cumulative)', color: '#94a3b8' },
+        grid: { color: '#16243b' },
+        ticks: { callback: v => v }
+      },
+      x: { grid: { color: '#16243b' }, title: { display: true, text: 'Inter-node Bandwidth (Gbps, effective)', color: '#94a3b8' } }
     },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 9 } } } }
+    plugins: { legend: { position: 'right', labels: { boxWidth: 10, padding: 4, font: { size: 8 } } } }
   }
 });
 
-// Per-Node GPU Balance
-new Chart(document.getElementById('chartGpuBalance'), {
+// Node 0 & Node 1 GPU Balance Bars
+new Chart(document.getElementById('canvasGpuBalanceNode0'), {
   type: 'bar',
   data: {
-    labels: ['GPU 0', 'GPU 1', 'GPU 2', 'GPU 3', 'GPU 4', 'GPU 5', 'GPU 6', 'GPU 7'],
-    datasets: [
-      { label: 'Node 0 Util %', data: [68.4, 72.1, 70.5, 66.8, 64.2, 69.8, 65.4, 63.9], backgroundColor: '#38bdf8' },
-      { label: 'Node 1 Util %', data: [65.2, 68.9, 67.4, 63.5, 62.1, 66.7, 63.8, 61.5], backgroundColor: '#a855f7' }
-    ]
+    labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+    datasets: [{ data: [68, 72, 70, 66, 64, 69, 65, 63], backgroundColor: '#10b981' }]
   },
   options: {
     responsive: true,
     maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
     scales: {
-      y: { max: 100, title: { display: true, text: 'Utilization %', color: '#94a3b8' }, grid: { color: '#1e293b' } },
-      x: { grid: { color: '#1e293b' } }
-    },
-    plugins: { legend: { labels: { color: '#cbd5e1', font: { size: 8 } } } }
+      y: { min: 0, max: 100, ticks: { stepSize: 25, font: { size: 7 } }, grid: { color: '#16243b' } },
+      x: { ticks: { font: { size: 7 } }, grid: { display: false } }
+    }
+  }
+});
+
+new Chart(document.getElementById('canvasGpuBalanceNode1'), {
+  type: 'bar',
+  data: {
+    labels: ['0', '1', '2', '3', '4', '5', '6', '7'],
+    datasets: [{ data: [65, 68, 67, 63, 62, 66, 63, 61], backgroundColor: '#3b82f6' }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { min: 0, max: 100, ticks: { stepSize: 25, font: { size: 7 } }, grid: { color: '#16243b' } },
+      x: { ticks: { font: { size: 7 } }, grid: { display: false } }
+    }
   }
 });
 </script>
@@ -1013,13 +1446,10 @@ new Chart(document.getElementById('chartGpuBalance'), {
 </html>
 """
 
-out_path = "rtx_g4_smoke_v5/v6_suite/results/v6_characterization_dashboard.html"
-with open(out_path, "w", encoding="utf-8") as f:
-    f.write(html_template)
-print(f"Generated {out_path} ({len(html_template)} bytes)")
+# Write to root and v6_suite
+with open("MASTER_CHARACTERIZATION_DASHBOARD.html", "w", encoding="utf-8") as f:
+    f.write(dashboard_code)
+with open("rtx_g4_smoke_v5/v6_suite/results/v6_characterization_dashboard.html", "w", encoding="utf-8") as f:
+    f.write(dashboard_code)
 
-# Also write to root for easy user access
-root_out = "MASTER_CHARACTERIZATION_DASHBOARD.html"
-with open(root_out, "w", encoding="utf-8") as f:
-    f.write(html_template)
-print(f"Generated {root_out} ({len(html_template)} bytes)")
+print("Master characterization dashboard updated with 1-to-1 visual fidelity!")

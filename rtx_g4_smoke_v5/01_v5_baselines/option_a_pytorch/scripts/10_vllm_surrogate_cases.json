@@ -1,0 +1,257 @@
+{
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.82,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2
+  },
+  "cases": [
+    {
+      "name": "tp4_cold_chunk8k",
+      "purpose": "Cold long-context baseline; no prefix caching/offload.",
+      "transferability": "Runtime trend HIGH-MEDIUM; absolute latency LOW.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 5,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 5,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 3,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp8_cold_chunk8k",
+      "purpose": "Matched TP4/TP8 runtime/topology sensitivity.",
+      "transferability": "TP trend MEDIUM; absolute latency LOW.",
+      "tp": 8,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 5,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 5,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 3,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_chunk4k",
+      "purpose": "Chunked-prefill scheduler sensitivity.",
+      "transferability": "Policy trend HIGH-MEDIUM; absolute TTFT LOW.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 4096,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        { "name": "128k_c1", "input": 131072, "output": 256, "concurrency": 1, "prompts": 5, "warmups": 0 },
+        { "name": "512k_c1", "input": 524288, "output": 128, "concurrency": 1, "prompts": 3, "warmups": 0 },
+        { "name": "1m_c1", "input": 1000000, "output": 64, "concurrency": 1, "prompts": 1, "warmups": 0 }
+      ]
+    },
+    {
+      "name": "tp4_chunk16k",
+      "purpose": "Chunked-prefill scheduler sensitivity.",
+      "transferability": "Policy trend HIGH-MEDIUM; absolute TTFT LOW.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 16384,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 5,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 3,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_prefix_chunk8k",
+      "purpose": "Hybrid prefix-cache reuse behavior.",
+      "transferability": "Semantics HIGH; absolute cache bytes/latency MEDIUM-LOW.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": true,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "prefix128k_seq",
+          "input": 256,
+          "prefix": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 5,
+          "warmups": 0
+        },
+        {
+          "name": "prefix512k_seq",
+          "input": 256,
+          "prefix": 524288,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 3,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_native_offload_pressure",
+      "purpose": "CPU KV-offload pressure boundaries.",
+      "transferability": "Mechanism MEDIUM; NOT a direct proxy for proprietary connectors.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 32,
+      "gpu_memory_utilization": 0.3,
+      "kv_cache_memory_bytes": 4294967296,
+      "benchmarks": [
+        { "name": "128k_c1", "input": 131072, "output": 128, "concurrency": 1, "prompts": 3, "warmups": 0 },
+        { "name": "512k_c1", "input": 524288, "output": 128, "concurrency": 1, "prompts": 2, "warmups": 0 },
+        { "name": "512k_c4", "input": 524288, "output": 128, "concurrency": 4, "prompts": 5, "warmups": 0 },
+        { "name": "1m_c1", "input": 1000000, "output": 64, "concurrency": 1, "prompts": 2, "warmups": 0 }
+      ]
+    },
+    {
+      "name": "tp4_concurrency_saturation",
+      "purpose": "User capacity envelope saturation.",
+      "transferability": "Concurrency scaling HIGH.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        { "name": "8k_c1", "input": 8192, "output": 256, "concurrency": 1, "prompts": 5, "warmups": 0 },
+        { "name": "8k_c4", "input": 8192, "output": 256, "concurrency": 4, "prompts": 10, "warmups": 0 },
+        { "name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 0 },
+        { "name": "8k_c16", "input": 8192, "output": 256, "concurrency": 16, "prompts": 32, "warmups": 0 },
+        { "name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 64, "warmups": 0 },
+        { "name": "128k_c1", "input": 131072, "output": 256, "concurrency": 1, "prompts": 5, "warmups": 0 },
+        { "name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 10, "warmups": 0 },
+        { "name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 0 },
+        { "name": "128k_c16", "input": 131072, "output": 256, "concurrency": 16, "prompts": 32, "warmups": 0 },
+        { "name": "512k_c1", "input": 524288, "output": 128, "concurrency": 1, "prompts": 3, "warmups": 0 },
+        { "name": "512k_c2", "input": 524288, "output": 128, "concurrency": 2, "prompts": 4, "warmups": 0 },
+        { "name": "512k_c4", "input": 524288, "output": 128, "concurrency": 4, "prompts": 8, "warmups": 0 },
+        { "name": "1m_c1", "input": 1000000, "output": 64, "concurrency": 1, "prompts": 2, "warmups": 0 },
+        { "name": "1m_c2", "input": 1000000, "output": 64, "concurrency": 2, "prompts": 3, "warmups": 0 }
+      ]
+    },
+    {
+      "name": "tp4_fp8_kv_chunk8k",
+      "purpose": "KV-cache dtype sensitivity.",
+      "transferability": "Capacity/runtime HIGH.",
+      "tp": 4,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "kv_cache_dtype": "fp8",
+      "benchmarks": [
+        { "name": "128k_c1", "input": 131072, "output": 128, "concurrency": 1, "prompts": 3, "warmups": 0 },
+        { "name": "128k_c4", "input": 131072, "output": 128, "concurrency": 4, "prompts": 8, "warmups": 0 },
+        { "name": "512k_c1", "input": 524288, "output": 128, "concurrency": 1, "prompts": 2, "warmups": 0 },
+        { "name": "512k_c4", "input": 524288, "output": 128, "concurrency": 4, "prompts": 5, "warmups": 0 }
+      ]
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "purpose": "Two-node PP runtime semantics.",
+      "transferability": "Mechanism/Trend HIGH.",
+      "tp": 4,
+      "pp": 2,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        { "name": "128k_c1", "input": 131072, "output": 128, "concurrency": 1, "prompts": 3, "warmups": 0 },
+        { "name": "512k_c1", "input": 524288, "output": 128, "concurrency": 1, "prompts": 2, "warmups": 0 }
+      ]
+    }
+  ]
+}

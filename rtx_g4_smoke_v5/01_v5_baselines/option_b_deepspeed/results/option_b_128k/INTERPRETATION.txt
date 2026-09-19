@@ -1,0 +1,7 @@
+This trace measures the real Kimi-Linear vLLM KDA/MLA/MoE/runtime path on RTX PRO 6000 (Blackwell).
+Identified components:
+- CUTLASS Blackwell fused MoE kernels (MoeFCGemm, run_global)
+- KDA (Kimi Delta Attention) chunk linear attention operators (chunk_gated_delta_rule_fwd_kernel_h_blockdim64)
+- Intra-token parallel solve (chunk_kda_fwd_kernel_intra_token_parallel)
+- Fused K3 MLA KV concatenation packing (fusedKimiK3MLAKVConcatPackKernel)
+- FlashAttention execution for MLA full-attention layers (flash_fwd_kernel)

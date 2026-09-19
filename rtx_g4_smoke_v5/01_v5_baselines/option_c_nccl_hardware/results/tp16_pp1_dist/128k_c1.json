@@ -1,0 +1,31 @@
+{
+  "case": "tp16_pp1_dist",
+  "architecture": "16x Blackwell RTX PRO 6000 (2 nodes x 8 GPUs)",
+  "parallelism": {
+    "tensor_parallel_size": 16,
+    "pipeline_parallel_size": 1,
+    "backend": "Ray + NCCL (PYNCCL)",
+    "intra_node_interconnect": "PCIe Gen 5",
+    "inter_node_interconnect": "GCP VPC 10 Gbps Ethernet"
+  },
+  "workload": {
+    "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+    "input_len": 131072,
+    "output_len": 128,
+    "concurrency": 1,
+    "num_prompts": 2
+  },
+  "metrics": {
+    "mean_ttft_ms": 8216.91,
+    "median_ttft_ms": 8216.91,
+    "p95_ttft_ms": 8234.95,
+    "mean_tpot_ms": 11.566,
+    "median_tpot_ms": 11.566,
+    "median_itl_ms": 11.550,
+    "p95_itl_ms": 11.760,
+    "p99_itl_ms": 12.275,
+    "mean_e2el_ms": 9685.75,
+    "max_output_tokens_per_s": 87.0,
+    "goodput_status": "SUCCESS"
+  }
+}

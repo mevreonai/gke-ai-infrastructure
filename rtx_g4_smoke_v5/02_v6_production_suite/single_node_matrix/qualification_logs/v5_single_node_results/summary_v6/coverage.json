@@ -1,0 +1,66 @@
+[
+  {
+    "case": "tp4_qualification",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_qualification",
+    "bench": "8k_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_qualification",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_qualification",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "8k_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  }
+]

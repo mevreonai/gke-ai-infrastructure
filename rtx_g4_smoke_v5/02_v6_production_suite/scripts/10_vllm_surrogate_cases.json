@@ -1,0 +1,222 @@
+{
+  "schema_version": 2,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "evidence_class": "MEASURED-48B",
+  "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2,
+    "observability_profile": "full",
+    "metrics_interval_s": 0.5
+  },
+  "cases": [
+    {
+      "name": "tp4_qualification",
+      "groups": ["qualification", "single_node", "tp_compare"],
+      "purpose": "Harness qualification and low-cost TP4 baseline.",
+      "tp": 4, "pp": 1, "gpu_indices": [0,1,2,3],
+      "max_num_batched_tokens": 8192, "max_num_seqs": 32,
+      "prefix_caching": false, "offload_gib": 0,
+      "benchmarks": [
+        {"name":"8k_c1","input":8192,"output":256,"concurrency":1,"prompts":12,"warmups":2},
+        {"name":"8k_c8","input":8192,"output":256,"concurrency":8,"prompts":32,"warmups":2},
+        {"name":"128k_c1","input":131072,"output":128,"concurrency":1,"prompts":5,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":2,"warmups":0}
+      ]
+    },
+    {
+      "name": "tp8_qualification",
+      "groups": ["qualification", "single_node", "tp_compare"],
+      "purpose": "Matched TP8 qualification for topology sensitivity.",
+      "tp": 8, "pp": 1, "gpu_indices": [0,1,2,3,4,5,6,7],
+      "max_num_batched_tokens": 8192, "max_num_seqs": 32,
+      "prefix_caching": false, "offload_gib": 0,
+      "benchmarks": [
+        {"name":"8k_c1","input":8192,"output":256,"concurrency":1,"prompts":12,"warmups":2},
+        {"name":"8k_c8","input":8192,"output":256,"concurrency":8,"prompts":32,"warmups":2},
+        {"name":"128k_c1","input":131072,"output":128,"concurrency":1,"prompts":5,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":2,"warmups":0}
+      ]
+    },
+    {
+      "name": "tp4_context_baseline",
+      "groups": ["baseline", "long_context", "single_node"],
+      "purpose": "Warmed-server context scaling to nominal 1M input tokens.",
+      "tp": 4, "pp": 1, "gpu_indices": [0,1,2,3],
+      "max_num_batched_tokens": 8192, "max_num_seqs": 8,
+      "prefix_caching": false, "offload_gib": 0,
+      "benchmarks": [
+        {"name":"8k_c1","input":8192,"output":128,"concurrency":1,"prompts":10,"warmups":2},
+        {"name":"128k_c1","input":131072,"output":128,"concurrency":1,"prompts":5,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":3,"warmups":0},
+        {"name":"1m_c1","input":1000000,"output":32,"concurrency":1,"prompts":2,"warmups":0}
+      ]
+    },
+    {
+      "name": "tp8_context_baseline",
+      "groups": ["baseline", "long_context", "single_node", "tp_compare"],
+      "purpose": "Matched TP8 context scaling.",
+      "tp": 8, "pp": 1, "gpu_indices": [0,1,2,3,4,5,6,7],
+      "max_num_batched_tokens": 8192, "max_num_seqs": 8,
+      "prefix_caching": false, "offload_gib": 0,
+      "benchmarks": [
+        {"name":"8k_c1","input":8192,"output":128,"concurrency":1,"prompts":10,"warmups":2},
+        {"name":"128k_c1","input":131072,"output":128,"concurrency":1,"prompts":5,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":3,"warmups":0},
+        {"name":"1m_c1","input":1000000,"output":32,"concurrency":1,"prompts":2,"warmups":0}
+      ]
+    },
+    {
+      "name": "tp4_prefill_focus",
+      "groups": ["prefill_decode", "long_context"],
+      "purpose": "Isolate prefill/TTFT with minimal decode work.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":8,
+      "prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"8k_prefill","input":8192,"output":4,"concurrency":1,"prompts":8,"warmups":1},
+        {"name":"128k_prefill","input":131072,"output":4,"concurrency":1,"prompts":5,"warmups":1},
+        {"name":"512k_prefill","input":524288,"output":4,"concurrency":1,"prompts":3,"warmups":0},
+        {"name":"1m_prefill","input":1000000,"output":4,"concurrency":1,"prompts":2,"warmups":0}
+      ]
+    },
+    {
+      "name": "tp4_decode_focus",
+      "groups": ["prefill_decode", "concurrency"],
+      "purpose": "Stable decode/TPOT characterization at moderate context.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":64,
+      "prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"8k_decode_c1","input":8192,"output":512,"concurrency":1,"prompts":8,"warmups":2},
+        {"name":"8k_decode_c8","input":8192,"output":512,"concurrency":8,"prompts":24,"warmups":2},
+        {"name":"8k_decode_c16","input":8192,"output":512,"concurrency":16,"prompts":48,"warmups":2}
+      ]
+    },
+    {
+      "name":"tp4_chunk4k","groups":["chunking","long_context"],"purpose":"Chunked-prefill 4K token budget.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":4096,"max_num_seqs":16,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"128k_c1","input":131072,"output":64,"concurrency":1,"prompts":4,"warmups":1},
+        {"name":"128k_c4","input":131072,"output":64,"concurrency":4,"prompts":12,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":32,"concurrency":1,"prompts":2,"warmups":0},
+        {"name":"1m_c1","input":1000000,"output":16,"concurrency":1,"prompts":1,"warmups":0}
+      ]
+    },
+    {
+      "name":"tp4_chunk8k","groups":["chunking","long_context"],"purpose":"Chunked-prefill 8K token budget.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":16,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"128k_c1","input":131072,"output":64,"concurrency":1,"prompts":4,"warmups":1},
+        {"name":"128k_c4","input":131072,"output":64,"concurrency":4,"prompts":12,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":32,"concurrency":1,"prompts":2,"warmups":0},
+        {"name":"1m_c1","input":1000000,"output":16,"concurrency":1,"prompts":1,"warmups":0}
+      ]
+    },
+    {
+      "name":"tp4_chunk16k","groups":["chunking","long_context"],"purpose":"Chunked-prefill 16K token budget.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":16384,"max_num_seqs":16,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"128k_c1","input":131072,"output":64,"concurrency":1,"prompts":4,"warmups":1},
+        {"name":"128k_c4","input":131072,"output":64,"concurrency":4,"prompts":12,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":32,"concurrency":1,"prompts":2,"warmups":0},
+        {"name":"1m_c1","input":1000000,"output":16,"concurrency":1,"prompts":1,"warmups":0}
+      ]
+    },
+    {
+      "name":"tp4_closedloop_8k","groups":["concurrency","closed_loop"],"purpose":"Backlogged closed-loop concurrency at 8K; not a real-user arrival model.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":64,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"c1","input":8192,"output":256,"concurrency":1,"prompts":12,"warmups":2},
+        {"name":"c4","input":8192,"output":256,"concurrency":4,"prompts":24,"warmups":2},
+        {"name":"c8","input":8192,"output":256,"concurrency":8,"prompts":32,"warmups":2},
+        {"name":"c16","input":8192,"output":256,"concurrency":16,"prompts":64,"warmups":2},
+        {"name":"c32","input":8192,"output":256,"concurrency":32,"prompts":128,"warmups":2}
+      ]
+    },
+    {
+      "name":"tp4_closedloop_128k","groups":["concurrency","closed_loop"],"purpose":"Backlogged closed-loop concurrency at 128K.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":32,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"c1","input":131072,"output":128,"concurrency":1,"prompts":6,"warmups":1},
+        {"name":"c4","input":131072,"output":128,"concurrency":4,"prompts":12,"warmups":1},
+        {"name":"c8","input":131072,"output":128,"concurrency":8,"prompts":24,"warmups":1},
+        {"name":"c16","input":131072,"output":128,"concurrency":16,"prompts":32,"warmups":0}
+      ]
+    },
+    {
+      "name":"tp4_closedloop_512k","groups":["concurrency","closed_loop","long_context"],"purpose":"Capacity-gated 512K concurrency.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":8,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"c1","input":524288,"output":64,"concurrency":1,"prompts":3,"warmups":0},
+        {"name":"c2","input":524288,"output":64,"concurrency":2,"prompts":4,"warmups":0,"gate":{"after":"c1","max_peak_kv_usage":0.90,"max_preemptions":0}},
+        {"name":"c4","input":524288,"output":64,"concurrency":4,"prompts":8,"warmups":0,"gate":{"after":"c2","max_peak_kv_usage":0.90,"max_preemptions":0}}
+      ]
+    },
+    {
+      "name":"tp4_closedloop_1m","groups":["concurrency","closed_loop","long_context"],"purpose":"Capacity-gated nominal 1M concurrency.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":4,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[
+        {"name":"c1","input":1000000,"output":32,"concurrency":1,"prompts":2,"warmups":0},
+        {"name":"c2","input":1000000,"output":32,"concurrency":2,"prompts":3,"warmups":0,"gate":{"after":"c1","max_peak_kv_usage":0.90,"max_preemptions":0}},
+        {"name":"c4","input":1000000,"output":32,"concurrency":4,"prompts":4,"warmups":0,"gate":{"after":"c2","max_peak_kv_usage":0.90,"max_preemptions":0}}
+      ]
+    },
+    {
+      "name":"tp4_512k_maxseq4","groups":["scheduler_limits","long_context"],"purpose":"max_num_seqs sensitivity at 512K.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":4,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[{"name":"512k_c4","input":524288,"output":64,"concurrency":4,"prompts":8,"warmups":0}]
+    },
+    {
+      "name":"tp4_512k_maxseq8","groups":["scheduler_limits","long_context"],"purpose":"max_num_seqs sensitivity at 512K.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":8,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[{"name":"512k_c4","input":524288,"output":64,"concurrency":4,"prompts":8,"warmups":0}]
+    },
+    {
+      "name":"tp4_512k_maxseq16","groups":["scheduler_limits","long_context"],"purpose":"max_num_seqs sensitivity at 512K.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":16,"prefix_caching":false,"offload_gib":0,
+      "benchmarks":[{"name":"512k_c4","input":524288,"output":64,"concurrency":4,"prompts":8,"warmups":0}]
+    },
+    {
+      "name":"tp4_prefix128k","groups":["prefix_cache"],"purpose":"Deterministic single-prefix reuse; first request is cold and subsequent requests are hits if cache admits them.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":16,"prefix_caching":true,"offload_gib":0,
+      "benchmarks":[{"name":"prefix128k","dataset":"prefix_repetition","prefix":131072,"suffix":256,"num_prefixes":1,"output":128,"concurrency":1,"prompts":8,"warmups":0}]
+    },
+    {
+      "name":"tp4_prefix512k","groups":["prefix_cache","long_context"],"purpose":"Deterministic 512K prefix reuse on a fresh server.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":8,"prefix_caching":true,"offload_gib":0,
+      "benchmarks":[{"name":"prefix512k","dataset":"prefix_repetition","prefix":524288,"suffix":256,"num_prefixes":1,"output":64,"concurrency":1,"prompts":4,"warmups":0}]
+    },
+    {
+      "name":"tp4_fp8_kv","groups":["kv_dtype","long_context"],"purpose":"KV cache dtype sensitivity; model weights remain BF16 surrogate weights.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":16,"prefix_caching":false,"offload_gib":0,"kv_cache_dtype":"fp8",
+      "benchmarks":[
+        {"name":"128k_c1","input":131072,"output":128,"concurrency":1,"prompts":4,"warmups":1},
+        {"name":"128k_c4","input":131072,"output":128,"concurrency":4,"prompts":12,"warmups":1},
+        {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":2,"warmups":0}
+      ]
+    },
+    {
+      "name":"tp4_native_offload_pressure","groups":["offload","long_context"],"purpose":"Deliberately pressure GPU KV and observe native CPU KV offload. Not a proxy for local SimpleCPUOffloadConnector.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":8,"prefix_caching":false,
+      "offload_gib":32,"kv_cache_memory_bytes":4294967296,
+      "benchmarks":[
+        {"name":"128k_c1","input":131072,"output":64,"concurrency":1,"prompts":3,"warmups":0},
+        {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":2,"warmups":0},
+        {"name":"1m_c1","input":1000000,"output":32,"concurrency":1,"prompts":1,"warmups":0}
+      ]
+    },
+    {
+      "name":"tp4_observer_minimal","groups":["observer_overhead"],"purpose":"Control run to quantify profiling/observability overhead.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":32,"prefix_caching":false,"offload_gib":0,"observability_profile":"minimal","metrics_interval_s":1.0,
+      "benchmarks":[{"name":"8k_c8","input":8192,"output":256,"concurrency":8,"prompts":32,"warmups":2},{"name":"128k_c4","input":131072,"output":128,"concurrency":4,"prompts":12,"warmups":1}]
+    },
+    {
+      "name":"tp4_observer_full","groups":["observer_overhead"],"purpose":"Matched fully instrumented control.",
+      "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":32,"prefix_caching":false,"offload_gib":0,"observability_profile":"full","metrics_interval_s":0.5,
+      "benchmarks":[{"name":"8k_c8","input":8192,"output":256,"concurrency":8,"prompts":32,"warmups":2},{"name":"128k_c4","input":131072,"output":128,"concurrency":4,"prompts":12,"warmups":1}]
+    }
+  ]
+}

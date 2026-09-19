@@ -1,0 +1,53 @@
+{
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.82,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2
+  },
+  "cases": [
+    {
+      "name": "tp8_pp2_dist",
+      "purpose": "AllReduce intra-node (8 GPUs per node), SendRecv crosses 10GbE network.",
+      "transferability": "Production Multi-Node Architecture.",
+      "tp": 8,
+      "pp": 2,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "purpose": "Heavy distributed AllReduce crossing 10GbE network across 16 GPUs.",
+      "transferability": "Network latency bottleneck investigation.",
+      "tp": 16,
+      "pp": 1,
+      "max_num_batched_tokens": 8192,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    }
+  ]
+}
