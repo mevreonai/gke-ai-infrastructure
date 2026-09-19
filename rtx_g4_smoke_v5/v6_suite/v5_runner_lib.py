@@ -21,7 +21,7 @@ def run_capture(cmd, timeout=120):
     except Exception as e: return {"rc":None,"out":repr(e)}
 
 def cli_help(vllm, parts):
-    return run_capture([vllm]+list(parts)+["--help"], timeout=120)["out"]
+    return run_capture([vllm]+list(parts)+["--help=all"], timeout=120)["out"]
 
 def require_flag(help_text, flag, where):
     if flag not in help_text:

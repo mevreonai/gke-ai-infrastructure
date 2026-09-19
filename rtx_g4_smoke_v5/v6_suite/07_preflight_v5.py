@@ -54,8 +54,8 @@ def main():
         raise SystemExit("vllm CLI not found. Activate the same vllm_env used for prior successful runs.")
 
     version = run([vllm, "--version"])
-    serve_help = run([vllm, "serve", "--help"], timeout=120)
-    bench_help = run([vllm, "bench", "serve", "--help"], timeout=120)
+    serve_help = run([vllm, "serve", "--help=all"], timeout=120)
+    bench_help = run([vllm, "bench", "serve", "--help=all"], timeout=120)
     nvsmi = run(["nvidia-smi", "--query-gpu=index,uuid,name,memory.total,pci.bus_id", "--format=csv,noheader,nounits"])
     pyver = sys.version.replace("\n", " ")
     pip_freeze = run([sys.executable, "-m", "pip", "freeze"], timeout=120)
