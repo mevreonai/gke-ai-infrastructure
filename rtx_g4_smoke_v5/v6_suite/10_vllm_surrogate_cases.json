@@ -67,7 +67,7 @@
         {"name":"8k_c1","input":8192,"output":128,"concurrency":1,"prompts":10,"warmups":2},
         {"name":"128k_c1","input":131072,"output":128,"concurrency":1,"prompts":5,"warmups":1},
         {"name":"512k_c1","input":524288,"output":64,"concurrency":1,"prompts":3,"warmups":0},
-        {"name":"1m_c1","input":1000000,"output":32,"concurrency":1,"prompts":1,"warmups":0}
+        {"name":"1m_c1","input":1000000,"output":32,"concurrency":1,"prompts":2,"warmups":0}
       ]
     },
     {
@@ -160,7 +160,8 @@
       "tp":4,"pp":1,"gpu_indices":[0,1,2,3],"max_num_batched_tokens":8192,"max_num_seqs":4,"prefix_caching":false,"offload_gib":0,
       "benchmarks":[
         {"name":"c1","input":1000000,"output":32,"concurrency":1,"prompts":2,"warmups":0},
-        {"name":"c2","input":1000000,"output":32,"concurrency":2,"prompts":3,"warmups":0,"gate":{"after":"c1","max_peak_kv_usage":0.90,"max_preemptions":0}}
+        {"name":"c2","input":1000000,"output":32,"concurrency":2,"prompts":3,"warmups":0,"gate":{"after":"c1","max_peak_kv_usage":0.90,"max_preemptions":0}},
+        {"name":"c4","input":1000000,"output":32,"concurrency":4,"prompts":4,"warmups":0,"gate":{"after":"c2","max_peak_kv_usage":0.90,"max_preemptions":0}}
       ]
     },
     {
