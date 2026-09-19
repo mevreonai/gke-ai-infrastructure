@@ -38,8 +38,8 @@ for row in "${CASE_ROWS[@]}"; do
 print(','.join(str(i) for i in range(int('$GPUS'))))
 PY
 )
-  ray stop -f || true
-  ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "source '$VENV_DIR/bin/activate'; ray stop -f || true"
+  ray stop -f || true; sudo rm -rf /tmp/ray
+  ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "source '$VENV_DIR/bin/activate'; ray stop -f || true; sudo rm -rf /tmp/ray"
 
   CUDA_VISIBLE_DEVICES="$GPU_LIST" ray start --head --node-ip-address="$NODE0_IP" --port=6379 --num-gpus="$GPUS"
   ssh -i "$SSH_KEY" -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" \

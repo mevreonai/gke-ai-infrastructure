@@ -1,0 +1,30 @@
+{
+  "object": "list",
+  "data": [
+    {
+      "id": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "object": "model",
+      "created": 1789835994,
+      "owned_by": "vllm",
+      "root": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+      "parent": null,
+      "max_model_len": 1048576,
+      "permission": [
+        {
+          "id": "modelperm-90992dae9f489d62",
+          "object": "model_permission",
+          "created": 1789835994,
+          "allow_create_engine": false,
+          "allow_sampling": true,
+          "allow_logprobs": true,
+          "allow_search_indices": false,
+          "allow_view": true,
+          "allow_fine_tuning": false,
+          "organization": "*",
+          "group": null,
+          "is_blocking": false
+        }
+      ]
+    }
+  ]
+}

@@ -55,7 +55,7 @@ def main():
     vllm=shutil.which("vllm"); py=sys.executable
     if not vllm: raise SystemExit("vllm CLI not found")
     sampler=str(Path(__file__).with_name("09_metrics_sampler.py").resolve())
-    serve_help=cli_help(vllm,["serve"]); bench_help=cli_help(vllm,["bench","serve"])
+    serve_help=cli_help(vllm,["serve","--help=all"]); bench_help=cli_help(vllm,["bench","serve"])
     top={"schema_version":2,"model":model,"revision":cfg.get("revision"),"evidence_class":"MEASURED-48B",
          "network_provenance":os.environ.get("GCP_NETWORK_PROVENANCE","GCP_UNSPECIFIED"),
          "nccl_transport_provenance":os.environ.get("NCCL_TRANSPORT_PROVENANCE","UNSPECIFIED"),
