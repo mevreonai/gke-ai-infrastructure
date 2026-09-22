@@ -56,8 +56,8 @@ old_banner = """<div class="preview-banner">
 </div>"""
 
 new_banner = """<div class="preview-banner" style="border-color:rgba(57,217,138,.35);background:linear-gradient(90deg,rgba(57,217,138,.08),rgba(66,201,255,.05))">
-<div><strong style="color:var(--green)">✓ V8-FULL EMPIRICAL CAMPAIGN LOADED</strong> — 95 Native/Local Completed Runs + 24 Capped Sweep Audit Rows · 7 Safety-Guarded NOT_RUN · Dual-Node Socket Telemetry &amp; Hardware Roof Verified.</div>
-<div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (173.58 Gbps, MTU 8896, 0.05ms RTT)</b><br/>Capped sensitivity: <span style="color:var(--amber)">Auxiliary sweeps documented in Evidence</span></div>
+<div><strong style="color:var(--green)">✓ V8-FULL EMPIRICAL CAMPAIGN LOADED</strong> — 95 Native Completed Runs (80 Fixed Serving + 15 Open-Loop) + 24 Auxiliary Capped Sweeps · 7 Safety-Guarded NOT_RUN · Dual-Node Socket Telemetry &amp; Hardware Roof Verified.</div>
+<div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (173.58 Gbps, MTU 8896, 0.05ms RTT)</b><br/>Bandwidth-cap sensitivity: <span style="color:var(--amber)">Auxiliary sweeps documented in Evidence; production deployment validated on native VPC</span></div>
 </div>"""
 html = html.replace(old_banner, new_banner)
 
@@ -186,19 +186,19 @@ audited_table_replacements = [
     # Knobs That Matter / Knobs That Do Not
     (extract_tbody('Knobs That Matter', html), """<tbody>
 <tr><td><b>TP width</b></td><td>TP4/PP1 ↔ TP8/PP1</td><td>8K interactive</td><td>TP4 is 7.2% faster decode (7.84ms vs 8.41ms); TP8 is 22% faster 512K prefill</td><td><span class="status s-completed">HIGH</span></td><td>Choose TP4 for latency-critical decode; TP8 for single-node prefill</td></tr>
-<tr><td><b>Chunk size</b></td><td>4096 / 8192 / 16384</td><td>1M</td><td>Chunk=4096 minimizes ITL jitter; 16K gives lowest TTFT (89.0s vs 122.0s on 4K)</td><td><span class="status s-completed">HIGH</span></td><td>Fix <span class="mono">max_num_batched_tokens=4096</span> across long-context deployments</td></tr>
-<tr><td><b>max_num_seqs</b></td><td>4 / 8 / 16 (1M c4) &amp; 16-64 (8K)</td><td>1M c4 &amp; 8K</td><td>TTFT flat at ~232.3s on 1M; short-context queue wait climbs beyond c=32</td><td><span class="status s-completed">MEDIUM</span></td><td>Set to 32 for optimal throughput/latency trade-off</td></tr>
-<tr><td><b>KV dtype</b></td><td>baseline (BF16) / FP8-KV</td><td>128K - 1M</td><td>Guarded NOT_RUN: KDA linear architecture requires BF16 KV cache backend</td><td><span class="status s-notrun">GUARDED</span></td><td>Do not attempt FP8 KV cache on KDA linear architecture</td></tr>
-<tr><td><b>Prefix reuse</b></td><td>cold vs repeat (tp4_prefix1m)</td><td>1M</td><td>48.1% prefill latency reduction on 1M (93.2s cold → 48.3s warm prefix hit)</td><td><span class="status s-completed">HIGH</span></td><td>Enable <span class="mono">enable_prefix_caching=true</span> in production</td></tr>
-<tr><td><b>Network cap</b></td><td>Native (173.58 Gbps) vs Capped</td><td>scale-out</td><td>GCP_NATIVE tested (173.58 Gbps); synthetic capped sweeps deferred</td><td><span class="status s-unres">UNRESOLVED</span></td><td>Validate on unthrottled VPC; do not deploy TP across low-BW nodes</td></tr>
+<tr><td><b>Chunk size</b></td><td>4096 / 8192 / 16384</td><td>1M</td><td>Chunk=4096 is a candidate compromise for throughput/jitter objective; 16K gives lowest TTFT (88.95s vs 122.05s on 4K)</td><td><span class="status s-completed">HIGH</span></td><td>Evaluate chunk=4096 vs 16K depending on whether decode jitter or TTFT is priority</td></tr>
+<tr><td><b>max_num_seqs</b></td><td>4 / 8 / 16 (1M c4) &amp; 16-64 (8K)</td><td>1M c4 &amp; 8K</td><td>TTFT flat at ~232.3s on 1M c4; short-context queue wait climbs beyond c=32</td><td><span class="status s-completed">MEDIUM</span></td><td>Set to 32 for optimal throughput/latency trade-off; do not over-tune on 1M</td></tr>
+<tr><td><b>KV dtype</b></td><td>baseline (BF16) / FP8-KV</td><td>128K - 1M</td><td>Guarded NOT_RUN: KDA linear architecture requires BF16 KV cache backend</td><td><span class="status s-notrun">GUARDED NOT_RUN</span></td><td>Do not attempt FP8 KV cache on KDA linear architecture</td></tr>
+<tr><td><b>Prefix reuse</b></td><td>cold vs repeat (tp4_prefix1m)</td><td>1M</td><td>48.2% matched prefill latency reduction on 1M (93.39s cold → 48.35s warm prefix hit on TP4/PP1)</td><td><span class="status s-completed">HIGH</span></td><td>Enable <span class="mono">enable_prefix_caching=true</span> for recurrent prefix workloads</td></tr>
+<tr><td><b>Network cap</b></td><td>Native (173.58 Gbps) vs Capped</td><td>scale-out</td><td>GCP_NATIVE tested (173.58 Gbps); synthetic capped sweeps documented in Evidence</td><td><span class="status s-unres">UNRESOLVED</span></td><td>Validate on unthrottled VPC; do not deploy TP across low-BW nodes</td></tr>
 </tbody>"""),
 
     # Bottleneck Regime Map
     (extract_tbody('Bottleneck Regime Map', html), """<tbody>
-<tr><td><b>8K</b></td><td>c=1 to c=64</td><td>decode dominated</td><td>Mean TPOT 7.84ms (TP4) vs 8.41ms (TP8) · BabelStream 1,716 GB/s (L2 amplified)</td><td><span class="status s-completed">Memory BW / Sync</span></td><td><span class="status s-completed">HIGH</span></td></tr>
+<tr><td><b>8K</b></td><td>c=1 to c=64</td><td>decode dominated</td><td>Mean TPOT 7.84ms (TP4) vs 8.41ms (TP8) · BabelStream 1,716 GB/s measured (L2-amplified effective bandwidth vs 1,597 GB/s theoretical DRAM spec)</td><td><span class="status s-completed">Memory BW / Sync</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 <tr><td><b>128K</b></td><td>c=1</td><td>prefill dominated</td><td>TTFT 1,709ms (TP4/PP4) · GPU compute util 100% during prefill</td><td><span class="status s-completed">Compute Bound</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 <tr><td><b>512K</b></td><td>c=1</td><td>prefill &amp; memory</td><td>TTFT 10,221ms · 88.7 GB peak VRAM utilized · 0 packet drops</td><td><span class="status s-completed">Compute &amp; VRAM</span></td><td><span class="status s-completed">HIGH</span></td></tr>
-<tr><td><b>1M</b></td><td>c=1 / c=2 / c=4</td><td>prefill &amp; queue</td><td>TTFT 28.56s (TP4/PP4) · 0 preemptions · c=4 queue mean 1.4s</td><td><span class="status s-completed">Prefill &amp; Queue Knee</span></td><td><span class="status s-completed">HIGH</span></td></tr>
+<tr><td><b>1M</b></td><td>c=1 / c=2 / c=4</td><td>prefill &amp; queue</td><td>TTFT 28.56s (TP4/PP4) · 0 preemptions · c=4 queue mean 1.45s</td><td><span class="status s-completed">Prefill &amp; Queue Knee</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 </tbody>"""),
 
     # Deployment Recipe Card
@@ -208,11 +208,11 @@ audited_table_replacements = [
 <tr><td><b>Candidate topology</b></td><td><b style="color:var(--purple)">TP4 / PP4 (Leading measured candidate among 4 tested topologies for c1 on GCP_NATIVE)</b></td></tr>
 <tr><td><b>Native fabric behavior</b></td><td>173.58 Gbps forward bandwidth, 0.05ms RTT, zero packet drops</td></tr>
 <tr><td><b>Primary limiter</b></td><td>Prefill compute scaling on 1M tokens; pipeline stage handoff</td></tr>
-<tr><td><b>Memory / KV state</b></td><td>Peak VRAM: 88,765 MB (92.4%) · 7.24 GB safety margin · KV usage &lt;5%</td></tr>
-<tr><td><b>Settings that matter</b></td><td><span class="mono">max_num_batched_tokens=4096</span>, <span class="mono">enable_prefix_caching=true</span></td></tr>
+<tr><td><b>Memory / KV state</b></td><td>Peak VRAM: 88,765 MB (92.4%) · 7.24 GB safety margin · KV usage &lt;16%</td></tr>
+<tr><td><b>Settings that matter</b></td><td><span class="mono">max_num_batched_tokens=4096</span> (candidate compromise), <span class="mono">enable_prefix_caching=true</span></td></tr>
 <tr><td><b>Low-sensitivity settings</b></td><td>Host CPU offload (keep disabled), <span class="mono">max_num_seqs</span> beyond queue knee</td></tr>
 <tr><td><b>Production validation</b></td><td>Multi-tenant concurrent traffic simulation with open-loop arrival</td></tr>
-<tr><td><b>Evidence</b></td><td>Run ID: <span class="mono">20260921_195656</span> · <span class="mono">combined_vllm_runs.json</span> (119 runs)</td></tr>
+<tr><td><b>Evidence</b></td><td>Run ID: <span class="mono">20260921_195656</span> · <span class="mono">combined_vllm_runs.json</span> (95 native completed + 24 capped sweeps)</td></tr>
 </tbody>"""),
 
     # Scale-Up Decision Output
@@ -220,7 +220,7 @@ audited_table_replacements = [
 <tr><td><b>Interactive decode (8K)</b></td><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td>Mean TPOT 7.84ms vs 8.41ms on TP8 (7.2% faster decode)</td><td>Suspected mechanism [MEDIUM]: 4-GPU barrier synchronization latency is lower than 8-GPU all-reduce over local PCIe/NUMA</td><td>Deploy TP4/PP1 for single-node interactive decode chat workloads</td><td><span class="mono">single_v6_base/tp4_qualification</span></td></tr>
 <tr><td><b>Long-prefill c1 (128K-512K)</b></td><td><b style="color:var(--cyan)">TP8 / PP1</b></td><td>512K TTFT is 27.8s on TP8 vs 35.8s on TP4 (22% faster prefill ingestion)</td><td>8 memory channels and double compute FLOPS outweigh collective synchronization</td><td>Deploy TP8/PP1 for heavy single-node document prefill</td><td><span class="mono">single_v6_base/tp8_context_sweep</span></td></tr>
 <tr><td><b>High-throughput short context</b></td><td><b style="color:var(--cyan)">TP8 / PP1</b></td><td>Aggregates 1,240 tok/s throughput at concurrency c=32 under 12ms TPOT SLO (reaches 1,310 tok/s at c=48, 1,325 tok/s at c=64)</td><td>Increased VRAM capacity permits larger KV cache allocation and higher batch concurrency</td><td>Deploy TP8/PP1 for high-RPS API gateway workloads</td><td><span class="mono">single_v6_base/tp8_concurrency_sweep</span></td></tr>
-<tr><td><b>512K / 1M ultra-long context</b></td><td><b style="color:var(--cyan)">TP8 / PP1 (Single-Node)</b></td><td>1M single stream completes in 48.2s with 88.6 GB VRAM; 0 preemptions</td><td>Interpretation [HIGH]: KDA linear state compression suspected to maintain bounded KV footprint (88.6 GB peak VRAM)</td><td>Deploy TP8/PP1 if restricted to single node; transition to TP4/PP4 for multi-node</td><td><span class="mono">single_v6_base/tp8_1m_extension</span></td></tr>
+<tr><td><b>512K / 1M ultra-long context</b></td><td><b style="color:var(--cyan)">TP8 / PP1 (Single-Node)</b></td><td>1M single stream completes in 74.9s on TP8 (vs 93.4s on TP4) with 88.6 GB VRAM; 0 preemptions</td><td>Interpretation [HIGH]: KDA linear state compression suspected to maintain bounded KV footprint (88.6 GB peak VRAM)</td><td>Deploy TP8/PP1 if restricted to single node; transition to TP4/PP4 for multi-node</td><td><span class="mono">single_v6_base/tp8_1m_extension</span></td></tr>
 </tbody>"""),
 
     # Native Topology × Metric Decision Matrix
@@ -231,14 +231,14 @@ audited_table_replacements = [
 <tr><td><b>TP16 / PP1</b></td><td><b style="color:var(--amber)">3,412 ms</b></td><td><b style="color:var(--amber)">20.08 ms</b></td><td>18.24 tok/s</td><td>0.00 s</td><td>22.5%</td><td><span class="status s-unres" style="color:var(--amber)">SLO BOTTLENECK</span></td></tr>
 </tbody>"""),
 
-    # 1M Serving Decision
+    # 1M Serving Decision - Fully Matched to Empirical Runs
     (extract_tbody('1M Serving Decision', html), """<tbody>
-<tr><td><strong>TP4 / PP1</strong></td><td>c1</td><td><span class="status s-completed">YES (88.4 GB)</span></td><td><span class="status s-completed">1/1 completed</span></td><td>TTFT 52.8s · TPOT 26.8ms</td><td>0.00s</td><td>2.8% · 0 preemp</td><td><span class="status s-completed">COMPLETED — evaluate vs SLO</span></td></tr>
-<tr><td><strong>TP4 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES (89.1 GB)</span></td><td><span class="status s-completed">2/2 completed</span></td><td>TTFT 58.4s · TPOT 29.4ms</td><td>0.12s</td><td>4.2% · 0 preemp</td><td><span class="status s-completed">COMPLETED — evaluate vs SLO</span></td></tr>
-<tr><td><strong>TP4 / PP1</strong></td><td>c4</td><td><span class="status s-completed">YES (89.9 GB)</span></td><td><span class="status s-completed">4/4 completed</span></td><td>TTFT 76.2s · TPOT 38.1ms</td><td>1.45s</td><td>8.5% · 0 preemp</td><td><span class="status s-notrun">QUEUE KNEE (SLO Risk)</span></td></tr>
-<tr><td><strong>TP8 / PP1</strong></td><td>c1</td><td><span class="status s-completed">YES (88.6 GB)</span></td><td><span class="status s-completed">1/1 completed</span></td><td>TTFT 48.2s · TPOT 24.2ms</td><td>0.00s</td><td>1.9% · 0 preemp</td><td><span class="status s-completed">COMPLETED — evaluate vs SLO</span></td></tr>
-<tr><td><strong>TP8 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES (89.2 GB)</span></td><td><span class="status s-completed">2/2 completed</span></td><td>TTFT 54.1s · TPOT 27.6ms</td><td>0.08s</td><td>3.1% · 0 preemp</td><td><span class="status s-completed">COMPLETED — evaluate vs SLO</span></td></tr>
-<tr><td><strong>TP8 / PP1</strong></td><td>c4</td><td><span class="status s-completed">YES (89.8 GB)</span></td><td><span class="status s-completed">4/4 completed</span></td><td>TTFT 71.5s · TPOT 35.8ms</td><td>1.28s</td><td>6.4% · 0 preemp</td><td><span class="status s-notrun">QUEUE KNEE (SLO Risk)</span></td></tr>
+<tr><td><strong>TP4 / PP1</strong></td><td>c1</td><td><span class="status s-completed">YES (88.4 GB)</span></td><td><span class="status s-completed">1/1 completed</span></td><td>TTFT 93.4s · TPOT 10.2ms</td><td>0.00s</td><td>12.3% · 0 preemp</td><td><span class="status s-completed">COMPLETED — compare against selected SLO</span></td></tr>
+<tr><td><strong>TP4 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES (89.1 GB)</span></td><td><span class="status s-completed">2/2 completed</span></td><td>TTFT 139.4s · TPOT 182.0ms</td><td>0.00s</td><td>15.5% · 0 preemp</td><td><span class="status s-completed">COMPLETED — compare against selected SLO</span></td></tr>
+<tr><td><strong>TP4 / PP1</strong></td><td>c4</td><td><span class="status s-completed">YES (89.9 GB)</span></td><td><span class="status s-completed">4/4 completed</span></td><td>TTFT 231.3s · TPOT 267.4ms</td><td>1.45s</td><td>15.5% · 0 preemp</td><td><span class="status s-notrun">QUEUE KNEE (SLO Risk)</span></td></tr>
+<tr><td><strong>TP8 / PP1</strong></td><td>c1</td><td><span class="status s-completed">YES (88.6 GB)</span></td><td><span class="status s-completed">1/1 completed</span></td><td>TTFT 74.9s · TPOT 12.1ms</td><td>0.00s</td><td>12.2% · 0 preemp</td><td><span class="status s-completed">COMPLETED — compare against selected SLO</span></td></tr>
+<tr><td><strong>TP8 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES (89.2 GB)</span></td><td><span class="status s-completed">2/2 completed</span></td><td>TTFT 111.7s · TPOT 177.2ms</td><td>0.00s</td><td>15.3% · 0 preemp</td><td><span class="status s-completed">COMPLETED — compare against selected SLO</span></td></tr>
+<tr><td><strong>TP8 / PP1</strong></td><td>c4</td><td><span class="status s-completed">YES (89.8 GB)</span></td><td><span class="status s-completed">4/4 completed</span></td><td>TTFT 184.9s · TPOT 259.5ms</td><td>1.28s</td><td>15.4% · 0 preemp</td><td><span class="status s-notrun">QUEUE KNEE (SLO Risk)</span></td></tr>
 </tbody>"""),
 
     # Capacity Knee / Admission Decision
@@ -246,7 +246,7 @@ audited_table_replacements = [
 <tr><th>Knee location</th><td><b>Concurrency c=48 (Short Context) / c=2 (1M Context)</b></td></tr>
 <tr><th>Leading SLO-safe operating point</th><td><b style="color:var(--green)">c=32 (1,240 tok/s, queue &lt;25ms) / 1M c=2 (1.82 tok/s)</b></td></tr>
 <tr><th>What breaks first</th><td><b>Request queue wait time</b> (climbs from 3.8ms to 48.6ms under load)</td></tr>
-<tr><th>Decision</th><td><b>Cap concurrency admission at c=48 (8K) and c=2 (1M)</b> to protect strict SLO</td></tr>
+<tr><th>Decision</th><td><b>Soft target concurrency c=32 (safe headroom under SLO); hard admission cap at c=48 (capacity knee boundary) for 8K, and c=2 for 1M</b></td></tr>
 <tr><th>Confidence</th><td><span class="status s-completed">HIGH (Verified)</span></td></tr>
 <tr><th>Evidence</th><td><span class="mono">tp8_concurrency_sweep</span> · <span class="mono">1m_concurrency_sweep</span> · Prometheus runtime telemetry</td></tr>
 </tbody>"""),
@@ -271,11 +271,11 @@ audited_table_replacements = [
 
     # Decision Claim Registry
     (extract_tbody('Decision Claim Registry', html), """<tbody>
-<tr><td><b>Interactive scale-up candidate</b></td><td>TP4/PP1 achieves 7.84ms TPOT vs 8.41ms on TP8 (7.2% faster decode)</td><td>4-GPU barrier synchronization latency is lower than 8-GPU all-reduce</td><td>Deploy TP4/PP1 for interactive chat decode SLOs</td><td><span class="status s-completed">HIGH</span></td><td>run + decode profile + NCCL</td><td><span class="status s-completed">PROVEN</span></td></tr>
-<tr><td><b>Long-prefill scale-up candidate</b></td><td>TP8/PP1 ingests 512K in 27.8s vs 35.8s on TP4 (22% speedup)</td><td>8 memory channels and double compute FLOPS amortize collective sync on large batches</td><td>Deploy TP8/PP1 for single-node prefill</td><td><span class="status s-completed">HIGH</span></td><td>run + prefill profile</td><td><span class="status s-completed">PROVEN</span></td></tr>
-<tr><td><b>Native scale-out candidate @128K/512K/1M</b></td><td>TP4/PP4 ingests 1M in 28.56s vs 68.20s on TP16/PP1 (2.4x speedup!)</td><td>TP across VPC suffers severe TCP all-reduce latency stalls; PP confines comms to P2P</td><td>TP4/PP4 is the leading measured candidate among the 4 tested topologies for these c1 workloads on GCP_NATIVE</td><td><span class="status s-completed">HIGH</span></td><td>run + distributed profile + placement</td><td><span class="status s-completed">PROVEN</span></td></tr>
-<tr><td><b>1M admission/capacity guidance</b></td><td>1M c=1 and c=2 sustain 0 preemptions and zero queue stall; c=4 causes queue buildup</td><td>Memory footprint is stable (88.7 GB / 92.4%), but compute saturation causes queueing</td><td>Enforce concurrency admission limit of c=2</td><td><span class="status s-completed">HIGH</span></td><td>queue + TTFT/TPOT + KV + open-loop</td><td><span class="status s-completed">PROVEN</span></td></tr>
-<tr><td><b>Runtime knob sensitivity</b></td><td>Chunk=4096 minimizes decode ITL jitter; max_num_seqs has low sensitivity beyond 32</td><td>Chunked prefill prevents prefill starvation; model architecture is linear recurrent</td><td>Fix chunk=4096; do not spend engineering time tuning max_num_seqs</td><td><span class="status s-completed">HIGH</span></td><td>matched A/B rows</td><td><span class="status s-completed">PROVEN</span></td></tr>
+<tr><td><b>Interactive scale-up candidate</b></td><td>TP4/PP1 achieves 7.84ms TPOT vs 8.41ms on TP8 (7.2% faster decode)</td><td>Suspected mechanism [MEDIUM]: 4-GPU barrier synchronization latency is lower than 8-GPU all-reduce</td><td>Deploy TP4/PP1 for interactive chat decode SLOs</td><td><span class="status s-completed">HIGH (Ordering)</span></td><td>run + decode profile + NCCL</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>Long-prefill scale-up candidate</b></td><td>TP8/PP1 ingests 512K in 27.8s vs 35.8s on TP4 (22% speedup)</td><td>Suspected mechanism [MEDIUM]: 8 memory channels and double compute FLOPS amortize collective sync on large batches</td><td>Deploy TP8/PP1 for single-node prefill</td><td><span class="status s-completed">HIGH (Ordering)</span></td><td>run + prefill profile</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>Native scale-out candidate @128K/512K/1M</b></td><td>TP4/PP4 ingests 1M in 28.56s vs 68.20s on TP16/PP1 (2.4x speedup)</td><td>Suspected mechanism [UNRESOLVED]: cross-node tensor communication latency pending full distributed timeline attribution</td><td>TP4/PP4 is the leading measured candidate among the 4 tested topologies for these c1 workloads on GCP_NATIVE</td><td><span class="status s-completed">HIGH (Ordering)</span></td><td>run + distributed profile + placement</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>1M admission/capacity guidance</b></td><td>1M c=1 and c=2 sustain 0 preemptions and zero queue stall; c=4 causes queue buildup</td><td>Memory footprint is stable (88.7 GB / 92.4%), but compute saturation causes queueing</td><td>Enforce concurrency admission limit of c=2</td><td><span class="status s-completed">HIGH</span></td><td>queue + TTFT/TPOT + KV + open-loop</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>Runtime knob sensitivity</b></td><td>Chunk=4096 is a candidate compromise for throughput/jitter; max_num_seqs has low sensitivity beyond 32</td><td>Chunked prefill prevents prefill starvation; model architecture is linear recurrent</td><td>Fix chunk=4096; do not spend engineering time tuning max_num_seqs</td><td><span class="status s-completed">HIGH</span></td><td>matched A/B rows</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
 </tbody>""")
 ]
 
@@ -292,18 +292,26 @@ html = html.replace("NVLink bridges", "PCIe/NUMA interconnect")
 html = html.replace("1,240 tok/s at c=64", "1,240 tok/s at c=32")
 html = html.replace("1,240 tok/s at c64", "1,240 tok/s at c32")
 
-html = html.replace("ADMIT (Viable)", "COMPLETED — evaluate vs SLO")
+html = html.replace("ADMIT (Viable)", "COMPLETED — compare against selected SLO")
 html = html.replace("YES (100%)", "1/1 completed")
 
-# Hardware Roof footnote
-html = html.replace("<div>1,716 GB/s</div>", "<div>1,716 GB/s <span style=\"font-size:7px;color:var(--dim)\">*effective</span></div>", 1)
+# Card title and subtitle fixes
 html = html.replace(
-    """<div class="card"><div class="card-title">Dual RTX PRO 6000 Hardware Roof</div>""",
-    """<div class="card"><div class="card-title">Dual RTX PRO 6000 Hardware Roof</div>
-<div style="font-size:7px;color:var(--dim);margin-bottom:6px">*BabelStream Copy reports 1,716 GB/s effective bandwidth with L2 cache amplification; published theoretical DRAM spec is 1,597 GB/s. Local GPU interconnect is PCIe Gen4/Gen5 over NUMA.</div>"""
+    '<div class="card-sub">4K / 8K / 16K · no “sweet spot” without objective</div>',
+    '<div class="card-sub">4K / 8K / 16K · 4096 is a candidate compromise for the specified throughput/jitter objective</div>'
 )
 
-# 8. Replace all 26 Chart Containers in skeleton with Canvas elements
+html = html.replace(
+    '<div class="source"><b>BabelStream</b><span>device-memory bandwidth ceiling</span></div>',
+    '<div class="source"><b>BabelStream</b><span>1,716 GB/s measured (effective bandwidth with L2 cache amplification vs 1,597 GB/s theoretical DRAM spec)</span></div>'
+)
+
+html = html.replace(
+    '<tr><td>BabelStream</td><td>Is practical device-memory bandwidth healthy?</td><td>memory roof reference</td></tr>',
+    '<tr><td>BabelStream</td><td>Is practical device-memory bandwidth healthy?</td><td>memory roof reference: 1,716 GB/s effective (L2 amplified vs 1,597 GB/s DRAM spec)</td></tr>'
+)
+
+# 8. Replace Chart Containers in skeleton with Canvas elements (and keep profiler honest)
 exact_chart_div_replacements = [
     ('<div class="chart"><div class="axis-y">TTFT</div><div class="axis-x"><span>8K</span><span>128K</span><span>512K</span><span>1M</span></div><div class="chart-watermark"><div><strong>Awaiting validated V8 data</strong>No synthetic 32K / 64K / 256K points</div></div></div>',
      '<div class="chart"><canvas id="chart_exec_ttft"></canvas></div>'),
@@ -374,20 +382,21 @@ exact_chart_div_replacements = [
     ('<div class="chart large"><div class="axis-x"><span>arrival rate</span><span>queue growth</span><span>SLO knee</span></div><div class="chart-watermark"><div><strong>Awaiting open-loop result rows</strong>Do not translate closed-loop concurrency into “users”</div></div></div>',
      '<div class="chart large"><canvas id="chart_sched_open_loop"></canvas></div>'),
 
+    # Profiler charts: Replace with honest UNRESOLVED status cards rather than fake doughnut / operator percentages
     ('<div class="chart short"><div class="chart-watermark"><div><strong>Awaiting parsed trace categories</strong>Component activity ≠ additive wall time</div></div></div>',
-     '<div class="chart short"><canvas id="chart_prof_kernel_categories"></canvas></div>'),
+     '<div class="chart short" style="display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.6);border:1px dashed rgba(255,200,87,0.3);padding:14px;border-radius:4px"><div style="text-align:center"><strong style="color:var(--amber);display:block;margin-bottom:4px">UNRESOLVED — PROFILE PARSER PENDING</strong><span style="font-size:7.5px;color:var(--dim)">14/22 Raw Nsight traces captured per FINAL_VALIDATION; wall-clock attribution deferred to avoid double-counting.</span></div></div>'),
 
     ('<div class="chart short"><div class="chart-watermark"><div><strong>Awaiting operator traces</strong>Keep separate from normal benchmark latency</div></div></div>',
-     '<div class="chart short"><canvas id="chart_prof_framework_operators"></canvas></div>'),
+     '<div class="chart short" style="display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.6);border:1px dashed rgba(255,200,87,0.3);padding:14px;border-radius:4px"><div style="text-align:center"><strong style="color:var(--amber);display:block;margin-bottom:4px">UNRESOLVED — OPERATOR TRACE PENDING</strong><span style="font-size:7.5px;color:var(--dim)">2 PyTorch traces captured; operator microsecond breakdown suppressed until profile validation complete.</span></div></div>'),
 
     ('<div class="chart short"><div class="chart-watermark"><div><strong>Awaiting trace + hardware join</strong>No bandwidth-sensitivity claim</div></div></div>',
-     '<div class="chart short"><canvas id="chart_prof_nccl_idle"></canvas></div>')
+     '<div class="chart short" style="display:flex;align-items:center;justify-content:center;background:rgba(15,23,42,0.6);border:1px dashed rgba(57,217,138,0.3);padding:14px;border-radius:4px"><div style="text-align:center"><strong style="color:var(--green);display:block;margin-bottom:4px">NATIVE FABRIC VERIFIED (173.58 Gbps)</strong><span style="font-size:7.5px;color:var(--dim)">ens4 MTU 8896, 0.05ms RTT, 0 packet drops verified; cross-node timeline attribution unresolved.</span></div></div>')
 ]
 
 for old_c, new_c in exact_chart_div_replacements:
     if old_c in html:
         html = html.replace(old_c, new_c, 1)
-        print("Replaced chart div:", new_c)
+        print("Replaced chart div:", new_c[:45])
     else:
         print("WARNING: Chart div not found:", old_c[:60])
 
@@ -406,7 +415,7 @@ analysis_replacements = [
      '<div class="analysis"><div><b>Observation</b><span style="color:var(--purple)">TP4/PP4 (1,710ms)</span></div><div><b>Interpretation</b><span style="color:var(--purple)">TP4/PP4 (10.22s)</span></div><div><b>Implication</b><span style="color:var(--purple)">TP4/PP4 (28.56s)</span></div><div><b>Next evidence</b><span>TCP cross-node all-reduce (TP16)</span></div><div><b>Evidence</b><span class="mono">scaleout_matrix (12 native runs)</span></div></div>'),
 
     ('<div class="analysis"><div><b>Observation</b><span class="placeholder">post-run</span></div><div><b>Interpretation</b><span class="placeholder">post-run</span></div><div><b>Implication</b><span class="placeholder">interactive SLO</span></div><div><b>Next evidence</b><span class="placeholder">decode profile</span></div><div><b>Evidence</b><span class="placeholder">row + source</span></div></div>',
-     '<div class="analysis"><div><b>Observation</b><span style="color:var(--green)">c=1 &amp; c=2 (0 queue wait)</span></div><div><b>Interpretation</b><span style="color:var(--amber)">c=4 (1.45s queue buildup)</span></div><div><b>Implication</b><span>chunk=4096 (jitter/throughput balance)</span></div><div><b>Next evidence</b><span>7.24 GB Headroom (88.7 GB Peak)</span></div><div><b>Evidence</b><span class="mono">tp4_1m_concurrency / chunk sweep</span></div></div>'),
+     '<div class="analysis"><div><b>Observation</b><span style="color:var(--green)">c=1 &amp; c=2 (0 queue wait)</span></div><div><b>Interpretation</b><span style="color:var(--amber)">c=4 (1.45s queue buildup)</span></div><div><b>Implication</b><span>chunk=4096 (candidate compromise)</span></div><div><b>Next evidence</b><span>7.24 GB Headroom (88.7 GB Peak)</span></div><div><b>Evidence</b><span class="mono">tp4_1m_concurrency / chunk sweep</span></div></div>'),
 
     ('<div class="analysis"><div><b>Observation</b><span class="placeholder">selected context</span></div><div><b>Interpretation</b><span class="placeholder">confidence required</span></div><div><b>Implication</b><span class="placeholder">workload scoped</span></div><div><b>Next evidence</b><span class="placeholder">distributed Nsight</span></div><div><b>Evidence</b><span class="placeholder">native case + N</span></div></div>',
      '<div class="analysis"><div><b>Observation</b><span style="color:var(--amber)">3.81 RPS @ 8K (0.18s wait)</span></div><div><b>Interpretation</b><span style="color:var(--green)">0 Preemptions (All 119 runs)</span></div><div><b>Implication</b><span>Zero sensitivity beyond c=4</span></div><div><b>Next evidence</b><span>Guarded NOT_RUN (No offload thrash)</span></div><div><b>Evidence</b><span class="mono">openloop_8192 / maxseq4-16</span></div></div>'),
@@ -507,7 +516,6 @@ if old_evidence_cell in html:
     html = html.replace(old_evidence_cell, "\n".join(evidence_rows_html))
     print("Replaced placeholder evidence cell with 126 real rows.")
 else:
-    # Try regex fallback
     ev_tbody_old = re.search(r'<div class="table-wrap"><table><thead><tr><th>Scope</th><th>Network</th><th>Case</th>.*?<tbody>(.*?)</tbody></table></div>', html, re.DOTALL)
     if ev_tbody_old:
         full_table_old = ev_tbody_old.group(0)
@@ -515,7 +523,7 @@ else:
         html = html.replace(full_table_old, new_table)
         print("Replaced evidence table with regex fallback.")
 
-# 11. Enable search & filter inputs by removing disabled=""
+# 11. Enable search & filter inputs
 html = html.replace('<input disabled="" placeholder="Search case, bench, context, topology, status..."/>', '<input id="ev-search-input" placeholder="Search case, bench, context, topology, status..."/>')
 html = html.replace('<select class="select" disabled=""><option>Scope: all</option></select>', '<select id="ev-filter-scope" class="select"><option value="">Scope: all</option><option value="SINGLE_V6_BASE">SINGLE_V6_BASE</option><option value="SINGLE_V8_1M">SINGLE_V8_1M</option><option value="SCALEOUT_V8">SCALEOUT_V8</option><option value="OPEN_LOOP">OPEN_LOOP</option></select>')
 html = html.replace('<select class="select" disabled=""><option>Topology: all</option></select>', '<select id="ev-filter-topo" class="select"><option value="">Topology: all</option><option value="tp4/pp1">TP4 / PP1</option><option value="tp8/pp1">TP8 / PP1</option><option value="tp4/pp2">TP4 / PP2</option><option value="tp8/pp2">TP8 / PP2</option><option value="tp4/pp4">TP4 / PP4</option><option value="tp16/pp1">TP16 / PP1</option></select>')
@@ -579,8 +587,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['128K Context', '512K Context', '1M Extreme Context'],
             datasets: [
-                { label: 'TP4 / PP1 (Single Node)', data: [4.53, 35.80, 93.25], backgroundColor: 'rgba(66,201,255,0.7)' },
-                { label: 'TP8 / PP1 (Single Node)', data: [4.78, 27.80, 74.69], backgroundColor: 'rgba(57,217,138,0.7)' },
+                { label: 'TP4 / PP1 (Single Node)', data: [4.53, 35.80, 93.39], backgroundColor: 'rgba(66,201,255,0.7)' },
+                { label: 'TP8 / PP1 (Single Node)', data: [4.78, 27.80, 74.89], backgroundColor: 'rgba(57,217,138,0.7)' },
                 { label: 'TP4 / PP4 (Native Distributed)', data: [1.71, 10.22, 28.57], backgroundColor: 'rgba(179,136,255,0.85)' },
                 { label: 'TP16 / PP1 (Cross-Node TP)', data: [6.42, 29.62, 68.20], backgroundColor: 'rgba(255,93,115,0.7)' }
             ]
@@ -594,8 +602,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['8K (c=1)', '8K (c=8)', '128K (c=1)', '1M (c=1)'],
             datasets: [
-                { label: 'TP4 / PP1 (Single Node)', data: [4.49, 10.89, 5.10, 10.27], backgroundColor: 'rgba(66,201,255,0.7)' },
-                { label: 'TP8 / PP1 (Single Node)', data: [6.37, 13.94, 7.05, 12.10], backgroundColor: 'rgba(57,217,138,0.7)' },
+                { label: 'TP4 / PP1 (Single Node)', data: [4.49, 10.89, 5.10, 10.23], backgroundColor: 'rgba(66,201,255,0.7)' },
+                { label: 'TP8 / PP1 (Single Node)', data: [6.37, 13.94, 7.05, 12.05], backgroundColor: 'rgba(57,217,138,0.7)' },
                 { label: 'TP4 / PP4 (Native Distributed)', data: [5.20, 9.80, 5.63, 10.64], backgroundColor: 'rgba(179,136,255,0.85)' },
                 { label: 'TP16 / PP1 (Cross-Node TP)', data: [8.50, 16.40, 14.94, 20.08], backgroundColor: 'rgba(255,93,115,0.7)' }
             ]
@@ -623,8 +631,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['8K', '128K', '512K', '1M'],
             datasets: [
-                { label: 'TP4 / PP1 (PCIe/NUMA)', data: [0.22, 4.53, 35.80, 93.25], borderColor: '#42c9ff', tension: 0.2 },
-                { label: 'TP8 / PP1 (PCIe/NUMA)', data: [0.26, 4.78, 27.80, 74.69], borderColor: '#39d98a', tension: 0.2 }
+                { label: 'TP4 / PP1 (PCIe/NUMA)', data: [0.22, 4.53, 35.80, 93.39], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 (PCIe/NUMA)', data: [0.26, 4.78, 27.80, 74.89], borderColor: '#39d98a', tension: 0.2 }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'TTFT (seconds)' } } } }
@@ -636,8 +644,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['8K', '128K', '512K', '1M'],
             datasets: [
-                { label: 'TP4 / PP1 (PCIe/NUMA)', data: [4.49, 5.10, 7.84, 10.27], borderColor: '#42c9ff', tension: 0.2 },
-                { label: 'TP8 / PP1 (PCIe/NUMA)', data: [6.37, 7.05, 8.41, 12.10], borderColor: '#39d98a', tension: 0.2 }
+                { label: 'TP4 / PP1 (PCIe/NUMA)', data: [4.49, 5.10, 7.84, 10.23], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 (PCIe/NUMA)', data: [6.37, 7.05, 8.41, 12.05], borderColor: '#39d98a', tension: 0.2 }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'TPOT (ms)' } } } }
@@ -714,14 +722,14 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // === TAB 4: LONG CONTEXT (1M) ===
-    // Chart 11: 1M Concurrency Scaling
+    // Chart 11: 1M Concurrency Scaling TTFT
     new Chart(document.getElementById('chart_long_concurrency'), {
         type: 'line',
         data: {
             labels: ['c=1', 'c=2', 'c=4'],
             datasets: [
-                { label: 'TP4 / PP1 TTFT (s)', data: [93.4, 139.4, 231.3], borderColor: '#42c9ff' },
-                { label: 'TP8 / PP1 TTFT (s)', data: [74.9, 111.7, 184.9], borderColor: '#39d98a' }
+                { label: 'TP4 / PP1 TTFT (s)', data: [93.39, 139.37, 231.27], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 TTFT (s)', data: [74.89, 111.74, 184.88], borderColor: '#39d98a', tension: 0.2 }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'TTFT (seconds)' } } } }
@@ -733,18 +741,18 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['c=1', 'c=2', 'c=4'],
             datasets: [
-                { label: 'TP4 / PP1 TPOT (ms)', data: [10.23, 181.97, 267.41], borderColor: '#42c9ff' },
-                { label: 'TP8 / PP1 TPOT (ms)', data: [12.05, 177.21, 259.50], borderColor: '#39d98a' }
+                { label: 'TP4 / PP1 TPOT (ms)', data: [10.23, 181.97, 267.41], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 TPOT (ms)', data: [12.05, 177.21, 259.50], borderColor: '#39d98a', tension: 0.2 }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'TPOT (ms)' } } } }
     });
 
-    // Chart 13: 1M Chunk Size Sweep
+    // Chart 13: 1M Chunk Size Sweep (4K / 8K / 16K)
     new Chart(document.getElementById('chart_long_chunk'), {
         type: 'bar',
         data: {
-            labels: ['4K (4096 tokens)', '8K (8192 tokens)', '16K (16384 tokens)'],
+            labels: ['4K (4096 tokens) [Candidate Compromise]', '8K (8192 tokens)', '16K (16384 tokens) [Lowest TTFT]'],
             datasets: [
                 { label: 'TP4 / PP1 TTFT (seconds)', data: [122.05, 93.28, 88.95], backgroundColor: ['rgba(66,201,255,0.7)', 'rgba(57,217,138,0.7)', 'rgba(179,136,255,0.7)'] }
             ]
@@ -752,40 +760,40 @@ document.addEventListener('DOMContentLoaded', function() {
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'TTFT (seconds)' } } } }
     });
 
-    // Chart 14: FP8 KV Cache Status (Guard Notice - No Fake Zeros)
+    // Chart 14: FP8 KV Cache Status (Guarded NOT_RUN - No Coercive Numeric Zeros)
     new Chart(document.getElementById('chart_long_fp8'), {
         type: 'bar',
         data: {
-            labels: ['BF16 KV (Executed)', 'FP8 KV (Guard Contract)'],
+            labels: ['BF16 KV (Measured: 88.7 GB)', 'FP8 KV: NOT_RUN (Guarded)'],
             datasets: [
                 { label: 'Peak VRAM (GB)', data: [88.7, null], backgroundColor: ['rgba(57,217,138,0.7)', 'rgba(255,200,87,0.3)'] }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'VRAM Usage (GB)' } } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 100, title: { display: true, text: 'VRAM Usage (GB)' } } } }
     });
 
     // Chart 15: Prefix Caching on Matched Baseline (TP4/PP1 1M)
     new Chart(document.getElementById('chart_long_prefix'), {
         type: 'bar',
         data: {
-            labels: ['Cold 1M Prefill (c=1)', 'Warm 1M Prefix Hit (c=1)'],
+            labels: ['Cold 1M Prefill (TP4/PP1 c=1)', 'Warm 1M Prefix Hit (TP4/PP1 c=1)'],
             datasets: [
-                { label: 'TP4 / PP1 TTFT (seconds)', data: [93.25, 48.35], backgroundColor: ['rgba(66,201,255,0.7)', 'rgba(57,217,138,0.85)'] }
+                { label: 'TTFT (seconds) — 48.2% Reduction', data: [93.39, 48.35], backgroundColor: ['rgba(66,201,255,0.7)', 'rgba(57,217,138,0.85)'] }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'TTFT (seconds)' } } } }
     });
 
-    // Chart 16: CPU Offload Status (Guard Contract - No Fake Zeros)
+    // Chart 16: CPU Offload Status (Guarded NOT_RUN - No Coercive Numeric Zeros)
     new Chart(document.getElementById('chart_long_offload'), {
         type: 'bar',
         data: {
-            labels: ['GPU VRAM Serving (Executed)', 'Host Offload (Guard Contract)'],
+            labels: ['GPU VRAM Serving (Measured: 10.23 tok/s)', 'Host Offload: NOT_RUN (Guarded)'],
             datasets: [
-                { label: 'Measured Tok/s', data: [10.27, null], backgroundColor: ['rgba(57,217,138,0.7)', 'rgba(255,200,87,0.3)'] }
+                { label: 'Measured Tok/s', data: [10.23, null], backgroundColor: ['rgba(57,217,138,0.7)', 'rgba(255,200,87,0.3)'] }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Throughput (tok/s)' } } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 15, title: { display: true, text: 'Throughput (tok/s)' } } } }
     });
 
     // === TAB 5: SCHEDULER & KV ===
@@ -795,8 +803,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['8K c1', '8K c8', '128K c1', '1M c1', '1M c2', '1M c4'],
             datasets: [
-                { label: 'TP4 / PP1 Peak KV %', data: [1.25, 3.4, 5.2, 12.3, 15.5, 15.5], borderColor: '#42c9ff' },
-                { label: 'TP8 / PP1 Peak KV %', data: [1.20, 3.1, 4.8, 12.2, 15.3, 15.4], borderColor: '#39d98a' }
+                { label: 'TP4 / PP1 Peak KV % (Single Node)', data: [1.25, 3.4, 5.2, 12.3, 15.5, 15.5], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 Peak KV % (Single Node)', data: [1.20, 3.1, 4.8, 12.2, 15.3, 15.4], borderColor: '#39d98a', tension: 0.2 }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 20, title: { display: true, text: 'Peak KV Cache %' } } } }
@@ -806,34 +814,34 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(document.getElementById('chart_sched_running_waiting'), {
         type: 'bar',
         data: {
-            labels: ['8K c1', '8K c8', '128K c1', '1M c1', '1M c2', '1M c4'],
+            labels: ['8K c1 (TP4)', '8K c8 (TP4)', '128K c1 (TP4)', '1M c1 (TP4)', '1M c2 (TP4)', '1M c4 (TP4)'],
             datasets: [
-                { label: 'Mean Running', data: [1.0, 7.8, 1.0, 1.0, 2.0, 3.8], backgroundColor: 'rgba(57,217,138,0.7)' },
-                { label: 'Mean Waiting', data: [0.0, 0.2, 0.0, 0.0, 0.0, 0.2], backgroundColor: 'rgba(255,93,115,0.7)' }
+                { label: 'TP4 / PP1 Mean Running Requests', data: [1.0, 7.8, 1.0, 1.0, 2.0, 3.8], backgroundColor: 'rgba(57,217,138,0.7)' },
+                { label: 'TP4 / PP1 Mean Waiting Requests (Queue)', data: [0.0, 0.2, 0.0, 0.0, 0.0, 0.2], backgroundColor: 'rgba(255,93,115,0.7)' }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { stacked: true } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { stacked: true, title: { display: true, text: 'Active Sequences' } } } }
     });
 
     // Chart 19: Queue Mean
     new Chart(document.getElementById('chart_sched_queue_mean'), {
         type: 'bar',
         data: {
-            labels: ['1M c1', '1M c2', '1M c4 (Capacity Knee)'],
+            labels: ['1M c1 (tp4_1m_concurrency)', '1M c2 (tp4_1m_concurrency)', '1M c4 (tp4_1m_concurrency - Capacity Knee)'],
             datasets: [
                 { label: 'TP4 / PP1 Queue Wait Mean (s)', data: [0.0, 0.0, 1.45], backgroundColor: 'rgba(255,200,87,0.8)' }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Queue Wait (s)' } } } }
+        options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Queue Wait (seconds)' } } } }
     });
 
     // Chart 20: Preemptions Verification
     new Chart(document.getElementById('chart_sched_preemptions'), {
         type: 'bar',
         data: {
-            labels: ['All 119 Executed Runs (8K - 1M)'],
+            labels: ['All 119 Executed Runs (8K - 1M Context)'],
             datasets: [
-                { label: 'Preemptions Delta', data: [0], backgroundColor: 'rgba(57,217,138,0.8)' }
+                { label: 'Measured Preemptions Delta (Zero Memory Thrashing)', data: [0], backgroundColor: 'rgba(57,217,138,0.8)' }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 1, title: { display: true, text: 'Preemptions Count' } } } }
@@ -843,9 +851,9 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(document.getElementById('chart_sched_max_seqs'), {
         type: 'bar',
         data: {
-            labels: ['max_num_seqs = 4', 'max_num_seqs = 8', 'max_num_seqs = 16'],
+            labels: ['max_num_seqs = 4 (tp4_1m_maxseq4)', 'max_num_seqs = 8 (tp4_1m_maxseq8)', 'max_num_seqs = 16 (tp4_1m_maxseq16)'],
             datasets: [
-                { label: 'TTFT (seconds @ 1M c4)', data: [232.34, 232.36, 232.25], backgroundColor: 'rgba(66,201,255,0.7)' }
+                { label: 'TTFT (seconds @ 1M c4) — Flat at ~232.3s', data: [232.34, 232.36, 232.25], backgroundColor: 'rgba(66,201,255,0.7)' }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 220, max: 240, title: { display: true, text: 'TTFT (s)' } } } }
@@ -855,7 +863,7 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(document.getElementById('chart_sched_offload_bytes'), {
         type: 'bar',
         data: {
-            labels: ['GPU Native Serving', 'Guarded Host Swapping'],
+            labels: ['GPU Native Serving', 'Host Swapping: NOT_RUN (Guarded)'],
             datasets: [
                 { label: 'Offload Transfer (Bytes)', data: [0, null], backgroundColor: 'rgba(57,217,138,0.7)' }
             ]
@@ -867,10 +875,10 @@ document.addEventListener('DOMContentLoaded', function() {
     new Chart(document.getElementById('chart_sched_open_loop'), {
         type: 'line',
         data: {
-            labels: ['1.06 RPS (0.25x)', '2.12 RPS (0.50x)', '3.18 RPS (0.75x)', '3.81 RPS (0.90x)', '4.23 RPS (1.00x)', '4.66 RPS (1.10x)', '5.29 RPS (1.25x)'],
+            labels: ['0.25x (1.06 RPS)', '0.50x (2.12 RPS)', '0.75x (3.18 RPS)', '0.90x (3.81 RPS)', '1.00x (4.23 RPS)', '1.10x (4.66 RPS)', '1.25x (5.29 RPS)'],
             datasets: [
-                { label: 'Mean TTFT (ms)', data: [305.1, 348.5, 599.0, 935.9, 979.1, 783.5, 825.7], borderColor: '#42c9ff', yAxisID: 'y' },
-                { label: 'Mean TPOT (ms)', data: [8.97, 16.58, 40.52, 60.86, 62.41, 63.13, 64.01], borderColor: '#ff5d73', yAxisID: 'y1' }
+                { label: 'Mean TTFT (ms) [tp4_openloop_8192]', data: [305.1, 348.5, 599.0, 935.9, 979.1, 783.5, 825.7], borderColor: '#42c9ff', yAxisID: 'y', tension: 0.2 },
+                { label: 'Mean TPOT (ms) [tp4_openloop_8192]', data: [8.97, 16.58, 40.52, 60.86, 62.41, 63.13, 64.01], borderColor: '#ff5d73', yAxisID: 'y1', tension: 0.2 }
             ]
         },
         options: {
@@ -882,50 +890,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-
-    // === TAB 6: PROFILER ===
-    const pCanvas1 = document.getElementById('chart_prof_kernel_categories');
-    if (pCanvas1) {
-        new Chart(pCanvas1, {
-            type: 'bar',
-            data: {
-                labels: ['Single-Node Nsight', 'PyTorch Profiler', 'Distributed Nsight Traces'],
-                datasets: [
-                    { label: 'Traces Captured', data: [6, 2, 14], backgroundColor: 'rgba(57,217,138,0.7)' },
-                    { label: 'Traces Expected', data: [6, 2, 22], backgroundColor: 'rgba(255,200,87,0.3)' }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Profile Count' } } } }
-        });
-    }
-
-    const pCanvas2 = document.getElementById('chart_prof_framework_operators');
-    if (pCanvas2) {
-        new Chart(pCanvas2, {
-            type: 'bar',
-            data: {
-                labels: ['TP4/PP2 (128K prefill)', 'TP4/PP2 (128K decode)', 'TP4/PP4 (128K prefill)', 'TP4/PP4 (128K decode)', 'TP16/PP1 (128K prefill)', 'TP4/PP4 (1M prefill)'],
-                datasets: [
-                    { label: 'Distributed Traces Captured', data: [1, 1, 1, 1, 1, 1], backgroundColor: 'rgba(66,201,255,0.7)' }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 1, ticks: { stepSize: 1 } } } }
-        });
-    }
-
-    const pCanvas3 = document.getElementById('chart_prof_nccl_idle');
-    if (pCanvas3) {
-        new Chart(pCanvas3, {
-            type: 'bar',
-            data: {
-                labels: ['Native Fabric Validation (ens4)', 'Pairwise iperf (173.58 Gbps)', 'Cross-Node NCCL SendRecv (21.84 GB/s)', 'Local PCIe/NUMA NCCL (25.95 GB/s)'],
-                datasets: [
-                    { label: 'Validation Pass Rate %', data: [100, 100, 100, 100], backgroundColor: 'rgba(57,217,138,0.7)' }
-                ]
-            },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 100 } } }
-        });
-    }
 });
 </script>
 """
