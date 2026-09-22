@@ -46,6 +46,13 @@ ehthumbs.db
 # Temporary logs & caches
 *.log
 *.zip
+*.tar.gz
+*.tar
 .cache/
 .pytest_cache/
 tmp/
+backups/
+v8_full_results/
+v8_full_release_package/
+v4_mockup_extracted/
+

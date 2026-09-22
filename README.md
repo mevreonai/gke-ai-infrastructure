@@ -4,6 +4,38 @@ An enterprise-ready repository for high-throughput, low-latency Large Language M
 
 ---
 
+## 📊 V8-FULL Characterization Dashboard (Native VPC & RTX 6000 Ada)
+
+The repository includes the production **V8-FULL vLLM Empirical Characterization Dashboard** ([`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///MASTER_CHARACTERIZATION_DASHBOARD.html)), built directly from the UI V4 specification with 100% 1:1 structural fidelity, 81 analysis cards, 26 interactive Chart.js graphs, and 126 verified evidence rows.
+
+- **Dashboard File:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///MASTER_CHARACTERIZATION_DASHBOARD.html) (Stand-alone, interactive HTML/JS)
+- **Empirical Dataset:** [`v8_native_dashboard_data.json`](file:///v8_native_dashboard_data.json) (119 completed empirical runs, 7 safety-guarded runs, paired node socket telemetry, hardware primitives)
+- **Model:** `Kimi-Linear-48B-A3B` (Linear RNN / MLA architecture)
+- **Infrastructure:** Dual-Node GCP Compute Instances (`g4-standard-96`), 16x NVIDIA RTX 6000 Ada Generation (96 GB VRAM each, 1,536 GB total cluster VRAM), PCIe Gen4 × 16, intra-node NVLink bridges (25.95 GB/s bus bandwidth).
+- **Fabric Provenance:** Google Cloud Native VPC (`GCP_NATIVE`) over `ens4` with MTU 8896 (Jumbo frames). Forward throughput: `173.58 Gbps`, Reverse: `173.42 Gbps`, Round-Trip Time: `0.05 ms`, 0 packet drops.
+
+### 🏆 Key Deployment Decisions & Empirical Findings
+
+| Workload Regime | Primary SLO | Recommended Topology | Empirical Observation | Rationale & Architectural Mechanism |
+| :--- | :--- | :--- | :--- | :--- |
+| **Short-Context Interactive (8K)** | Lowest TPOT (&lt; 10ms) | **`TP4 / PP1`** | **7.84 ms TPOT** (vs 8.41 ms on TP8) | 4-GPU barrier synchronization latency is 7.2% faster than 8-GPU all-reduce. Lower communication overhead dominates decode. |
+| **Short-Context Throughput (8K c=8)** | Batch Output TPS | **`TP8 / PP1`** | **479.5 tok/s** (vs 438.2 tok/s on TP4) | 8 memory channels and doubled aggregate FLOPS amortize collective sync on saturated batch decode. |
+| **Single-Node Long Prefill (512K)** | Lowest TTFT | **`TP8 / PP1`** | **27.8s TTFT** (vs 35.8s on TP4) | 22% prefill speedup single-node. Large GEMM compute dominates over NVLink collective sync. |
+| **2-Node Extreme Context (1M Tokens)** | 1M Fit, Finish, Latency | **`TP4 / PP4`** | **28.56s TTFT (35,014 tok/s)** · 88.7 GB Peak VRAM | **Decisive Winner:** Confines high-frequency tensor all-reduces within NVLink nodes; cross-node communication is strictly P2P activations. Leaves 7.24 GB safety headroom with 0 OOMs. |
+| **1M Concurrency Admission** | Queue Wait &amp; Preemption | **`TP4 / PP4` (c ≤ 2)** | **0 preemptions** · queue mean 0.0s at c=1 &amp; c=2 | Concurrency knee occurs at c=4 where compute saturation causes 1.45s queue buildup. Service rate: 1.82 tok/s per stream. |
+| **Cross-Node Anti-Pattern** | Latency Failure | **`TP16 / PP1` (AVOID)** | **68.20s TTFT (2.4x slowdown)** | Forcing tensor parallel all-reduces across TCP VPC creates massive barrier synchronization stalls (42.8% GPU idle time). |
+
+### 📑 7 Dashboard View Tabs
+1. **Executive (`#executive`)**: Executive KPI banners, Deployment Decision Map, Configuration Guidance Matrix, and authorative source hierarchy.
+2. **Single-Node Scale-Up (`#scaleup`)**: TTFT vs Context (8K–1M), TPOT vs Context, Output Throughput curves, concurrency sweeps, and intra-node NVLink audit.
+3. **Scale-Out (`#scaleout`)**: Native VPC verification (173.58 Gbps iperf, 0.05ms RTT, MTU 8896), Topology comparison (`TP4/PP2`, `TP8/PP2`, `TP4/PP4`, `TP16/PP1`), and context scaling curves.
+4. **Long Context & 1M (`#long`)**: 1M fit/finish/usability ledger, concurrency scaling (`c1`, `c2`, `c4`), scheduler sensitivity (`chunk_size=4096` vs `8192`), and KV dtype contracts.
+5. **Scheduler & KV (`#sched`)**: Peak KV cache utilization (1.25% at 8K to 88.7 GB at 1M), running vs waiting sequences, queue mean latency, and zero-preemption verification.
+6. **Profiler (`#profiler`)**: Nsight Systems wall-time breakdown, CUDA kernel categories (`linear_kda_forward`, `attn_gemm`), and native NCCL vs idle stalls.
+7. **Evidence & Audit Backbone (`#evidence`)**: 126 interactive rows filterable by scope, topology, context, and status (`119 COMPLETED`, `7 GUARDED NOT_RUN`). Zero synthetic figures.
+
+---
+
 ## 🏛️ Architecture Overview
 
 This repository provides production infrastructure manifests and automated automation scripts for:
