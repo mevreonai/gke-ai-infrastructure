@@ -1,0 +1,476 @@
+{
+  "ok": false,
+  "files": [
+    {
+      "path": "profiles_multi_node_native\\NCCL_ENV_BEFORE_PROFILES.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_open_loop\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_single_node_v6_matrix\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_single_node_v8_1m_extensions\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_NATIVE\\network_validation\\NCCL_ENV.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\NCCL_ENV_BEFORE_MULTI_NODE.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\network_validation\\NCCL_ENV.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\NCCL_ENV_BEFORE_MULTI_NODE.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\network_validation\\NCCL_ENV.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\NCCL_ENV_BEFORE_MULTI_NODE.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_torch_single_node\\tp4_8k_decode\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_torch_single_node\\tp8_8k_decode\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_single_node\\tp4_batched_decode\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_single_node\\tp4_decode\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_single_node\\tp4_prefill\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_single_node\\tp8_batched_decode\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_single_node\\tp8_decode\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_single_node\\tp8_prefill\\NCCL_ENV_BEFORE_RUN.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\decode_8k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\decode_8k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\decode_8k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\decode_8k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\long_prefill_512k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\long_prefill_512k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\decode_8k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\decode_8k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\batched_decode_8k_c8\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\decode_8k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\decode_8k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\long_prefill_512k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\long_prefill_512k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\NCCL_ENV_BEFORE_PROFILES.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp8_pp2_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp8_pp2_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp4_pp4_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp4_pp4_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp4_pp2_dist\\prefill_128k\\NCCL_ENV_NODE0_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp4_pp2_dist\\prefill_128k\\NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "hardware_raw\\network_node0\\NCCL_ENV_NETWORK_NODE0.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "hardware_raw\\network_node0\\NCCL_ENV_NETWORK_NODE1.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "hardware_raw\\node0\\NCCL_ENV_NATIVE_BEFORE.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "hardware_raw\\node1\\NCCL_ENV_NATIVE_BEFORE.txt",
+      "forbidden_hits": [],
+      "ok": true
+    },
+    {
+      "path": "hardware_raw\\node1\\v8full_hw_node1\\NCCL_ENV_NATIVE_BEFORE.txt",
+      "forbidden_hits": [],
+      "ok": true
+    }
+  ],
+  "ray_worker_audits": [
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp16_pp1_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp2_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp4_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp8_pp2_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp16_pp1_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp2_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp4_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp8_pp2_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp16_pp1_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp2_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp4_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp8_pp2_dist_RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\batched_decode_8k_c8\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\decode_8k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp8_pp2_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\batched_decode_8k_c8\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\decode_8k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\long_prefill_512k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp4_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\batched_decode_8k_c8\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\decode_8k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp4_pp2_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\batched_decode_8k_c8\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\decode_8k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\long_prefill_512k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_native\\tp16_pp1_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp8_pp2_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp4_pp4_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    },
+    {
+      "path": "profiles_multi_node_capped\\GCP_CAPPED_100G\\profiles\\tp4_pp2_dist\\prefill_128k\\RAY_NCCL_ENV_AUDIT.json",
+      "ok": true,
+      "live_nodes": 2,
+      "violations": []
+    }
+  ],
+  "scaleout_ray_audit_count": 0,
+  "scaleout_ray_audit_expected": 12,
+  "profile_ray_audit_count": 17,
+  "profile_ray_audit_expected": 22,
+  "ray_policy_complete": false
+}

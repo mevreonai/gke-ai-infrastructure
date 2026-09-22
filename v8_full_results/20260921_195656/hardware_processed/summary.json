@@ -1,0 +1,2186 @@
+{
+  "nccl": [
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/120_ar_tp4_native_16k.log",
+      "label": "120_ar_tp4_native_16k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 19.66,
+      "algbw_GBs": 0.83,
+      "busbw_GBs": 1.25,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    19.66    0.83    1.25       0    16.65    0.98    1.48       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/120_ar_tp4_native_128k.log",
+      "label": "120_ar_tp4_native_128k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 28.64,
+      "algbw_GBs": 4.58,
+      "busbw_GBs": 6.87,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    28.64    4.58    6.87       0    26.80    4.89    7.34       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/120_ar_tp4_native_512k.log",
+      "label": "120_ar_tp4_native_512k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 78.21,
+      "algbw_GBs": 6.7,
+      "busbw_GBs": 10.06,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    78.21    6.70   10.06       0    76.89    6.82   10.23       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/120_ar_tp4_native_64m.log",
+      "label": "120_ar_tp4_native_64m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 3986.41,
+      "algbw_GBs": 16.83,
+      "busbw_GBs": 25.25,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  3986.41   16.83   25.25       0  3981.47   16.86   25.28       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/120_ar_tp4_native_128m.log",
+      "label": "120_ar_tp4_native_128m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 7894.3,
+      "algbw_GBs": 17.0,
+      "busbw_GBs": 25.5,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  7894.30   17.00   25.50       0  7817.03   17.17   25.75       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/120_ar_tp4_native_256m.log",
+      "label": "120_ar_tp4_native_256m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 15515.0,
+      "algbw_GBs": 17.3,
+      "busbw_GBs": 25.95,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  15515.0   17.30   25.95       0  15453.2   17.37   26.06       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/120_ar_tp4_native_16k.log",
+      "label": "120_ar_tp4_native_16k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 19.04,
+      "algbw_GBs": 0.86,
+      "busbw_GBs": 1.29,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    19.04    0.86    1.29       0    16.70    0.98    1.47       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/120_ar_tp4_native_128k.log",
+      "label": "120_ar_tp4_native_128k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 28.66,
+      "algbw_GBs": 4.57,
+      "busbw_GBs": 6.86,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    28.66    4.57    6.86       0    26.70    4.91    7.36       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/120_ar_tp4_native_512k.log",
+      "label": "120_ar_tp4_native_512k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 78.51,
+      "algbw_GBs": 6.68,
+      "busbw_GBs": 10.02,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    78.51    6.68   10.02       0    77.23    6.79   10.18       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/120_ar_tp4_native_64m.log",
+      "label": "120_ar_tp4_native_64m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 3992.23,
+      "algbw_GBs": 16.81,
+      "busbw_GBs": 25.21,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  3992.23   16.81   25.21       0  3977.49   16.87   25.31       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/120_ar_tp4_native_128m.log",
+      "label": "120_ar_tp4_native_128m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 7936.63,
+      "algbw_GBs": 16.91,
+      "busbw_GBs": 25.37,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  7936.63   16.91   25.37       0  7833.12   17.13   25.70       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/120_ar_tp4_native_256m.log",
+      "label": "120_ar_tp4_native_256m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 15435.1,
+      "algbw_GBs": 17.39,
+      "busbw_GBs": 26.09,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  15435.1   17.39   26.09       0  15496.0   17.32   25.98       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/120_ar_tp4_native_16k.log",
+      "label": "120_ar_tp4_native_16k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 19.04,
+      "algbw_GBs": 0.86,
+      "busbw_GBs": 1.29,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    19.04    0.86    1.29       0    16.70    0.98    1.47       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/120_ar_tp4_native_128k.log",
+      "label": "120_ar_tp4_native_128k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 28.66,
+      "algbw_GBs": 4.57,
+      "busbw_GBs": 6.86,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    28.66    4.57    6.86       0    26.70    4.91    7.36       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/120_ar_tp4_native_512k.log",
+      "label": "120_ar_tp4_native_512k",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 78.51,
+      "algbw_GBs": 6.68,
+      "busbw_GBs": 10.02,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1    78.51    6.68   10.02       0    77.23    6.79   10.18       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/120_ar_tp4_native_64m.log",
+      "label": "120_ar_tp4_native_64m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 3992.23,
+      "algbw_GBs": 16.81,
+      "busbw_GBs": 25.21,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  3992.23   16.81   25.21       0  3977.49   16.87   25.31       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/120_ar_tp4_native_128m.log",
+      "label": "120_ar_tp4_native_128m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 7936.63,
+      "algbw_GBs": 16.91,
+      "busbw_GBs": 25.37,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  7936.63   16.91   25.37       0  7833.12   17.13   25.70       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/120_ar_tp4_native_256m.log",
+      "label": "120_ar_tp4_native_256m",
+      "kind": "ALLREDUCE",
+      "tp": 4,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 15435.1,
+      "algbw_GBs": 17.39,
+      "busbw_GBs": 26.09,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  15435.1   17.39   26.09       0  15496.0   17.32   25.98       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/121_ar_tp8_native_16k.log",
+      "label": "121_ar_tp8_native_16k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 37.03,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.77,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.03    0.44    0.77       0    34.34    0.48    0.83       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/121_ar_tp8_native_128k.log",
+      "label": "121_ar_tp8_native_128k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 54.6,
+      "algbw_GBs": 2.4,
+      "busbw_GBs": 4.2,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    54.60    2.40    4.20       0    51.79    2.53    4.43       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/121_ar_tp8_native_512k.log",
+      "label": "121_ar_tp8_native_512k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 168.72,
+      "algbw_GBs": 3.11,
+      "busbw_GBs": 5.44,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1   168.72    3.11    5.44       0   166.45    3.15    5.51       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/121_ar_tp8_native_64m.log",
+      "label": "121_ar_tp8_native_64m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 4682.37,
+      "algbw_GBs": 14.33,
+      "busbw_GBs": 25.08,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  4682.37   14.33   25.08       0  4582.00   14.65   25.63       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/121_ar_tp8_native_128m.log",
+      "label": "121_ar_tp8_native_128m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 9173.41,
+      "algbw_GBs": 14.63,
+      "busbw_GBs": 25.6,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  9173.41   14.63   25.60       0  9733.12   13.79   24.13       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/121_ar_tp8_native_256m.log",
+      "label": "121_ar_tp8_native_256m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 18760.5,
+      "algbw_GBs": 14.31,
+      "busbw_GBs": 25.04,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  18760.5   14.31   25.04       0  18617.0   14.42   25.23       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/140_ar_tp8_sensitivity_p2p_SYS.log",
+      "label": "140_ar_tp8_sensitivity_p2p_SYS",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 37.2,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.77,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.20    0.44    0.77       0    34.11    0.48    0.84       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/140_ar_tp8_sensitivity_p2p_PHB.log",
+      "label": "140_ar_tp8_sensitivity_p2p_PHB",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 37.97,
+      "algbw_GBs": 0.43,
+      "busbw_GBs": 0.76,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.97    0.43    0.76       0    33.94    0.48    0.84       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/141_ar_tp8_sensitivity_p2p_disabled.log",
+      "label": "141_ar_tp8_sensitivity_p2p_disabled",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 38.77,
+      "algbw_GBs": 0.42,
+      "busbw_GBs": 0.74,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    38.77    0.42    0.74       0    34.93    0.47    0.82       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/121_ar_tp8_native_16k.log",
+      "label": "121_ar_tp8_native_16k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 37.61,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.76,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.61    0.44    0.76       0    34.48    0.48    0.83       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/121_ar_tp8_native_128k.log",
+      "label": "121_ar_tp8_native_128k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 55.52,
+      "algbw_GBs": 2.36,
+      "busbw_GBs": 4.13,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    55.52    2.36    4.13       0    52.61    2.49    4.36       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/121_ar_tp8_native_512k.log",
+      "label": "121_ar_tp8_native_512k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 168.47,
+      "algbw_GBs": 3.11,
+      "busbw_GBs": 5.45,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1   168.47    3.11    5.45       0   166.60    3.15    5.51       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/121_ar_tp8_native_64m.log",
+      "label": "121_ar_tp8_native_64m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 4881.19,
+      "algbw_GBs": 13.75,
+      "busbw_GBs": 24.06,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  4881.19   13.75   24.06       0  4821.74   13.92   24.36       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/121_ar_tp8_native_128m.log",
+      "label": "121_ar_tp8_native_128m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 9608.52,
+      "algbw_GBs": 13.97,
+      "busbw_GBs": 24.45,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  9608.52   13.97   24.45       0  9651.30   13.91   24.34       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/121_ar_tp8_native_256m.log",
+      "label": "121_ar_tp8_native_256m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 18831.2,
+      "algbw_GBs": 14.25,
+      "busbw_GBs": 24.95,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  18831.2   14.25   24.95       0  18900.8   14.20   24.85       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/140_ar_tp8_sensitivity_p2p_SYS.log",
+      "label": "140_ar_tp8_sensitivity_p2p_SYS",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 37.49,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.76,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.49    0.44    0.76       0    33.09    0.50    0.87       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/140_ar_tp8_sensitivity_p2p_PHB.log",
+      "label": "140_ar_tp8_sensitivity_p2p_PHB",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 38.25,
+      "algbw_GBs": 0.43,
+      "busbw_GBs": 0.75,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    38.25    0.43    0.75       0    33.99    0.48    0.84       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/141_ar_tp8_sensitivity_p2p_disabled.log",
+      "label": "141_ar_tp8_sensitivity_p2p_disabled",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 38.48,
+      "algbw_GBs": 0.43,
+      "busbw_GBs": 0.75,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    38.48    0.43    0.75       0    34.72    0.47    0.83       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/121_ar_tp8_native_16k.log",
+      "label": "121_ar_tp8_native_16k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": 37.61,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.76,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.61    0.44    0.76       0    34.48    0.48    0.83       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/121_ar_tp8_native_128k.log",
+      "label": "121_ar_tp8_native_128k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": 55.52,
+      "algbw_GBs": 2.36,
+      "busbw_GBs": 4.13,
+      "parse_index": 5,
+      "raw_line": "131072         32768     float     sum      -1    55.52    2.36    4.13       0    52.61    2.49    4.36       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/121_ar_tp8_native_512k.log",
+      "label": "121_ar_tp8_native_512k",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": 168.47,
+      "algbw_GBs": 3.11,
+      "busbw_GBs": 5.45,
+      "parse_index": 5,
+      "raw_line": "524288        131072     float     sum      -1   168.47    3.11    5.45       0   166.60    3.15    5.51       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/121_ar_tp8_native_64m.log",
+      "label": "121_ar_tp8_native_64m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": 4881.19,
+      "algbw_GBs": 13.75,
+      "busbw_GBs": 24.06,
+      "parse_index": 5,
+      "raw_line": "67108864      16777216     float     sum      -1  4881.19   13.75   24.06       0  4821.74   13.92   24.36       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/121_ar_tp8_native_128m.log",
+      "label": "121_ar_tp8_native_128m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": 9608.52,
+      "algbw_GBs": 13.97,
+      "busbw_GBs": 24.45,
+      "parse_index": 5,
+      "raw_line": "134217728      33554432     float     sum      -1  9608.52   13.97   24.45       0  9651.30   13.91   24.34       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/121_ar_tp8_native_256m.log",
+      "label": "121_ar_tp8_native_256m",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": 18831.2,
+      "algbw_GBs": 14.25,
+      "busbw_GBs": 24.95,
+      "parse_index": 5,
+      "raw_line": "268435456      67108864     float     sum      -1  18831.2   14.25   24.95       0  18900.8   14.20   24.85       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/140_ar_tp8_sensitivity_p2p_SYS.log",
+      "label": "140_ar_tp8_sensitivity_p2p_SYS",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 37.49,
+      "algbw_GBs": 0.44,
+      "busbw_GBs": 0.76,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    37.49    0.44    0.76       0    33.09    0.50    0.87       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/140_ar_tp8_sensitivity_p2p_PHB.log",
+      "label": "140_ar_tp8_sensitivity_p2p_PHB",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 38.25,
+      "algbw_GBs": 0.43,
+      "busbw_GBs": 0.75,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    38.25    0.43    0.75       0    33.99    0.48    0.84       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/141_ar_tp8_sensitivity_p2p_disabled.log",
+      "label": "141_ar_tp8_sensitivity_p2p_disabled",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "",
+      "cap_gbit": "",
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 38.48,
+      "algbw_GBs": 0.43,
+      "busbw_GBs": 0.75,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1    38.48    0.43    0.75       0    34.72    0.47    0.83       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_NATIVE_16k.log",
+      "label": "220_sendrecv_GCP_NATIVE_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 169.31,
+      "busbw_GBs": 0.1,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1   169.31    0.10    0.10       0   116.19    0.14    0.14    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_NATIVE_128k.log",
+      "label": "220_sendrecv_GCP_NATIVE_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 200.81,
+      "busbw_GBs": 0.65,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1   200.81    0.65    0.65       0   177.64    0.74    0.74    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_NATIVE_512k.log",
+      "label": "220_sendrecv_GCP_NATIVE_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 309.96,
+      "busbw_GBs": 1.69,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1   309.96    1.69    1.69       0   274.67    1.91    1.91    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_NATIVE_64m.log",
+      "label": "220_sendrecv_GCP_NATIVE_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 9267.93,
+      "busbw_GBs": 7.24,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1  9267.93    7.24    7.24       0  9362.58    7.17    7.17    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_NATIVE_128m.log",
+      "label": "220_sendrecv_GCP_NATIVE_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 19218.0,
+      "busbw_GBs": 6.98,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1  19218.0    6.98    6.98       0  19637.5    6.83    6.83    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_NATIVE_256m.log",
+      "label": "220_sendrecv_GCP_NATIVE_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 37742.4,
+      "busbw_GBs": 7.11,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1  37742.4    7.11    7.11       0  39068.4    6.87    6.87    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_100G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 174.65,
+      "busbw_GBs": 0.09,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1   174.65    0.09    0.09       0   119.38    0.14    0.14    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_100G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 217.54,
+      "busbw_GBs": 0.6,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1   217.54    0.60    0.60       0   183.60    0.71    0.71    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_100G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 338.75,
+      "busbw_GBs": 1.55,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1   338.75    1.55    1.55       0   294.59    1.78    1.78    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_100G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 12149.7,
+      "busbw_GBs": 5.52,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1  12149.7    5.52    5.52       0  12075.7    5.56    5.56    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_100G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 24864.6,
+      "busbw_GBs": 5.4,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1  24864.6    5.40    5.40       0  24669.4    5.44    5.44    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_100G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_100G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 48418.3,
+      "busbw_GBs": 5.54,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1  48418.3    5.54    5.54       0  47949.9    5.60    5.60    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_50G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 167.42,
+      "busbw_GBs": 0.1,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1   167.42    0.10    0.10       0   108.99    0.15    0.15    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_50G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 221.6,
+      "busbw_GBs": 0.59,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1   221.60    0.59    0.59       0   190.30    0.69    0.69    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_50G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 366.63,
+      "busbw_GBs": 1.43,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1   366.63    1.43    1.43       0   316.90    1.65    1.65    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_50G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 16262.8,
+      "busbw_GBs": 4.13,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1  16262.8    4.13    4.13       0  16150.1    4.16    4.16    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_50G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 32268.8,
+      "busbw_GBs": 4.16,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1  32268.8    4.16    4.16       0  32514.1    4.13    4.13    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_50G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_50G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 65597.5,
+      "busbw_GBs": 4.09,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1  65597.5    4.09    4.09       0  65771.6    4.08    4.08    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_20G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 169.76,
+      "busbw_GBs": 0.1,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1   169.76    0.10    0.10       0   117.02    0.14    0.14    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_20G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 222.8,
+      "busbw_GBs": 0.59,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1   222.80    0.59    0.59       0   191.23    0.69    0.69    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_20G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 426.54,
+      "busbw_GBs": 1.23,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1   426.54    1.23    1.23       0   416.40    1.26    1.26    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_20G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 32539.4,
+      "busbw_GBs": 2.06,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1  32539.4    2.06    2.06       0  32611.1    2.06    2.06    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_20G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 65459.8,
+      "busbw_GBs": 2.05,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1  65459.8    2.05    2.05       0  65544.4    2.05    2.05    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_20G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_20G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 131637.0,
+      "busbw_GBs": 2.04,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   131637    2.04    2.04       0   131254    2.05    2.05    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_10G_16k.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_16k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "16K",
+      "size_bytes": 16384,
+      "time_us": -1.0,
+      "algbw_GBs": 177.57,
+      "busbw_GBs": 0.09,
+      "parse_index": 4,
+      "raw_line": "16384          4096     float     sum      -1   177.57    0.09    0.09       0   117.54    0.14    0.14    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_10G_128k.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_128k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "128K",
+      "size_bytes": 131072,
+      "time_us": -1.0,
+      "algbw_GBs": 297.48,
+      "busbw_GBs": 0.44,
+      "parse_index": 4,
+      "raw_line": "131072         32768     float     sum      -1   297.48    0.44    0.44       0   249.97    0.52    0.52    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_10G_512k.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_512k",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "512K",
+      "size_bytes": 524288,
+      "time_us": -1.0,
+      "algbw_GBs": 649.44,
+      "busbw_GBs": 0.81,
+      "parse_index": 4,
+      "raw_line": "524288        131072     float     sum      -1   649.44    0.81    0.81       0   630.26    0.83    0.83    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_10G_64m.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_64m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "64M",
+      "size_bytes": 67108864,
+      "time_us": -1.0,
+      "algbw_GBs": 60335.8,
+      "busbw_GBs": 1.11,
+      "parse_index": 4,
+      "raw_line": "67108864      16777216     float     sum      -1  60335.8    1.11    1.11       0  60415.3    1.11    1.11    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_10G_128m.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_128m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "128M",
+      "size_bytes": 134217728,
+      "time_us": -1.0,
+      "algbw_GBs": 120386.0,
+      "busbw_GBs": 1.11,
+      "parse_index": 4,
+      "raw_line": "134217728      33554432     float     sum      -1   120386    1.11    1.11       0   120625    1.11    1.11    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/220_sendrecv_GCP_CAPPED_10G_256m.log",
+      "label": "220_sendrecv_GCP_CAPPED_10G_256m",
+      "kind": "SENDRECV",
+      "tp": "",
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "256M",
+      "size_bytes": 268435456,
+      "time_us": -1.0,
+      "algbw_GBs": 241218.0,
+      "busbw_GBs": 1.11,
+      "parse_index": 4,
+      "raw_line": "268435456      67108864     float     sum      -1   241218    1.11    1.11       0   241298    1.11    1.11    N/A"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_NATIVE.log",
+      "label": "225_crossnode_ar_TP2_GCP_NATIVE",
+      "kind": "ALLREDUCE",
+      "tp": 2,
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 226.66,
+      "algbw_GBs": 0.07,
+      "busbw_GBs": 0.07,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   226.66    0.07    0.07       0   199.93    0.08    0.08       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_NATIVE.log",
+      "label": "225_crossnode_ar_TP8_GCP_NATIVE",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 279.86,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   279.86    0.06    0.10       0   211.28    0.08    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_NATIVE.log",
+      "label": "225_crossnode_ar_TP16_GCP_NATIVE",
+      "kind": "ALLREDUCE",
+      "tp": 16,
+      "network_provenance": "GCP_NATIVE",
+      "cap_gbit": 0.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 290.34,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.11,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   290.34    0.06    0.11       0   221.65    0.07    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_100G.log",
+      "label": "225_crossnode_ar_TP2_GCP_CAPPED_100G",
+      "kind": "ALLREDUCE",
+      "tp": 2,
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 236.74,
+      "algbw_GBs": 0.07,
+      "busbw_GBs": 0.07,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   236.74    0.07    0.07       0   208.42    0.08    0.08       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_100G.log",
+      "label": "225_crossnode_ar_TP8_GCP_CAPPED_100G",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 280.28,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   280.28    0.06    0.10       0   209.30    0.08    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_100G.log",
+      "label": "225_crossnode_ar_TP16_GCP_CAPPED_100G",
+      "kind": "ALLREDUCE",
+      "tp": 16,
+      "network_provenance": "GCP_CAPPED_100G",
+      "cap_gbit": 100.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 287.84,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.11,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   287.84    0.06    0.11       0   217.85    0.08    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_50G.log",
+      "label": "225_crossnode_ar_TP2_GCP_CAPPED_50G",
+      "kind": "ALLREDUCE",
+      "tp": 2,
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 223.33,
+      "algbw_GBs": 0.07,
+      "busbw_GBs": 0.07,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   223.33    0.07    0.07       0   213.78    0.08    0.08       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_50G.log",
+      "label": "225_crossnode_ar_TP8_GCP_CAPPED_50G",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 277.85,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   277.85    0.06    0.10       0   211.76    0.08    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_50G.log",
+      "label": "225_crossnode_ar_TP16_GCP_CAPPED_50G",
+      "kind": "ALLREDUCE",
+      "tp": 16,
+      "network_provenance": "GCP_CAPPED_50G",
+      "cap_gbit": 50.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 296.84,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   296.84    0.06    0.10       0   224.33    0.07    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_20G.log",
+      "label": "225_crossnode_ar_TP2_GCP_CAPPED_20G",
+      "kind": "ALLREDUCE",
+      "tp": 2,
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 231.1,
+      "algbw_GBs": 0.07,
+      "busbw_GBs": 0.07,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   231.10    0.07    0.07       0   207.36    0.08    0.08       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_20G.log",
+      "label": "225_crossnode_ar_TP8_GCP_CAPPED_20G",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 286.95,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   286.95    0.06    0.10       0   213.59    0.08    0.13       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_20G.log",
+      "label": "225_crossnode_ar_TP16_GCP_CAPPED_20G",
+      "kind": "ALLREDUCE",
+      "tp": 16,
+      "network_provenance": "GCP_CAPPED_20G",
+      "cap_gbit": 20.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 297.52,
+      "algbw_GBs": 0.06,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   297.52    0.06    0.10       0   227.18    0.07    0.14       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_10G.log",
+      "label": "225_crossnode_ar_TP2_GCP_CAPPED_10G",
+      "kind": "ALLREDUCE",
+      "tp": 2,
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 231.53,
+      "algbw_GBs": 0.07,
+      "busbw_GBs": 0.07,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   231.53    0.07    0.07       0   213.14    0.08    0.08       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_10G.log",
+      "label": "225_crossnode_ar_TP8_GCP_CAPPED_10G",
+      "kind": "ALLREDUCE",
+      "tp": 8,
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 300.91,
+      "algbw_GBs": 0.05,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   300.91    0.05    0.10       0   219.13    0.07    0.13       0"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_10G.log",
+      "label": "225_crossnode_ar_TP16_GCP_CAPPED_10G",
+      "kind": "ALLREDUCE",
+      "tp": 16,
+      "network_provenance": "GCP_CAPPED_10G",
+      "cap_gbit": 10.0,
+      "size_label": "",
+      "size_bytes": 16384,
+      "time_us": 319.45,
+      "algbw_GBs": 0.05,
+      "busbw_GBs": 0.1,
+      "parse_index": 5,
+      "raw_line": "16384          4096     float     sum      -1   319.45    0.05    0.10       0   225.20    0.07    0.14       0"
+    }
+  ],
+  "iperf": [
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_NATIVE.raw.json",
+      "network_provenance": "GCP_NATIVE",
+      "gbps": 173.6032501468264,
+      "GBps": 21.7004062683533
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_NATIVE_reverse.raw.json",
+      "network_provenance": "GCP_NATIVE_reverse",
+      "gbps": 173.5933660656472,
+      "GBps": 21.6991707582059
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_100G.raw.json",
+      "network_provenance": "GCP_CAPPED_100G",
+      "gbps": 54.19457391804025,
+      "GBps": 6.774321739755031
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_100G_reverse.raw.json",
+      "network_provenance": "GCP_CAPPED_100G_reverse",
+      "gbps": 55.81955778743727,
+      "GBps": 6.977444723429659
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_50G.raw.json",
+      "network_provenance": "GCP_CAPPED_50G",
+      "gbps": 33.01557666422295,
+      "GBps": 4.1269470830278685
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_50G_reverse.raw.json",
+      "network_provenance": "GCP_CAPPED_50G_reverse",
+      "gbps": 34.18553094357367,
+      "GBps": 4.273191367946708
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_20G.raw.json",
+      "network_provenance": "GCP_CAPPED_20G",
+      "gbps": 16.69075356855071,
+      "GBps": 2.086344196068839
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_20G_reverse.raw.json",
+      "network_provenance": "GCP_CAPPED_20G_reverse",
+      "gbps": 16.787349748343136,
+      "GBps": 2.098418718542892
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_10G.raw.json",
+      "network_provenance": "GCP_CAPPED_10G",
+      "gbps": 8.995680070017794,
+      "GBps": 1.1244600087522243
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_10G_reverse.raw.json",
+      "network_provenance": "GCP_CAPPED_10G_reverse",
+      "gbps": 9.008158510886105,
+      "GBps": 1.126019813860763
+    }
+  ],
+  "nvbandwidth_metrics": [
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 455.0039898415
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 452.3735847025001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 2911.9590552624995
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 2907.505230976501
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[2].sum",
+      "value": 5629.395755035001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[3].sum",
+      "value": 5689.576190958999
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[4].sum",
+      "value": 2809.8434966180007
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[5].sum",
+      "value": 2254.7507552875
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[6].sum",
+      "value": 4373.034730802002
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[7].sum",
+      "value": 4466.530126481
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[8].sum",
+      "value": 68717.14247297496
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[9].sum",
+      "value": 2809.1092740080007
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[10].sum",
+      "value": 2254.986523901001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[11].sum",
+      "value": 4377.847498046
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[12].sum",
+      "value": 4441.118493395
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[13].sum",
+      "value": 76113.11013158411
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 68709.70628829673
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 454.99551360149997
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 452.3774928685
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 2917.8723416725
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 2912.9794468244986
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[2].sum",
+      "value": 5631.428637076
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[3].sum",
+      "value": 5696.065942327
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[4].sum",
+      "value": 2809.8761022005
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[5].sum",
+      "value": 2254.761887078501
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[6].sum",
+      "value": 4372.8765323689995
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[7].sum",
+      "value": 4466.640905165
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[8].sum",
+      "value": 68885.30354527757
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[9].sum",
+      "value": 2809.1465947145
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[10].sum",
+      "value": 2255.028702395001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[11].sum",
+      "value": 4377.639773896999
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[12].sum",
+      "value": 4440.512694894001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[13].sum",
+      "value": 76275.3770169802
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 68883.96231038496
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 454.99551360149997
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 452.3774928685
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 2917.8723416725
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[1].sum",
+      "value": 2912.9794468244986
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[2].sum",
+      "value": 5631.428637076
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[3].sum",
+      "value": 5696.065942327
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[4].sum",
+      "value": 2809.8761022005
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[5].sum",
+      "value": 2254.761887078501
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[6].sum",
+      "value": 4372.8765323689995
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[7].sum",
+      "value": 4466.640905165
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[8].sum",
+      "value": 68885.30354527757
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[9].sum",
+      "value": 2809.1465947145
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[10].sum",
+      "value": 2255.028702395001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[11].sum",
+      "value": 4377.639773896999
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[12].sum",
+      "value": 4440.512694894001
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json",
+      "metric_path": "nvbandwidth.testcases[13].sum",
+      "value": 76275.3770169802
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Driver API Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.CUDA Runtime Version",
+      "value": 13000.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Major",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Minor",
+      "value": 10.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.Version Patch",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.bounceBufferConfComputeEnabled",
+      "value": 0.0
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json",
+      "metric_path": "nvbandwidth.testcases[0].sum",
+      "value": 68883.96231038496
+    }
+  ],
+  "babelstream": [
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1712725.426,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1444677.122,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1468652.76,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1462571.272,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1306064.594,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1716997.928,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1445766.446,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1472412.133,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1466246.141,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1318639.564,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Copy",
+      "value": 1716503.859,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Mul",
+      "value": 1444016.547,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Add",
+      "value": 1470959.811,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Triad",
+      "value": 1466059.29,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Dot",
+      "value": 1308037.501,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Copy",
+      "value": 1719252.288,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Mul",
+      "value": 1444988.19,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Add",
+      "value": 1472923.818,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Triad",
+      "value": 1465925.854,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/110_babelstream_gpu4.log",
+      "kernel": "Dot",
+      "value": 1311969.189,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1710270.179,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1447481.564,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1470315.254,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1464752.666,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1306986.664,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu4.log",
+      "kernel": "Copy",
+      "value": 1716229.499,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu4.log",
+      "kernel": "Mul",
+      "value": 1442852.299,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu4.log",
+      "kernel": "Add",
+      "value": 1474245.067,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu4.log",
+      "kernel": "Triad",
+      "value": 1463102.72,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/110_babelstream_gpu4.log",
+      "kernel": "Dot",
+      "value": 1306382.402,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu0.log",
+      "kernel": "Copy",
+      "value": 1710270.179,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu0.log",
+      "kernel": "Mul",
+      "value": 1447481.564,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu0.log",
+      "kernel": "Add",
+      "value": 1470315.254,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu0.log",
+      "kernel": "Triad",
+      "value": 1464752.666,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu0.log",
+      "kernel": "Dot",
+      "value": 1306986.664,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu4.log",
+      "kernel": "Copy",
+      "value": 1716229.499,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu4.log",
+      "kernel": "Mul",
+      "value": 1442852.299,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu4.log",
+      "kernel": "Add",
+      "value": 1474245.067,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu4.log",
+      "kernel": "Triad",
+      "value": 1463102.72,
+      "unit": "MBytes/sec"
+    },
+    {
+      "file": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/110_babelstream_gpu4.log",
+      "kernel": "Dot",
+      "value": 1306382.402,
+      "unit": "MBytes/sec"
+    }
+  ],
+  "cutlass": []
+}

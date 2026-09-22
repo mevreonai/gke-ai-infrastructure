@@ -1,0 +1,6 @@
+class htb 1:10 root prio 0 rate 20Gbit ceil 20Gbit burst 1760b cburst 1760b
+ Sent 6937 bytes 28 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+ lended: 27 borrowed: 0 giants: 0
+ tokens: 9 ctokens: 9
+

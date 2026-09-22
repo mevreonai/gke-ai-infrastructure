@@ -1,0 +1,27 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_batched_decode/vllm_profile.1.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_batched_decode/vllm_profile.1.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_batched_decode/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/nvtx_pushpop_sum.py]... 
+Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Range
+86.2,122492348903,4024,30440444.6,30202044.5,29326109,39294399,688352.4,:execute_context_0(0)_generation_8(8)
+1.4,2057252676,8,257156584.5,257151712.0,256463707,257991007,423446.4,:execute_context_2(8190)_generation_2(2)
+1.3,1908034364,8,238504295.5,239896113.0,232818668,243913538,3999050.2,:execute_context_1(8192)_generation_0(0)
+1.3,1859778266,8,232472283.3,230923047.0,227339797,237879537,4048634.0,:execute_context_1(8191)_generation_1(1)
+1.3,1824643816,8,228080477.0,226982272.0,226143127,233725297,2518753.8,:execute_context_1(22)_generation_7(7)
+1.3,1784802777,8,223100347.1,223137017.0,222841497,223312787,157205.8,:execute_context_2(8187)_generation_5(5)
+1.3,1784269924,8,223033740.5,222996093.0,222701668,223665038,290937.2,:execute_context_2(8186)_generation_6(6)
+1.3,1781177814,8,222647226.8,222658353.0,222344788,222909798,203493.0,:execute_context_2(8188)_generation_4(4)
+1.1,1624370794,8,203046349.3,203235163.0,201881558,203773638,679544.6,:execute_context_2(8189)_generation_3(3)
+1.1,1623790814,8,202973851.8,201506243.0,197418188,213887938,5903572.8,:execute_context_0(0)_generation_1(1)
+1.1,1597263464,8,199657933.0,199739178.0,197935348,200759688,941427.1,:execute_context_2(8191)_generation_1(1)
+0.3,488020748,16,30501296.8,30335025.0,29606650,31980370,654960.2,:execute_context_0(0)_generation_7(7)
+0.2,244835354,8,30604419.3,30447984.0,30076969,31241080,472415.3,:execute_context_0(0)_generation_6(6)
+0.2,243679904,8,30459988.0,30209194.0,29606550,31470299,668499.5,:execute_context_0(0)_generation_4(4)
+0.2,243171929,8,30396491.1,30216315.0,29718000,31234550,605735.5,:execute_context_0(0)_generation_5(5)
+0.2,242738030,8,30342253.8,30048050.0,29572620,31651840,726730.9,:execute_context_0(0)_generation_3(3)
+0.2,241128609,8,30141076.1,29984135.0,29444000,30872830,576753.6,:execute_context_0(0)_generation_2(2)
+0.0,1776820,16,111051.3,105955.0,62900,198150,44914.3,:execute_context_0(0)_generation_0(0)
+0.0,1765200,72,24516.7,24060.0,15090,36350,4131.6,CCCL:cub::DeviceScan::InclusiveScan
+

@@ -1,0 +1,12 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/nvtx_pushpop_sum.py]... 
+Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Range
+98.4,121309070535,4088,29674430.2,29112330.0,28286629,245932127,8842629.2,:execute_context_0(0)_generation_1(1)
+1.6,1986960136,8,248370017.0,248381377.0,230588137,264857427,9193068.0,:execute_context_1(8192)_generation_0(0)
+0.0,1517820,16,94863.8,87245.0,68100,270330,47939.6,:execute_context_0(0)_generation_0(0)
+0.0,268890,8,33611.3,30355.0,21600,61940,12888.7,CCCL:cub::DeviceScan::InclusiveScan
+

@@ -1,0 +1,234 @@
+{
+  "profiles": {
+    "tp4_prefill": {
+      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill",
+      "kernel_csv_present": true,
+      "nvtx_csv_present": true,
+      "aggregate_gpu_work_ms": 0.0,
+      "cuda_api_aggregate_ms": 0.0,
+      "name_heuristic_groups": {
+        "kda_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "mla_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "moe_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "nccl_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "other": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 83,
+          "examples": []
+        }
+      },
+      "semantic_attribution_status": "HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
+      "critical_path_warning": "aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
+      "nsys_rep_present": true,
+      "sqlite_present": true
+    },
+    "tp4_decode": {
+      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_decode",
+      "kernel_csv_present": true,
+      "nvtx_csv_present": true,
+      "aggregate_gpu_work_ms": 0.0,
+      "cuda_api_aggregate_ms": 0.0,
+      "name_heuristic_groups": {
+        "kda_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "mla_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "moe_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "nccl_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "other": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 79,
+          "examples": []
+        }
+      },
+      "semantic_attribution_status": "HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
+      "critical_path_warning": "aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
+      "nsys_rep_present": true,
+      "sqlite_present": true
+    },
+    "tp4_batched_decode": {
+      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_batched_decode",
+      "kernel_csv_present": true,
+      "nvtx_csv_present": true,
+      "aggregate_gpu_work_ms": 0.0,
+      "cuda_api_aggregate_ms": 0.0,
+      "name_heuristic_groups": {
+        "kda_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "mla_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "moe_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "nccl_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "other": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 103,
+          "examples": []
+        }
+      },
+      "semantic_attribution_status": "HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
+      "critical_path_warning": "aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
+      "nsys_rep_present": true,
+      "sqlite_present": true
+    },
+    "tp8_prefill": {
+      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_prefill",
+      "kernel_csv_present": true,
+      "nvtx_csv_present": true,
+      "aggregate_gpu_work_ms": 0.0,
+      "cuda_api_aggregate_ms": 0.0,
+      "name_heuristic_groups": {
+        "kda_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "mla_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "moe_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "nccl_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "other": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 88,
+          "examples": []
+        }
+      },
+      "semantic_attribution_status": "HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
+      "critical_path_warning": "aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
+      "nsys_rep_present": true,
+      "sqlite_present": true
+    },
+    "tp8_decode": {
+      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode",
+      "kernel_csv_present": true,
+      "nvtx_csv_present": true,
+      "aggregate_gpu_work_ms": 0.0,
+      "cuda_api_aggregate_ms": 0.0,
+      "name_heuristic_groups": {
+        "kda_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "mla_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "moe_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "nccl_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "other": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 84,
+          "examples": []
+        }
+      },
+      "semantic_attribution_status": "HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
+      "critical_path_warning": "aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
+      "nsys_rep_present": true,
+      "sqlite_present": true
+    },
+    "tp8_batched_decode": {
+      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_batched_decode",
+      "kernel_csv_present": true,
+      "nvtx_csv_present": true,
+      "aggregate_gpu_work_ms": 0.0,
+      "cuda_api_aggregate_ms": 0.0,
+      "name_heuristic_groups": {
+        "kda_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "mla_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "moe_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "nccl_name_heuristic": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 0,
+          "examples": []
+        },
+        "other": {
+          "aggregate_gpu_work_ms": 0.0,
+          "calls": 113,
+          "examples": []
+        }
+      },
+      "semantic_attribution_status": "HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
+      "critical_path_warning": "aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
+      "nsys_rep_present": true,
+      "sqlite_present": true
+    }
+  },
+  "torch_profiles": null,
+  "evidence_guardrail": "KDA/MLA/MoE name groups are heuristic. Exact attribution requires NVTX/timeline correlation. 48B absolute times do not transfer to K3."
+}

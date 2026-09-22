@@ -1,0 +1,1 @@
+===== DISTRIBUTED PROFILE tp8_pp2_dist_decode_8k TP=8 PP=2 GPUs/node=8 =====

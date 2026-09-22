@@ -1,0 +1,884 @@
+{
+  "root": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k",
+  "nsys_report_count": 16,
+  "reports": [
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501.nsys-rep",
+      "size_bytes": 0,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 1,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274501_processed/worker_process_1274501.sqlite",
+        "exists": false,
+        "log": "Exportation error: Cannot read from stream.\n"
+      },
+      "kernel_rows": 3,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504.nsys-rep",
+      "size_bytes": 8705334,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274504_processed/worker_process_1274504.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513.nsys-rep",
+      "size_bytes": 8677905,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274513_processed/worker_process_1274513.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518.nsys-rep",
+      "size_bytes": 8672488,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274518_processed/worker_process_1274518.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523.nsys-rep",
+      "size_bytes": 8696760,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274523_processed/worker_process_1274523.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526.nsys-rep",
+      "size_bytes": 8712171,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274526_processed/worker_process_1274526.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529.nsys-rep",
+      "size_bytes": 8700850,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274529_processed/worker_process_1274529.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536.nsys-rep",
+      "size_bytes": 0,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node0_or_local",
+      "sqlite": {
+        "rc": 1,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536_processed/worker_process_1274536.sqlite",
+        "exists": false,
+        "log": "Exportation error: Cannot read from stream.\n"
+      },
+      "kernel_rows": 3,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647.nsys-rep",
+      "size_bytes": 0,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 1,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142647_processed/worker_process_142647.sqlite",
+        "exists": false,
+        "log": "Exportation error: Cannot read from stream.\n"
+      },
+      "kernel_rows": 3,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651.nsys-rep",
+      "size_bytes": 7942671,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142651_processed/worker_process_142651.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657.nsys-rep",
+      "size_bytes": 7907400,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657_processed/worker_process_142657.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660.nsys-rep",
+      "size_bytes": 7919337,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142660_processed/worker_process_142660.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663.nsys-rep",
+      "size_bytes": 7889055,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142663_processed/worker_process_142663.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666.nsys-rep",
+      "size_bytes": 7895742,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142666_processed/worker_process_142666.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671.nsys-rep",
+      "size_bytes": 7899152,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 0,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142671_processed/worker_process_142671.sqlite",
+        "exists": true,
+        "log": "                             ]\n[=====================================52%                                      ]\n[======================================53%                                     ]\n[=======================================54%                                    ]\n[=======================================55%                                    ]\n[========================================56%                                   ]\n[=========================================57%                                  ]\n[==========================================58%                                 ]\n[===========================================59%                                ]\n[===========================================60%                                ]\n[============================================61%                               ]\n[=============================================62%                              ]\n[==============================================63%                             ]\n[==============================================64%                             ]\n[===============================================65%                            ]\n[================================================66%                           ]\n[=================================================67%                          ]\n[==================================================68%                         ]\n[==================================================69%                         ]\n[===================================================70%                        ]\n[====================================================71%                       ]\n[=====================================================72%                      ]\n[=====================================================73%                      ]\n[======================================================74%                     ]\n[=======================================================75%                    ]\n[========================================================76%                   ]\n[=========================================================77%                  ]\n[=========================================================78%                  ]\n[==========================================================79%                 ]\n[===========================================================80%                ]\n[============================================================81%               ]\n[============================================================82%               ]\n[=============================================================83%              ]\n[==============================================================84%             ]\n[===============================================================85%            ]\n[================================================================86%           ]\n[================================================================87%           ]\n[=================================================================88%          ]\n[==================================================================89%         ]\n[===================================================================90%        ]\n[===================================================================91%        ]\n[====================================================================92%       ]\n[=====================================================================93%      ]\n[======================================================================94%     ]\n[=======================================================================95%    ]\n[=======================================================================96%    ]\n[========================================================================97%   ]\n[=========================================================================98%  ]\n[==========================================================================99% ]\n[==========================================================================100%]\n"
+      },
+      "kernel_rows": 136,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    },
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680.nsys-rep",
+      "size_bytes": 0,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 1,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142680_processed/worker_process_142680.sqlite",
+        "exists": false,
+        "log": "Exportation error: Cannot read from stream.\n"
+      },
+      "kernel_rows": 3,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    }
+  ],
+  "profile_manifests": [
+    {
+      "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/workload/PROFILE_CASE_MANIFEST.json",
+      "topology": "tp16_pp1_dist",
+      "mode": "prefill_128k",
+      "status": "COMPLETED",
+      "bench_exit_code": 0
+    }
+  ],
+  "trace_completeness": {
+    "has_node0_report": true,
+    "has_node1_report": true
+  },
+  "guardrail": "Exact TP/PP/compute overlap attribution requires timeline/NVTX correlation. Do not sum per-rank kernel totals as request latency."
+}

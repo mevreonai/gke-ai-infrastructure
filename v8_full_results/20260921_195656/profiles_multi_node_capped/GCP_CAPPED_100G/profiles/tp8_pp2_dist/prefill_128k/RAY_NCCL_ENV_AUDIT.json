@@ -1,0 +1,46 @@
+{
+  "schema_version": 2,
+  "timestamp": 1790056937.053652,
+  "expected_nodes": 2,
+  "live_nodes": 2,
+  "driver_expected_nccl_env": {
+    "NCCL_SOCKET_IFNAME": "=ens3",
+    "NCCL_NET": "Socket",
+    "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+  },
+  "driver_expected_ld_library_path": "/tmp/clean_nccl_libs",
+  "workers": [
+    {
+      "hostname": "kimi-node-0",
+      "pid": 1471282,
+      "env": {
+        "NCCL_SOCKET_IFNAME": "=ens3",
+        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED",
+        "NCCL_NET": "Socket"
+      },
+      "ld_library_path": "/tmp/clean_nccl_libs",
+      "node_id": "35bc30e152cf08bc0588300ab986ca80383787dc731f8702df9b9abd",
+      "node_manager_address": "10.128.0.39"
+    },
+    {
+      "hostname": "kimi-node-1",
+      "pid": 182885,
+      "env": {
+        "NCCL_SOCKET_IFNAME": "=ens3",
+        "NCCL_NET": "Socket",
+        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+      },
+      "ld_library_path": "/tmp/clean_nccl_libs",
+      "node_id": "5f00192c3a3bd3beda4caa93c2eab134b36c36d81c40e17064de39bb",
+      "node_manager_address": "10.128.0.40"
+    }
+  ],
+  "forbidden_variables": [
+    "NCCL_P2P_DISABLE",
+    "NCCL_SHM_DISABLE",
+    "NCCL_P2P_LEVEL"
+  ],
+  "violations": [],
+  "ok": true,
+  "interpretation": "Validates actual Ray-task inherited environment on every live node before vLLM actor creation. It rejects legacy P2P/SHM forcing and mismatched allowed NCCL network settings. It does not infer the physical transport chosen by NCCL from performance."
+}

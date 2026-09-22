@@ -1,0 +1,74 @@
+{
+  "root": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8",
+  "nsys_report_count": 1,
+  "reports": [
+    {
+      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712.nsys-rep",
+      "size_bytes": 0,
+      "exports": {
+        "cuda_gpu_kern_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/cuda_gpu_kern_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "cuda_api_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/cuda_api_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nvtx_pushpop_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/nvtx_pushpop_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_proj_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/nccl_gpu_proj_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_gpu_time_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/nccl_gpu_time_sum.csv",
+          "exists": true,
+          "error_tail": null
+        },
+        "nccl_op_sum": {
+          "rc": 0,
+          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/nccl_op_sum.csv",
+          "exists": true,
+          "error_tail": null
+        }
+      },
+      "trace_role": "node1",
+      "sqlite": {
+        "rc": 1,
+        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture/worker_process_113712_processed/worker_process_113712.sqlite",
+        "exists": false,
+        "log": "Exportation error: Cannot read from stream.\n"
+      },
+      "kernel_rows": 3,
+      "aggregate_gpu_work_ms": 0.0,
+      "nccl_kernel_rows": 0,
+      "nccl_kernel_instances": 0,
+      "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
+    }
+  ],
+  "profile_manifests": [
+    {
+      "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/workload/PROFILE_CASE_MANIFEST.json",
+      "topology": "tp8_pp2_dist",
+      "mode": "batched_decode_8k_c8",
+      "status": "COMPLETED",
+      "bench_exit_code": 0
+    }
+  ],
+  "trace_completeness": {
+    "has_node0_report": false,
+    "has_node1_report": true
+  },
+  "guardrail": "Exact TP/PP/compute overlap attribution requires timeline/NVTX correlation. Do not sum per-rank kernel totals as request latency."
+}

@@ -1,0 +1,266 @@
+{
+  "schema_version": 2,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "evidence_class": "MEASURED-48B",
+  "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2,
+    "observability_profile": "full",
+    "metrics_interval_s": 0.5
+  },
+  "generated_from_summary": "/home/ayu23/v8_full_results/20260921_195656/vllm_single_node_v6_matrix/summary_v8full/vllm_runs.json",
+  "cases": [
+    {
+      "name": "tp4_openloop_8192",
+      "groups": [
+        "open_loop",
+        "generated_load"
+      ],
+      "purpose": "Open-loop Poisson/gamma arrival sweep derived from measured closed-loop service rate; not an absolute capacity claim.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "rps_0.25x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 0,
+          "request_rate": 1.058698,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 0.25
+        },
+        {
+          "name": "rps_0.50x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 128,
+          "warmups": 0,
+          "request_rate": 2.117396,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 0.5
+        },
+        {
+          "name": "rps_0.75x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 191,
+          "warmups": 0,
+          "request_rate": 3.176095,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 0.75
+        },
+        {
+          "name": "rps_0.90x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 229,
+          "warmups": 0,
+          "request_rate": 3.811314,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 0.9
+        },
+        {
+          "name": "rps_1.00x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 255,
+          "warmups": 0,
+          "request_rate": 4.234793,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 1.0
+        },
+        {
+          "name": "rps_1.10x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 280,
+          "warmups": 0,
+          "request_rate": 4.658272,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 1.1
+        },
+        {
+          "name": "rps_1.25x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 318,
+          "warmups": 0,
+          "request_rate": 5.293491,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.234792786185993,
+          "rate_fraction": 1.25
+        }
+      ]
+    },
+    {
+      "name": "tp4_openloop_131072",
+      "groups": [
+        "open_loop",
+        "generated_load"
+      ],
+      "purpose": "Open-loop Poisson/gamma arrival sweep derived from measured closed-loop service rate; not an absolute capacity claim.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 32,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "rps_0.25x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.057028,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 0.25
+        },
+        {
+          "name": "rps_0.50x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.114055,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 0.5
+        },
+        {
+          "name": "rps_0.75x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.171083,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 0.75
+        },
+        {
+          "name": "rps_0.90x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.205299,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 0.9
+        },
+        {
+          "name": "rps_1.00x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.22811,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 1.0
+        },
+        {
+          "name": "rps_1.10x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.250921,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 1.1
+        },
+        {
+          "name": "rps_1.25x",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.285138,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.22811000913526233,
+          "rate_fraction": 1.25
+        }
+      ]
+    },
+    {
+      "name": "tp4_512k_interference_probe",
+      "groups": [
+        "open_loop",
+        "interference"
+      ],
+      "purpose": "Long-prefill main load plus low-rate single-token probe traffic; rates derived from measured service rates.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "512k_main_plus_probe",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 16,
+          "prompts": 8,
+          "warmups": 0,
+          "request_rate": 0.017435,
+          "burstiness": 1.0,
+          "probe_request_rate": 0.21174,
+          "main_rate_basis": 0.03487087680089975,
+          "probe_rate_basis_8k": 4.234792786185993
+        }
+      ]
+    }
+  ]
+}

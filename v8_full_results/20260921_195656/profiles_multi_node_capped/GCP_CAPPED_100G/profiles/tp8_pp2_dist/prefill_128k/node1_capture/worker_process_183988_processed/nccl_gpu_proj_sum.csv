@@ -1,0 +1,8 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp8_pp2_dist/prefill_128k/node1_capture/worker_process_183988.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp8_pp2_dist/prefill_128k/node1_capture/worker_process_183988.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp8_pp2_dist/prefill_128k/node1_capture/worker_process_183988.sqlite] with [nccl_gpu_proj_sum]... 
+ERROR: Report 'nccl_gpu_proj_sum' could not be found.
+

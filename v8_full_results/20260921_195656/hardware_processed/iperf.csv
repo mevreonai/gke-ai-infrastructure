@@ -1,0 +1,11 @@
+file,network_provenance,gbps,GBps
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_NATIVE.raw.json,GCP_NATIVE,173.6032501468264,21.7004062683533
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_NATIVE_reverse.raw.json,GCP_NATIVE_reverse,173.5933660656472,21.6991707582059
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_100G.raw.json,GCP_CAPPED_100G,54.19457391804025,6.774321739755031
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_100G_reverse.raw.json,GCP_CAPPED_100G_reverse,55.81955778743727,6.977444723429659
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_50G.raw.json,GCP_CAPPED_50G,33.01557666422295,4.1269470830278685
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_50G_reverse.raw.json,GCP_CAPPED_50G_reverse,34.18553094357367,4.273191367946708
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_20G.raw.json,GCP_CAPPED_20G,16.69075356855071,2.086344196068839
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_20G_reverse.raw.json,GCP_CAPPED_20G_reverse,16.787349748343136,2.098418718542892
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_10G.raw.json,GCP_CAPPED_10G,8.995680070017794,1.1244600087522243
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/iperf_GCP_CAPPED_10G_reverse.raw.json,GCP_CAPPED_10G_reverse,9.008158510886105,1.126019813860763

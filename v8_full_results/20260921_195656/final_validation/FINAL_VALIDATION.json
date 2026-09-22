@@ -1,0 +1,77 @@
+{
+  "schema_version": 2,
+  "result_root": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656",
+  "coverage_counts": {
+    "COMPLETED": 119,
+    "NOT_RUN": 7
+  },
+  "failed_count": 0,
+  "not_run_count": 7,
+  "safety_skipped_count": 0,
+  "readiness_ok": true,
+  "readiness": {
+    "node0": {
+      "present": true,
+      "ok": true,
+      "failed": []
+    },
+    "node1": {
+      "present": true,
+      "ok": true,
+      "failed": []
+    }
+  },
+  "hardware_required_ok": true,
+  "single_profile_metadata_count": 6,
+  "torch_profiles_complete_count": 2,
+  "distributed_profile_validation_count": 17,
+  "distributed_profiles_complete_count": 14,
+  "distributed_profiles_expected": 22,
+  "scaleout_1m_all_networks_completed": true,
+  "required_vllm_networks": [
+    "GCP_NATIVE",
+    "GCP_CAPPED_100G",
+    "GCP_CAPPED_20G"
+  ],
+  "network_evidence_ok": true,
+  "network_validation": {
+    "GCP_NATIVE": {
+      "dir_exists": true,
+      "mode_json": true,
+      "iperf_forward": true,
+      "iperf_reverse": true,
+      "iperf_validation": true,
+      "measured_forward_gbps": 173.58454227148047,
+      "cap_enforced_upper_bound": true
+    },
+    "GCP_CAPPED_100G": {
+      "dir_exists": true,
+      "mode_json": true,
+      "iperf_forward": true,
+      "iperf_reverse": true,
+      "iperf_validation": true,
+      "measured_forward_gbps": 56.837683880403425,
+      "cap_enforced_upper_bound": true
+    },
+    "GCP_CAPPED_20G": {
+      "dir_exists": true,
+      "mode_json": true,
+      "iperf_forward": true,
+      "iperf_reverse": true,
+      "iperf_validation": true,
+      "measured_forward_gbps": 16.484514573902175,
+      "cap_enforced_upper_bound": true
+    }
+  },
+  "scaleout_telemetry_ok": true,
+  "nccl_policy_ok": false,
+  "ray_nccl_scaleout_audits": 0,
+  "ray_nccl_scaleout_expected": 12,
+  "ray_nccl_profile_audits": 17,
+  "ray_nccl_profile_expected": 22,
+  "profiles_all_complete": false,
+  "serving_matrix_complete": false,
+  "strict_full_coverage": false,
+  "full_suite_valid": false,
+  "note": "Safety skips are scientifically valid evidence but prevent strict full-coverage sign-off. Missing results are never treated as zero."
+}

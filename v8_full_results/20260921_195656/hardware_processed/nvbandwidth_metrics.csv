@@ -1,0 +1,106 @@
+file,metric_path,value
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[0].sum,455.0039898415
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[1].sum,452.3735847025001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[0].sum,2911.9590552624995
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[1].sum,2907.505230976501
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[2].sum,5629.395755035001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[3].sum,5689.576190958999
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[4].sum,2809.8434966180007
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[5].sum,2254.7507552875
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[6].sum,4373.034730802002
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[7].sum,4466.530126481
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[8].sum,68717.14247297496
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[9].sum,2809.1092740080007
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[10].sum,2254.986523901001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[11].sum,4377.847498046
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[12].sum,4441.118493395
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[13].sum,76113.11013158411
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/nvbandwidth_latency.raw.json,nvbandwidth.testcases[0].sum,68709.70628829673
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[0].sum,454.99551360149997
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[1].sum,452.3774928685
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[0].sum,2917.8723416725
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[1].sum,2912.9794468244986
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[2].sum,5631.428637076
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[3].sum,5696.065942327
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[4].sum,2809.8761022005
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[5].sum,2254.761887078501
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[6].sum,4372.8765323689995
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[7].sum,4466.640905165
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[8].sum,68885.30354527757
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[9].sum,2809.1465947145
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[10].sum,2255.028702395001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[11].sum,4377.639773896999
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[12].sum,4440.512694894001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[13].sum,76275.3770169802
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/nvbandwidth_latency.raw.json,nvbandwidth.testcases[0].sum,68883.96231038496
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[0].sum,454.99551360149997
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_host_gpu.raw.json,nvbandwidth.testcases[1].sum,452.3774928685
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[0].sum,2917.8723416725
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[1].sum,2912.9794468244986
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[2].sum,5631.428637076
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[3].sum,5696.065942327
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[4].sum,2809.8761022005
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[5].sum,2254.761887078501
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[6].sum,4372.8765323689995
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[7].sum,4466.640905165
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[8].sum,68885.30354527757
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[9].sum,2809.1465947145
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[10].sum,2255.028702395001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[11].sum,4377.639773896999
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[12].sum,4440.512694894001
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_d2d.raw.json,nvbandwidth.testcases[13].sum,76275.3770169802
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Driver API Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.CUDA Runtime Version,13000.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.Version Major,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.Version Minor,10.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.Version Patch,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.bounceBufferConfComputeEnabled,0.0
+/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/v8full_hw_node1/nvbandwidth_latency.raw.json,nvbandwidth.testcases[0].sum,68883.96231038496

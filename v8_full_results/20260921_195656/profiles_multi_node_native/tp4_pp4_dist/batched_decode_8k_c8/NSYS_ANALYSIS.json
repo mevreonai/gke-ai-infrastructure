@@ -1,0 +1,19 @@
+{
+  "root": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/batched_decode_8k_c8",
+  "nsys_report_count": 0,
+  "reports": [],
+  "profile_manifests": [
+    {
+      "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/batched_decode_8k_c8/workload/PROFILE_CASE_MANIFEST.json",
+      "topology": "tp4_pp4_dist",
+      "mode": "batched_decode_8k_c8",
+      "status": "COMPLETED",
+      "bench_exit_code": 0
+    }
+  ],
+  "trace_completeness": {
+    "has_node0_report": false,
+    "has_node1_report": false
+  },
+  "guardrail": "Exact TP/PP/compute overlap attribution requires timeline/NVTX correlation. Do not sum per-rank kernel totals as request latency."
+}

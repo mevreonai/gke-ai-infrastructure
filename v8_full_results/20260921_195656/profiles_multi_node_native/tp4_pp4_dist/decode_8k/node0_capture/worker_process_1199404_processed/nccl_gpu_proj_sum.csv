@@ -1,0 +1,5 @@
+Generating SQLite file /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node0_capture/worker_process_1199404.sqlite from /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node0_capture/worker_process_1199404.nsys-rep
+Exportation error: Cannot read from stream.
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node0_capture/worker_process_1199404.sqlite] with [nccl_gpu_proj_sum]... 
+ERROR: Report 'nccl_gpu_proj_sum' could not be found.
+

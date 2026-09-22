@@ -1,0 +1,1 @@
+===== DISTRIBUTED PROFILE tp4_pp2_dist_decode_8k TP=4 PP=2 GPUs/node=4 =====

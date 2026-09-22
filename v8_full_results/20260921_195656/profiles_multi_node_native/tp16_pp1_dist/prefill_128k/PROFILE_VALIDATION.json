@@ -1,0 +1,15 @@
+{
+  "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k",
+  "checks": {
+    "workload_completed": true,
+    "node0_nsys_report": true,
+    "node1_nsys_report": true,
+    "bench_json": true,
+    "node0_metrics": true,
+    "node1_metrics": true
+  },
+  "complete": true,
+  "node0_report_count": 8,
+  "node1_report_count": 8,
+  "guardrail": "Complete means required raw artifacts exist. It does not by itself establish request critical-path causality."
+}

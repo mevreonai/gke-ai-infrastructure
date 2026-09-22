@@ -1,0 +1,466 @@
+[
+  {
+    "case": "tp4_qualification",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_qualification",
+    "bench": "8k_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_qualification",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_qualification",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "8k_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_qualification",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_context_baseline",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_context_baseline",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_context_baseline",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_context_baseline",
+    "bench": "1m_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_context_baseline",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_context_baseline",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_context_baseline",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_context_baseline",
+    "bench": "1m_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_prefill_focus",
+    "bench": "8k_prefill",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_prefill_focus",
+    "bench": "128k_prefill",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_prefill_focus",
+    "bench": "512k_prefill",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_prefill_focus",
+    "bench": "1m_prefill",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_decode_focus",
+    "bench": "8k_decode_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_decode_focus",
+    "bench": "8k_decode_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_decode_focus",
+    "bench": "8k_decode_c16",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk4k",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk4k",
+    "bench": "128k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk4k",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk4k",
+    "bench": "1m_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk8k",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk8k",
+    "bench": "128k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk8k",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk8k",
+    "bench": "1m_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk16k",
+    "bench": "128k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk16k",
+    "bench": "128k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk16k",
+    "bench": "512k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_chunk16k",
+    "bench": "1m_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_8k",
+    "bench": "c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_8k",
+    "bench": "c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_8k",
+    "bench": "c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_8k",
+    "bench": "c16",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_8k",
+    "bench": "c32",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_128k",
+    "bench": "c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_128k",
+    "bench": "c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_128k",
+    "bench": "c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_128k",
+    "bench": "c16",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_512k",
+    "bench": "c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_512k",
+    "bench": "c2",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_512k",
+    "bench": "c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_1m",
+    "bench": "c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_closedloop_1m",
+    "bench": "c2",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_512k_maxseq4",
+    "bench": "512k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_512k_maxseq8",
+    "bench": "512k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_512k_maxseq16",
+    "bench": "512k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_prefix128k",
+    "bench": "prefix128k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_prefix512k",
+    "bench": "prefix512k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_observer_minimal",
+    "bench": "8k_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_observer_minimal",
+    "bench": "128k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_observer_full",
+    "bench": "8k_c8",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_observer_full",
+    "bench": "128k_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  }
+]

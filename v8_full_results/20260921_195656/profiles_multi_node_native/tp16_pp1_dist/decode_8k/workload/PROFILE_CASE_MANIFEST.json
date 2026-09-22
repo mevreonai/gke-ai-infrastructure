@@ -1,0 +1,164 @@
+{
+  "schema_version": 1,
+  "evidence_class": "MEASURED-48B-PROFILE",
+  "topology": "tp16_pp1_dist",
+  "tp": 16,
+  "pp": 1,
+  "mode": "decode_8k",
+  "input": 8192,
+  "output": 512,
+  "concurrency": 1,
+  "prompts": 1,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "network_provenance": "GCP_NATIVE",
+  "nccl_transport_provenance": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED",
+  "network_mode": "native",
+  "configured_network_cap_gbps": "0",
+  "environment": {
+    "time": 1790056101.2124865,
+    "host": "kimi-node-0",
+    "python": "3.12.14 (main, Aug 13 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)]",
+    "commands": {
+      "vllm_version": {
+        "cmd": [
+          "/home/ayu23/vllm_env/bin/vllm",
+          "--version"
+        ],
+        "rc": 0,
+        "out": "0.29.0\n"
+      },
+      "nvidia_smi": {
+        "cmd": [
+          "nvidia-smi",
+          "--query-gpu=index,uuid,name,memory.total,pci.bus_id",
+          "--format=csv,noheader,nounits"
+        ],
+        "rc": 0,
+        "out": "0, GPU-7ca702a0-5143-88bb-c6ff-6729e546bbb0, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0\n1, GPU-489ffba7-85db-e247-01da-c5f74d4dea68, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0\n2, GPU-fcbb3013-ff6c-bc47-80c8-714bc92101a8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0\n3, GPU-ec73c456-dfaa-11f5-1205-43bad849400f, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0\n4, GPU-b11e0775-2d5b-bbe9-e0e7-e466122d59a5, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0\n5, GPU-3d29be65-8656-7fab-aa0a-ebb6ac6f0833, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0\n6, GPU-99c28e70-bc5e-9295-7005-08a631683901, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0\n7, GPU-cf61dfdc-19f1-d8a6-ef76-1af59b6301ce, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0\n"
+      },
+      "nvidia_topo": {
+        "cmd": [
+          "nvidia-smi",
+          "topo",
+          "-m"
+        ],
+        "rc": 0,
+        "out": "\t\u001b[4mGPU0\tGPU1\tGPU2\tGPU3\tGPU4\tGPU5\tGPU6\tGPU7\tCPU Affinity\tNUMA Affinity\tGPU NUMA ID\u001b[0m\nGPU0\t X \tPIX\tNODE\tNODE\tSYS\tSYS\tSYS\tSYS\t0-95,192-287\t0\t\tN/A\nGPU1\tPIX\t X \tNODE\tNODE\tSYS\tSYS\tSYS\tSYS\t0-95,192-287\t0\t\tN/A\nGPU2\tNODE\tNODE\t X \tPIX\tSYS\tSYS\tSYS\tSYS\t0-95,192-287\t0\t\tN/A\nGPU3\tNODE\tNODE\tPIX\t X \tSYS\tSYS\tSYS\tSYS\t0-95,192-287\t0\t\tN/A\nGPU4\tSYS\tSYS\tSYS\tSYS\t X \tPIX\tNODE\tNODE\t96-191,288-383\t1\t\tN/A\nGPU5\tSYS\tSYS\tSYS\tSYS\tPIX\t X \tNODE\tNODE\t96-191,288-383\t1\t\tN/A\nGPU6\tSYS\tSYS\tSYS\tSYS\tNODE\tNODE\t X \tPIX\t96-191,288-383\t1\t\tN/A\nGPU7\tSYS\tSYS\tSYS\tSYS\tNODE\tNODE\tPIX\t X \t96-191,288-383\t1\t\tN/A\n\nLegend:\n\n  X    = Self\n  SYS  = Connection traversing PCIe as well as the SMP interconnect between NUMA nodes (e.g., QPI/UPI)\n  NODE = Connection traversing PCIe as well as the interconnect between PCIe Host Bridges within a NUMA node\n  PHB  = Connection traversing PCIe as well as a PCIe Host Bridge (typically the CPU)\n  PXB  = Connection traversing multiple PCIe bridges (without traversing the PCIe Host Bridge)\n  PIX  = Connection traversing at most a single PCIe bridge\n  NV#  = Connection traversing a bonded set of # NVLinks\n"
+      },
+      "python_packages": {
+        "cmd": [
+          "/home/ayu23/vllm_env/bin/python3",
+          "-m",
+          "pip",
+          "freeze"
+        ],
+        "rc": 0,
+        "out": "agent-detector==2.0.0\naiohappyeyeballs==2.7.1\naiohttp==3.14.3\naiohttp-cors==0.8.1\naiosignal==1.4.0\nannotated-doc==0.0.5\nannotated-types==0.8.0\nanthropic==1.6.0\nanyio==4.15.1\napache-tvm-ffi==0.1.11\nastor==0.8.1\nattrs==26.1.0\nblake3==1.0.9\ncachetools==7.2.0\ncbor2==6.1.4\ncertifi==2026.7.22\ncffi==2.1.1\ncharset-normalizer==3.5.1\nclick==8.5.0\ncloudpickle==3.1.2\ncolorful==0.5.8\ncompressed-tensors==0.17.0\ncryptography==50.0.1\ncuda-bindings==13.4.2\ncuda-core==1.2.0\ncuda-pathfinder==1.8.2\ncuda-python==13.4.1\ncuda-tile==1.6.0\ncuda-toolkit==13.0.3.0\ndepyf==0.20.0\ndetect-installer==0.2.1\ndill==0.4.1\ndistlib==0.4.3\ndnspython==2.8.0\ndocstring_parser==0.18.0\neinops==0.8.2\nemail-validator==2.3.0\nfastapi==0.136.3\nfastapi-cli==0.0.32\nfastapi-cloud-cli==0.26.0\nfastar==0.12.0\nfastsafetensors==0.4.0\nfilelock==3.32.7\nflashinfer-python==0.6.18\nfrozenlist==1.8.0\nfsspec==2026.7.0\ngoogle-api-core==2.38.0\ngoogle-auth==2.58.0\ngoogleapis-common-protos==1.75.3\ngrpcio==1.84.0\nh11==0.16.0\nhf-xet==1.6.0\nhttpcore==1.0.9\nhttpcore2==2.13.0\nhttptools==0.8.0\nhttpx==0.28.1\nhttpx2==2.13.0\nhuggingface_hub==1.32.0\nhumming-kernels==0.1.12\nidna==3.20\nijson==3.5.1\ninstanttensor==0.2.0\ninteregular==0.3.3\nJinja2==3.1.6\njiter==0.17.0\njmespath==1.1.0\njsonschema==4.26.0\njsonschema-specifications==2025.9.1\nlark==1.2.2\nllguidance==1.7.6\nllvmlite==0.47.0\nlm-format-enforcer==0.11.3\nloguru==0.7.3\nmarkdown-it-py==4.2.0\nMarkupSafe==3.0.3\nmcp==2.2.0\nmcp-types==2.2.0\nmdurl==0.1.2\nmistral_common==1.11.7\nml_dtypes==0.6.0\nmodel-hosting-container-standards==0.1.16\nmpmath==1.3.0\nmsgpack==1.2.2\nmsgspec==0.21.1\nmultidict==6.9.0\nnccl4py==0.5.0\nnetworkx==3.6.1\nninja==1.13.2\nnumba==0.65.0\nnumpy==2.3.5\nnvidia-cublas==13.1.1.3\nnvidia-cuda-cccl==13.3.4.3.1\nnvidia-cuda-crt==13.4.92\nnvidia-cuda-cupti==13.0.85\nnvidia-cuda-nvcc==13.4.92\nnvidia-cuda-nvdisasm==13.4.92\nnvidia-cuda-nvrtc==13.0.88\nnvidia-cuda-runtime==13.0.96\nnvidia-cudnn-cu13==9.20.0.48\nnvidia-cudnn-frontend==1.29.0\nnvidia-cufft==12.0.0.61\nnvidia-cufile==1.15.1.6\nnvidia-curand==10.4.0.35\nnvidia-cusolver==12.0.4.66\nnvidia-cusparse==12.6.3.3\nnvidia-cusparselt-cu13==0.8.1\nnvidia-cutlass-dsl==4.6.2\nnvidia-cutlass-dsl-libs-base==4.6.2\nnvidia-cutlass-dsl-libs-core==4.6.2\nnvidia-cutlass-dsl-libs-cu12==4.6.2\nnvidia-cutlass-dsl-libs-cu13==4.6.2\nnvidia-ml-py==13.610.43\nnvidia-nccl-cu13==2.29.7\nnvidia-nvjitlink==13.4.92\nnvidia-nvshmem-cu13==3.4.5\nnvidia-nvtx==13.0.85\nnvidia-nvvm==13.4.92\nnvtx==0.2.15\nopenai==3.15.0\nopenai-harmony==0.0.8\nopencensus==0.11.4\nopencensus-context==0.1.3\nopencv-python-headless==5.0.0.93\nopentelemetry-api==1.44.0\nopentelemetry-exporter-otlp==1.44.0\nopentelemetry-exporter-otlp-proto-common==1.44.0\nopentelemetry-exporter-otlp-proto-grpc==1.44.0\nopentelemetry-exporter-otlp-proto-http==1.44.0\nopentelemetry-exporter-prometheus==0.65b0\nopentelemetry-proto==1.44.0\nopentelemetry-sdk==1.44.0\nopentelemetry-semantic-conventions==0.65b0\nopentelemetry-semantic-conventions-ai==0.5.1\noutlines_core==0.2.14\npackaging==26.3\npartial-json-parser==0.2.1.1.post7\npillow==12.3.0\nplatformdirs==4.11.10\nprometheus-fastapi-instrumentator==8.1.0\nprometheus_client==0.26.0\npropcache==0.5.4\nproto-plus==1.28.4\nprotobuf==6.33.6\npsutil==7.2.2\npy-cpuinfo==9.0.0\npy-spy==0.4.2\npyasn1==0.6.4\npyasn1_modules==0.4.2\npybase64==1.5.0\npycountry==26.2.16\npycparser==3.0\npydantic==2.13.5\npydantic-extra-types==2.11.1\npydantic-settings==2.15.0\npydantic_core==2.46.5\nPygments==2.21.0\nPyJWT==2.14.0\npynvvideocodec==2.0.4\npython-discovery==1.6.1\npython-dotenv==1.2.3\npython-json-logger==4.2.0\npython-multipart==0.0.32\nPyYAML==6.0.3\npyzmq==27.2.0\nquack-kernels==0.6.4\nray==2.58.0\nreferencing==0.37.0\nregex==2026.9.10\nrequests==2.34.2\nrich==15.0.0\nrich-toolkit==0.20.5\nrignore==0.8.1\nrpds-py==2026.6.3\nsafetensors==0.8.0\nsentencepiece==0.2.2\nsentry-sdk==2.69.2\nsetproctitle==1.3.7\nsetuptools==80.10.2\nshellingham==1.5.4\nsix==1.17.0\nsmart_open==8.0.1\nsniffio==1.3.1\nsse-starlette==3.4.11\nstarlette==1.6.0\nsupervisor==4.3.0\nsympy==1.14.0\ntabulate==0.10.0\ntiktoken==0.14.0\ntilelang==0.1.12\ntokenizers==0.23.2\ntokenspeed-mla==0.1.8\ntokenspeed-triton==3.8.10.post20260906\ntorch==2.13.0\ntorch_c_dlpack_ext==0.1.5\ntorchaudio==2.11.0\ntorchcodec==0.16.0\ntorchvision==0.28.0\ntqdm==4.70.1\ntransformers==5.17.0\ntriton==3.7.1\ntruststore==0.10.4\ntyper==0.27.2\ntyping-inspection==0.4.4\ntyping_extensions==4.16.0\nurllib3==2.8.0\nuvicorn==0.53.0\nuvloop==0.22.1\nvirtualenv==21.7.14\nvllm==0.29.0\nwatchfiles==1.2.0\nwebsockets==17.1\nwrapt==2.4.1\nxgrammar==0.2.7\nyarl==1.25.1\nz3-solver==4.15.4.0\n"
+      }
+    },
+    "env": {
+      "NCCL_SOCKET_IFNAME": "=ens3",
+      "NCCL_NET": "Socket",
+      "VLLM_NETWORK_MODES": "native 100g 20g",
+      "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+    }
+  },
+  "server_command": [
+    "/home/ayu23/vllm_env/bin/vllm",
+    "serve",
+    "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+    "--model-impl",
+    "vllm",
+    "--trust-remote-code",
+    "--revision",
+    "e1df551a447157d4658b573f9a695d57658590e9",
+    "--host",
+    "0.0.0.0",
+    "--port",
+    "8020",
+    "--tensor-parallel-size",
+    "16",
+    "--pipeline-parallel-size",
+    "1",
+    "--max-model-len",
+    "1048576",
+    "--max-num-batched-tokens",
+    "8192",
+    "--kv-cache-dtype",
+    "auto",
+    "--distributed-executor-backend",
+    "ray",
+    "--max-num-seqs",
+    "8",
+    "--gpu-memory-utilization",
+    "0.9",
+    "--performance-mode",
+    "balanced",
+    "--optimization-level",
+    "2",
+    "--no-enable-prefix-caching",
+    "--kv-cache-metrics",
+    "--kv-cache-metrics-sample",
+    "1.0",
+    "--cudagraph-metrics",
+    "--enable-mfu-metrics",
+    "--enable-logging-iteration-details",
+    "--enforce-eager",
+    "--enable-layerwise-nvtx-tracing",
+    "--ray-workers-use-nsight",
+    "--profiler-config.profiler",
+    "cuda"
+  ],
+  "started": 1790056109.1733396,
+  "models_endpoint": {
+    "object": "list",
+    "data": [
+      {
+        "id": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+        "object": "model",
+        "created": 1790056172,
+        "owned_by": "vllm",
+        "root": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+        "parent": null,
+        "max_model_len": 1048576,
+        "permission": [
+          {
+            "id": "modelperm-bc3a27c2562211e7",
+            "object": "model_permission",
+            "created": 1790056172,
+            "allow_create_engine": false,
+            "allow_sampling": true,
+            "allow_logprobs": true,
+            "allow_search_indices": false,
+            "allow_view": true,
+            "allow_fine_tuning": false,
+            "organization": "*",
+            "group": null,
+            "is_blocking": false
+          }
+        ]
+      }
+    ]
+  },
+  "remote_sampler_error": null,
+  "bench_start": 1790056176.4903908,
+  "bench_end": 1790056205.7769222,
+  "bench_exit_code": 0,
+  "expected_input_tokens": 8192,
+  "requested_output_tokens": 512,
+  "input_lens_count": 1,
+  "output_lens_count": 1,
+  "actual_input_min": 8192,
+  "actual_input_max": 8192,
+  "actual_input_mean": 8192.0,
+  "input_len_exact_match": true,
+  "actual_output_min": 512,
+  "actual_output_max": 512,
+  "actual_output_mean": 512.0,
+  "peak_kv_usage": 0.0010978985294345378,
+  "preemptions_delta": 0.0,
+  "metric_samples": 87,
+  "status": "COMPLETED",
+  "ended": 1790056210.8454244
+}

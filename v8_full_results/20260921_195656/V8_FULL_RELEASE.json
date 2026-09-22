@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "suite": "V8-FULL RTX PRO 6000 / vLLM Characterization Suite",
+  "release_version": "8.0.0",
+  "release_date": "2026-09-21",
+  "purpose": "Full V6-aligned hardware, fabric, vLLM, 1M-context, scale-out and profiler characterization with auditable raw/processed evidence.",
+  "target_hardware": {
+    "gpu": "NVIDIA RTX PRO 6000 Blackwell Server Edition",
+    "gpus_per_node": 8,
+    "nodes": 2
+  },
+  "vllm_network_modes": [
+    "GCP_NATIVE",
+    "GCP_CAPPED_100G",
+    "GCP_CAPPED_20G"
+  ],
+  "hardware_network_modes": [
+    "GCP_NATIVE",
+    "GCP_CAPPED_100G",
+    "GCP_CAPPED_50G",
+    "GCP_CAPPED_20G",
+    "GCP_CAPPED_10G"
+  ],
+  "scaleout_topologies": [
+    "tp4_pp2_dist",
+    "tp8_pp2_dist",
+    "tp4_pp4_dist",
+    "tp16_pp1_dist"
+  ],
+  "scaleout_contexts": [
+    131072,
+    524288,
+    1000000
+  ],
+  "fixed_serving_points": {
+    "v6_single_node": 64,
+    "v8_1m_extensions": 11,
+    "scaleout_per_network": 12,
+    "scaleout_network_modes": 3,
+    "scaleout_total": 36,
+    "fixed_total_before_dynamic_openloop": 111,
+    "openloop": "generated dynamically from completed single-node evidence"
+  },
+  "distributed_profile_points_default": 22,
+  "profile_breakdown": {
+    "native_base": 12,
+    "native_heavy_default": 2,
+    "capped_100g_20g_prefill128k": 8
+  },
+  "one_million_policy": {
+    "single_node": true,
+    "scaleout_all_topologies": true,
+    "scaleout_all_vllm_network_modes": true,
+    "scaleout_safety_gated": true,
+    "nsight_1m_default": false
+  },
+  "nccl_policy": {
+    "single_node": "clear all NCCL_* overrides, matching successful V6 qualification capture",
+    "multi_node": "preserve V6-aligned network settings but clear NCCL_P2P_DISABLE/NCCL_SHM_DISABLE/NCCL_P2P_LEVEL",
+    "forced_p2p": "one explicitly labeled SENSITIVITY_ONLY hardware test",
+    "executable_shm_disable": false
+  },
+  "expected_v6_core_stack": {
+    "vllm": "0.29.0",
+    "ray": "2.58.0",
+    "torch": "2.13.0",
+    "triton": "3.7.1",
+    "flashinfer-python": "0.6.18",
+    "nvidia-nccl-cu13": "2.29.7"
+  },
+  "source_alignment": {
+    "v6_suite_zip_sha256": "e0ea335c4a92c5cfb48483ca433aa5d4742badae2bb0cbd21dafed06b94e636c",
+    "v6_qualification_zip_sha256": "df70814fcab1d7acdaee4c99ac5a1bfbe18a2d2978d9ed8119fb06643aec2683",
+    "legacy_20260915_zip_sha256": "0225500fab8771376f6d58d42cde245c1c8a3ebd3594e39c76684b5ba6d33c28"
+  },
+  "release_validation": {
+    "static_checks": 210,
+    "static_failed": 0,
+    "synthetic_strict_good": {
+      "coverage_completed": 111,
+      "distributed_profiles_complete": 22,
+      "ray_scaleout_audits": 12,
+      "ray_profile_audits": 22,
+      "full_suite_valid": true
+    },
+    "negative_fail_closed": [
+      "forbidden NCCL flag",
+      "node1 readiness failure",
+      "missing node1 scaleout telemetry",
+      "safety-skipped TP16/PP1 1M@20G",
+      "missing hardware TP16@10G evidence"
+    ],
+    "actual_cluster_runtime_executed_for_this_release": false
+  }
+}

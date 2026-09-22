@@ -1,0 +1,309 @@
+{
+  "schema_version": 1,
+  "timestamp": 1790021791.2810247,
+  "python": "3.12.14 (main, Aug 13 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)]",
+  "require_v6_stack": true,
+  "expected_v6_versions": {
+    "vllm": "0.29.0",
+    "ray": "2.58.0",
+    "torch": "2.13.0",
+    "triton": "3.7.1",
+    "flashinfer-python": "0.6.18",
+    "nvidia-nccl-cu13": "2.29.7"
+  },
+  "actual_versions": {
+    "vllm": "0.29.0",
+    "ray": "2.58.0",
+    "torch": "2.13.0",
+    "triton": "3.7.1",
+    "flashinfer-python": "0.6.18",
+    "nvidia-nccl-cu13": "2.29.7"
+  },
+  "executables": {
+    "vllm": "/home/ayu23/vllm_env/bin/vllm",
+    "ray": "/home/ayu23/vllm_env/bin/ray",
+    "nsys": "/usr/local/bin/nsys",
+    "nvidia-smi": "/usr/bin/nvidia-smi",
+    "iperf3": "/usr/bin/iperf3",
+    "tc": "/usr/sbin/tc",
+    "python3": "/home/ayu23/vllm_env/bin/python3"
+  },
+  "vllm_serve_help_rc": 0,
+  "vllm_bench_help_rc": 0,
+  "gpu_inventory": [
+    "0, GPU-ee5e5809-7965-45fd-91e7-624021ecddd9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0",
+    "1, GPU-60979ab6-025f-2463-9c84-e7b731c702f8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0",
+    "2, GPU-0c83f5b1-4a0b-68b2-702f-8edf07f92a03, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0",
+    "3, GPU-e91c452b-5d94-1027-c4eb-08a8a031c827, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0",
+    "4, GPU-a3784865-0b4f-90e2-25bc-7c1d8d4756d8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0",
+    "5, GPU-f992898a-0664-6bd6-53df-fd914009c8ab, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0",
+    "6, GPU-cf834e9c-dbfd-6fe1-27a6-688965f9d514, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0",
+    "7, GPU-1d3657ff-0827-61fe-c22f-92181848cff7, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0"
+  ],
+  "nccl_env": {
+    "NCCL_NET": "Socket",
+    "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+  },
+  "checks": [
+    {
+      "name": "bin:vllm",
+      "ok": true,
+      "detail": "/home/ayu23/vllm_env/bin/vllm",
+      "severity": "ERROR"
+    },
+    {
+      "name": "bin:ray",
+      "ok": true,
+      "detail": "/home/ayu23/vllm_env/bin/ray",
+      "severity": "ERROR"
+    },
+    {
+      "name": "bin:nsys",
+      "ok": true,
+      "detail": "/usr/local/bin/nsys",
+      "severity": "ERROR"
+    },
+    {
+      "name": "bin:nvidia-smi",
+      "ok": true,
+      "detail": "/usr/bin/nvidia-smi",
+      "severity": "ERROR"
+    },
+    {
+      "name": "bin:iperf3",
+      "ok": true,
+      "detail": "/usr/bin/iperf3",
+      "severity": "ERROR"
+    },
+    {
+      "name": "bin:tc",
+      "ok": true,
+      "detail": "/usr/sbin/tc",
+      "severity": "ERROR"
+    },
+    {
+      "name": "bin:python3",
+      "ok": true,
+      "detail": "/home/ayu23/vllm_env/bin/python3",
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_serve_flag:--distributed-executor-backend",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_serve_flag:--ray-workers-use-nsight",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_serve_flag:--profiler-config",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_serve_flag:--tensor-parallel-size",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_serve_flag:--pipeline-parallel-size",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_serve_flag:--no-enable-prefix-caching",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_bench_flag:--profile",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_bench_flag:--request-rate",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_bench_flag:--max-concurrency",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_bench_flag:--save-result",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "vllm_bench_flag:--save-detailed",
+      "ok": true,
+      "detail": null,
+      "severity": "ERROR"
+    },
+    {
+      "name": "v6_stack:vllm",
+      "ok": true,
+      "detail": {
+        "expected": "0.29.0",
+        "actual": "0.29.0",
+        "strict": true
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "v6_stack:ray",
+      "ok": true,
+      "detail": {
+        "expected": "2.58.0",
+        "actual": "2.58.0",
+        "strict": true
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "v6_stack:torch",
+      "ok": true,
+      "detail": {
+        "expected": "2.13.0",
+        "actual": "2.13.0",
+        "strict": true
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "v6_stack:triton",
+      "ok": true,
+      "detail": {
+        "expected": "3.7.1",
+        "actual": "3.7.1",
+        "strict": true
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "v6_stack:flashinfer-python",
+      "ok": true,
+      "detail": {
+        "expected": "0.6.18",
+        "actual": "0.6.18",
+        "strict": true
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "v6_stack:nvidia-nccl-cu13",
+      "ok": true,
+      "detail": {
+        "expected": "2.29.7",
+        "actual": "2.29.7",
+        "strict": true
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "gpu_count",
+      "ok": true,
+      "detail": {
+        "expected": 8,
+        "actual": 8,
+        "rows": [
+          "0, GPU-ee5e5809-7965-45fd-91e7-624021ecddd9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0",
+          "1, GPU-60979ab6-025f-2463-9c84-e7b731c702f8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0",
+          "2, GPU-0c83f5b1-4a0b-68b2-702f-8edf07f92a03, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0",
+          "3, GPU-e91c452b-5d94-1027-c4eb-08a8a031c827, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0",
+          "4, GPU-a3784865-0b4f-90e2-25bc-7c1d8d4756d8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0",
+          "5, GPU-f992898a-0664-6bd6-53df-fd914009c8ab, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0",
+          "6, GPU-cf834e9c-dbfd-6fe1-27a6-688965f9d514, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0",
+          "7, GPU-1d3657ff-0827-61fe-c22f-92181848cff7, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0"
+        ]
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "gpu_model_rtx_pro_6000_blackwell",
+      "ok": true,
+      "detail": [
+        "0, GPU-ee5e5809-7965-45fd-91e7-624021ecddd9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0",
+        "1, GPU-60979ab6-025f-2463-9c84-e7b731c702f8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0",
+        "2, GPU-0c83f5b1-4a0b-68b2-702f-8edf07f92a03, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0",
+        "3, GPU-e91c452b-5d94-1027-c4eb-08a8a031c827, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0",
+        "4, GPU-a3784865-0b4f-90e2-25bc-7c1d8d4756d8, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0",
+        "5, GPU-f992898a-0664-6bd6-53df-fd914009c8ab, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0",
+        "6, GPU-cf834e9c-dbfd-6fe1-27a6-688965f9d514, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0",
+        "7, GPU-1d3657ff-0827-61fe-c22f-92181848cff7, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0"
+      ],
+      "severity": "ERROR"
+    },
+    {
+      "name": "gpu_memory_96gb_class",
+      "ok": true,
+      "detail": [
+        97887.0,
+        97887.0,
+        97887.0,
+        97887.0,
+        97887.0,
+        97887.0,
+        97887.0,
+        97887.0
+      ],
+      "severity": "ERROR"
+    },
+    {
+      "name": "disk_free",
+      "ok": true,
+      "detail": {
+        "free_gib": 358.55,
+        "required_gib": 100.0
+      },
+      "severity": "ERROR"
+    },
+    {
+      "name": "no_forbidden_local_nccl_overrides",
+      "ok": true,
+      "detail": {},
+      "severity": "ERROR"
+    },
+    {
+      "name": "socket_workaround:clean_nccl_dir",
+      "ok": true,
+      "detail": "/tmp/clean_nccl_libs",
+      "severity": "ERROR"
+    },
+    {
+      "name": "socket_workaround:libnccl_present",
+      "ok": true,
+      "detail": [
+        "/tmp/clean_nccl_libs/libnccl.so",
+        "/tmp/clean_nccl_libs/libnccl.so.2",
+        "/tmp/clean_nccl_libs/libnccl.so.2.31.2"
+      ],
+      "severity": "ERROR"
+    },
+    {
+      "name": "socket_workaround:net_plugin_disabled",
+      "ok": true,
+      "detail": {
+        "path": "/tmp/clean_nccl_libs/libnccl-net.so",
+        "is_symlink": true,
+        "target": "/dev/null"
+      },
+      "severity": "ERROR"
+    }
+  ],
+  "ok": true,
+  "failed": []
+}

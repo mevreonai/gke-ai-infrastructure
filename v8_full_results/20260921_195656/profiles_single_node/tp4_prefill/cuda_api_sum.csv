@@ -1,0 +1,34 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+Time (%),Total Time (ns),Num Calls,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
+73.0,13211593727,5812,2273157.9,6790.0,2200,284994047,22572171.0,cudaMemcpyAsync
+20.1,3634409419,23,158017800.8,192579318.0,1471730,293813117,109376209.4,cudaEventSynchronize
+2.5,447879476,8,55984934.5,40762864.5,97270,125031799,61201500.7,cuModuleLoadData
+1.4,249534526,116,2151159.7,1349300.0,133080,14924630,2938749.0,cudaMalloc
+1.2,219101628,37280,5877.2,3740.0,2570,16569660,171091.6,cudaLaunchKernel
+0.6,114184739,29596,3858.1,3480.0,2580,1079870,6462.7,cuLaunchKernelEx
+0.4,72763638,2,36381819.0,36381819.0,31756420,41007218,6541302.0,cudaProfilerStop
+0.3,48578860,13928,3487.9,3350.0,2620,151800,1723.9,cuLaunchKernel
+0.1,19098660,3652,5229.6,5240.0,3210,94300,3032.8,cudaLaunchKernelExC_v11060
+0.1,14089440,10304,1367.4,930.0,400,23730,1033.0,cudaEventRecord
+0.1,14067820,11852,1187.0,960.0,460,25360,829.0,cudaStreamWaitEvent
+0.0,6146670,37280,164.9,120.0,80,256660,1348.5,cuKernelGetName
+0.0,5185520,2842,1824.6,1545.0,440,21060,1436.4,cudaEventQuery
+0.0,5149870,13928,369.7,340.0,210,18990,401.7,cuKernelGetFunction
+0.0,5119880,8,639985.0,627975.0,105780,1180810,565988.7,cuLibraryLoadData
+0.0,4854470,10664,455.2,420.0,160,18450,422.2,cudaStreamGetCaptureInfo_v12030
+0.0,4281360,5152,831.0,750.0,430,133570,2015.3,cudaGetFuncBySymbol_v11000
+0.0,3196370,512,6242.9,5920.0,5330,25600,1923.6,cudaMemsetAsync
+0.0,2925400,3164,924.6,730.0,340,17410,858.8,cudaEventRecordWithFlags_v11010
+0.0,2185220,6540,334.1,250.0,170,19790,379.4,cudaStreamIsCapturing_v10000
+0.0,961630,88,10927.6,5885.0,2430,71480,12068.3,cudaHostAlloc
+0.0,445770,64,6965.2,5755.0,4260,31170,4126.3,cudaStreamSynchronize
+0.0,217690,184,1183.1,1165.0,330,6080,825.0,cudaEventCreateWithFlags
+0.0,210210,184,1142.4,930.0,370,12090,1388.8,cudaEventDestroy
+0.0,33830,4,8457.5,8745.0,6960,9380,1086.3,cuProfilerStart
+0.0,8800,12,733.3,590.0,440,1420,328.4,cuLibraryGetKernel
+

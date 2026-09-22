@@ -1,0 +1,9 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89686.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89686.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89686.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/nvtx_pushpop_sum.py]... 
+Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Range
+100.0,2945950,1,2945950.0,2945950.0,2945950,2945950,0.0,cuBLAS:cublasCreate_v2
+

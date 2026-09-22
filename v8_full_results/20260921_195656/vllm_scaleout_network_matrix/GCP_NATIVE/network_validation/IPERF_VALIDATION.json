@@ -1,0 +1,7 @@
+{
+  "measured_forward_gbps": 173.58454227148047,
+  "configured_cap_gbps": 0.0,
+  "measurement_ok": true,
+  "cap_enforced_upper_bound": true,
+  "note": "Upper-bound check catches a missing tc cap. No lower-bound performance assumption is imposed."
+}

@@ -43,16 +43,21 @@ wheels/
 Thumbs.db
 ehthumbs.db
 
-# Temporary logs & caches
+# Large raw telemetry, binary profiles & continuous streaming logs
 *.log
 *.zip
 *.tar.gz
 *.tar
+*.sqlite
+*.nsys-rep
+*.jsonl
+*.pt.trace.json.gz
+*.out
+*.err
 .cache/
 .pytest_cache/
 tmp/
 backups/
-v8_full_results/
 v8_full_release_package/
 v4_mockup_extracted/
 

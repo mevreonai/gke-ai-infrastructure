@@ -1,0 +1,6 @@
+Generating SQLite file /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node1_capture/worker_process_128102.sqlite from /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node1_capture/worker_process_128102.nsys-rep
+Exportation error: Cannot read from stream.
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node1_capture/worker_process_128102.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+
+ERROR: Database file /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/decode_8k/node1_capture/worker_process_128102.sqlite does not exist.
+

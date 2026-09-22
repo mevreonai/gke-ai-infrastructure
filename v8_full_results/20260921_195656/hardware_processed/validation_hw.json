@@ -1,0 +1,732 @@
+{
+  "schema_version": 2,
+  "root": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw",
+  "require_caps": true,
+  "required_networks": [
+    "GCP_NATIVE",
+    "GCP_CAPPED_100G",
+    "GCP_CAPPED_50G",
+    "GCP_CAPPED_20G",
+    "GCP_CAPPED_10G"
+  ],
+  "checks": [
+    {
+      "name": "node0:dir",
+      "ok": true,
+      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0"
+    },
+    {
+      "name": "node0:nvbandwidth_host_gpu.raw.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nvbandwidth_d2d.raw.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nvbandwidth_latency.raw.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:NCCL_ENV_NATIVE_BEFORE.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:babelstream_gpu0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:babelstream_second_numa",
+      "ok": true,
+      "detail": [
+        "110_babelstream_gpu0.log",
+        "110_babelstream_gpu0_gpu_query.csv",
+        "110_babelstream_gpu0_nvsmi_dmon.log",
+        "110_babelstream_gpu4.log",
+        "110_babelstream_gpu4_gpu_query.csv",
+        "110_babelstream_gpu4_nvsmi_dmon.log"
+      ]
+    },
+    {
+      "name": "node0:nccl_tp4_native_16k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp8_native_16k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp4_native_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp8_native_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp4_native_512k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp8_native_512k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp4_native_64m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp8_native_64m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp4_native_128m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp8_native_128m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp4_native_256m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:nccl_tp8_native_256m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node0:curve:all_reduce:tp4",
+      "ok": true,
+      "detail": "130_all_reduce_tp4_native_curve.log"
+    },
+    {
+      "name": "node0:curve:all_gather:tp4",
+      "ok": true,
+      "detail": "130_all_gather_tp4_native_curve.log"
+    },
+    {
+      "name": "node0:curve:reduce_scatter:tp4",
+      "ok": true,
+      "detail": "130_reduce_scatter_tp4_native_curve.log"
+    },
+    {
+      "name": "node0:curve:all_reduce:tp8",
+      "ok": true,
+      "detail": "130_all_reduce_tp8_native_curve.log"
+    },
+    {
+      "name": "node0:curve:all_gather:tp8",
+      "ok": true,
+      "detail": "130_all_gather_tp8_native_curve.log"
+    },
+    {
+      "name": "node0:curve:reduce_scatter:tp8",
+      "ok": true,
+      "detail": "130_reduce_scatter_tp8_native_curve.log"
+    },
+    {
+      "name": "node0:sensitivity:p2p_level_SYS",
+      "ok": true,
+      "detail": "140_ar_tp8_sensitivity_p2p_SYS.log"
+    },
+    {
+      "name": "node0:sensitivity:p2p_level_PHB",
+      "ok": true,
+      "detail": "140_ar_tp8_sensitivity_p2p_PHB.log"
+    },
+    {
+      "name": "node0:sensitivity:p2p_disabled",
+      "ok": true,
+      "detail": "141_ar_tp8_sensitivity_p2p_disabled.log"
+    },
+    {
+      "name": "node0:nccl_debug_native",
+      "ok": true,
+      "detail": "150_nccl_debug_tp8_128m_native.log"
+    },
+    {
+      "name": "node0:cutlass_scope_or_results",
+      "ok": true,
+      "detail": {
+        "skipped": true,
+        "logs": [
+          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/160_cutlass_fp16_large_shape_reference.log",
+          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/161_cutlass_fp16_kimi_width_shape_reference.log"
+        ]
+      }
+    },
+    {
+      "name": "node1:dir",
+      "ok": true,
+      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1"
+    },
+    {
+      "name": "node1:nvbandwidth_host_gpu.raw.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nvbandwidth_d2d.raw.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nvbandwidth_latency.raw.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:NCCL_ENV_NATIVE_BEFORE.txt",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:babelstream_gpu0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:babelstream_second_numa",
+      "ok": true,
+      "detail": [
+        "110_babelstream_gpu0.log",
+        "110_babelstream_gpu0_gpu_query.csv",
+        "110_babelstream_gpu0_nvsmi_dmon.log",
+        "110_babelstream_gpu4.log",
+        "110_babelstream_gpu4_gpu_query.csv",
+        "110_babelstream_gpu4_nvsmi_dmon.log"
+      ]
+    },
+    {
+      "name": "node1:nccl_tp4_native_16k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp8_native_16k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp4_native_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp8_native_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp4_native_512k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp8_native_512k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp4_native_64m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp8_native_64m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp4_native_128m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp8_native_128m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp4_native_256m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:nccl_tp8_native_256m",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "node1:curve:all_reduce:tp4",
+      "ok": true,
+      "detail": "130_all_reduce_tp4_native_curve.log"
+    },
+    {
+      "name": "node1:curve:all_gather:tp4",
+      "ok": true,
+      "detail": "130_all_gather_tp4_native_curve.log"
+    },
+    {
+      "name": "node1:curve:reduce_scatter:tp4",
+      "ok": true,
+      "detail": "130_reduce_scatter_tp4_native_curve.log"
+    },
+    {
+      "name": "node1:curve:all_reduce:tp8",
+      "ok": true,
+      "detail": "130_all_reduce_tp8_native_curve.log"
+    },
+    {
+      "name": "node1:curve:all_gather:tp8",
+      "ok": true,
+      "detail": "130_all_gather_tp8_native_curve.log"
+    },
+    {
+      "name": "node1:curve:reduce_scatter:tp8",
+      "ok": true,
+      "detail": "130_reduce_scatter_tp8_native_curve.log"
+    },
+    {
+      "name": "node1:sensitivity:p2p_level_SYS",
+      "ok": true,
+      "detail": "140_ar_tp8_sensitivity_p2p_SYS.log"
+    },
+    {
+      "name": "node1:sensitivity:p2p_level_PHB",
+      "ok": true,
+      "detail": "140_ar_tp8_sensitivity_p2p_PHB.log"
+    },
+    {
+      "name": "node1:sensitivity:p2p_disabled",
+      "ok": true,
+      "detail": "141_ar_tp8_sensitivity_p2p_disabled.log"
+    },
+    {
+      "name": "node1:nccl_debug_native",
+      "ok": true,
+      "detail": "150_nccl_debug_tp8_128m_native.log"
+    },
+    {
+      "name": "node1:cutlass_scope_or_results",
+      "ok": true,
+      "detail": {
+        "skipped": true,
+        "logs": [
+          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/160_cutlass_fp16_large_shape_reference.log",
+          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/161_cutlass_fp16_kimi_width_shape_reference.log"
+        ]
+      }
+    },
+    {
+      "name": "network:dir",
+      "ok": true,
+      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0"
+    },
+    {
+      "name": "network:caps_not_skipped",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_NATIVE:iperf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_NATIVE:iperf_reverse",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_NATIVE:iperf_validation",
+      "ok": true,
+      "detail": {
+        "measured_forward_gbps": 173.6032501468264,
+        "configured_cap_gbps": 0.0,
+        "measurement_ok": true,
+        "cap_enforced_upper_bound": true,
+        "note": "Upper-bound validation catches a missing tc cap; no lower-bound throughput assumption is imposed."
+      }
+    },
+    {
+      "name": "network:GCP_NATIVE:sendrecv:16k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_NATIVE_16k.json"
+    },
+    {
+      "name": "network:GCP_NATIVE:sendrecv:128k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_NATIVE_128k.json"
+    },
+    {
+      "name": "network:GCP_NATIVE:sendrecv:512k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_NATIVE_512k.json"
+    },
+    {
+      "name": "network:GCP_NATIVE:sendrecv:64m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_NATIVE_64m.json"
+    },
+    {
+      "name": "network:GCP_NATIVE:sendrecv:128m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_NATIVE_128m.json"
+    },
+    {
+      "name": "network:GCP_NATIVE:sendrecv:256m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_NATIVE_256m.json"
+    },
+    {
+      "name": "network:GCP_NATIVE:crossnode_TP2",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_NATIVE.log"
+      ]
+    },
+    {
+      "name": "network:GCP_NATIVE:crossnode_TP8",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_NATIVE.log"
+      ]
+    },
+    {
+      "name": "network:GCP_NATIVE:crossnode_TP16",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_NATIVE.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:iperf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:iperf_reverse",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:iperf_validation",
+      "ok": true,
+      "detail": {
+        "measured_forward_gbps": 54.19457391804025,
+        "configured_cap_gbps": 100.0,
+        "measurement_ok": true,
+        "cap_enforced_upper_bound": true,
+        "note": "Upper-bound validation catches a missing tc cap; no lower-bound throughput assumption is imposed."
+      }
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:sendrecv:16k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_100G_16k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:sendrecv:128k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_100G_128k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:sendrecv:512k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_100G_512k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:sendrecv:64m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_100G_64m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:sendrecv:128m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_100G_128m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:sendrecv:256m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_100G_256m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:crossnode_TP2",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_100G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:crossnode_TP8",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_100G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_100G:crossnode_TP16",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_100G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:iperf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:iperf_reverse",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:iperf_validation",
+      "ok": true,
+      "detail": {
+        "measured_forward_gbps": 33.01557666422295,
+        "configured_cap_gbps": 50.0,
+        "measurement_ok": true,
+        "cap_enforced_upper_bound": true,
+        "note": "Upper-bound validation catches a missing tc cap; no lower-bound throughput assumption is imposed."
+      }
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:sendrecv:16k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_50G_16k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:sendrecv:128k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_50G_128k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:sendrecv:512k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_50G_512k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:sendrecv:64m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_50G_64m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:sendrecv:128m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_50G_128m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:sendrecv:256m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_50G_256m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:crossnode_TP2",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_50G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:crossnode_TP8",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_50G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_50G:crossnode_TP16",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_50G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:iperf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:iperf_reverse",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:iperf_validation",
+      "ok": true,
+      "detail": {
+        "measured_forward_gbps": 16.69075356855071,
+        "configured_cap_gbps": 20.0,
+        "measurement_ok": true,
+        "cap_enforced_upper_bound": true,
+        "note": "Upper-bound validation catches a missing tc cap; no lower-bound throughput assumption is imposed."
+      }
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:sendrecv:16k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_20G_16k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:sendrecv:128k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_20G_128k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:sendrecv:512k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_20G_512k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:sendrecv:64m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_20G_64m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:sendrecv:128m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_20G_128m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:sendrecv:256m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_20G_256m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:crossnode_TP2",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_20G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:crossnode_TP8",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_20G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_20G:crossnode_TP16",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_20G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:iperf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:iperf_reverse",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:iperf_validation",
+      "ok": true,
+      "detail": {
+        "measured_forward_gbps": 8.995680070017794,
+        "configured_cap_gbps": 10.0,
+        "measurement_ok": true,
+        "cap_enforced_upper_bound": true,
+        "note": "Upper-bound validation catches a missing tc cap; no lower-bound throughput assumption is imposed."
+      }
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:sendrecv:16k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_10G_16k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:sendrecv:128k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_10G_128k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:sendrecv:512k",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_10G_512k.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:sendrecv:64m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_10G_64m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:sendrecv:128m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_10G_128m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:sendrecv:256m",
+      "ok": true,
+      "detail": "nccl_sendrecv_GCP_CAPPED_10G_256m.json"
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:crossnode_TP2",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_10G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:crossnode_TP8",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_10G.log"
+      ]
+    },
+    {
+      "name": "network:GCP_CAPPED_10G:crossnode_TP16",
+      "ok": true,
+      "detail": [
+        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_10G.log"
+      ]
+    },
+    {
+      "name": "network:nccl_env_node0",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:nccl_env_node1",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network:nccl_debug_native_sendrecv",
+      "ok": true,
+      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/240_nccl_debug_sendrecv_native_128m.log"
+    },
+    {
+      "name": "structured_benchmark_logs_exit_zero",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "all_required_ok": true,
+  "failed": []
+}

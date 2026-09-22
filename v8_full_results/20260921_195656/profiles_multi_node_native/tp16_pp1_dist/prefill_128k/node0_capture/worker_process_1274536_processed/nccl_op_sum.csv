@@ -1,0 +1,5 @@
+Generating SQLite file /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536.sqlite from /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536.nsys-rep
+Exportation error: Cannot read from stream.
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node0_capture/worker_process_1274536.sqlite] with [nccl_op_sum]... 
+ERROR: Report 'nccl_op_sum' could not be found.
+

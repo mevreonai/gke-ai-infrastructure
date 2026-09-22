@@ -1,0 +1,8 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture/worker_process_142657.sqlite] with [nccl_gpu_time_sum]... 
+ERROR: Report 'nccl_gpu_time_sum' could not be found.
+

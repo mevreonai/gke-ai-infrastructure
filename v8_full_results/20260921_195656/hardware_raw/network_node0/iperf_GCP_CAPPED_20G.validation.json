@@ -1,0 +1,7 @@
+{
+  "measured_forward_gbps": 16.69075356855071,
+  "configured_cap_gbps": 20.0,
+  "measurement_ok": true,
+  "cap_enforced_upper_bound": true,
+  "note": "Upper-bound validation catches a missing tc cap; no lower-bound throughput assumption is imposed."
+}

@@ -1,0 +1,2473 @@
+[
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_qualification",
+    "bench": "8k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 223.52824966674234,
+      "mean_tpot_ms": 4.487459285622868,
+      "peak_kv_usage": 0.0012590494176896172,
+      "peak_vram_mb": null,
+      "queue_mean_s": 6.663333200170503e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_qualification",
+    "bench": "8k_c8",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 931.2662739686175,
+      "mean_tpot_ms": 10.88721361801457,
+      "peak_kv_usage": 0.01007239534151716,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.22690644662486648,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_qualification",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4530.442060600399,
+      "mean_tpot_ms": 5.101349751183036,
+      "peak_kv_usage": 0.016367642429965357,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2329999663052149e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_qualification",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 31931.636784999682,
+      "mean_tpot_ms": 7.591366912695069,
+      "peak_kv_usage": 0.06471514006924772,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.5604999134666286e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_qualification",
+    "bench": "8k_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 263.24578349976946,
+      "mean_tpot_ms": 6.372450105555246,
+      "peak_kv_usage": 0.0011239112110142946,
+      "peak_vram_mb": null,
+      "queue_mean_s": 6.64000041676142e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_qualification",
+    "bench": "8k_c8",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1031.2258149689342,
+      "mean_tpot_ms": 13.935629803431677,
+      "peak_kv_usage": 0.00899128968811469,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.19685262203120146,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_qualification",
+    "bench": "128k_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4782.843540400063,
+      "mean_tpot_ms": 7.051367574801881,
+      "peak_kv_usage": 0.016109394024538704,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.1932000779779628e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_qualification",
+    "bench": "512k_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_qualification\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 28079.824194999674,
+      "mean_tpot_ms": 9.478274357134646,
+      "peak_kv_usage": 0.06406293902781679,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.7624999600229785e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_context_baseline",
+    "bench": "8k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 222.22738809996372,
+      "mean_tpot_ms": 4.474752501571527,
+      "peak_kv_usage": 0.0012559658377292449,
+      "peak_vram_mb": null,
+      "queue_mean_s": 6.825999662396498e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_context_baseline",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4532.091568999749,
+      "mean_tpot_ms": 5.105683433069452,
+      "peak_kv_usage": 0.01632755589047974,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.161600011982955e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_context_baseline",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 31916.194356666285,
+      "mean_tpot_ms": 7.565417285717866,
+      "peak_kv_usage": 0.06455664405928163,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.6089999917312525e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_context_baseline",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 93247.85847049952,
+      "mean_tpot_ms": 10.266642967742941,
+      "peak_kv_usage": 0.12289625722180353,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.7600000319362152e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_context_baseline",
+    "bench": "8k_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 263.311382700158,
+      "mean_tpot_ms": 6.350044003150066,
+      "peak_kv_usage": 0.0011211809772960768,
+      "peak_vram_mb": null,
+      "queue_mean_s": 6.603999827348161e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_context_baseline",
+    "bench": "128k_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4809.569065400137,
+      "mean_tpot_ms": 7.0981996031487204,
+      "peak_kv_usage": 0.016070260674577175,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.0962000053259545e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_context_baseline",
+    "bench": "512k_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 28088.720812333122,
+      "mean_tpot_ms": 9.455463301578892,
+      "peak_kv_usage": 0.06390731570587682,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.9570000101036083e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_context_baseline",
+    "bench": "1m_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp8_context_baseline\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 74687.51421699926,
+      "mean_tpot_ms": 12.101509870966941,
+      "peak_kv_usage": 0.12177271170076931,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.294000114488881e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefill_focus",
+    "bench": "8k_prefill",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 222.65693800022746,
+      "mean_tpot_ms": 4.449391208330174,
+      "peak_kv_usage": 0.0,
+      "peak_vram_mb": null,
+      "queue_mean_s": 7.737499799986836e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefill_focus",
+    "bench": "128k_prefill",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4536.906719800027,
+      "mean_tpot_ms": 5.115118666678123,
+      "peak_kv_usage": 0.01626475759859336,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.35859998408705e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefill_focus",
+    "bench": "512k_prefill",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 31955.163389666875,
+      "mean_tpot_ms": 7.82434111089161,
+      "peak_kv_usage": 0.06449384576739514,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.5596666950538445e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefill_focus",
+    "bench": "1m_prefill",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 93274.23626399922,
+      "mean_tpot_ms": 10.490961499878418,
+      "peak_kv_usage": 0.12289625722180353,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.9625000277301297e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_decode_focus",
+    "bench": "8k_decode_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_decode_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 223.06143675018575,
+      "mean_tpot_ms": 4.487403999020948,
+      "peak_kv_usage": 0.0012639828098337524,
+      "peak_vram_mb": null,
+      "queue_mean_s": 7.588749895148794e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_decode_focus",
+    "bench": "8k_decode_c8",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_decode_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 922.6492665002297,
+      "mean_tpot_ms": 9.275461908267722,
+      "peak_kv_usage": 0.010111862478670242,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.21939455212486791,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_decode_focus",
+    "bench": "8k_decode_c16",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 16,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_decode_focus\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1229.9006723123587,
+      "mean_tpot_ms": 15.295793462451403,
+      "peak_kv_usage": 0.020223724957340594,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.45109022714594477,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk4k",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk4k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 5227.567163999993,
+      "mean_tpot_ms": 5.123602646822941,
+      "peak_kv_usage": 0.016200386316904458,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.3292500170791754e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk4k",
+    "bench": "128k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk4k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 11344.858630749513,
+      "mean_tpot_ms": 141.27775245239076,
+      "peak_kv_usage": 0.0485388497725715,
+      "peak_vram_mb": null,
+      "queue_mean_s": 5.503886742750335,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk4k",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk4k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 40271.31397950143,
+      "mean_tpot_ms": 7.57613653226027,
+      "peak_kv_usage": 0.06405383512991458,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.7809999917517416e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk4k",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk4k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 122048.67084199941,
+      "mean_tpot_ms": 10.309161199984374,
+      "peak_kv_usage": 0.12193906162377721,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.4259999918285757e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk8k",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4534.457660251064,
+      "mean_tpot_ms": 5.118194396822045,
+      "peak_kv_usage": 0.016334736445310027,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.0890000339713879e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk8k",
+    "bench": "128k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10657.226732332978,
+      "mean_tpot_ms": 119.25796907143142,
+      "peak_kv_usage": 0.06527611987183513,
+      "peak_vram_mb": null,
+      "queue_mean_s": 5.416607007917264,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk8k",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 31936.024988999634,
+      "mean_tpot_ms": 7.646079451660626,
+      "peak_kv_usage": 0.06458503486837974,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.737999809847679e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk8k",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 93276.595714,
+      "mean_tpot_ms": 10.346496533262933,
+      "peak_kv_usage": 0.1229503047056606,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1339998056646436e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk16k",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk16k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4364.180822500202,
+      "mean_tpot_ms": 5.092784793651801,
+      "peak_kv_usage": 0.01661129568106312,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.1852500392706133e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk16k",
+    "bench": "128k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk16k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10884.490014166659,
+      "mean_tpot_ms": 105.13219004099929,
+      "peak_kv_usage": 0.06644518272425248,
+      "peak_vram_mb": null,
+      "queue_mean_s": 5.357828548000119,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk16k",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk16k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 30455.129195499467,
+      "mean_tpot_ms": 7.534636870977626,
+      "peak_kv_usage": 0.06567850753897264,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.5794999853824265e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_chunk16k",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_chunk16k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 88951.33969900053,
+      "mean_tpot_ms": 10.263271933217766,
+      "peak_kv_usage": 0.12503194479938662,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1600000764010474e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_8k",
+    "bench": "c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 222.24630291657377,
+      "mean_tpot_ms": 4.466513426471947,
+      "peak_kv_usage": 0.0012639828098337524,
+      "peak_vram_mb": null,
+      "queue_mean_s": 6.87583269609604e-06,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_8k",
+    "bench": "c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 609.5857816662829,
+      "mean_tpot_ms": 7.273365277288737,
+      "peak_kv_usage": 0.005055931239335121,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.02719601554175218,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_8k",
+    "bench": "c8",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 887.0578320629647,
+      "mean_tpot_ms": 10.816657294975027,
+      "peak_kv_usage": 0.010111862478670242,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.18982260178120214,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_8k",
+    "bench": "c16",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 16,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1155.9965894061293,
+      "mean_tpot_ms": 19.195813248099476,
+      "peak_kv_usage": 0.020223724957340594,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.3810177286878229,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_8k",
+    "bench": "c32",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1618.65869085932,
+      "mean_tpot_ms": 34.473335567770285,
+      "peak_kv_usage": 0.04044744991468119,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.7785854773752021,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_128k",
+    "bench": "c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 4531.723714167431,
+      "mean_tpot_ms": 5.1260366141648674,
+      "peak_kv_usage": 0.016367642429965357,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2918333595735021e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_128k",
+    "bench": "c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10314.35053800063,
+      "mean_tpot_ms": 66.41161650787195,
+      "peak_kv_usage": 0.06547056971986154,
+      "peak_vram_mb": null,
+      "queue_mean_s": 5.106190563500604,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_128k",
+    "bench": "c8",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 12629.638923625711,
+      "mean_tpot_ms": 187.52912123621476,
+      "peak_kv_usage": 0.13087818696883857,
+      "peak_vram_mb": null,
+      "queue_mean_s": 7.124028292374987,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_128k",
+    "bench": "c16",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 16,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 37249.93372496863,
+      "mean_tpot_ms": 242.6865716572324,
+      "peak_kv_usage": 0.14718287692791943,
+      "peak_vram_mb": null,
+      "queue_mean_s": 31.149280340218866,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_512k",
+    "bench": "c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_512k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 31997.713962999114,
+      "mean_tpot_ms": 7.561100825422385,
+      "peak_kv_usage": 0.06455664405928163,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.0793334745879594e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_512k",
+    "bench": "c2",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 2,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_512k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 40270.520100249996,
+      "mean_tpot_ms": 367.1709011587154,
+      "peak_kv_usage": 0.12804571715649338,
+      "peak_vram_mb": null,
+      "queue_mean_s": 7.4372640472493,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_512k",
+    "bench": "c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_512k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 87628.75464062518,
+      "mean_tpot_ms": 433.7156827619072,
+      "peak_kv_usage": 0.12905048982667666,
+      "peak_vram_mb": null,
+      "queue_mean_s": 53.659901142374565,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_1m",
+    "bench": "c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_1m\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 93356.47042849996,
+      "mean_tpot_ms": 10.221327322611732,
+      "peak_kv_usage": 0.1228191289067403,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.2640000679530203e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_closedloop_1m",
+    "bench": "c2",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 2,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_closedloop_1m\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 150539.27954833367,
+      "mean_tpot_ms": 239.07033272044697,
+      "peak_kv_usage": 0.15501443454248776,
+      "peak_vram_mb": null,
+      "queue_mean_s": 55.401086293998866,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_512k_maxseq4",
+    "bench": "512k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_512k_maxseq4\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 87973.04881687523,
+      "mean_tpot_ms": 433.6428735158705,
+      "peak_kv_usage": 0.12896949918413458,
+      "peak_vram_mb": null,
+      "queue_mean_s": 53.84308493099934,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_512k_maxseq8",
+    "bench": "512k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_512k_maxseq8\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 87931.30798662515,
+      "mean_tpot_ms": 433.55129129167113,
+      "peak_kv_usage": 0.12905048982667666,
+      "peak_vram_mb": null,
+      "queue_mean_s": 53.828492004374766,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_512k_maxseq16",
+    "bench": "512k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_512k_maxseq16\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 87931.6718302498,
+      "mean_tpot_ms": 433.5546212361141,
+      "peak_kv_usage": 0.1291072438273544,
+      "peak_vram_mb": null,
+      "queue_mean_s": 53.827965030874566,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefix128k",
+    "bench": "prefix128k",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131328,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_prefix128k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 902.4496501251633,
+      "mean_tpot_ms": 5.323033831689998,
+      "peak_kv_usage": 0.019161902368536765,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1858749732928118e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefix512k",
+    "bench": "prefix512k",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524544,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_prefix512k\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 16866.47032200017,
+      "mean_tpot_ms": 7.641897960306705,
+      "peak_kv_usage": 0.07680231097714141,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.9009999959962443e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_fp8_kv",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_fp8_kv",
+    "bench": "128k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_fp8_kv",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_native_offload_pressure",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_native_offload_pressure",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_native_offload_pressure",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_observer_minimal",
+    "bench": "8k_c8",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_observer_minimal\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 924.6605717814873,
+      "mean_tpot_ms": 10.927923743749453,
+      "peak_kv_usage": 0.01007239534151716,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.2124851873127227,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_observer_minimal",
+    "bench": "128k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_observer_minimal\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10243.49028708275,
+      "mean_tpot_ms": 67.04815860827607,
+      "peak_kv_usage": 0.06547056971986154,
+      "peak_vram_mb": null,
+      "queue_mean_s": 5.0254019063331725,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_observer_full",
+    "bench": "8k_c8",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 8,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_observer_full\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 895.9274722184318,
+      "mean_tpot_ms": 10.99734544387395,
+      "peak_kv_usage": 0.01007239534151716,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.191972529468444,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V6_BASE",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_observer_full",
+    "bench": "128k_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v6_matrix\\tp4_observer_full\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10512.203023582819,
+      "mean_tpot_ms": 65.04352113780129,
+      "peak_kv_usage": 0.06547056971986154,
+      "peak_vram_mb": null,
+      "queue_mean_s": 5.296183328332518,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_1m_concurrency_extension",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_1m_concurrency_extension\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 93394.8981124995,
+      "mean_tpot_ms": 10.227507629033719,
+      "peak_kv_usage": 0.12289625722180353,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.0450001102290116e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_1m_concurrency_extension",
+    "bench": "1m_c2",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 2,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_1m_concurrency_extension\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 139373.6260504993,
+      "mean_tpot_ms": 181.97401491940377,
+      "peak_kv_usage": 0.1551745792514444,
+      "peak_vram_mb": null,
+      "queue_mean_s": 44.34024832999967,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_1m_concurrency_extension",
+    "bench": "1m_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_1m_concurrency_extension\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 231267.51058724948,
+      "mean_tpot_ms": 267.4106213709761,
+      "peak_kv_usage": 0.1551117809595579,
+      "peak_vram_mb": null,
+      "queue_mean_s": 134.4276723945004,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_1m_concurrency_extension",
+    "bench": "1m_c1",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp8_1m_concurrency_extension\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 74886.07922750089,
+      "mean_tpot_ms": 12.05341177416314,
+      "peak_kv_usage": 0.12177271170076931,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.8515000192564912e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_1m_concurrency_extension",
+    "bench": "1m_c2",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 2,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp8_1m_concurrency_extension\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 111744.2599119986,
+      "mean_tpot_ms": 177.20815483875003,
+      "peak_kv_usage": 0.15269862032451964,
+      "peak_vram_mb": null,
+      "queue_mean_s": 35.28013301399915,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp8_1m_concurrency_extension",
+    "bench": "1m_c4",
+    "tp": 8,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp8_1m_concurrency_extension\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 184879.4380952486,
+      "mean_tpot_ms": 259.495314169374,
+      "peak_kv_usage": 0.15369522563767168,
+      "peak_vram_mb": null,
+      "queue_mean_s": 106.91145909024908,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_1m_maxseq4",
+    "bench": "1m_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_1m_maxseq4\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 232342.11362049973,
+      "mean_tpot_ms": 267.5323334999942,
+      "peak_kv_usage": 0.1550771934228693,
+      "peak_vram_mb": null,
+      "queue_mean_s": 135.18045721499948,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_1m_maxseq8",
+    "bench": "1m_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_1m_maxseq8\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 232363.68779500027,
+      "mean_tpot_ms": 267.45081741128456,
+      "peak_kv_usage": 0.1551745792514444,
+      "peak_vram_mb": null,
+      "queue_mean_s": 135.176693648501,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_1m_maxseq16",
+    "bench": "1m_c4",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 4,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_1m_maxseq16\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 232249.97101749977,
+      "mean_tpot_ms": 267.48001610482584,
+      "peak_kv_usage": 0.15524282213985052,
+      "peak_vram_mb": null,
+      "queue_mean_s": 135.17318744275053,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_fp8_kv_1m",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "NOT_RUN",
+    "manifest": null,
+    "metrics": null
+  },
+  {
+    "scope": "SINGLE_V8_1M_EXT",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_prefix1m",
+    "bench": "prefix1m",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_single_node_v8_1m_extensions\\tp4_prefix1m\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 48349.466051999116,
+      "mean_tpot_ms": 10.334940096776512,
+      "peak_kv_usage": 0.14606882692790757,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.5892499504843727e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp4_pp2_dist",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 2647.2272814999087,
+      "mean_tpot_ms": 5.507025928564539,
+      "peak_kv_usage": 0.007852612503775336,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2227500519657042e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp4_pp2_dist",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 17945.461865498146,
+      "mean_tpot_ms": 7.861564096827117,
+      "peak_kv_usage": 0.031048021745696208,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.348999805690255e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp4_pp2_dist",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 52526.41852800298,
+      "mean_tpot_ms": 10.540101193445508,
+      "peak_kv_usage": 0.05910601026880091,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1030002244515345e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp8_pp2_dist",
+    "bench": "128k_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 2787.7487120003934,
+      "mean_tpot_ms": 7.540801269825019,
+      "peak_kv_usage": 0.007761849606642723,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.1887500477314461e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp8_pp2_dist",
+    "bench": "512k_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 15575.729030499133,
+      "mean_tpot_ms": 9.878694258077303,
+      "peak_kv_usage": 0.030866890296183724,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.9910001356038265e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp8_pp2_dist",
+    "bench": "1m_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 41514.880147999065,
+      "mean_tpot_ms": 12.474252451577359,
+      "peak_kv_usage": 0.05881556581777703,
+      "peak_vram_mb": null,
+      "queue_mean_s": 3.781000123126432e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp4_pp4_dist",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1709.966466500191,
+      "mean_tpot_ms": 5.631643908730309,
+      "peak_kv_usage": 0.0036512751376249764,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2067500392731745e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp4_pp4_dist",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10221.758398500242,
+      "mean_tpot_ms": 8.026276048410857,
+      "peak_kv_usage": 0.014436580159532642,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.6109999705804512e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp4_pp4_dist",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 28567.954939997435,
+      "mean_tpot_ms": 10.642206645218634,
+      "peak_kv_usage": 0.02748286709358494,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.979999797185883e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp16_pp1_dist",
+    "bench": "128k_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 6420.4375773333595,
+      "mean_tpot_ms": 14.941562529096334,
+      "peak_kv_usage": 0.01595232922628098,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.8746667289330315e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp16_pp1_dist",
+    "bench": "512k_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 29624.08134799989,
+      "mean_tpot_ms": 17.413066580634368,
+      "peak_kv_usage": 0.06362310294528417,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.0609997591236606e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_NATIVE",
+    "case": "tp16_pp1_dist",
+    "bench": "1m_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_NATIVE\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 68196.79159800216,
+      "mean_tpot_ms": 20.080965290323928,
+      "peak_kv_usage": 0.12128735917569289,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1070001821499318e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp4_pp2_dist",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 2664.6744160007074,
+      "mean_tpot_ms": 5.529992837283417,
+      "peak_kv_usage": 0.007852612503775336,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.1392499800422229e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp4_pp2_dist",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 17982.05844900076,
+      "mean_tpot_ms": 7.903986532255658,
+      "peak_kv_usage": 0.031048021745696208,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.6185000276891515e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp4_pp2_dist",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 52596.87702700103,
+      "mean_tpot_ms": 10.568299258128746,
+      "peak_kv_usage": 0.05910601026880091,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.9359998987056315e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp8_pp2_dist",
+    "bench": "128k_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 2825.795526749971,
+      "mean_tpot_ms": 7.582972019845906,
+      "peak_kv_usage": 0.007761849606642723,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2267499187146313e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp8_pp2_dist",
+    "bench": "512k_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 15548.374735501056,
+      "mean_tpot_ms": 9.934503290306537,
+      "peak_kv_usage": 0.030866890296183724,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.170499828935135e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp8_pp2_dist",
+    "bench": "1m_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 41462.06910099863,
+      "mean_tpot_ms": 12.505773645135642,
+      "peak_kv_usage": 0.05881556581777703,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1739997464464977e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp4_pp4_dist",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1760.7078204991922,
+      "mean_tpot_ms": 5.667959150799554,
+      "peak_kv_usage": 0.0036512751376249764,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2822499229514506e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp4_pp4_dist",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10389.330726498883,
+      "mean_tpot_ms": 8.094253000015142,
+      "peak_kv_usage": 0.014422536793618712,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.60550007421989e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp4_pp4_dist",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 28865.660886000114,
+      "mean_tpot_ms": 10.678897935459617,
+      "peak_kv_usage": 0.02748286709358494,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1480002033058554e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp16_pp1_dist",
+    "bench": "128k_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 9735.82646066643,
+      "mean_tpot_ms": 15.623837867727081,
+      "peak_kv_usage": 0.01595232922628098,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.4470001284886772e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp16_pp1_dist",
+    "bench": "512k_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 43094.919449999,
+      "mean_tpot_ms": 17.85543658068843,
+      "peak_kv_usage": 0.06362310294528417,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.1210002159932628e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_100G",
+    "case": "tp16_pp1_dist",
+    "bench": "1m_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_100G\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 92991.99498799862,
+      "mean_tpot_ms": 20.58497751615153,
+      "peak_kv_usage": 0.12128735917569289,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.297999890288338e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp4_pp2_dist",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 2859.202987999197,
+      "mean_tpot_ms": 5.52143085317925,
+      "peak_kv_usage": 0.007852612503775336,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2722500287054572e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp4_pp2_dist",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 18371.564150000268,
+      "mean_tpot_ms": 7.937772645163932,
+      "peak_kv_usage": 0.031048021745696208,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.621000046725385e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp4_pp2_dist",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 2,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp2_dist\\tp4_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 53127.08464700336,
+      "mean_tpot_ms": 10.55001345159854,
+      "peak_kv_usage": 0.05910601026880091,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.432000110275112e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp8_pp2_dist",
+    "bench": "128k_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 2810.1938112504286,
+      "mean_tpot_ms": 7.586215428567639,
+      "peak_kv_usage": 0.007761849606642723,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2137499652453698e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp8_pp2_dist",
+    "bench": "512k_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 15545.555016502476,
+      "mean_tpot_ms": 9.920863435435159,
+      "peak_kv_usage": 0.030866890296183724,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.7860002117231488e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp8_pp2_dist",
+    "bench": "1m_c1",
+    "tp": 8,
+    "pp": 2,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp8_pp2_dist\\tp8_pp2_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 41471.61929699723,
+      "mean_tpot_ms": 12.514414064606816,
+      "peak_kv_usage": 0.05881556581777703,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.227000004495494e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp4_pp4_dist",
+    "bench": "128k_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 1960.865962999378,
+      "mean_tpot_ms": 5.647640134922103,
+      "peak_kv_usage": 0.0036512751376249764,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.2395000339893159e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp4_pp4_dist",
+    "bench": "512k_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 11134.243245998732,
+      "mean_tpot_ms": 8.101742161318638,
+      "peak_kv_usage": 0.014422536793618712,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.9889999748556875e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp4_pp4_dist",
+    "bench": "1m_c1",
+    "tp": 4,
+    "pp": 4,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp4_pp4_dist\\tp4_pp4_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 29683.658138001192,
+      "mean_tpot_ms": 10.705165387104985,
+      "peak_kv_usage": 0.02748286709358494,
+      "peak_vram_mb": null,
+      "queue_mean_s": 3.4520002373028547e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp16_pp1_dist",
+    "bench": "128k_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 31053.114879998855,
+      "mean_tpot_ms": 15.372883587313856,
+      "peak_kv_usage": 0.01595232922628098,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.3780000396460915e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp16_pp1_dist",
+    "bench": "512k_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 128275.46245799749,
+      "mean_tpot_ms": 17.715253354840716,
+      "peak_kv_usage": 0.06362310294528417,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.0899999071843922e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "MULTI_V8",
+    "network_provenance": "GCP_CAPPED_20G",
+    "case": "tp16_pp1_dist",
+    "bench": "1m_c1",
+    "tp": 16,
+    "pp": 1,
+    "input_tokens": 1000000,
+    "concurrency": 1,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_scaleout_network_matrix\\GCP_CAPPED_20G\\results\\tp16_pp1_dist\\tp16_pp1_dist\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 256889.4743810015,
+      "mean_tpot_ms": 20.57013267744145,
+      "peak_kv_usage": 0.12128735917569289,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.153999957954511e-05,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_0.25x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 305.0675758279908,
+      "mean_tpot_ms": 8.966233517585753,
+      "peak_kv_usage": 0.016431776527839226,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.013622682453046764,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_0.50x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 348.53258621097893,
+      "mean_tpot_ms": 16.58094154592571,
+      "peak_kv_usage": 0.029008405485685396,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.004298084484048559,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_0.75x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 599.0184727957414,
+      "mean_tpot_ms": 40.52307011569632,
+      "peak_kv_usage": 0.08076850154837889,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.08106681746060802,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_0.90x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 935.8955536418924,
+      "mean_tpot_ms": 60.85570539910975,
+      "peak_kv_usage": 0.08089489982936227,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.1818064116419863,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_1.00x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 979.0564297764778,
+      "mean_tpot_ms": 62.4068069175393,
+      "peak_kv_usage": 0.08089489982936227,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.2537480604471057,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_1.10x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 783.5158901677719,
+      "mean_tpot_ms": 63.13483312072855,
+      "peak_kv_usage": 0.08089489982936227,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.12045699293574737,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_8192",
+    "bench": "rps_1.25x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 8192,
+    "concurrency": 64,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_8192\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 825.7056521383474,
+      "mean_tpot_ms": 64.00514512410884,
+      "peak_kv_usage": 0.08089489982936227,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.08344723975151626,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_0.25x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 5105.164860583652,
+      "mean_tpot_ms": 12.712455007026232,
+      "peak_kv_usage": 0.04910292728989618,
+      "peak_vram_mb": null,
+      "queue_mean_s": 0.42167524370870524,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_0.50x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 7510.657292125264,
+      "mean_tpot_ms": 36.74292491781005,
+      "peak_kv_usage": 0.1145105445388731,
+      "peak_vram_mb": null,
+      "queue_mean_s": 2.51965838583313,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_0.75x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 6935.757117541925,
+      "mean_tpot_ms": 50.568515993627386,
+      "peak_kv_usage": 0.16361347182876929,
+      "peak_vram_mb": null,
+      "queue_mean_s": 1.940886776999984,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_0.90x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 10008.599212541867,
+      "mean_tpot_ms": 131.5496423081676,
+      "peak_kv_usage": 0.2769279194208373,
+      "peak_vram_mb": null,
+      "queue_mean_s": 4.737527223249799,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_1.00x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 21107.23172920886,
+      "mean_tpot_ms": 178.5096395176463,
+      "peak_kv_usage": 0.2778722064841045,
+      "peak_vram_mb": null,
+      "queue_mean_s": 15.6953956667503,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_1.10x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 21470.52405416601,
+      "mean_tpot_ms": 166.73128780751668,
+      "peak_kv_usage": 0.2778722064841045,
+      "peak_vram_mb": null,
+      "queue_mean_s": 16.114782082125203,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_openloop_131072",
+    "bench": "rps_1.25x",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 131072,
+    "concurrency": 32,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_openloop_131072\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 21550.561171416877,
+      "mean_tpot_ms": 184.85731672761273,
+      "peak_kv_usage": 0.277935158954989,
+      "peak_vram_mb": null,
+      "queue_mean_s": 16.13083286616681,
+      "preemptions": 0.0
+    }
+  },
+  {
+    "scope": "OPEN_LOOP_GENERATED",
+    "network_provenance": "SINGLE_NODE_LOCAL",
+    "case": "tp4_512k_interference_probe",
+    "bench": "512k_main_plus_probe",
+    "tp": 4,
+    "pp": 1,
+    "input_tokens": 524288,
+    "concurrency": 16,
+    "status": "COMPLETED",
+    "manifest": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_results\\20260921_195656\\vllm_open_loop\\tp4_512k_interference_probe\\case_manifest.json",
+    "metrics": {
+      "mean_ttft_ms": 44106.70182537478,
+      "mean_tpot_ms": 219.36106302018743,
+      "peak_kv_usage": 0.09694037821197465,
+      "peak_vram_mb": null,
+      "queue_mean_s": 4.638763999681804,
+      "preemptions": 0.0
+    }
+  }
+]
