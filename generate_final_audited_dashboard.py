@@ -7,13 +7,27 @@ sys.stdout.reconfigure(encoding='utf-8')
 print("Starting complete generation of Final Audited V8 Dashboard with Real Profiler Data & Scale-Out Scheduler...")
 
 # 1. Load canonical data
-with open(r'v8_full_results\20260921_195656\final_validation\coverage.json', 'r', encoding='utf-8') as f:
+import os
+
+def resolve_real_data_dir():
+    candidates = [
+        r'v8_full_results\results\real_data',
+        r'v8_full_results\20260921_195656'
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return candidates[0]
+
+base_dir = resolve_real_data_dir()
+
+with open(os.path.join(base_dir, r'final_validation\coverage.json'), 'r', encoding='utf-8') as f:
     coverage = json.load(f)
 
-with open(r'v8_full_results\20260921_195656\final_validation\combined_vllm_runs.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, r'final_validation\combined_vllm_runs.json'), 'r', encoding='utf-8') as f:
     combined_runs = json.load(f)
 
-with open(r'v8_full_results\20260921_195656\final_validation\FINAL_VALIDATION.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, r'final_validation\FINAL_VALIDATION.json'), 'r', encoding='utf-8') as f:
     final_val = json.load(f)
 
 run_map = {}

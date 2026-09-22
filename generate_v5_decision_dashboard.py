@@ -17,13 +17,25 @@ sys.stdout.reconfigure(encoding='utf-8')
 print("Generating V5 Decision-Intelligence Dashboard from template...")
 
 # 1. Load canonical datasets
-with open(r'v8_full_results\20260921_195656\final_validation\coverage.json', 'r', encoding='utf-8') as f:
+def resolve_real_data_dir():
+    candidates = [
+        r'v8_full_results\results\real_data',
+        r'v8_full_results\20260921_195656'
+    ]
+    for c in candidates:
+        if os.path.exists(c):
+            return c
+    return candidates[0]
+
+base_dir = resolve_real_data_dir()
+
+with open(os.path.join(base_dir, r'final_validation\coverage.json'), 'r', encoding='utf-8') as f:
     coverage = json.load(f)
 
-with open(r'v8_full_results\20260921_195656\final_validation\combined_vllm_runs.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, r'final_validation\combined_vllm_runs.json'), 'r', encoding='utf-8') as f:
     combined_runs = json.load(f)
 
-with open(r'v8_full_results\20260921_195656\final_validation\FINAL_VALIDATION.json', 'r', encoding='utf-8') as f:
+with open(os.path.join(base_dir, r'final_validation\FINAL_VALIDATION.json'), 'r', encoding='utf-8') as f:
     final_val = json.load(f)
 
 run_map = {}
@@ -36,7 +48,6 @@ for r in combined_runs:
 commands_map = {}
 
 def find_commands_for_case(case_name, bench_name, net_prov):
-    base_dir = r'v8_full_results\20260921_195656'
     srv_cmd = ""
     bench_cmd = ""
     metrics_cmd = ""

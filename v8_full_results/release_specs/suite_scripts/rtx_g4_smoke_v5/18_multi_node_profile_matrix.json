@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "evidence_class": "MEASURED-48B-PROFILE",
+  "profiles": [
+    {"topology":"tp4_pp2_dist","tp":4,"pp":2,"ray_gpus_per_node":4,"mode":"prefill_128k","input":131072,"output":8,"concurrency":1,"prompts":1},
+    {"topology":"tp4_pp2_dist","tp":4,"pp":2,"ray_gpus_per_node":4,"mode":"decode_8k","input":8192,"output":512,"concurrency":1,"prompts":1},
+    {"topology":"tp4_pp2_dist","tp":4,"pp":2,"ray_gpus_per_node":4,"mode":"batched_decode_8k_c8","input":8192,"output":512,"concurrency":8,"prompts":8},
+    {"topology":"tp8_pp2_dist","tp":8,"pp":2,"ray_gpus_per_node":8,"mode":"prefill_128k","input":131072,"output":8,"concurrency":1,"prompts":1},
+    {"topology":"tp8_pp2_dist","tp":8,"pp":2,"ray_gpus_per_node":8,"mode":"decode_8k","input":8192,"output":512,"concurrency":1,"prompts":1},
+    {"topology":"tp8_pp2_dist","tp":8,"pp":2,"ray_gpus_per_node":8,"mode":"batched_decode_8k_c8","input":8192,"output":512,"concurrency":8,"prompts":8},
+    {"topology":"tp4_pp4_dist","tp":4,"pp":4,"ray_gpus_per_node":8,"mode":"prefill_128k","input":131072,"output":8,"concurrency":1,"prompts":1},
+    {"topology":"tp4_pp4_dist","tp":4,"pp":4,"ray_gpus_per_node":8,"mode":"decode_8k","input":8192,"output":512,"concurrency":1,"prompts":1},
+    {"topology":"tp4_pp4_dist","tp":4,"pp":4,"ray_gpus_per_node":8,"mode":"batched_decode_8k_c8","input":8192,"output":512,"concurrency":8,"prompts":8},
+    {"topology":"tp16_pp1_dist","tp":16,"pp":1,"ray_gpus_per_node":8,"mode":"prefill_128k","input":131072,"output":8,"concurrency":1,"prompts":1},
+    {"topology":"tp16_pp1_dist","tp":16,"pp":1,"ray_gpus_per_node":8,"mode":"decode_8k","input":8192,"output":512,"concurrency":1,"prompts":1},
+    {"topology":"tp16_pp1_dist","tp":16,"pp":1,"ray_gpus_per_node":8,"mode":"batched_decode_8k_c8","input":8192,"output":512,"concurrency":8,"prompts":8},
+    {"topology":"tp4_pp4_dist","tp":4,"pp":4,"ray_gpus_per_node":8,"mode":"long_prefill_512k","input":524288,"output":8,"concurrency":1,"prompts":1,"optional_heavy":true},
+    {"topology":"tp16_pp1_dist","tp":16,"pp":1,"ray_gpus_per_node":8,"mode":"long_prefill_512k","input":524288,"output":8,"concurrency":1,"prompts":1,"optional_heavy":true}
+  ]
+}

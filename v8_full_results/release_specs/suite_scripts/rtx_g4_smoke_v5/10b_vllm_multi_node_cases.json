@@ -1,0 +1,249 @@
+{
+  "schema_version": 3,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "evidence_class": "MEASURED-48B",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2,
+    "observability_profile": "full",
+    "metrics_interval_s": 0.5
+  },
+  "cases": [
+    {
+      "name": "tp4_pp2_dist",
+      "groups": [
+        "qualification",
+        "topology",
+        "long_context_scaleout",
+        "scaleout_1m"
+      ],
+      "purpose": "One TP4 group per node; one remote PP boundary; force 4 visible GPUs/node so placement cannot collapse to one node.",
+      "tp": 4,
+      "pp": 2,
+      "ray_gpus_per_node": 4,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "512k_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "groups": [
+        "topology",
+        "long_context_scaleout",
+        "scaleout_1m"
+      ],
+      "purpose": "TP8 within each 8-GPU node, PP across nodes.",
+      "tp": 8,
+      "pp": 2,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "512k_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "groups": [
+        "topology",
+        "long_context_scaleout",
+        "scaleout_1m"
+      ],
+      "purpose": "Four TP4 stages across two nodes; local TP groups with multiple PP boundaries.",
+      "tp": 4,
+      "pp": 4,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "512k_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "groups": [
+        "topology",
+        "stress",
+        "long_context_scaleout",
+        "scaleout_1m"
+      ],
+      "purpose": "Cross-node TP16 stress; failure is evidence only for this tested GCP/Ray/NCCL stack.",
+      "tp": 16,
+      "pp": 1,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 3,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "128k_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "512k_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    }
+  ],
+  "v8_change": "Adds capacity-gated 1M scale-out coverage for TP4/PP2, TP8/PP2, TP4/PP4, and TP16/PP1; TP16 gains a 512K prerequisite."
+}

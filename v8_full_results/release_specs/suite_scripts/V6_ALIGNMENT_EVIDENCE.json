@@ -1,0 +1,14 @@
+{
+  "v6_suite_zip_sha256": "e0ea335c4a92c5cfb48483ca433aa5d4742badae2bb0cbd21dafed06b94e636c",
+  "v6_qualification_zip_sha256": "df70814fcab1d7acdaee4c99ac5a1bfbe18a2d2978d9ed8119fb06643aec2683",
+  "legacy_20260915_zip_sha256": "0225500fab8771376f6d58d42cde245c1c8a3ebd3594e39c76684b5ba6d33c28",
+  "v6_source_forbidden_flag_hits": [],
+  "v6_qualification_environment_manifest_env": {},
+  "v6_qualification_forbidden_flags_present": false,
+  "legacy_20260915_tp8_local_nccl_forced_command": "mpirun -np 8 -x LD_LIBRARY_PATH -x NCCL_P2P_DISABLE=1 -x NCCL_SHM_DISABLE=1 ./build/all_reduce_perf -b 16K -e 16K -g 1",
+  "legacy_20260915_forced_flags": {
+    "NCCL_P2P_DISABLE": true,
+    "NCCL_SHM_DISABLE": true
+  },
+  "interpretation": "V6 vLLM single-node qualification did not use forced NCCL P2P/SHM flags. The older 20260915 local NCCL microbenchmark did, so those legacy NCCL numbers are forced-transport sensitivity evidence, not native local NCCL."
+}

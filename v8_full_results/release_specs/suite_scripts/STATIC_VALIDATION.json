@@ -1,0 +1,1149 @@
+{
+  "schema_version": 2,
+  "root": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\v8_full_release_package\\extracted\\V8_FULL",
+  "ok": false,
+  "checks": [
+    {
+      "name": "py_compile:21_static_validate_suite.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:90_collect_and_validate.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\07_preflight_v5.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\08_validate_kimi_linear.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\09_metrics_sampler.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\11_run_vllm_surrogate.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\12_run_vllm_multi_node.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\13_generate_load_cases.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\15_summarize_vllm.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\16_analyze_vllm_profiles.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\17_build_serving_analysis.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\18_run_vllm_multi_node_profile_case.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\19_postprocess_nsys.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\20_ray_nccl_env_audit.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\22_v8_readiness.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\v5_runner_lib.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v8_hw\\04_summarize_results.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v8_hw\\05_analyze_model.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v8_hw\\07_validate_results.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_n:00_run_v8_full.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:99_package_v8_full_results.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\00_init_gcp_config.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\00_smoke_common.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\12_run_vllm_multi_node.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\14b_run_vllm_torch_profile.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\14_run_vllm_nsys_profile.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\18_run_vllm_multi_node_profiles.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\20_nccl_policy.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\20_run_single_node_v6_aligned.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\20_run_vllm_network_matrix.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\21_run_vllm_capped_profiles.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\00_smoke_common.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\01_prepare_node.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\02_run_node_local.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\03_run_network_sweep.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\06_package_results.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "json:STATIC_VALIDATION.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "json:V6_ALIGNMENT_EVIDENCE.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "json:V6_COMPATIBILITY_MANIFEST.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "json:V8_FULL_RELEASE.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "json:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:10b_vllm_multi_node_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp4_pp2_dist:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp4_pp2_dist:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c1",
+      "ok": true,
+      "detail": "after=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp8_pp2_dist:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp8_pp2_dist:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c1",
+      "ok": true,
+      "detail": "after=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp4_pp4_dist:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp4_pp4_dist:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c1",
+      "ok": true,
+      "detail": "after=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp16_pp1_dist:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp16_pp1_dist:512k_c1",
+      "ok": true,
+      "detail": "after=128k_c1, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c1",
+      "ok": true,
+      "detail": "after=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "json:rtx_g4_smoke_v5\\10d_v8_1m_extended_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:10d_v8_1m_extended_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c2",
+      "ok": true,
+      "detail": "after=1m_c1, seen=['1m_c1']"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c4",
+      "ok": true,
+      "detail": "after=1m_c2, seen=['1m_c1', '1m_c2']"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c2",
+      "ok": true,
+      "detail": "after=1m_c1, seen=['1m_c1']"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c4",
+      "ok": true,
+      "detail": "after=1m_c2, seen=['1m_c1', '1m_c2']"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_1m_maxseq4:1m_c4",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_1m_maxseq8:1m_c4",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_1m_maxseq16:1m_c4",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_fp8_kv_1m:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10d_v8_1m_extended_cases.json:tp4_prefix1m:prefix1m",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "json:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:10_vllm_surrogate_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_qualification:8k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_qualification:8k_c8",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_qualification:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '8k_c8']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_qualification:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '8k_c8', '128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_qualification:8k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_qualification:8k_c8",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_qualification:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '8k_c8']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_qualification:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '8k_c8', '128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_context_baseline:8k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_context_baseline:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_context_baseline:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_context_baseline:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '128k_c1', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_context_baseline:8k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_context_baseline:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_context_baseline:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp8_context_baseline:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c1', '128k_c1', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_prefill_focus:8k_prefill",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_prefill_focus:128k_prefill",
+      "ok": true,
+      "detail": "after=None, seen=['8k_prefill']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_prefill_focus:512k_prefill",
+      "ok": true,
+      "detail": "after=None, seen=['8k_prefill', '128k_prefill']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_prefill_focus:1m_prefill",
+      "ok": true,
+      "detail": "after=None, seen=['8k_prefill', '128k_prefill', '512k_prefill']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_decode_focus:8k_decode_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_decode_focus:8k_decode_c8",
+      "ok": true,
+      "detail": "after=None, seen=['8k_decode_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_decode_focus:8k_decode_c16",
+      "ok": true,
+      "detail": "after=None, seen=['8k_decode_c1', '8k_decode_c8']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk4k:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk4k:128k_c4",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk4k:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk4k:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk8k:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk8k:128k_c4",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk8k:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk8k:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk16k:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk16k:128k_c4",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk16k:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_chunk16k:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_8k:c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_8k:c4",
+      "ok": true,
+      "detail": "after=None, seen=['c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_8k:c8",
+      "ok": true,
+      "detail": "after=None, seen=['c1', 'c4']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_8k:c16",
+      "ok": true,
+      "detail": "after=None, seen=['c1', 'c4', 'c8']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_8k:c32",
+      "ok": true,
+      "detail": "after=None, seen=['c1', 'c4', 'c8', 'c16']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_128k:c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_128k:c4",
+      "ok": true,
+      "detail": "after=None, seen=['c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_128k:c8",
+      "ok": true,
+      "detail": "after=None, seen=['c1', 'c4']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_128k:c16",
+      "ok": true,
+      "detail": "after=None, seen=['c1', 'c4', 'c8']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_512k:c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_512k:c2",
+      "ok": true,
+      "detail": "after=c1, seen=['c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_512k:c4",
+      "ok": true,
+      "detail": "after=c2, seen=['c1', 'c2']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_1m:c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_closedloop_1m:c2",
+      "ok": true,
+      "detail": "after=c1, seen=['c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_512k_maxseq4:512k_c4",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_512k_maxseq8:512k_c4",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_512k_maxseq16:512k_c4",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_prefix128k:prefix128k",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_prefix512k:prefix512k",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_fp8_kv:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_fp8_kv:128k_c4",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_fp8_kv:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '128k_c4']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_native_offload_pressure:128k_c1",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_native_offload_pressure:512k_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_native_offload_pressure:1m_c1",
+      "ok": true,
+      "detail": "after=None, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_observer_minimal:8k_c8",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_observer_minimal:128k_c4",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c8']"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_observer_full:8k_c8",
+      "ok": true,
+      "detail": "after=None, seen=[]"
+    },
+    {
+      "name": "gate_order:10_vllm_surrogate_cases.json:tp4_observer_full:128k_c4",
+      "ok": true,
+      "detail": "after=None, seen=['8k_c8']"
+    },
+    {
+      "name": "json:rtx_g4_smoke_v5\\18_multi_node_profile_matrix.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "json:rtx_g4_smoke_v5\\kimi_linear_provenance.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/00_init_gcp_config.sh",
+      "ok": true,
+      "detail": "expected=e2478055bae26181d014cce9b78b616b7db6740347f815aa68b7b661891a39ad actual=e2478055bae26181d014cce9b78b616b7db6740347f815aa68b7b661891a39ad"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/00_smoke_common.sh",
+      "ok": true,
+      "detail": "expected=9a1165d4cf757af6366219cf263baa13ecafbcb952cfadd5da0730c424144494 actual=9a1165d4cf757af6366219cf263baa13ecafbcb952cfadd5da0730c424144494"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/07_preflight_v5.py",
+      "ok": true,
+      "detail": "expected=93bd8cfcb8ad0ad566171ba004353963f81c497ffd3f7b9fa638ac6b2dbe2951 actual=93bd8cfcb8ad0ad566171ba004353963f81c497ffd3f7b9fa638ac6b2dbe2951"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/08_validate_kimi_linear.py",
+      "ok": true,
+      "detail": "expected=118b6c38e7b4c2ccf56f80516f6278ae1337bf4f6a06657ed292f09213fe270c actual=118b6c38e7b4c2ccf56f80516f6278ae1337bf4f6a06657ed292f09213fe270c"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/09_metrics_sampler.py",
+      "ok": true,
+      "detail": "expected=1ccf247870a2eaa133dcfe243700d3064f979d3a93004e2a4e21643ee1a7ee75 actual=1ccf247870a2eaa133dcfe243700d3064f979d3a93004e2a4e21643ee1a7ee75"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/10_vllm_surrogate_cases.json",
+      "ok": true,
+      "detail": "expected=7a92d9a29f95b84cbbb490cd860e038037d974f0024e768774b89a8eae1ac576 actual=7a92d9a29f95b84cbbb490cd860e038037d974f0024e768774b89a8eae1ac576"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/11_run_vllm_surrogate.py",
+      "ok": true,
+      "detail": "expected=d3ad6e46e1721527f2fe521000b3548a91ca07ba586f42d44fa1daa1d9f31c90 actual=d3ad6e46e1721527f2fe521000b3548a91ca07ba586f42d44fa1daa1d9f31c90"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/13_generate_load_cases.py",
+      "ok": true,
+      "detail": "expected=c8836304d29168f76f4622dd1c886396b662dc4b66d009071bf0987dbba8ab6a actual=c8836304d29168f76f4622dd1c886396b662dc4b66d009071bf0987dbba8ab6a"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh",
+      "ok": true,
+      "detail": "expected=b8401e5860fa33e5a70eb42bc6d3b58c7efa3205038e56861d48558ff3d325c8 actual=b8401e5860fa33e5a70eb42bc6d3b58c7efa3205038e56861d48558ff3d325c8"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/14b_run_vllm_torch_profile.sh",
+      "ok": true,
+      "detail": "expected=547bc2ef1441d62d009224ec1a6763d7bf0aa6669d10823ad3033cf89f16d03e actual=547bc2ef1441d62d009224ec1a6763d7bf0aa6669d10823ad3033cf89f16d03e"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/16_analyze_vllm_profiles.py",
+      "ok": true,
+      "detail": "expected=3bebd8280500b02d2a5867b8559627bd93b1a7c204eadf420c9bbb297ad0896f actual=3bebd8280500b02d2a5867b8559627bd93b1a7c204eadf420c9bbb297ad0896f"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/17_build_serving_analysis.py",
+      "ok": true,
+      "detail": "expected=7d178fd5938efcf1784e3a9f0a3c4a91480a7401ebecf3ed6001ad150f164458 actual=7d178fd5938efcf1784e3a9f0a3c4a91480a7401ebecf3ed6001ad150f164458"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/kimi_linear_provenance.json",
+      "ok": true,
+      "detail": "expected=9b68aabdc9c7a2f997937ae5871f41d1663e60ef4916d1ff5e120c0a53565c0e actual=9b68aabdc9c7a2f997937ae5871f41d1663e60ef4916d1ff5e120c0a53565c0e"
+    },
+    {
+      "name": "v6_compat:rtx_g4_smoke_v5/v5_runner_lib.py",
+      "ok": true,
+      "detail": "expected=08f3b9baa394bdf031d3ff5b5e9db6250f0a769d1f3be6dfdb6f098b66c78c16 actual=08f3b9baa394bdf031d3ff5b5e9db6250f0a769d1f3be6dfdb6f098b66c78c16"
+    },
+    {
+      "name": "required:00_run_v8_full.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:90_collect_and_validate.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:99_package_v8_full_results.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:V6_ALIGNMENT_EVIDENCE.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/10d_v8_1m_extended_cases.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/20_nccl_policy.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/20_run_single_node_v6_aligned.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/20_ray_nccl_env_audit.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/20_run_vllm_network_matrix.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/22_v8_readiness.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/21_run_vllm_capped_profiles.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/18_multi_node_profile_matrix.json",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/18_run_vllm_multi_node_profile_case.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v5/19_postprocess_nsys.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "required:rtx_g4_smoke_v8_hw/07_validate_results.py",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "v6_source_has_no_forbidden_p2p_shm_flags",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "v6_qualification_env_empty",
+      "ok": true,
+      "detail": "{}"
+    },
+    {
+      "name": "legacy_hw_forced_flags_identified",
+      "ok": true,
+      "detail": "mpirun -np 8 -x LD_LIBRARY_PATH -x NCCL_P2P_DISABLE=1 -x NCCL_SHM_DISABLE=1 ./build/all_reduce_perf -b 16K -e 16K -g 1"
+    },
+    {
+      "name": "scaleout_context_matrix:tp4_pp2_dist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "scaleout_context_matrix:tp8_pp2_dist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "scaleout_context_matrix:tp4_pp4_dist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "scaleout_context_matrix:tp16_pp1_dist",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "scaleout_1m_all_four",
+      "ok": true,
+      "detail": "got=['tp16_pp1_dist', 'tp4_pp2_dist', 'tp4_pp4_dist', 'tp8_pp2_dist']"
+    },
+    {
+      "name": "profile_matrix:tp16_pp1_dist:prefill_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp16_pp1_dist:decode_8k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp16_pp1_dist:batched_decode_8k_c8",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp4_pp2_dist:prefill_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp4_pp2_dist:decode_8k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp4_pp2_dist:batched_decode_8k_c8",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp4_pp4_dist:prefill_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp4_pp4_dist:decode_8k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp4_pp4_dist:batched_decode_8k_c8",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp8_pp2_dist:prefill_128k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp8_pp2_dist:decode_8k",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_matrix:tp8_pp2_dist:batched_decode_8k_c8",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hw_native_clears_nccl_env",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "single_node_clears_all_nccl",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multi_node_clears_local_forcing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "multi_node_ray_worker_env_audit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_ray_worker_env_audit",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "remote_allowed_nccl_env_propagated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "profile_remote_allowed_nccl_env_propagated",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ray_audit_checks_env_symmetry",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "network_hw_clears_local_forcing",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_executable_nccl_shm_disable_assignments",
+      "ok": true,
+      "detail": "[]"
+    },
+    {
+      "name": "p2p_disable_only_sensitivity",
+      "ok": false,
+      "detail": "[('rtx_g4_smoke_v8_hw\\\\02_run_node_local.sh', 'NCCL_P2P_DISABLE', 'isabled \"\\n  cd \\\\\"$NCCL_DIR\\\\\"\\n  echo \\'META TEST_KIND=ALLREDUCE TP=8 SENSITIVITY_ONLY=1 P2P_DISABLED_FOR_SENSITIVITY=1\\'\\n  NCCL_P2P_DISABLE=1 ./build/all_reduce_perf -b 16K -e 256M -f 2 -g 8\\n\"\\nstop_gpu_telemetry\\n\\nstart_gpu_telemetry 150_nccl_debug_tp8_128m_nati')]"
+    },
+    {
+      "name": "vllm_network_modes_native_100_20",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "vllm_network_matrix_no_50g_10g",
+      "ok": true,
+      "detail": "50G/10G should remain only in hardware microbench sweep"
+    },
+    {
+      "name": "hardware_network_sweep_keeps_100_50_20_10",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hardware_network_sweep_forward_reverse_iperf",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hardware_network_sweep_sendrecv_all_caps",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hardware_network_sweep_tp2_tp8_tp16_all_caps",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hardware_tc_noninteractive",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "capped_profiles_100_20",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "capped_profiles_prefill128k_only",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "master_v8_results_root",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "master_network_modes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "master_runs_capped_profiles",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "master_runs_readiness_both_nodes",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no_stale_v7_executable_paths",
+      "ok": true,
+      "detail": "[]"
+    }
+  ],
+  "failed": [
+    {
+      "name": "bash_n:00_run_v8_full.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:99_package_v8_full_results.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\00_init_gcp_config.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\00_smoke_common.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\12_run_vllm_multi_node.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\14b_run_vllm_torch_profile.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\14_run_vllm_nsys_profile.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\18_run_vllm_multi_node_profiles.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\20_nccl_policy.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\20_run_single_node_v6_aligned.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\20_run_vllm_network_matrix.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v5\\21_run_vllm_capped_profiles.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\00_smoke_common.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\01_prepare_node.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\02_run_node_local.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\03_run_network_sweep.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "bash_n:rtx_g4_smoke_v8_hw\\06_package_results.sh",
+      "ok": false,
+      "detail": "W\u0000i\u0000n\u0000d\u0000o\u0000w\u0000s\u0000 \u0000S\u0000u\u0000b\u0000s\u0000y\u0000s\u0000t\u0000e\u0000m\u0000 \u0000f\u0000o\u0000r\u0000 \u0000L\u0000i\u0000n\u0000u\u0000x\u0000 \u0000h\u0000a\u0000s\u0000 \u0000n\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000e\u0000d\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000.\u0000\n\u0000\n\u0000Y\u0000o\u0000u\u0000 \u0000c\u0000a\u0000n\u0000 \u0000r\u0000e\u0000s\u0000o\u0000l\u0000v\u0000e\u0000 \u0000t\u0000h\u0000i\u0000s\u0000 \u0000b\u0000y\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000i\u0000n\u0000g\u0000 \u0000a\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000 \u0000w\u0000i\u0000t\u0000h\u0000 \u0000t\u0000h\u0000e\u0000 \u0000i\u0000n\u0000s\u0000t\u0000r\u0000u\u0000c\u0000t\u0000i\u0000o\u0000n\u0000s\u0000 \u0000b\u0000e\u0000l\u0000o\u0000w\u0000:\u0000\n\u0000\n\u0000\n\u0000\n\u0000U\u0000s\u0000e\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000l\u0000i\u0000s\u0000t\u0000 \u0000-\u0000-\u0000o\u0000n\u0000l\u0000i\u0000n\u0000e\u0000'\u0000 \u0000t\u0000o\u0000 \u0000l\u0000i\u0000s\u0000t\u0000 \u0000a\u0000v\u0000a\u0000i\u0000l\u0000a\u0000b\u0000l\u0000e\u0000 \u0000d\u0000i\u0000s\u0000t\u0000r\u0000i\u0000b\u0000u\u0000t\u0000i\u0000o\u0000n\u0000s\u0000\n\u0000\n\u0000a\u0000n\u0000d\u0000 \u0000'\u0000w\u0000s\u0000l\u0000.\u0000e\u0000x\u0000e\u0000 \u0000-\u0000-\u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000 \u0000<\u0000D\u0000i\u0000s\u0000t\u0000r\u0000o\u0000>\u0000'\u0000 \u0000t\u0000o\u0000 \u0000i\u0000n\u0000s\u0000t\u0000a\u0000l\u0000l\u0000.\u0000\n\u0000\n\u0000"
+    },
+    {
+      "name": "p2p_disable_only_sensitivity",
+      "ok": false,
+      "detail": "[('rtx_g4_smoke_v8_hw\\\\02_run_node_local.sh', 'NCCL_P2P_DISABLE', 'isabled \"\\n  cd \\\\\"$NCCL_DIR\\\\\"\\n  echo \\'META TEST_KIND=ALLREDUCE TP=8 SENSITIVITY_ONLY=1 P2P_DISABLED_FOR_SENSITIVITY=1\\'\\n  NCCL_P2P_DISABLE=1 ./build/all_reduce_perf -b 16K -e 256M -f 2 -g 8\\n\"\\nstop_gpu_telemetry\\n\\nstart_gpu_telemetry 150_nccl_debug_tp8_128m_nati')]"
+    }
+  ]
+}

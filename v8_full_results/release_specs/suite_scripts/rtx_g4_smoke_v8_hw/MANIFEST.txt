@@ -1,0 +1,14 @@
+RTX PRO 6000 GCP Smoke Test V8 Hardware/Fabric Layer
+=====================================================
+Scripts:
+  00_smoke_common.sh
+  01_prepare_node.sh
+  02_run_node_local.sh
+  03_run_network_sweep.sh
+  04_summarize_results.py
+  05_analyze_model.py
+  06_package_results.sh
+  07_validate_results.py
+
+Primary local NCCL rows are native/default and clear all NCCL_* overrides.
+Forced P2P behavior is isolated as SENSITIVITY_ONLY.

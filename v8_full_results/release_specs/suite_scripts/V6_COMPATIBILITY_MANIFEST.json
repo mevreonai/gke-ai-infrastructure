@@ -1,0 +1,26 @@
+{
+  "source": "v5_vllm_profiling_suite_v6.zip (exact extracted reference)",
+  "note": "These V6-stable files remain byte-identical in V8-FULL. Multi-node orchestration, summarization, and new V8 files are intentionally modified and excluded.",
+  "sha256": {
+    "rtx_g4_smoke_v5/00_init_gcp_config.sh": "e2478055bae26181d014cce9b78b616b7db6740347f815aa68b7b661891a39ad",
+    "rtx_g4_smoke_v5/00_smoke_common.sh": "9a1165d4cf757af6366219cf263baa13ecafbcb952cfadd5da0730c424144494",
+    "rtx_g4_smoke_v5/07_preflight_v5.py": "93bd8cfcb8ad0ad566171ba004353963f81c497ffd3f7b9fa638ac6b2dbe2951",
+    "rtx_g4_smoke_v5/08_validate_kimi_linear.py": "118b6c38e7b4c2ccf56f80516f6278ae1337bf4f6a06657ed292f09213fe270c",
+    "rtx_g4_smoke_v5/09_metrics_sampler.py": "1ccf247870a2eaa133dcfe243700d3064f979d3a93004e2a4e21643ee1a7ee75",
+    "rtx_g4_smoke_v5/10_vllm_surrogate_cases.json": "7a92d9a29f95b84cbbb490cd860e038037d974f0024e768774b89a8eae1ac576",
+    "rtx_g4_smoke_v5/11_run_vllm_surrogate.py": "d3ad6e46e1721527f2fe521000b3548a91ca07ba586f42d44fa1daa1d9f31c90",
+    "rtx_g4_smoke_v5/13_generate_load_cases.py": "c8836304d29168f76f4622dd1c886396b662dc4b66d009071bf0987dbba8ab6a",
+    "rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh": "b8401e5860fa33e5a70eb42bc6d3b58c7efa3205038e56861d48558ff3d325c8",
+    "rtx_g4_smoke_v5/14b_run_vllm_torch_profile.sh": "547bc2ef1441d62d009224ec1a6763d7bf0aa6669d10823ad3033cf89f16d03e",
+    "rtx_g4_smoke_v5/16_analyze_vllm_profiles.py": "3bebd8280500b02d2a5867b8559627bd93b1a7c204eadf420c9bbb297ad0896f",
+    "rtx_g4_smoke_v5/17_build_serving_analysis.py": "7d178fd5938efcf1784e3a9f0a3c4a91480a7401ebecf3ed6001ad150f164458",
+    "rtx_g4_smoke_v5/kimi_linear_provenance.json": "9b68aabdc9c7a2f997937ae5871f41d1663e60ef4916d1ff5e120c0a53565c0e",
+    "rtx_g4_smoke_v5/v5_runner_lib.py": "08f3b9baa394bdf031d3ff5b5e9db6250f0a769d1f3be6dfdb6f098b66c78c16"
+  },
+  "intentional_v8_differences": [
+    "rtx_g4_smoke_v5/10b_vllm_multi_node_cases.json",
+    "rtx_g4_smoke_v5/12_run_vllm_multi_node.py",
+    "rtx_g4_smoke_v5/12_run_vllm_multi_node.sh",
+    "rtx_g4_smoke_v5/15_summarize_vllm.py"
+  ]
+}
