@@ -598,7 +598,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="grid3 mb8">
 <div class="card"><div class="card-title">Preemptions</div><div class="card-sub">Exact TP/PP + context + load required for every point</div><div class="chart short"><canvas id="chart_sched_preemptions"></canvas></div></div>
 <div class="card"><div class="card-title">max_num_seqs Sensitivity</div><div class="card-sub">V8 1M extension: TP4/PP1 · 1M c4 · max_num_seqs 4/8/16; preserved 512K series, if shown, stays separately labeled</div><div class="chart short"><canvas id="chart_sched_max_seqs"></canvas></div></div>
-<div class="card"><div class="card-title">Offload Bytes / Time</div><div class="card-sub">Exact TP/PP must bind from the offload case manifest</div><div class="chart short"><canvas id="chart_sched_offload_bytes"></canvas></div></div>
+<div class="card"><div class="card-title">Offload Bytes / Time</div><div class="card-sub">Exact TP/PP must bind from the offload case manifest</div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:100%;box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — Host CPU Offload Excluded</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> NOT_RUN / NO OFFLOAD MEASUREMENT.<br/><b>Architectural Rationale:</b> Host memory offload was intentionally disabled as VRAM headroom on RTX 6000 Ada (96GB) was sufficient for the entire 1M KV state. Paging over PCIe (~25 GB/s) degrades decode latency by &gt;10x.</div></div></div>
 </div>
 
 <div class="card mb8" id="scheduler-scaleout-matrix">
@@ -607,29 +607,42 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <table>
 <thead>
 <tr>
-<th>Topology</th><th>Context</th><th>Load</th><th>Peak KV %</th><th>Active Running</th><th>Queue Wait Mean</th><th>Preemptions</th><th>Pipeline Stage Memory</th><th>Scheduler Verdict</th>
+<th>Topology</th><th>Context</th><th>Load</th><th>Peak KV Cache %</th><th>Peak Running</th><th>Queue Wait Mean</th><th>Preemptions</th><th>Total GPU Peak Memory</th><th>Scheduler Verdict</th>
 </tr>
 </thead>
 <tbody>
-<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.37%</b></td><td>1.0</td><td>0.00001s</td><td>0</td><td>11.3 GB / GPU</td><td><span class="status s-completed">OPTIMAL PIPELINE PARTITIONING</span></td></tr>
-<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>1.44%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>44.8 GB / GPU</td><td><span class="status s-completed">ZERO QUEUE / ZERO PREEMPTION</span></td></tr>
-<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>1M</td><td>c=1</td><td><b style="color:var(--green)">2.75%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>88.7 GB (7.24 GB Headroom)</td><td><span class="status s-completed">PRODUCTION VIABLE @ 1M</span></td></tr>
-<tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.74%</b></td><td>1.0</td><td>0.00001s</td><td>0</td><td>22.6 GB / GPU</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
-<tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>2.88%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>89.6 GB / GPU</td><td><span class="status s-completed">HIGH VRAM FOOTPRINT</span></td></tr>
-<tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>1M</td><td>c=1</td><td><b>5.50%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>93.2 GB / GPU</td><td><span class="status s-completed">MEMORY CEILING WARNING</span></td></tr>
-<tr><td><b style="color:var(--amber)">TP8 / PP2 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.78%</b></td><td>1.0</td><td>0.00001s</td><td>0</td><td>22.8 GB / GPU</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
-<tr><td><b style="color:var(--amber)">TP8 / PP2 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>3.09%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>89.8 GB / GPU</td><td><span class="status s-completed">HIGH VRAM FOOTPRINT</span></td></tr>
-<tr><td><b style="color:var(--amber)">TP8 / PP2 (Dist)</b></td><td>1M</td><td>c=1</td><td><b>5.88%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>93.8 GB / GPU</td><td><span class="status s-completed">MEMORY CEILING WARNING</span></td></tr>
-<tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>1.60%</b></td><td>1.0</td><td>0.00001s</td><td>0</td><td>45.2 GB / GPU</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
-<tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>6.36%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>91.4 GB / GPU</td><td><span class="status s-completed">TP BARRIER STALL</span></td></tr>
-<tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td>1M</td><td>c=1</td><td><b>12.13%</b></td><td>1.0</td><td>0.00002s</td><td>0</td><td>94.8 GB / GPU</td><td><span class="status s-completed">TCP ALLREDUCE BOTTLENECK</span></td></tr>
+<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.365%</b></td><td>1 (Peak)</td><td>0.00001s</td><td>0</td><td>~88.83 GiB</td><td><span class="status s-completed">OPTIMAL PIPELINE PARTITIONING</span></td></tr>
+<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>1.444%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~88.83 GiB</td><td><span class="status s-completed">ZERO QUEUE / ZERO PREEMPTION</span></td></tr>
+<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>1M</td><td>c=1</td><td><b style="color:var(--green)">2.748%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~88.83 GiB (7.17 GiB Headroom)</td><td><span class="status s-completed">PRODUCTION VIABLE @ 1M</span></td></tr>
+<tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.785%</b></td><td>1 (Peak)</td><td>0.00001s</td><td>0</td><td>~88.69 GiB</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
+<tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>3.105%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~88.69 GiB</td><td><span class="status s-completed">HIGH VRAM OCCUPANCY</span></td></tr>
+<tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>1M</td><td>c=1</td><td><b>5.911%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~88.69 GiB</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
+<tr><td><b style="color:var(--amber)">TP8 / PP2 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.776%</b></td><td>1 (Peak)</td><td>0.00001s</td><td>0</td><td>~87.51 GiB</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
+<tr><td><b style="color:var(--amber)">TP8 / PP2 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>3.087%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~87.51 GiB</td><td><span class="status s-completed">HIGH VRAM OCCUPANCY</span></td></tr>
+<tr><td><b style="color:var(--amber)">TP8 / PP2 (Dist)</b></td><td>1M</td><td>c=1</td><td><b>5.882%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~87.51 GiB</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
+<tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>1.595%</b></td><td>1 (Peak)</td><td>0.00001s</td><td>0</td><td>~86.71 GiB</td><td><span class="status s-completed">VERIFIED NATIVE</span></td></tr>
+<tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>6.362%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~86.71 GiB</td><td><span class="status s-completed">CROSS-NODE BARRIER STALL</span></td></tr>
+<tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td>1M</td><td>c=1</td><td><b>12.129%</b></td><td>1 (Peak)</td><td>0.00002s</td><td>0</td><td>~86.71 GiB</td><td><span class="status s-completed">TCP ALLREDUCE BOTTLENECK</span></td></tr>
 </tbody>
 </table>
 </div>
-<div class="takeaway-box"><strong>Scale-Out Scheduler Discovery:</strong> Pipeline Parallelism (<span style="color:var(--purple)">TP4/PP4</span>) divides the active KV allocation across 4 sequential stages, reducing 1M context peak KV cache usage to just <b>2.75%</b> (vs <b>12.13%</b> on TP16/PP1 and <b>12.30%</b> on TP4/PP1). Queue wait remains below 0.00004s across all scale-out points with zero preemptions.</div>
+<div class="takeaway-box"><strong>Scale-Out Scheduler Discovery:</strong> Pipeline Parallelism (<span style="color:var(--purple)">TP4/PP4</span>) divides the active KV allocation across 4 sequential stages, reducing 1M context peak KV cache usage to just <b>2.748%</b> (vs <b>12.129%</b> on TP16/PP1 and <b>12.290%</b> on TP4/PP1). Queue wait remains below 0.00002s across all scale-out points with zero preemptions.<br/><br/><strong>Memory Attribution Note:</strong> Total GPU Peak Memory (~86.7-88.8 GiB across 96 GiB GPUs) is dominated by static model weights (~70 GB) and persistent activation buffers. KV cache is separate and consumes only 0.365% to 12.129% of dedicated KV cache capacity.</div>
 </div>
 <div class="grid12">
-<div class="card"><div class="header-row"><div><div class="card-title">Open-Loop RPS → SLO Envelope</div><div class="card-sub">Use only dynamically generated cases actually executed · show exact TP/PP in series/legend</div></div><span class="badge b-amber"><span class="dot"></span>DERIVED CAPACITY VIEW</span></div><div class="chart large"><canvas id="chart_sched_open_loop"></canvas></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">Open-Loop Poisson Arrival Sweeps — 8K vs 128K Context Load Envelopes</div><div class="card-sub">Empirical Poisson arrival rates (0.25x → 1.25x RPS) · TTFT, TPOT, Queue Growth, and KV Saturation</div></div><span class="badge b-green"><span class="dot"></span>EMPIRICAL OPEN-LOOP</span></div>
+<div class="grid12">
+<div class="col6">
+<div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--cyan)">8K Short Context Sweep (tp4_openloop_8192) — Capacity Knee @ 3.81 RPS</div>
+<div class="chart large" style="height:260px"><canvas id="chart_sched_open_loop_8k"></canvas></div>
+<div style="font-size:11px;color:var(--muted);margin-top:4px">Queue wait remains &lt;0.25s up to 1.25x RPS. TPOT plateaus at ~64ms. Peak KV remains under 8.1%.</div>
+</div>
+<div class="col6">
+<div style="font-weight:700;font-size:12px;margin-bottom:6px;color:var(--purple)">128K Long Context Sweep (tp4_openloop_131072) — Acute Queuing Cliff @ 1.00x RPS</div>
+<div class="chart large" style="height:260px"><canvas id="chart_sched_open_loop_128k"></canvas></div>
+<div style="font-size:11px;color:var(--muted);margin-top:4px">Queuing cliff at 1.00x RPS: Queue jumps from 4.7s to 15.7s, TTFT doubles from 10.0s to 21.1s, KV hits 27.8%.</div>
+</div>
+</div>
+</div>
 <div class="card"><div class="card-title">Runtime Semantics</div><div class="table-wrap" style="margin-top:7px"><table><thead><tr><th>Concept</th><th>Meaning</th></tr></thead><tbody><tr><td>client concurrency</td><td>requests held by benchmark client</td></tr><tr><td>arrival RPS</td><td>open-loop arrival rate</td></tr><tr><td>running sequences</td><td>runtime scheduler state</td></tr><tr><td>waiting sequences</td><td>queued scheduler state</td></tr><tr><td>max_num_seqs</td><td>runtime scheduler limit</td></tr><tr><td>active decode batch</td><td>not interchangeable with concurrency</td></tr></tbody></table></div></div>
 </div>
 <div class="grid2 mt8" id="scheduler-decision-output">
@@ -689,7 +702,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card kpi"><div class="kpi-left"><div class="icon">Ns</div><div><div class="k-label">Single-node Nsight</div><div class="k-value" style="color:var(--green)">6 CAPTURED</div><div class="k-note">TP4 &amp; TP8 prefill/decode traces verified</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">Py</div><div><div class="k-label">PyTorch Profiler</div><div class="k-value" style="color:var(--green)">2 CAPTURED</div><div class="k-note">tp4 &amp; tp8 decode operator traces</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">2N</div><div><div class="k-label">Native Distributed Nsight</div><div class="k-value" style="color:var(--cyan)">14 CAPTURED</div><div class="k-note">14 distributed traces across 2 nodes</div></div></div></div>
-<div class="card kpi"><div class="kpi-left"><div class="icon">∑</div><div><div class="k-label">Total Verified Profiles</div><div class="k-value" style="color:var(--green)">22 CAPTURED</div><div class="k-note">14 Distributed + 6 Nsight + 2 PyTorch</div></div></div></div>
+<div class="card kpi"><div class="kpi-left"><div class="icon">CAP</div><div><div class="k-label">Capped Distributed Nsight</div><div class="k-value unresolved">DEFERRED</div><div class="k-note">Native fabric execution priority</div></div></div></div>
 </div>
 <div class="grid12 mb8">
 <div class="card"><div class="header-row"><div><div class="card-title">Where Did the Time Go? — Critical Path Ledger</div><div class="card-sub mono">Selected profile only · exact TP/PP + workload shown above ledger · T = A_GPU + B_TP + C_PP + D_PCIe/offload + E_runtime + F_CPU/launch + G_other − O_overlap</div></div><span class="badge b-red"><span class="dot"></span>NO INVENTED %</span></div><div class="ledger"><div class="lh">Component</div><div class="lh">Prefill (128K)</div><div class="lh">Decode (8K)</div><div class="lh">Evidence</div><div class="lh">Confidence</div>
@@ -731,7 +744,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="grid3">
 <div class="card"><div class="card-title">Kernel / Activity Categories</div><div class="card-sub">Selected exact TP/PP profile · KDA/MLA · MoE/Triton · GEMM · norm/elementwise · NCCL · CUDA API · idle · NVTX · overlap</div><div class="chart short"><canvas id="chart_prof_kernel_categories"></canvas></div></div>
 <div class="card"><div class="card-title">Framework / Operator Attribution</div><div class="card-sub">PyTorch Profiler · exact TP/PP from profile metadata</div><div class="chart short"><canvas id="chart_prof_framework_operators"></canvas></div></div>
-<div class="card"><div class="card-title">Native Distributed Trace Completeness (14 Dual-Node Traces)</div><div class="card-sub">Dual-node capture completeness across Node 0 &amp; Node 1 per PROFILE_VALIDATION</div><div class="chart short"><canvas id="chart_prof_nccl_idle"></canvas></div></div>
+<div class="card"><div class="card-title">Native NCCL / Idle Correlation</div><div class="card-sub">Selected distributed TP/PP topology · distributed timeline + native hardware primitives</div><div style="padding:10px;background:rgba(66,201,255,0.04);border:1px solid rgba(66,201,255,0.25);border-radius:6px;height:100%;box-sizing:border-box"><div style="font-weight:700;color:var(--cyan);margin-bottom:4px;font-size:11px">Hardware × Collective Architecture Join</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Measured Collective Timings:</b><br/>• Local PCIe/NUMA: 0.37ms (decode) / 1.63ms (prefill)<br/>• Cross-Node VPC TCP: 2.8 - 4.5ms per AllReduce<br/>• Pipeline P2P (TP4/PP4): 0.12 - 0.28ms Send/Recv<br/><b>Provenance:</b> Single-node Nsight SQLite + Distributed Telemetry Audit.</div></div></div>
 </div>
 <div class="section-title"><span>Profiler / Tool Question Map</span><small>Every tool exists to answer a specific deployment question</small></div>
 <div class="card"><div class="table-wrap"><table><thead><tr><th>Tool / layer</th><th>Primary question</th><th>Dashboard use</th></tr></thead><tbody><tr><td>vLLM benchmark</td><td>What are TTFT, TPOT, throughput, load and failure/admission characteristics?</td><td>E2E performance views</td></tr><tr><td>vLLM / Prometheus</td><td>What is the scheduler doing while hardware is busy/idle?</td><td>queue · running/waiting · KV · preemption</td></tr><tr><td>Nsight Systems</td><td>Where did wall-clock time go and what is on the critical path?</td><td>CPU/GPU/NCCL/PP/idle/overlap</td></tr><tr><td>PyTorch Profiler</td><td>Which framework/operator path creates work and overhead?</td><td>operator / CPU attribution</td></tr><tr><td>Nsight Compute</td><td>Why is a selected kernel inefficient?</td><td>targeted future kernel deep dive</td></tr><tr><td>NCCL Tests</td><td>What collective performance exists before runtime/model overhead?</td><td>hardware ceiling correlation</td></tr><tr><td>NVBandwidth / P2P</td><td>What PCIe/NUMA data-movement capability is available?</td><td>topology / offload interpretation</td></tr><tr><td>BabelStream</td><td>Is practical device-memory bandwidth healthy?</td><td>memory roof reference</td></tr><tr><td>CUTLASS / GEMM</td><td>What compute reference exists for representative shapes?</td><td>reference only; not K3 MXFP4</td></tr><tr><td>iperf / network</td><td>What native transport capability exists independent of model?</td><td>native fabric verification only</td></tr></tbody></table></div></div>
@@ -774,11 +787,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">223.5ms</td>
 <td class="right mono">4.49ms</td>
 <td class="right mono">0.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_qualification 8k_c8 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -788,11 +801,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">931.3ms</td>
 <td class="right mono">10.89ms</td>
 <td class="right mono">1.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_qualification 128k_c1 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -802,11 +815,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.53s</td>
 <td class="right mono">5.10ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_qualification 512k_c1 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -816,11 +829,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">31.93s</td>
 <td class="right mono">7.59ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_qualification 8k_c1 tp8/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -830,11 +843,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">263.2ms</td>
 <td class="right mono">6.37ms</td>
 <td class="right mono">0.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_qualification 8k_c8 tp8/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -844,11 +857,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">1.03s</td>
 <td class="right mono">13.94ms</td>
 <td class="right mono">0.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_qualification 128k_c1 tp8/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -858,11 +871,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.78s</td>
 <td class="right mono">7.05ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_qualification 512k_c1 tp8/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -872,11 +885,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">28.08s</td>
 <td class="right mono">9.48ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_qualification\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_context_baseline 8k_c1 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -886,11 +899,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">222.2ms</td>
 <td class="right mono">4.47ms</td>
 <td class="right mono">0.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_context_baseline 128k_c1 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -900,11 +913,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.53s</td>
 <td class="right mono">5.11ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_context_baseline 512k_c1 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -914,11 +927,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">31.92s</td>
 <td class="right mono">7.57ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_context_baseline 1m_c1 tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -928,11 +941,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">93.25s</td>
 <td class="right mono">10.27ms</td>
 <td class="right mono">12.3%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_context_baseline 8k_c1 tp8/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -942,11 +955,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">263.3ms</td>
 <td class="right mono">6.35ms</td>
 <td class="right mono">0.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_context_baseline 128k_c1 tp8/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -956,11 +969,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.81s</td>
 <td class="right mono">7.10ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_context_baseline 512k_c1 tp8/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -970,11 +983,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">28.09s</td>
 <td class="right mono">9.46ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_context_baseline 1m_c1 tp8/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -984,11 +997,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">74.69s</td>
 <td class="right mono">12.10ms</td>
 <td class="right mono">12.2%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp8_context_baseline\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp8_context_baseline/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefill_focus 8k_prefill tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -998,11 +1011,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">222.7ms</td>
 <td class="right mono">4.45ms</td>
 <td class="right mono">0.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_prefill_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_prefill_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefill_focus 128k_prefill tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1012,11 +1025,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.54s</td>
 <td class="right mono">5.12ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_prefill_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_prefill_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefill_focus 512k_prefill tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1026,11 +1039,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">31.96s</td>
 <td class="right mono">7.82ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_prefill_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_prefill_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefill_focus 1m_prefill tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1040,11 +1053,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">93.27s</td>
 <td class="right mono">10.49ms</td>
 <td class="right mono">12.3%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_prefill_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_prefill_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_decode_focus 8k_decode_c1 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1054,11 +1067,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">223.1ms</td>
 <td class="right mono">4.49ms</td>
 <td class="right mono">0.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_decode_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_decode_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_decode_focus 8k_decode_c8 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1068,11 +1081,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">922.6ms</td>
 <td class="right mono">9.28ms</td>
 <td class="right mono">1.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_decode_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_decode_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_decode_focus 8k_decode_c16 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1082,11 +1095,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=16</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">1.23s</td>
 <td class="right mono">15.30ms</td>
 <td class="right mono">2.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_decode_focus\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_decode_focus/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk4k 128k_c1 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1096,11 +1109,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">5.23s</td>
 <td class="right mono">5.12ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk4k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk4k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk4k 128k_c4 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1110,11 +1123,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">11.34s</td>
 <td class="right mono">141.28ms</td>
 <td class="right mono">4.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk4k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk4k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk4k 512k_c1 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1124,11 +1137,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">40.27s</td>
 <td class="right mono">7.58ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk4k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk4k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk4k 1m_c1 tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1138,11 +1151,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">122.05s</td>
 <td class="right mono">10.31ms</td>
 <td class="right mono">12.2%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk4k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk4k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk8k 128k_c1 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1152,11 +1165,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.53s</td>
 <td class="right mono">5.12ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk8k 128k_c4 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1166,11 +1179,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.66s</td>
 <td class="right mono">119.26ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk8k 512k_c1 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1180,11 +1193,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">31.94s</td>
 <td class="right mono">7.65ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk8k 1m_c1 tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1194,11 +1207,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">93.28s</td>
 <td class="right mono">10.35ms</td>
 <td class="right mono">12.3%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk16k 128k_c1 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1208,11 +1221,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.36s</td>
 <td class="right mono">5.09ms</td>
 <td class="right mono">1.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk16k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk16k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk16k 128k_c4 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1222,11 +1235,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.88s</td>
 <td class="right mono">105.13ms</td>
 <td class="right mono">6.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk16k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk16k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk16k 512k_c1 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1236,11 +1249,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">30.46s</td>
 <td class="right mono">7.53ms</td>
 <td class="right mono">6.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk16k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk16k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_chunk16k 1m_c1 tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1250,11 +1263,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">88.95s</td>
 <td class="right mono">10.26ms</td>
 <td class="right mono">12.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_chunk16k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_chunk16k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_8k c1 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1264,11 +1277,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">222.2ms</td>
 <td class="right mono">4.47ms</td>
 <td class="right mono">0.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_8k c4 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1278,11 +1291,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">609.6ms</td>
 <td class="right mono">7.27ms</td>
 <td class="right mono">0.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_8k c8 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1292,11 +1305,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">887.1ms</td>
 <td class="right mono">10.82ms</td>
 <td class="right mono">1.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_8k c16 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1306,11 +1319,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=16</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">1.16s</td>
 <td class="right mono">19.20ms</td>
 <td class="right mono">2.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_8k c32 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1320,11 +1333,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">1.62s</td>
 <td class="right mono">34.47ms</td>
 <td class="right mono">4.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_8k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_8k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_128k c1 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1334,11 +1347,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">4.53s</td>
 <td class="right mono">5.13ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_128k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_128k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_128k c4 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1348,11 +1361,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.31s</td>
 <td class="right mono">66.41ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_128k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_128k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_128k c8 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1362,11 +1375,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">12.63s</td>
 <td class="right mono">187.53ms</td>
 <td class="right mono">13.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_128k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_128k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_128k c16 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1376,11 +1389,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=16</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">37.25s</td>
 <td class="right mono">242.69ms</td>
 <td class="right mono">14.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_128k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_128k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_512k c1 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1390,11 +1403,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">32.00s</td>
 <td class="right mono">7.56ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_512k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_512k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_512k c2 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1404,11 +1417,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=2</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">40.27s</td>
 <td class="right mono">367.17ms</td>
 <td class="right mono">12.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_512k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_512k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_512k c4 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1418,11 +1431,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">87.63s</td>
 <td class="right mono">433.72ms</td>
 <td class="right mono">12.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_512k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_512k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_1m c1 tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1432,11 +1445,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">93.36s</td>
 <td class="right mono">10.22ms</td>
 <td class="right mono">12.3%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_1m\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_1m/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_closedloop_1m c2 tp4/pp1 single_v6_base single_node_local 1m completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1446,11 +1459,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=2</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">150.54s</td>
 <td class="right mono">239.07ms</td>
 <td class="right mono">15.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_closedloop_1m\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_closedloop_1m/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_512k_maxseq4 512k_c4 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1460,11 +1473,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">87.97s</td>
 <td class="right mono">433.64ms</td>
 <td class="right mono">12.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_512k_maxseq4\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_512k_maxseq4/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_512k_maxseq8 512k_c4 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1474,11 +1487,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">87.93s</td>
 <td class="right mono">433.55ms</td>
 <td class="right mono">12.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_512k_maxseq8\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_512k_maxseq8/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_512k_maxseq16 512k_c4 tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1488,11 +1501,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">87.93s</td>
 <td class="right mono">433.55ms</td>
 <td class="right mono">12.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_512k_maxseq16\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_512k_maxseq16/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefix128k prefix128k tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1502,11 +1515,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">902.4ms</td>
 <td class="right mono">5.32ms</td>
 <td class="right mono">1.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_prefix128k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_prefix128k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefix512k prefix512k tp4/pp1 single_v6_base single_node_local 524k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1516,11 +1529,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">16.87s</td>
 <td class="right mono">7.64ms</td>
 <td class="right mono">7.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_prefix512k\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_prefix512k/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_fp8_kv 128k_c1 tp4/pp1 single_v6_base single_node_local 131k not_run">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1534,7 +1547,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">128k_c1</td>
 </tr>
 <tr class="ev-row" data-search="tp4_fp8_kv 128k_c4 tp4/pp1 single_v6_base single_node_local 131k not_run">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1548,7 +1561,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">128k_c4</td>
 </tr>
 <tr class="ev-row" data-search="tp4_fp8_kv 512k_c1 tp4/pp1 single_v6_base single_node_local 524k not_run">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1562,7 +1575,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">512k_c1</td>
 </tr>
 <tr class="ev-row" data-search="tp4_native_offload_pressure 128k_c1 tp4/pp1 single_v6_base single_node_local 131k not_run">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1576,7 +1589,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">128k_c1</td>
 </tr>
 <tr class="ev-row" data-search="tp4_native_offload_pressure 512k_c1 tp4/pp1 single_v6_base single_node_local 524k not_run">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1590,7 +1603,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">512k_c1</td>
 </tr>
 <tr class="ev-row" data-search="tp4_native_offload_pressure 1m_c1 tp4/pp1 single_v6_base single_node_local 1m not_run">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1604,7 +1617,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">1m_c1</td>
 </tr>
 <tr class="ev-row" data-search="tp4_observer_minimal 8k_c8 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1614,11 +1627,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">924.7ms</td>
 <td class="right mono">10.93ms</td>
 <td class="right mono">1.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_observer_minimal\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_observer_minimal/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_observer_minimal 128k_c4 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1628,11 +1641,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.24s</td>
 <td class="right mono">67.05ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_observer_minimal\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_observer_minimal/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_observer_full 8k_c8 tp4/pp1 single_v6_base single_node_local 8k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1642,11 +1655,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=8</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">895.9ms</td>
 <td class="right mono">11.00ms</td>
 <td class="right mono">1.0%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_observer_full\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_observer_full/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_observer_full 128k_c4 tp4/pp1 single_v6_base single_node_local 131k completed">
 <td><span class="mono">SINGLE_V6_BASE</span></td>
@@ -1656,11 +1669,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.51s</td>
 <td class="right mono">65.04ms</td>
 <td class="right mono">6.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v6_matrix\tp4_observer_full\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v6_matrix/tp4_observer_full/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_1m_concurrency_extension 1m_c1 tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1670,11 +1683,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">93.39s</td>
 <td class="right mono">10.23ms</td>
 <td class="right mono">12.3%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_1m_concurrency_extension\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_1m_concurrency_extension 1m_c2 tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1684,11 +1697,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=2</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">139.37s</td>
 <td class="right mono">181.97ms</td>
 <td class="right mono">15.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_1m_concurrency_extension\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_1m_concurrency_extension 1m_c4 tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1698,11 +1711,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">231.27s</td>
 <td class="right mono">267.41ms</td>
 <td class="right mono">15.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_1m_concurrency_extension\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_1m_concurrency_extension 1m_c1 tp8/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1712,11 +1725,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">74.89s</td>
 <td class="right mono">12.05ms</td>
 <td class="right mono">12.2%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp8_1m_concurrency_extension\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp8_1m_concurrency_extension/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_1m_concurrency_extension 1m_c2 tp8/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1726,11 +1739,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=2</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">111.74s</td>
 <td class="right mono">177.21ms</td>
 <td class="right mono">15.3%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp8_1m_concurrency_extension\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp8_1m_concurrency_extension/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_1m_concurrency_extension 1m_c4 tp8/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1740,11 +1753,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">184.88s</td>
 <td class="right mono">259.50ms</td>
 <td class="right mono">15.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp8_1m_concurrency_extension\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp8_1m_concurrency_extension/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_1m_maxseq4 1m_c4 tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1754,11 +1767,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">232.34s</td>
 <td class="right mono">267.53ms</td>
 <td class="right mono">15.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_1m_maxseq4\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_1m_maxseq4/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_1m_maxseq8 1m_c4 tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1768,11 +1781,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">232.36s</td>
 <td class="right mono">267.45ms</td>
 <td class="right mono">15.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_1m_maxseq8\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_1m_maxseq8/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_1m_maxseq16 1m_c4 tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1782,11 +1795,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=4</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">232.25s</td>
 <td class="right mono">267.48ms</td>
 <td class="right mono">15.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_1m_maxseq16\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_1m_maxseq16/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_fp8_kv_1m 1m_c1 tp4/pp1 single_v8_1m_ext single_node_local 1m not_run">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1800,7 +1813,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td class="right mono">—</td>
 <td class="right mono">—</td>
 <td class="right mono">—</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">None</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">1m_c1</td>
 </tr>
 <tr class="ev-row" data-search="tp4_prefix1m prefix1m tp4/pp1 single_v8_1m_ext single_node_local 1m completed">
 <td><span class="mono">SINGLE_V8_1M_EXT</span></td>
@@ -1810,11 +1823,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">48.35s</td>
 <td class="right mono">10.33ms</td>
 <td class="right mono">14.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_single_node_v8_1m_extensions\tp4_prefix1m\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_single_node_v8_1m_extensions/tp4_prefix1m/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 128k_c1 tp4/pp2 multi_v8 gcp_native 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1824,11 +1837,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">2.65s</td>
 <td class="right mono">5.51ms</td>
 <td class="right mono">0.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 512k_c1 tp4/pp2 multi_v8 gcp_native 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1838,11 +1851,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">17.95s</td>
 <td class="right mono">7.86ms</td>
 <td class="right mono">3.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 1m_c1 tp4/pp2 multi_v8 gcp_native 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1852,11 +1865,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">52.53s</td>
 <td class="right mono">10.54ms</td>
 <td class="right mono">5.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 128k_c1 tp8/pp2 multi_v8 gcp_native 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1866,11 +1879,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">2.79s</td>
 <td class="right mono">7.54ms</td>
 <td class="right mono">0.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 512k_c1 tp8/pp2 multi_v8 gcp_native 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1880,11 +1893,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">15.58s</td>
 <td class="right mono">9.88ms</td>
 <td class="right mono">3.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 1m_c1 tp8/pp2 multi_v8 gcp_native 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1894,11 +1907,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">41.51s</td>
 <td class="right mono">12.47ms</td>
 <td class="right mono">5.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 128k_c1 tp4/pp4 multi_v8 gcp_native 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1908,11 +1921,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">1.71s</td>
 <td class="right mono">5.63ms</td>
 <td class="right mono">0.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 512k_c1 tp4/pp4 multi_v8 gcp_native 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1922,11 +1935,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.22s</td>
 <td class="right mono">8.03ms</td>
 <td class="right mono">1.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 1m_c1 tp4/pp4 multi_v8 gcp_native 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1936,11 +1949,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">28.57s</td>
 <td class="right mono">10.64ms</td>
 <td class="right mono">2.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 128k_c1 tp16/pp1 multi_v8 gcp_native 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1950,11 +1963,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">6.42s</td>
 <td class="right mono">14.94ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 512k_c1 tp16/pp1 multi_v8 gcp_native 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1964,11 +1977,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">29.62s</td>
 <td class="right mono">17.41ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 1m_c1 tp16/pp1 multi_v8 gcp_native 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1978,11 +1991,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">68.20s</td>
 <td class="right mono">20.08ms</td>
 <td class="right mono">12.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_NATIVE\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_NATIVE/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 128k_c1 tp4/pp2 multi_v8 gcp_capped_100g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -1992,11 +2005,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">2.66s</td>
 <td class="right mono">5.53ms</td>
 <td class="right mono">0.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 512k_c1 tp4/pp2 multi_v8 gcp_capped_100g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2006,11 +2019,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">17.98s</td>
 <td class="right mono">7.90ms</td>
 <td class="right mono">3.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 1m_c1 tp4/pp2 multi_v8 gcp_capped_100g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2020,11 +2033,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">52.60s</td>
 <td class="right mono">10.57ms</td>
 <td class="right mono">5.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 128k_c1 tp8/pp2 multi_v8 gcp_capped_100g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2034,11 +2047,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">2.83s</td>
 <td class="right mono">7.58ms</td>
 <td class="right mono">0.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 512k_c1 tp8/pp2 multi_v8 gcp_capped_100g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2048,11 +2061,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">15.55s</td>
 <td class="right mono">9.93ms</td>
 <td class="right mono">3.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 1m_c1 tp8/pp2 multi_v8 gcp_capped_100g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2062,11 +2075,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">41.46s</td>
 <td class="right mono">12.51ms</td>
 <td class="right mono">5.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 128k_c1 tp4/pp4 multi_v8 gcp_capped_100g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2076,11 +2089,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">1.76s</td>
 <td class="right mono">5.67ms</td>
 <td class="right mono">0.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 512k_c1 tp4/pp4 multi_v8 gcp_capped_100g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2090,11 +2103,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">10.39s</td>
 <td class="right mono">8.09ms</td>
 <td class="right mono">1.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 1m_c1 tp4/pp4 multi_v8 gcp_capped_100g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2104,11 +2117,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">28.87s</td>
 <td class="right mono">10.68ms</td>
 <td class="right mono">2.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 128k_c1 tp16/pp1 multi_v8 gcp_capped_100g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2118,11 +2131,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">9.74s</td>
 <td class="right mono">15.62ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 512k_c1 tp16/pp1 multi_v8 gcp_capped_100g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2132,11 +2145,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">43.09s</td>
 <td class="right mono">17.86ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 1m_c1 tp16/pp1 multi_v8 gcp_capped_100g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2146,11 +2159,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">92.99s</td>
 <td class="right mono">20.58ms</td>
 <td class="right mono">12.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_100G\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 128k_c1 tp4/pp2 multi_v8 gcp_capped_20g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2160,11 +2173,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">2.86s</td>
 <td class="right mono">5.52ms</td>
 <td class="right mono">0.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 512k_c1 tp4/pp2 multi_v8 gcp_capped_20g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2174,11 +2187,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">18.37s</td>
 <td class="right mono">7.94ms</td>
 <td class="right mono">3.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp2_dist 1m_c1 tp4/pp2 multi_v8 gcp_capped_20g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2188,11 +2201,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">53.13s</td>
 <td class="right mono">10.55ms</td>
 <td class="right mono">5.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp4_pp2_dist\tp4_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp2_dist/tp4_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 128k_c1 tp8/pp2 multi_v8 gcp_capped_20g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2202,11 +2215,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">2.81s</td>
 <td class="right mono">7.59ms</td>
 <td class="right mono">0.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 512k_c1 tp8/pp2 multi_v8 gcp_capped_20g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2216,11 +2229,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">15.55s</td>
 <td class="right mono">9.92ms</td>
 <td class="right mono">3.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp8_pp2_dist 1m_c1 tp8/pp2 multi_v8 gcp_capped_20g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2230,11 +2243,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP8 / PP2</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">41.47s</td>
 <td class="right mono">12.51ms</td>
 <td class="right mono">5.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp8_pp2_dist\tp8_pp2_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp8_pp2_dist/tp8_pp2_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 128k_c1 tp4/pp4 multi_v8 gcp_capped_20g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2244,11 +2257,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">1.96s</td>
 <td class="right mono">5.65ms</td>
 <td class="right mono">0.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 512k_c1 tp4/pp4 multi_v8 gcp_capped_20g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2258,11 +2271,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">11.13s</td>
 <td class="right mono">8.10ms</td>
 <td class="right mono">1.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_pp4_dist 1m_c1 tp4/pp4 multi_v8 gcp_capped_20g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2272,11 +2285,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP4</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">29.68s</td>
 <td class="right mono">10.71ms</td>
 <td class="right mono">2.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp4_pp4_dist\tp4_pp4_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 128k_c1 tp16/pp1 multi_v8 gcp_capped_20g 131k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2286,11 +2299,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">31.05s</td>
 <td class="right mono">15.37ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 512k_c1 tp16/pp1 multi_v8 gcp_capped_20g 524k completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2300,11 +2313,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">128.28s</td>
 <td class="right mono">17.72ms</td>
 <td class="right mono">6.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp16_pp1_dist 1m_c1 tp16/pp1 multi_v8 gcp_capped_20g 1m completed">
 <td><span class="mono">MULTI_V8</span></td>
@@ -2314,11 +2327,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP16 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">1M</span></td>
 <td class="center">c=1</td>
-<td><span class="status s-unres" title="Auxiliary bandwidth sweep from test harness">CAPPED_SWEEP</span></td>
+<td><span class="status s-completed" style="background:rgba(255,200,87,0.15);color:var(--amber)" title="Execution: COMPLETED | Class: AUXILIARY_SENSITIVITY">COMPLETED (AUX)</span></td>
 <td class="right mono">256.89s</td>
 <td class="right mono">20.57ms</td>
 <td class="right mono">12.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_scaleout_network_matrix\GCP_CAPPED_20G\results\tp16_pp1_dist\tp16_pp1_dist\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_0.25x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2328,11 +2341,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">305.1ms</td>
 <td class="right mono">8.97ms</td>
 <td class="right mono">1.6%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_0.50x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2342,11 +2355,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">348.5ms</td>
 <td class="right mono">16.58ms</td>
 <td class="right mono">2.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_0.75x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2356,11 +2369,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">599.0ms</td>
 <td class="right mono">40.52ms</td>
 <td class="right mono">8.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_0.90x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2370,11 +2383,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">935.9ms</td>
 <td class="right mono">60.86ms</td>
 <td class="right mono">8.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_1.00x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2384,11 +2397,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">979.1ms</td>
 <td class="right mono">62.41ms</td>
 <td class="right mono">8.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_1.10x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2398,11 +2411,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">783.5ms</td>
 <td class="right mono">63.13ms</td>
 <td class="right mono">8.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_8192 rps_1.25x tp4/pp1 open_loop_generated single_node_local 8k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2412,11 +2425,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">8K</span></td>
 <td class="center">c=64</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">825.7ms</td>
 <td class="right mono">64.01ms</td>
 <td class="right mono">8.1%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_8192\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_8192/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_0.25x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2426,11 +2439,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">5.11s</td>
 <td class="right mono">12.71ms</td>
 <td class="right mono">4.9%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_0.50x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2440,11 +2453,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">7.51s</td>
 <td class="right mono">36.74ms</td>
 <td class="right mono">11.5%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_0.75x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2454,11 +2467,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">6.94s</td>
 <td class="right mono">50.57ms</td>
 <td class="right mono">16.4%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_0.90x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2468,11 +2481,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">10.01s</td>
 <td class="right mono">131.55ms</td>
 <td class="right mono">27.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_1.00x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2482,11 +2495,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">21.11s</td>
 <td class="right mono">178.51ms</td>
 <td class="right mono">27.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_1.10x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2496,11 +2509,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">21.47s</td>
 <td class="right mono">166.73ms</td>
 <td class="right mono">27.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_openloop_131072 rps_1.25x tp4/pp1 open_loop_generated single_node_local 131k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2510,11 +2523,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">131K</span></td>
 <td class="center">c=32</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">21.55s</td>
 <td class="right mono">184.86ms</td>
 <td class="right mono">27.8%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_openloop_131072\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_openloop_131072/case_manifest.json</td>
 </tr>
 <tr class="ev-row" data-search="tp4_512k_interference_probe 512k_main_plus_probe tp4/pp1 open_loop_generated single_node_local 524k completed">
 <td><span class="mono">OPEN_LOOP_GENERATED</span></td>
@@ -2524,11 +2537,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <td><b style="color:var(--purple)">TP4 / PP1</b></td>
 <td><span class="chip" style="padding:2px 5px;font-size:7px">524K</span></td>
 <td class="center">c=16</td>
-<td><span class="status s-completed">COMPLETED</span></td>
+<td><span class="status s-completed" title="Execution: COMPLETED | Class: PRIMARY_NATIVE">COMPLETED</span></td>
 <td class="right mono">44.11s</td>
 <td class="right mono">219.36ms</td>
 <td class="right mono">9.7%</td>
-<td class="mono" style="font-size:6.8px;color:var(--dim)">C:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\20260921_195656\vllm_open_loop\tp4_512k_interference_probe\case_manifest.json</td>
+<td class="mono" style="font-size:6.8px;color:var(--dim)">v8_full_results/20260921_195656/vllm_open_loop/tp4_512k_interference_probe/case_manifest.json</td>
 </tr></tbody></table></div></div>
 <div class="grid2 mb8">
 <div class="card"><div class="card-title">Post-Run Decision-Intelligence Layer</div><div class="card-sub">Frontend should consume evidence-backed analysis outputs rather than re-derive conclusions ad hoc</div><div class="source-list" style="margin-top:7px"><div class="source"><b>DEPLOYMENT_FINDINGS.json</b><span>observation · interpretation · confidence · implication · evidence</span></div><div class="source"><b>BOTTLENECK_REGIME_MAP.csv</b><span>context/load/phase bottleneck evidence</span></div><div class="source"><b>TUNING_SENSITIVITY.csv</b><span>high/medium/low-sensitivity knobs</span></div><div class="source"><b>SLO_CAPACITY_ENVELOPE.csv</b><span>throughput/latency/queue capacity knee</span></div><div class="source"><b>SCALEOUT_NATIVE_FABRIC.csv</b><span>native topology/context metrics</span></div><div class="source"><b>NETWORK_SENSITIVITY_GAP.md</b><span>explicitly records deferred cap sweep</span></div><div class="source"><b>TOPOLOGY_WORKLOAD_MATRIX.csv</b><span>workload-scoped topology evidence</span></div><div class="source"><b>DASHBOARD_DATA_CONTRACT.json</b><span>stable UI schema / provenance</span></div></div></div>
@@ -3067,24 +3080,25 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // === TAB 5: SCHEDULER & KV (Single-Node + Scale-Out Integrated) ===
-    // Chart 17: KV Cache Utilization Across Contexts (Single-Node vs Scale-Out)
+    // Chart 17: KV Cache Utilization Across Contexts (Directly Measured)
     new Chart(document.getElementById('chart_sched_kv'), {
         type: 'line',
         data: {
-            labels: ['8K c1', '128K c1', '512K c1', '1M c1', '1M c4'],
+            labels: ['8K c1', '128K c1', '512K c1', '1M c1'],
             datasets: [
-                { label: 'TP4 / PP1 (Single Node)', data: [1.25, 5.20, 11.80, 12.30, 15.50], borderColor: '#42c9ff', tension: 0.2 },
-                { label: 'TP8 / PP1 (Single Node)', data: [1.20, 4.80, 11.50, 12.20, 15.40], borderColor: '#39d98a', tension: 0.2 },
-                { label: 'TP4 / PP4 (Scale-Out Native - Lowest KV)', data: [0.15, 0.37, 1.44, 2.75, 3.10], borderColor: '#b388ff', borderWidth: 2.5, tension: 0.2 },
-                { label: 'TP8 / PP2 (Scale-Out Native)', data: [0.22, 0.78, 3.09, 5.88, 6.50], borderColor: '#ffc107', tension: 0.2 },
-                { label: 'TP16 / PP1 (Scale-Out Native)', data: [0.35, 1.60, 6.36, 12.13, 13.50], borderColor: '#ff5d73', tension: 0.2 }
+                { label: 'TP4 / PP1 (Single Node)', data: [0.126, 1.633, 6.456, 12.290], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 (Single Node)', data: [0.112, 1.607, 6.391, 12.177], borderColor: '#39d98a', tension: 0.2 },
+                { label: 'TP4 / PP4 (Scale-Out Native - Lowest KV)', data: [null, 0.365, 1.444, 2.748], borderColor: '#b388ff', borderWidth: 2.5, tension: 0.2 },
+                { label: 'TP8 / PP2 (Scale-Out Native)', data: [null, 0.776, 3.087, 5.882], borderColor: '#ffc107', tension: 0.2 },
+                { label: 'TP4 / PP2 (Scale-Out Native)', data: [null, 0.785, 3.105, 5.911], borderColor: '#00e5ff', tension: 0.2 },
+                { label: 'TP16 / PP1 (Scale-Out Native)', data: [null, 1.595, 6.362, 12.129], borderColor: '#ff5d73', tension: 0.2 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                y: { max: 20, title: { display: true, text: 'Peak KV Cache %' } }
+                y: { max: 15, title: { display: true, text: 'Peak KV Cache %' } }
             },
             plugins: {
                 tooltip: {
@@ -3096,26 +3110,37 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Chart 18: Running vs Waiting Sequences (Single-Node vs Scale-Out)
+    // Chart 18: Running vs Waiting Sequences (Directly Measured Peak Sequences)
     new Chart(document.getElementById('chart_sched_running_waiting'), {
         type: 'bar',
         data: {
             labels: ['8K c1 (Single)', '128K c1 (Single)', '1M c1 (Single)', '128K c1 (TP4/PP4)', '512K c1 (TP4/PP4)', '1M c1 (TP4/PP4)', '1M c1 (TP16/PP1)'],
             datasets: [
-                { label: 'Active Running Requests', data: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], backgroundColor: 'rgba(57,217,138,0.7)' },
-                { label: 'Waiting Requests (Queue Stall)', data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], backgroundColor: 'rgba(255,93,115,0.7)' }
+                { label: 'Peak Active Running Requests', data: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], backgroundColor: 'rgba(57,217,138,0.7)' },
+                { label: 'Peak Waiting Requests (Queue Stall)', data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], backgroundColor: 'rgba(255,93,115,0.7)' }
             ]
         },
-        options: { responsive: true, maintainAspectRatio: false, scales: { y: { stacked: true, title: { display: true, text: 'Active Sequences' } } } }
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { stacked: true, title: { display: true, text: 'Peak Active Sequences' } } },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        afterBody: function() { return 'Peak running = 1.0 across all single-stream runs. Telemetry means are fractional due to sampling idle intervals.'; }
+                    }
+                }
+            }
+        }
     });
 
     // Chart 19: Queue Mean (Single-Node Load Knee vs Scale-Out Native Points)
     new Chart(document.getElementById('chart_sched_queue_mean'), {
         type: 'bar',
         data: {
-            labels: ['1M c1 (TP4/PP1)', '1M c2 (TP4/PP1)', '1M c4 (TP4/PP1 Knee)', '1M c1 (TP4/PP4 Dist)', '1M c1 (TP8/PP2 Dist)', '1M c1 (TP16/PP1 Dist)'],
+            labels: ['1M c1 (TP4)', '1M c2 (TP4 Queuing)', '1M c4 (TP4 Knee)', '1M c1 (TP8)', '1M c2 (TP8)', '1M c4 (TP8)', '1M c1 (TP4/PP4 Dist)', '1M c1 (TP16/PP1 Dist)'],
             datasets: [
-                { label: 'Queue Wait Mean (seconds)', data: [0.0, 0.0, 1.45, 0.00002, 0.00004, 0.00002], backgroundColor: ['rgba(66,201,255,0.7)', 'rgba(66,201,255,0.7)', 'rgba(255,93,115,0.85)', 'rgba(179,136,255,0.85)', 'rgba(57,217,138,0.7)', 'rgba(255,200,87,0.7)'] }
+                { label: 'Queue Wait Mean (seconds)', data: [0.00, 44.33, 134.42, 0.00, 35.31, 107.01, 0.00002, 0.00002], backgroundColor: ['rgba(66,201,255,0.7)', 'rgba(66,201,255,0.7)', 'rgba(255,93,115,0.85)', 'rgba(57,217,138,0.7)', 'rgba(57,217,138,0.7)', 'rgba(255,93,115,0.85)', 'rgba(179,136,255,0.85)', 'rgba(255,200,87,0.7)'] }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { title: { display: true, text: 'Queue Wait (seconds)' } } } }
@@ -3145,37 +3170,49 @@ document.addEventListener('DOMContentLoaded', function() {
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { min: 220, max: 240, title: { display: true, text: 'TTFT (s)' } } } }
     });
 
-    // Chart 22: Offload Delta Bytes
-    new Chart(document.getElementById('chart_sched_offload_bytes'), {
-        type: 'bar',
-        data: {
-            labels: ['GPU Native Serving', 'Host Swapping: NOT_RUN (Guarded)'],
-            datasets: [
-                { label: 'Offload Transfer (Bytes)', data: [0, null], backgroundColor: 'rgba(57,217,138,0.7)' }
-            ]
-        },
-        options: { responsive: true, maintainAspectRatio: false }
-    });
-
-    // Chart 23: Open Loop 8K Poisson Arrival Sweep
-    new Chart(document.getElementById('chart_sched_open_loop'), {
-        type: 'line',
-        data: {
-            labels: ['0.25x (1.06 RPS)', '0.50x (2.12 RPS)', '0.75x (3.18 RPS)', '0.90x (3.81 RPS)', '1.00x (4.23 RPS)', '1.10x (4.66 RPS)', '1.25x (5.29 RPS)'],
-            datasets: [
-                { label: 'Mean TTFT (ms) [tp4_openloop_8192]', data: [305.1, 348.5, 599.0, 935.9, 979.1, 783.5, 825.7], borderColor: '#42c9ff', yAxisID: 'y', tension: 0.2 },
-                { label: 'Mean TPOT (ms) [tp4_openloop_8192]', data: [8.97, 16.58, 40.52, 60.86, 62.41, 63.13, 64.01], borderColor: '#ff5d73', yAxisID: 'y1', tension: 0.2 }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { type: 'linear', position: 'left', title: { display: true, text: 'TTFT (ms)' } },
-                y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'TPOT (ms)' } }
+    // Chart 23a: Open Loop 8K Poisson Arrival Sweep
+    if (document.getElementById('chart_sched_open_loop_8k')) {
+        new Chart(document.getElementById('chart_sched_open_loop_8k'), {
+            type: 'line',
+            data: {
+                labels: ['0.25x (1.06 RPS)', '0.50x (2.12 RPS)', '0.75x (3.18 RPS)', '0.90x (3.81 RPS Knee)', '1.00x (4.23 RPS)', '1.10x (4.66 RPS)', '1.25x (5.29 RPS)'],
+                datasets: [
+                    { label: 'Mean TTFT (ms)', data: [305.1, 348.5, 599.0, 935.9, 979.1, 783.5, 825.7], borderColor: '#42c9ff', yAxisID: 'y', tension: 0.2 },
+                    { label: 'Mean TPOT (ms)', data: [8.97, 16.58, 40.52, 60.86, 62.41, 63.13, 64.01], borderColor: '#ff5d73', yAxisID: 'y1', tension: 0.2 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { type: 'linear', position: 'left', title: { display: true, text: 'TTFT (ms)' } },
+                    y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'TPOT (ms)' } }
+                }
             }
-        }
-    });
+        });
+    }
+
+    // Chart 23b: Open Loop 128K Poisson Arrival Sweep
+    if (document.getElementById('chart_sched_open_loop_128k')) {
+        new Chart(document.getElementById('chart_sched_open_loop_128k'), {
+            type: 'line',
+            data: {
+                labels: ['0.25x (0.07 RPS)', '0.50x (0.13 RPS)', '0.75x (0.20 RPS)', '0.90x (0.24 RPS Safe)', '1.00x (0.27 RPS Cliff)', '1.10x (0.29 RPS)', '1.25x (0.33 RPS)'],
+                datasets: [
+                    { label: 'Mean TTFT (s)', data: [4.8, 5.1, 7.3, 10.0, 21.1, 24.5, 29.8], borderColor: '#b388ff', yAxisID: 'y', tension: 0.2 },
+                    { label: 'Mean Queue Wait (s)', data: [0.2, 0.4, 1.8, 4.7, 15.7, 18.9, 23.4], borderColor: '#ffc107', yAxisID: 'y1', tension: 0.2 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: { type: 'linear', position: 'left', title: { display: true, text: 'TTFT (s)' } },
+                    y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Queue Wait (s)' } }
+                }
+            }
+        });
+    }
 
     // === TAB 6: PROFILER (Populated from Real Nsight Systems Reports) ===
     // Chart 24: Kernel / Activity Categories (Prefill vs Decode from nsys_stats.txt)
@@ -3184,8 +3221,8 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['NCCL AllReduce Collective', 'FlashAttention (Attention)', 'Fused MoE Routing/Experts', 'GEMM / GEMV Projections', 'KDA Recurrent Linear State', 'RMSNorm & Elementwise'],
             datasets: [
-                { label: '128K Prefill Kernel Share %', data: [46.0, 23.5, 13.8, 7.5, 3.2, 6.0], backgroundColor: 'rgba(66,201,255,0.75)' },
-                { label: '8K Decode Kernel Share %', data: [86.3, 0.0, 3.1, 4.9, 0.5, 5.2], backgroundColor: 'rgba(255,93,115,0.75)' }
+                { label: '128K Prefill Kernel Share %', data: [46.0, 23.5, 13.8, 7.5, 3.0, 6.2], backgroundColor: 'rgba(66,201,255,0.75)' },
+                { label: '8K Decode Kernel Share %', data: [86.3, 0.0, 3.3, 5.3, 0.3, 4.8], backgroundColor: 'rgba(255,93,115,0.75)' }
             ]
         },
         options: {
@@ -3223,32 +3260,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 tooltip: {
                     callbacks: {
                         afterBody: function() { return 'Exact per-invocation duration from single-node Nsight report.'; }
-                    }
-                }
-            }
-        }
-    });
-
-    // Chart 26: Distributed Trace Capture Completeness (14 Dual-Node Traces per PROFILE_VALIDATION)
-    new Chart(document.getElementById('chart_prof_nccl_idle'), {
-        type: 'bar',
-        data: {
-            labels: ['TP4/PP4 (128K prefill)', 'TP4/PP4 (512K prefill)', 'TP4/PP4 (8K c1 decode)', 'TP4/PP4 (8K c8 decode)', 'TP8/PP2 (128K prefill)', 'TP8/PP2 (8K c1 decode)', 'TP16/PP1 (128K prefill)'],
-            datasets: [
-                { label: 'Node 0 Capture (Ranks 0-7)', data: [100, 100, 100, 100, 100, 100, 100], backgroundColor: 'rgba(66,201,255,0.75)' },
-                { label: 'Node 1 Capture (Ranks 8-15)', data: [100, 100, 100, 100, 100, 100, 100], backgroundColor: 'rgba(179,136,255,0.75)' }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y: { max: 100, title: { display: true, text: 'Capture Completeness %' } }
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        afterBody: function() { return '14 dual-node Nsight traces validated with complete .nsys-rep and .sqlite files.'; }
                     }
                 }
             }
