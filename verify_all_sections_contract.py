@@ -151,10 +151,10 @@ for hf in HTML_FILES:
     print("  ✓ Top 10 Chart.js block uses canonical data renderer (Section 16).")
 
     # Check all 10 discovery buttons call window.openEvidenceDrawerForDiscovery
-    exec_block = html[html.find('id="executive"'):html.find('</section>', html.find('id="executive"'))]
-    drawer_calls = re.findall(r'window\.openEvidenceDrawerForDiscovery\(\'([^\']+)\'\)', exec_block)
+    keyfinds_block = html[html.find('id="keyfinds"'):html.find('</section>', html.find('id="keyfinds"'))]
+    drawer_calls = re.findall(r'window\.openEvidenceDrawerForDiscovery\(\'([^\']+)\'\)', keyfinds_block if 'id="keyfinds"' in html else html)
     assert len(drawer_calls) == 10, f"Expected 10 card buttons, found {len(drawer_calls)}"
-    print(f"  ✓ Exactly 10 Discovery card buttons calling openEvidenceDrawerForDiscovery: {drawer_calls}")
+    print(f"  ✓ Exactly 10 Discovery card buttons in Key Finds tab calling openEvidenceDrawerForDiscovery: {drawer_calls}")
 
     # Check Section 22 narrative banner
     assert "Executive Architecture Synthesis (Section 22 Mandate)" in html, f"{fname} missing Section 22 narrative banner"
