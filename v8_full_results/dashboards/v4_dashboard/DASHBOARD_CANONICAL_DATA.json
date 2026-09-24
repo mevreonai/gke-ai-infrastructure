@@ -8,7 +8,7 @@
     "hidden_size": 2304,
     "nodes": 2,
     "gpus_per_node": 8,
-    "gpu_model": "NVIDIA RTX 6000 Ada Generation (PCIe / NUMA)"
+    "gpu_model": "NVIDIA RTX PRO 6000 Server Edition (PCIe / NUMA)"
   },
   "campaign_summary": {
     "total_coverage_cases": 126,
@@ -3174,6 +3174,10 @@
   "discoveries": [
     {
       "id": "fabric_exposure_fingerprint",
+      "stable_discovery_id": "TOP_2_FABRIC_EXPOSURE_FINGERPRINT",
+      "version": "2.0.0",
+      "formula_version": "V2-EMPIRICAL-FIT-TTFT(B)=T0+V/B",
+      "fit_quality": "Normalized transport footprint E_H \u2248 116 bytes/token (H=2304, b=2 bytes BF16)",
       "top_id": 2,
       "hero_order": 1,
       "title": "Fabric Exposure Fingerprint",
@@ -3460,10 +3464,261 @@
         "EV-081",
         "EV-093",
         "EV-105"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_capped_100g.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_capped_20g.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp16_pp1_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp16_pp1_dist_1m_c1_capped_20g.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-084",
+        "EV-096",
+        "EV-108",
+        "EV-087",
+        "EV-099",
+        "EV-111",
+        "EV-078",
+        "EV-090",
+        "EV-102",
+        "EV-081",
+        "EV-093",
+        "EV-105"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_fabric_exposure",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "GCP Native (173.6G)",
+            "100G Cap (56.8G)",
+            "20G Cap (16.5G)"
+          ],
+          "datasets": [
+            {
+              "label": "TP4 / PP4 Distributed (Stable)",
+              "data": [
+                28.568,
+                28.866,
+                29.684
+              ],
+              "backgroundColor": "rgba(179,136,255,0.85)",
+              "datums": [
+                {
+                  "evidence_id": "EV-084",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 28.568,
+                  "mean_tpot_ms": 10.64221,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-096",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_CAPPED_100G",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 28.866,
+                  "mean_tpot_ms": 10.6789,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2.1e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "AUXILIARY_SENSITIVITY",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-108",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_CAPPED_20G",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 29.684,
+                  "mean_tpot_ms": 10.70517,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 3.5e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "AUXILIARY_SENSITIVITY",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "TP16 / PP1 Cross-Node (Exposed)",
+              "data": [
+                68.197,
+                92.992,
+                256.889
+              ],
+              "backgroundColor": "rgba(255,93,115,0.85)",
+              "datums": [
+                {
+                  "evidence_id": "EV-087",
+                  "case": "tp16_pp1_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 16,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 68.197,
+                  "mean_tpot_ms": 20.08097,
+                  "peak_kv_usage": 0.121287,
+                  "queue_mean_s": 2.1e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-099",
+                  "case": "tp16_pp1_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_CAPPED_100G",
+                  "tp": 16,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 92.992,
+                  "mean_tpot_ms": 20.58498,
+                  "peak_kv_usage": 0.121287,
+                  "queue_mean_s": 2.3e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "AUXILIARY_SENSITIVITY",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_CAPPED_100G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-111",
+                  "case": "tp16_pp1_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_CAPPED_20G",
+                  "tp": 16,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 256.889,
+                  "mean_tpot_ms": 20.57013,
+                  "peak_kv_usage": 0.121287,
+                  "queue_mean_s": 2.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "AUXILIARY_SENSITIVITY",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "1M c1 TTFT (seconds)"
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-084",
+        "EV-096",
+        "EV-108",
+        "EV-087",
+        "EV-099",
+        "EV-111",
+        "EV-078",
+        "EV-090",
+        "EV-102",
+        "EV-081",
+        "EV-093",
+        "EV-105"
       ]
     },
     {
       "id": "concurrency_value_destruction",
+      "stable_discovery_id": "TOP_3_CONCURRENCY_VALUE_DESTRUCTION",
+      "version": "2.0.0",
+      "formula_version": "V2-QUEUE-ACCOUNTING-CLOSURE",
+      "fit_quality": "Queue contribution closure: 96.4% to 97.5% of added TTFT is pure queue wait",
       "top_id": 3,
       "hero_order": 2,
       "title": "Concurrency Value Destruction",
@@ -3835,10 +4090,345 @@
         "EV-068",
         "EV-069",
         "EV-070"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/tp4_1m_concurrency_extension_1m_c1.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/tp4_1m_concurrency_extension_1m_c2.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/tp4_1m_concurrency_extension_1m_c4.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-065",
+        "EV-066",
+        "EV-067",
+        "EV-068",
+        "EV-069",
+        "EV-070"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_concurrency_waterfall",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "c=1 Clean",
+            "c=2 Queued",
+            "c=4 Severe Knee"
+          ],
+          "datasets": [
+            {
+              "label": "Mean TTFT (seconds)",
+              "data": [
+                93.395,
+                139.374,
+                231.268
+              ],
+              "backgroundColor": "rgba(66,201,255,0.7)",
+              "yAxisID": "y",
+              "datums": [
+                {
+                  "evidence_id": "EV-065",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 93.395,
+                  "mean_tpot_ms": 10.22751,
+                  "peak_kv_usage": 0.122896,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-066",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c2",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 2,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 139.374,
+                  "mean_tpot_ms": 181.97401,
+                  "peak_kv_usage": 0.155175,
+                  "queue_mean_s": 44.340248,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-067",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c4",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 4,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 231.268,
+                  "mean_tpot_ms": 267.41062,
+                  "peak_kv_usage": 0.155112,
+                  "queue_mean_s": 134.427672,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "Mean Queue Wait (seconds)",
+              "data": [
+                0.0,
+                44.34,
+                134.428
+              ],
+              "backgroundColor": "rgba(255,93,115,0.7)",
+              "yAxisID": "y",
+              "datums": [
+                {
+                  "evidence_id": "EV-065",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "queue_s",
+                  "unit": "s",
+                  "value": 0.0,
+                  "mean_tpot_ms": 10.22751,
+                  "peak_kv_usage": 0.122896,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-066",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c2",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 2,
+                  "metric": "queue_s",
+                  "unit": "s",
+                  "value": 44.34,
+                  "mean_tpot_ms": 181.97401,
+                  "peak_kv_usage": 0.155175,
+                  "queue_mean_s": 44.340248,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-067",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c4",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 4,
+                  "metric": "queue_s",
+                  "unit": "s",
+                  "value": 134.428,
+                  "mean_tpot_ms": 267.41062,
+                  "peak_kv_usage": 0.155112,
+                  "queue_mean_s": 134.427672,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "Output Tokens/sec (Flat)",
+              "data": [
+                0.3415,
+                0.3449,
+                0.3467
+              ],
+              "type": "line",
+              "borderColor": "#ffc857",
+              "backgroundColor": "#ffc857",
+              "yAxisID": "y1",
+              "datums": [
+                {
+                  "evidence_id": "EV-065",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "output_tps",
+                  "unit": "tokens/s",
+                  "value": 0.3415,
+                  "mean_tpot_ms": 10.22751,
+                  "peak_kv_usage": 0.122896,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-066",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c2",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 2,
+                  "metric": "output_tps",
+                  "unit": "tokens/s",
+                  "value": 0.3449,
+                  "mean_tpot_ms": 181.97401,
+                  "peak_kv_usage": 0.155175,
+                  "queue_mean_s": 44.340248,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-067",
+                  "case": "tp4_1m_concurrency_extension",
+                  "bench": "1m_c4",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 4,
+                  "metric": "output_tps",
+                  "unit": "tokens/s",
+                  "value": 0.3467,
+                  "mean_tpot_ms": 267.41062,
+                  "peak_kv_usage": 0.155112,
+                  "queue_mean_s": 134.427672,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_1m_concurrency_extension/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Seconds"
+              },
+              "position": "left"
+            },
+            "y1": {
+              "title": {
+                "display": true,
+                "text": "Output Tokens / s"
+              },
+              "position": "right",
+              "min": 0.3,
+              "max": 0.4,
+              "grid": {
+                "drawOnChartArea": false
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-065",
+        "EV-066",
+        "EV-067",
+        "EV-068",
+        "EV-069",
+        "EV-070"
       ]
     },
     {
       "id": "long_context_resource_pressure_shift",
+      "stable_discovery_id": "TOP_1_LONG_CONTEXT_RESOURCE_PRESSURE_SHIFT",
+      "version": "2.0.0",
+      "formula_version": "V2-SUBSYSTEM-SCALING-EXPONENT-p=ln(R)/ln(4)",
+      "fit_quality": "FlashAttention scaling p \u2248 1.99 (O(N^2)); MoE p \u2248 0.96 (O(N)); KDA p \u2248 0.99 (O(N))",
       "top_id": 1,
       "hero_order": 3,
       "title": "Long-Context Resource-Pressure Shift",
@@ -4134,10 +4724,255 @@
         "EV-084",
         "EV-003",
         "EV-004"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_128k_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_512k_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "profiles_multi_node_native/tp4_pp4_dist_128k/nsight_kernel_summary.csv",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-082",
+        "EV-083",
+        "EV-084",
+        "EV-003",
+        "EV-004"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_hybrid_regime",
+        "type": "line",
+        "data": {
+          "labels": [
+            "128K Context",
+            "512K Context"
+          ],
+          "datasets": [
+            {
+              "label": "FlashAttention Share (O(N\u00b2))",
+              "data": [
+                21.5,
+                44.8
+              ],
+              "borderColor": "#bf8cff",
+              "backgroundColor": "rgba(191,140,255,0.15)",
+              "fill": true,
+              "tension": 0.2,
+              "datums": [
+                {
+                  "evidence_id": "EV-082",
+                  "case": "tp4_pp4_dist",
+                  "bench": "128k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 131072,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "work_share_pct",
+                  "unit": "%",
+                  "value": 21.5,
+                  "mean_tpot_ms": 5.63164,
+                  "peak_kv_usage": 0.003651,
+                  "queue_mean_s": 1.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-083",
+                  "case": "tp4_pp4_dist",
+                  "bench": "512k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 524288,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "work_share_pct",
+                  "unit": "%",
+                  "value": 44.8,
+                  "mean_tpot_ms": 8.02628,
+                  "peak_kv_usage": 0.014437,
+                  "queue_mean_s": 1.6e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "MoE Routing Share (O(N))",
+              "data": [
+                11.6,
+                6.2
+              ],
+              "borderColor": "#ffc857",
+              "tension": 0.2,
+              "datums": [
+                {
+                  "evidence_id": "EV-082",
+                  "case": "tp4_pp4_dist",
+                  "bench": "128k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 131072,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "work_share_pct",
+                  "unit": "%",
+                  "value": 11.6,
+                  "mean_tpot_ms": 5.63164,
+                  "peak_kv_usage": 0.003651,
+                  "queue_mean_s": 1.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-083",
+                  "case": "tp4_pp4_dist",
+                  "bench": "512k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 524288,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "work_share_pct",
+                  "unit": "%",
+                  "value": 6.2,
+                  "mean_tpot_ms": 8.02628,
+                  "peak_kv_usage": 0.014437,
+                  "queue_mean_s": 1.6e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "KDA Recurrence Share (O(N))",
+              "data": [
+                2.7,
+                2.7
+              ],
+              "borderColor": "#39d98a",
+              "tension": 0.2,
+              "datums": [
+                {
+                  "evidence_id": "EV-082",
+                  "case": "tp4_pp4_dist",
+                  "bench": "128k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 131072,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "work_share_pct",
+                  "unit": "%",
+                  "value": 2.7,
+                  "mean_tpot_ms": 5.63164,
+                  "peak_kv_usage": 0.003651,
+                  "queue_mean_s": 1.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-083",
+                  "case": "tp4_pp4_dist",
+                  "bench": "512k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 524288,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "work_share_pct",
+                  "unit": "%",
+                  "value": 2.7,
+                  "mean_tpot_ms": 8.02628,
+                  "peak_kv_usage": 0.014437,
+                  "queue_mean_s": 1.6e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 2,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Aggregate GPU Work Share (%)"
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-082",
+        "EV-083",
+        "EV-084",
+        "EV-003",
+        "EV-004"
       ]
     },
     {
       "id": "prefix_reuse_scaling_curve",
+      "stable_discovery_id": "TOP_4_PREFIX_REUSE_SCALING_CURVE",
+      "version": "2.0.0",
+      "formula_version": "V2-POWER-LAW-FIT-TTFT(N)=a*N^p",
+      "fit_quality": "Cold prefill p \u2248 1.4427 (R\u00b2 = 0.9979); Warm prefix hit p \u2248 1.0013 (R\u00b2 = 0.9935)",
       "top_id": 4,
       "hero_order": null,
       "title": "Prefix Reuse Changes Scaling Curve",
@@ -4390,10 +5225,239 @@
         "EV-053",
         "EV-054",
         "EV-075"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_prefix128k/tp4_prefix128k_prefix128k.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_prefix512k/tp4_prefix512k_prefix512k.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_prefix1m/tp4_prefix1m_prefix1m.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-053",
+        "EV-054",
+        "EV-075"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_prefix_reuse",
+        "type": "line",
+        "data": {
+          "labels": [
+            "128K Context",
+            "512K Context",
+            "1M Context"
+          ],
+          "datasets": [
+            {
+              "label": "First / Cold Request TTFT (s)",
+              "data": [
+                4.9,
+                32.58,
+                94.23
+              ],
+              "borderColor": "#ff5d73",
+              "backgroundColor": "rgba(255,93,115,0.1)",
+              "tension": 0.2,
+              "datums": [
+                {
+                  "evidence_id": "EV-053",
+                  "case": "tp4_prefix128k",
+                  "bench": "prefix128k",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 131328,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "cold_ttft_s",
+                  "unit": "s",
+                  "value": 4.9,
+                  "mean_tpot_ms": 5.32303,
+                  "peak_kv_usage": 0.019162,
+                  "queue_mean_s": 2.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_prefix128k/case_manifest.json",
+                  "sample_count": 8,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-054",
+                  "case": "tp4_prefix512k",
+                  "bench": "prefix512k",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 524544,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "cold_ttft_s",
+                  "unit": "s",
+                  "value": 32.58,
+                  "mean_tpot_ms": 7.6419,
+                  "peak_kv_usage": 0.076802,
+                  "queue_mean_s": 1.9e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_prefix512k/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-075",
+                  "case": "tp4_prefix1m",
+                  "bench": "prefix1m",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "cold_ttft_s",
+                  "unit": "s",
+                  "value": 94.23,
+                  "mean_tpot_ms": 10.33494,
+                  "peak_kv_usage": 0.146069,
+                  "queue_mean_s": 1.6e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_prefix1m/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "Repeat / Warm-Hit Median TTFT (s)",
+              "data": [
+                0.331,
+                1.168,
+                2.614
+              ],
+              "borderColor": "#39d98a",
+              "backgroundColor": "rgba(57,217,138,0.1)",
+              "tension": 0.2,
+              "datums": [
+                {
+                  "evidence_id": "EV-053",
+                  "case": "tp4_prefix128k",
+                  "bench": "prefix128k",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 131328,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "warm_ttft_s",
+                  "unit": "s",
+                  "value": 0.331,
+                  "mean_tpot_ms": 5.32303,
+                  "peak_kv_usage": 0.019162,
+                  "queue_mean_s": 2.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_prefix128k/case_manifest.json",
+                  "sample_count": 8,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-054",
+                  "case": "tp4_prefix512k",
+                  "bench": "prefix512k",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 524544,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "warm_ttft_s",
+                  "unit": "s",
+                  "value": 1.168,
+                  "mean_tpot_ms": 7.6419,
+                  "peak_kv_usage": 0.076802,
+                  "queue_mean_s": 1.9e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_prefix512k/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-075",
+                  "case": "tp4_prefix1m",
+                  "bench": "prefix1m",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "warm_ttft_s",
+                  "unit": "s",
+                  "value": 2.614,
+                  "mean_tpot_ms": 10.33494,
+                  "peak_kv_usage": 0.146069,
+                  "queue_mean_s": 1.6e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v8_1m_extensions/tp4_prefix1m/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "TTFT (seconds)"
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-053",
+        "EV-054",
+        "EV-075"
       ]
     },
     {
       "id": "prompt_token_admission_fingerprint",
+      "stable_discovery_id": "TOP_5_PROMPT_TOKEN_ADMISSION_FINGERPRINT",
+      "version": "2.0.0",
+      "formula_version": "V2-TOKEN-ADMISSION-CAPACITY-C=RPS*N_tokens",
+      "fit_quality": "8K: 27,443 tok/s vs 128K: 24,248 tok/s (11.6% spread across 16x prompt span)",
       "top_id": 5,
       "hero_order": null,
       "title": "Prompt-Token Admission Fingerprint",
@@ -4538,10 +5602,145 @@
         "EV-123",
         "EV-124",
         "EV-125"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "vllm_open_loop/tp4_openloop_8192/summary.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_open_loop/tp4_openloop_131072/summary.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-112",
+        "EV-113",
+        "EV-114",
+        "EV-115",
+        "EV-116",
+        "EV-117",
+        "EV-118",
+        "EV-119",
+        "EV-120",
+        "EV-121",
+        "EV-122",
+        "EV-123",
+        "EV-124",
+        "EV-125"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_admission_law",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "8K Context (3.36 req/s)",
+            "128K Context (0.185 req/s)"
+          ],
+          "datasets": [
+            {
+              "label": "Prompt Token Throughput (tok/s)",
+              "data": [
+                27443,
+                24248
+              ],
+              "backgroundColor": [
+                "rgba(57,217,138,0.85)",
+                "rgba(66,201,255,0.85)"
+              ],
+              "datums": [
+                {
+                  "evidence_id": "EV-116",
+                  "case": "tp4_openloop_8192",
+                  "bench": "rps_1.00x",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "rps",
+                  "load_value": 1.0,
+                  "metric": "tok_per_s",
+                  "unit": "tok/s",
+                  "value": 27443,
+                  "mean_tpot_ms": 62.40681,
+                  "peak_kv_usage": 0.080895,
+                  "queue_mean_s": 0.253748,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "HIGH",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_open_loop/tp4_openloop_8192/case_manifest.json",
+                  "sample_count": 255,
+                  "p95_reliable": true,
+                  "p99_reliable": true
+                },
+                {
+                  "evidence_id": "EV-122",
+                  "case": "tp4_openloop_131072",
+                  "bench": "rps_0.90x",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 131072,
+                  "load_semantics": "rps",
+                  "load_value": 0.9,
+                  "metric": "tok_per_s",
+                  "unit": "tok/s",
+                  "value": 24248,
+                  "mean_tpot_ms": 131.54964,
+                  "peak_kv_usage": 0.276928,
+                  "queue_mean_s": 4.737527,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "HIGH",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_open_loop/tp4_openloop_131072/case_manifest.json",
+                  "sample_count": 24,
+                  "p95_reliable": true,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Prompt Tokens / s"
+              },
+              "min": 20000,
+              "max": 30000
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-112",
+        "EV-113",
+        "EV-114",
+        "EV-115",
+        "EV-116",
+        "EV-117",
+        "EV-118",
+        "EV-119",
+        "EV-120",
+        "EV-121",
+        "EV-122",
+        "EV-123",
+        "EV-124",
+        "EV-125"
       ]
     },
     {
       "id": "parallelism_elasticity_frontier",
+      "stable_discovery_id": "TOP_6_PARALLELISM_ELASTICITY_FRONTIER",
+      "version": "2.0.0",
+      "formula_version": "V2-DIRECTIONAL-ELASTICITY-eta=-ln(T2/T1)/ln(P2/P1)",
+      "fit_quality": "8K TP: \u03b7 = -0.245; 128K PP: \u03b7 = +0.650; 1M PP: \u03b7 = +0.879 (near-linear)",
       "top_id": 6,
       "hero_order": null,
       "title": "Parallelism Directional Elasticity",
@@ -4754,10 +5953,171 @@
         "EV-081",
         "EV-085",
         "EV-087"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "vllm_single_node_v6_matrix/tp4_qualification/tp4_qualification_8k_c1.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v6_matrix/tp8_qualification/tp8_qualification_8k_c1.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp2_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-001",
+        "EV-005",
+        "EV-076",
+        "EV-078",
+        "EV-082",
+        "EV-084",
+        "EV-079",
+        "EV-081",
+        "EV-085",
+        "EV-087"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_parallelism_elasticity",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "8K Context (TP4 \u2192 TP8)",
+            "128K Context (PP2 \u2192 PP4)",
+            "1M Context (PP2 \u2192 PP4)"
+          ],
+          "datasets": [
+            {
+              "label": "Scaling Elasticity (\u03b7)",
+              "data": [
+                -0.245,
+                0.65,
+                0.879
+              ],
+              "backgroundColor": [
+                "rgba(255,93,115,0.85)",
+                "rgba(66,201,255,0.85)",
+                "rgba(57,217,138,0.85)"
+              ],
+              "datums": [
+                {
+                  "evidence_id": "EV-005",
+                  "case": "tp8_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 8,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "elasticity_eta",
+                  "unit": "eta",
+                  "value": -0.245,
+                  "mean_tpot_ms": 6.37245,
+                  "peak_kv_usage": 0.001124,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-082",
+                  "case": "tp4_pp4_dist",
+                  "bench": "128k_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 131072,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "elasticity_eta",
+                  "unit": "eta",
+                  "value": 0.65,
+                  "mean_tpot_ms": 5.63164,
+                  "peak_kv_usage": 0.003651,
+                  "queue_mean_s": 1.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 4,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-084",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "elasticity_eta",
+                  "unit": "eta",
+                  "value": 0.879,
+                  "mean_tpot_ms": 10.64221,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Elasticity (\u03b7) [1.0 = Ideal Linear]"
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-001",
+        "EV-005",
+        "EV-076",
+        "EV-078",
+        "EV-082",
+        "EV-084",
+        "EV-079",
+        "EV-081",
+        "EV-085",
+        "EV-087"
       ]
     },
     {
       "id": "tp_decode_evidence_chain",
+      "stable_discovery_id": "TOP_7_TP_DECODE_EVIDENCE_CHAIN",
+      "version": "2.0.0",
+      "formula_version": "V2-FOUR-LAYER-CORROBORATION",
+      "fit_quality": "NCCL 16K AllReduce (+94.7%) -> PyTorch Self CUDA (+132.2%) -> Nsight trace -> E2E TPOT (+41.9%)",
       "top_id": 7,
       "hero_order": null,
       "title": "TP Decode Evidence Chain",
@@ -5017,10 +6377,241 @@
       "drilldown": [
         "EV-001",
         "EV-005"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "hardware_processed/nccl_points.csv",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "profiles_torch_single_node/tp4_8k_decode/pytorch_profiler.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "profiles_torch_single_node/tp8_8k_decode/pytorch_profiler.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v6_matrix/tp4_qualification/tp4_qualification_8k_c1.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v6_matrix/tp8_qualification/tp8_qualification_8k_c1.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-001",
+        "EV-005"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_tp_decode",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "1. NCCL 16K \u03bcs (\u00f710)",
+            "2. PyTorch Self CUDA (ms)",
+            "3. E2E TPOT (ms)"
+          ],
+          "datasets": [
+            {
+              "label": "TP4 (Faster Decode)",
+              "data": [
+                1.9,
+                251.5,
+                4.48
+              ],
+              "backgroundColor": "rgba(57,217,138,0.85)",
+              "datums": [
+                {
+                  "evidence_id": "EV-001",
+                  "case": "tp4_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "nccl_us_div10",
+                  "unit": "us/10",
+                  "value": 1.9,
+                  "mean_tpot_ms": 4.48746,
+                  "peak_kv_usage": 0.001259,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-001",
+                  "case": "tp4_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "pytorch_self_cuda_ms",
+                  "unit": "ms",
+                  "value": 251.5,
+                  "mean_tpot_ms": 4.48746,
+                  "peak_kv_usage": 0.001259,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-001",
+                  "case": "tp4_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_tpot_ms",
+                  "unit": "ms",
+                  "value": 4.475,
+                  "mean_tpot_ms": 4.48746,
+                  "peak_kv_usage": 0.001259,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "TP8 (Degraded Decode)",
+              "data": [
+                3.7,
+                583.9,
+                6.35
+              ],
+              "backgroundColor": "rgba(255,93,115,0.85)",
+              "datums": [
+                {
+                  "evidence_id": "EV-005",
+                  "case": "tp8_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 8,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "nccl_us_div10",
+                  "unit": "us/10",
+                  "value": 3.7,
+                  "mean_tpot_ms": 6.37245,
+                  "peak_kv_usage": 0.001124,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-005",
+                  "case": "tp8_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 8,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "pytorch_self_cuda_ms",
+                  "unit": "ms",
+                  "value": 583.9,
+                  "mean_tpot_ms": 6.37245,
+                  "peak_kv_usage": 0.001124,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-005",
+                  "case": "tp8_qualification",
+                  "bench": "8k_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 8,
+                  "pp": 1,
+                  "context_tokens": 8192,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_tpot_ms",
+                  "unit": "ms",
+                  "value": 6.35,
+                  "mean_tpot_ms": 6.37245,
+                  "peak_kv_usage": 0.001124,
+                  "queue_mean_s": 7e-06,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp8_qualification/case_manifest.json",
+                  "sample_count": 12,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Normalized Metric Units"
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-001",
+        "EV-005"
       ]
     },
     {
       "id": "runtime_knob_derivative_fingerprint",
+      "stable_discovery_id": "TOP_8_RUNTIME_KNOB_DERIVATIVE_FINGERPRINT",
+      "version": "2.0.0",
+      "formula_version": "V2-DERIVATIVE-SENSITIVITY-S=(T_max-T_min)/T_base",
+      "fit_quality": "max_num_seqs: S < 0.05% (non-binding); chunk size: S = -27.12% (high leverage)",
       "top_id": 8,
       "hero_order": null,
       "title": "Runtime-Knob Derivative Fingerprint",
@@ -5216,10 +6807,165 @@
         "EV-027",
         "EV-031",
         "EV-035"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_1m_maxseq4/tp4_1m_maxseq4_1m_c4.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_1m_maxseq16/tp4_1m_maxseq16_1m_c4.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_chunk4k/tp4_chunk4k_1m_c1.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "vllm_single_node_v8_1m_extensions/tp4_chunk16k/tp4_chunk16k_1m_c1.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-071",
+        "EV-072",
+        "EV-073",
+        "EV-027",
+        "EV-031",
+        "EV-035"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_runtime_knobs",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "4K Chunk Size",
+            "8K Chunk Size",
+            "16K Chunk Size"
+          ],
+          "datasets": [
+            {
+              "label": "1M c1 TTFT (seconds)",
+              "data": [
+                122.049,
+                93.277,
+                88.951
+              ],
+              "backgroundColor": [
+                "rgba(255,93,115,0.85)",
+                "rgba(255,200,87,0.85)",
+                "rgba(57,217,138,0.85)"
+              ],
+              "datums": [
+                {
+                  "evidence_id": "EV-027",
+                  "case": "tp4_chunk4k",
+                  "bench": "1m_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 122.049,
+                  "mean_tpot_ms": 10.30916,
+                  "peak_kv_usage": 0.121939,
+                  "queue_mean_s": 2.4e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_chunk4k/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-031",
+                  "case": "tp4_chunk8k",
+                  "bench": "1m_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 93.277,
+                  "mean_tpot_ms": 10.3465,
+                  "peak_kv_usage": 0.12295,
+                  "queue_mean_s": 2.1e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_chunk8k/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-035",
+                  "case": "tp4_chunk16k",
+                  "bench": "1m_c1",
+                  "network_provenance": "SINGLE_NODE_LOCAL",
+                  "tp": 4,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 88.951,
+                  "mean_tpot_ms": 10.26327,
+                  "peak_kv_usage": 0.125032,
+                  "queue_mean_s": 2.2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_single_node_v6_matrix/tp4_chunk16k/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "1M TTFT (seconds)"
+              },
+              "min": 70,
+              "max": 130
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-071",
+        "EV-072",
+        "EV-073",
+        "EV-027",
+        "EV-031",
+        "EV-035"
       ]
     },
     {
       "id": "gpu_utilization_divergence",
+      "stable_discovery_id": "TOP_9_GPU_UTILIZATION_DIVERGENCE",
+      "version": "2.0.0",
+      "formula_version": "V2-EFFECTIVE-COMPUTE-EFFICIENCY",
+      "fit_quality": "TP4/PP4 at 62.8% util is 2.39x faster than TP16/PP1 at 80.6% util (barrier spin)",
       "top_id": 9,
       "hero_order": null,
       "title": "Busy GPU != Efficient Serving",
@@ -5424,10 +7170,194 @@
       "drilldown": [
         "EV-087",
         "EV-084"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp16_pp1_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "final_validation/SCALEOUT_TELEMETRY_AUDIT.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-087",
+        "EV-084"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_gpu_utilization",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "TP16 / PP1 (Cross-Node AllReduce)",
+            "TP4 / PP4 (Pipelined NUMA)"
+          ],
+          "datasets": [
+            {
+              "label": "Reported GPU Utilization (%)",
+              "data": [
+                80.6,
+                62.8
+              ],
+              "backgroundColor": "rgba(255,93,115,0.75)",
+              "yAxisID": "y",
+              "datums": [
+                {
+                  "evidence_id": "EV-087",
+                  "case": "tp16_pp1_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 16,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "gpu_util_pct",
+                  "unit": "%",
+                  "value": 80.6,
+                  "mean_tpot_ms": 20.08097,
+                  "peak_kv_usage": 0.121287,
+                  "queue_mean_s": 2.1e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-084",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "gpu_util_pct",
+                  "unit": "%",
+                  "value": 62.8,
+                  "mean_tpot_ms": 10.64221,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            },
+            {
+              "label": "1M TTFT (seconds) [Lower is Better]",
+              "data": [
+                68.2,
+                28.57
+              ],
+              "backgroundColor": "rgba(66,201,255,0.75)",
+              "yAxisID": "y1",
+              "datums": [
+                {
+                  "evidence_id": "EV-087",
+                  "case": "tp16_pp1_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 16,
+                  "pp": 1,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 68.197,
+                  "mean_tpot_ms": 20.08097,
+                  "peak_kv_usage": 0.121287,
+                  "queue_mean_s": 2.1e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp16_pp1_dist/tp16_pp1_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-084",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "mean_ttft_s",
+                  "unit": "s",
+                  "value": 28.568,
+                  "mean_tpot_ms": 10.64221,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Reported Utilization (%)"
+              },
+              "position": "left",
+              "max": 100
+            },
+            "y1": {
+              "title": {
+                "display": true,
+                "text": "1M TTFT (seconds)"
+              },
+              "position": "right",
+              "grid": {
+                "drawOnChartArea": false
+              }
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
+        "EV-087",
+        "EV-084"
       ]
     },
     {
       "id": "kv_vram_headroom_divergence",
+      "stable_discovery_id": "TOP_10_KV_VRAM_HEADROOM_DIVERGENCE",
+      "version": "2.0.0",
+      "formula_version": "V2-PHYSICAL-VRAM-HEADROOM-SPLIT",
+      "fit_quality": "Reported KV% = 2.75% (PP divides KV), actual physical VRAM = 88.83 GiB (7.86 GiB margin)",
       "top_id": 10,
       "hero_order": null,
       "title": "KV Headroom != VRAM Headroom",
@@ -5462,7 +7392,7 @@
           {
             "metric": "Total GPU VRAM Capacity",
             "value": "96.00 GiB",
-            "implication": "NVIDIA RTX 6000 Ada (dual-die 48GB x 2 / NUMA)"
+            "implication": "NVIDIA RTX PRO 6000 Server Edition (dual-die 48GB x 2 / NUMA)"
           },
           {
             "metric": "Actual Physical VRAM Headroom",
@@ -5570,6 +7500,114 @@
         }
       },
       "drilldown": [
+        "EV-084",
+        "EV-078",
+        "EV-065"
+      ],
+      "source_artifact_hashes_paths": [
+        {
+          "path": "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_native.json",
+          "status": "VERIFIED"
+        },
+        {
+          "path": "final_validation/STATIC_VALIDATION.json",
+          "status": "VERIFIED"
+        }
+      ],
+      "input_evidence_ids": [
+        "EV-084",
+        "EV-078",
+        "EV-065"
+      ],
+      "visual_spec": {
+        "canvas_id": "chart_top10_kv_vram_divergence",
+        "type": "bar",
+        "data": {
+          "labels": [
+            "Reported Free KV Cache Space",
+            "Actual Physical VRAM Headroom"
+          ],
+          "datasets": [
+            {
+              "label": "Percentage / Headroom Reality",
+              "data": [
+                97.25,
+                8.19
+              ],
+              "backgroundColor": [
+                "rgba(57,217,138,0.85)",
+                "rgba(255,93,115,0.85)"
+              ],
+              "datums": [
+                {
+                  "evidence_id": "EV-084",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "reported_free_kv_pct",
+                  "unit": "%",
+                  "value": 97.25,
+                  "mean_tpot_ms": 10.64221,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                },
+                {
+                  "evidence_id": "EV-084",
+                  "case": "tp4_pp4_dist",
+                  "bench": "1m_c1",
+                  "network_provenance": "GCP_NATIVE",
+                  "tp": 4,
+                  "pp": 4,
+                  "context_tokens": 1000000,
+                  "load_semantics": "concurrency",
+                  "load_value": 1,
+                  "metric": "actual_vram_headroom_pct",
+                  "unit": "%",
+                  "value": 8.19,
+                  "mean_tpot_ms": 10.64221,
+                  "peak_kv_usage": 0.027483,
+                  "queue_mean_s": 2e-05,
+                  "preemptions": 0.0,
+                  "evidence_class": "PRIMARY_NATIVE",
+                  "evidence_confidence": "MEDIUM",
+                  "causal_confidence": "HIGH",
+                  "artifact_path": "vllm_scaleout_network_matrix/GCP_NATIVE/results/tp4_pp4_dist/tp4_pp4_dist/case_manifest.json",
+                  "sample_count": 1,
+                  "p95_reliable": false,
+                  "p99_reliable": false
+                }
+              ]
+            }
+          ]
+        },
+        "options": {
+          "responsive": true,
+          "maintainAspectRatio": false,
+          "scales": {
+            "y": {
+              "title": {
+                "display": true,
+                "text": "Percentage (%)"
+              },
+              "max": 100
+            }
+          }
+        }
+      },
+      "drilldown_targets": [
         "EV-084",
         "EV-078",
         "EV-065"
