@@ -353,7 +353,51 @@ window.openEvidencePopup = function(target, discoveryOpt) {
 
         // Search string / query
         const qStr = (typeof t === 'string' ? t : (t.query || (t.case ? t.case + ' ' + (t.bench || '') : ''))).toLowerCase().trim();
+
+        // Exact Query Aliases (100% deterministic, zero ambiguity for distributed and profiler charts)
+        const exactMap = {
+            'tp4_context_baseline 8k': 'EV-001',
+            'tp4_context_baseline 128k': 'EV-007',
+            'tp4_context_baseline 512k': 'EV-008',
+            'tp4_context_baseline 1m': 'EV-009',
+            'tp8_context_baseline 8k': 'EV-015',
+            'tp8_context_baseline 128k': 'EV-021',
+            'tp8_context_baseline 512k': 'EV-022',
+            'tp8_context_baseline 1m': 'EV-023',
+            'tp4_pp4_dist 128k': 'EV-070',
+            'tp4_pp4_dist 512k': 'EV-071',
+            'tp4_pp4_dist 1m': 'EV-072',
+            'tp16_pp1_dist 128k': 'EV-076',
+            'tp16_pp1_dist 512k': 'EV-086',
+            'tp16_pp1_dist 1m': 'EV-078',
+            'tp4_pp2_dist 128k': 'EV-067',
+            'tp4_pp2_dist 512k': 'EV-068',
+            'tp4_pp2_dist 1m': 'EV-069',
+            'tp8_pp2_dist 128k': 'EV-073',
+            'tp8_pp2_dist 512k': 'EV-074',
+            'tp8_pp2_dist 1m': 'EV-075',
+            'tp4_prefill': 'EV-001',
+            'tp4_decode': 'EV-001',
+            'tp8_decode': 'EV-015',
+            'tp16_pp1_dist': 'EV-086',
+            'tp4_pp4_dist': 'EV-070',
+            'tp4_1m_concurrency_extension 1m_c1': 'EV-012',
+            'tp4_1m_concurrency_extension 1m_c2': 'EV-013',
+            'tp4_1m_concurrency_extension 1m_c4': 'EV-014',
+            'tp8_1m_concurrency_extension 1m_c1': 'EV-026',
+            'tp8_1m_concurrency_extension 1m_c2': 'EV-027',
+            'tp8_1m_concurrency_extension 1m_c4': 'EV-028'
+        };
+
+        if (exactMap[qStr] && reg[exactMap[qStr]]) {
+            return reg[exactMap[qStr]];
+        }
+
         const tokens = qStr.split(/\s+/).filter(Boolean);
+        // Default distributed queries to GCP_NATIVE if no network specified
+        if (tokens.some(tok => tok.includes('dist')) && !tokens.some(tok => ['native', '100g', '20g', '50g', '10g'].includes(tok))) {
+            tokens.push('gcp_native');
+        }
 
         for (let [evId, rec] of Object.entries(reg)) {
             const hay = `${evId} ${rec.case} ${rec.bench} ${rec.network_provenance}`.toLowerCase();
@@ -1863,7 +1907,7 @@ if (typeof Chart === 'undefined') {
 <tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td><span class="chip" style="padding:2px 6px;font-size:7px">512K</span></td><td class="right mono" style="font-weight:700;color:var(--cyan);background:rgba(66,201,255,0.1)"><b>29.62s</b></td><td class="right mono">17.41ms</td><td class="right mono">1.06</td><td class="right mono">0.033</td><td class="right mono">6.36%</td><td class="right mono">0.021ms</td><td><span class="status s-completed">VIABLE</span></td></tr>
 <tr><td><b style="color:var(--red)">TP16 / PP1 (Dist)</b></td><td><span class="chip" style="padding:2px 6px;font-size:7px">1M</span></td><td class="right mono" style="font-weight:700;color:var(--cyan);background:rgba(66,201,255,0.1)"><b>68.20s</b></td><td class="right mono">20.08ms</td><td class="right mono">0.46</td><td class="right mono">0.015</td><td class="right mono">12.13%</td><td class="right mono">0.021ms</td><td><span class="status s-completed">VIABLE</span></td></tr>
 </tbody></table></div></div>
-<div class="card"><div class="header-row"><div><div class="card-title">Native 1M Scale-Out Matrix</div><div class="card-sub">4 executed-campaign cells · missing is never zero</div></div><span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">GCP_NATIVE · 1M</div><div class="mcell"><div class="big">TP4 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 52.53s · TPOT 10.54ms</div></div><div class="mcell"><div class="big">TP8 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 41.51s · TPOT 12.47ms</div></div><div class="mcell"><div class="big">TP4 / PP4</div></div><div class="mcell"><span class="status s-completed" style="color:var(--green);font-weight:900">LOWEST TTFT</span><div class="small" style="color:var(--green)">TTFT 28.57s · ~35,005 input tok/s derived ingestion rate (~1.107 output tok/s)</div></div><div class="mcell"><div class="big">TP16 / PP1</div></div><div class="mcell"><span class="status s-unres" style="color:var(--amber)">SLO BOTTLENECK</span><div class="small" style="color:var(--amber)">TTFT 68.20s (highest latency)</div></div></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">Native 1M Scale-Out Matrix</div><div class="card-sub">4 executed-campaign cells · missing is never zero</div></div><span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">GCP_NATIVE · 1M</div><div class="mcell"><div class="big">TP4 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 52.53s · TPOT 10.54ms</div></div><div class="mcell"><div class="big">TP8 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 41.51s · TPOT 12.47ms</div></div><div class="mcell"><div class="big">TP4 / PP4</div></div><div class="mcell"><span class="status s-completed" style="color:var(--green);font-weight:900">LOWEST TTFT</span><div class="small" style="color:var(--green)">TTFT 28.57s · ~35,005 input tok/s derived ingestion rate (~1.107 output tok/s)</div></div><div class="mcell"><div class="big">TP16 / PP1</div></div><div class="mcell"><span class="status s-unres" style="color:var(--amber)">HIGHEST TTFT</span><div class="small" style="color:var(--amber)">TTFT 68.20s (highest latency)</div></div></div></div>
 </div>
 <div class="grid2">
 <div class="card"><div class="header-row"><div><div class="card-title">Native Network Verification</div><div class="card-sub">Only evidence actually captured in V8</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Value</th><th>Status</th><th>Source</th></tr></thead><tbody><tr><td><b>Interface / MTU</b></td><td><span class="mono">ens4 / MTU 8896 (Jumbo)</span></td><td><span class="status s-completed">VALIDATED</span></td><td>native validation</td></tr><tr><td><b>iperf forward/reverse</b></td><td><b>173.58 Gbps Fwd (smoke ~173.60 Fwd / ~173.59 Rev)</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware/network</td></tr><tr><td><b>NCCL SendRecv (P2P)</b></td><td><b>Large-msg BusBW: 64M: 7.24 GB/s · 128M: 6.98 GB/s · 256M: 7.11 GB/s</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr><tr><td><b>Local TP4/TP8 &amp; Cross-Node TP16</b></td><td><b>25.95 GB/s (TP4) / 25.40 GB/s (TP8) PCIe/NUMA BusBW</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr></tbody></table></div></div>
@@ -1908,7 +1952,7 @@ if (typeof Chart === 'undefined') {
 <table>
 <thead><tr><th>Fabric Mode</th><th>Configured Cap</th><th>Measured iperf Transport</th><th>RTT / MTU</th><th>App Layer Impact</th></tr></thead>
 <tbody>
-<tr><td><b style="color:var(--green)">GCP_NATIVE</b></td><td>Uncapped (Native VPC)</td><td><b style="color:var(--green)">173.58 Gbps fwd</b> (IPERF_VALIDATION.json; smoke ~173.60 fwd / ~173.59 rev)</td><td>0.05ms / 8896</td><td><span class="status s-completed">OPTIMAL (100% BASELINE)</span></td></tr>
+<tr><td><b style="color:var(--green)">GCP_NATIVE</b></td><td>Uncapped (Native VPC)</td><td><b style="color:var(--green)">173.58 Gbps fwd</b> (IPERF_VALIDATION.json; smoke ~173.60 fwd / ~173.59 rev)</td><td>0.05ms / 8896</td><td><span class="status s-completed">NATIVE BASELINE</span></td></tr>
 <tr><td><b style="color:var(--cyan)">CAPPED_100G</b></td><td>100 Gbps (tc/netem)</td><td><b>56.84 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+1.0% TTFT on PP4 (+51.6% on TP16)</span></td></tr>
 <tr><td><b style="color:var(--amber)">CAPPED_50G</b></td><td>50 Gbps (tc/netem)</td><td><b>33.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
 <tr><td><b style="color:var(--orange)">CAPPED_20G</b></td><td>20 Gbps (tc/netem)</td><td><b>16.48 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+3.9% TTFT on PP4 (+276.7% on TP16)</span></td></tr>
@@ -1953,7 +1997,7 @@ if (typeof Chart === 'undefined') {
 <thead><tr><th>Topology</th><th>Concurrency</th><th>TTFT (s)</th><th>TPOT (ms)</th><th>Mean Queue Wait</th><th>Peak KV %</th><th>Preemptions</th><th>Regime Verdict</th></tr></thead>
 <tbody>
 <tr><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td>c=1 (Baseline)</td><td>93.25s</td><td>10.23ms</td><td><b>0.00s</b></td><td>12.29%</td><td>0</td><td><span class="status s-completed">CLEANEST MEASURED POINT</span></td></tr>
-<tr><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td>c=2 (Queuing)</td><td>150.54s (+61%)</td><td>181.97ms (+1,679%)</td><td><b style="color:var(--amber)">55.40s</b></td><td>15.52%</td><td>0</td><td><span class="status s-notrun">QUEUE/TPOT CLIFF BEGINS</span></td></tr>
+<tr><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td>c=2 (Queuing)</td><td>139.37s (+49%)</td><td>181.97ms (+1,679%)</td><td><b style="color:var(--amber)">44.34s</b></td><td>15.52%</td><td>0</td><td><span class="status s-notrun">QUEUE/TPOT CLIFF BEGINS</span></td></tr>
 <tr><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td>c=4 (Severe Knee)</td><td>231.27s (+148%)</td><td>267.41ms (+2,515%)</td><td><b style="color:var(--red)">134.43s</b></td><td>15.51%</td><td>0</td><td><span class="status s-unres" style="color:var(--red);border-color:rgba(255,93,115,.24);background:rgba(255,93,115,.08)">SEVERE MEASURED DEGRADATION</span></td></tr>
 <tr><td><b style="color:var(--green)">TP8 / PP1</b></td><td>c=1 (Baseline)</td><td>74.89s</td><td>12.05ms</td><td><b>0.00s</b></td><td>12.18%</td><td>0</td><td><span class="status s-completed">CLEANEST MEASURED POINT (LOWEST TTFT)</span></td></tr>
 <tr><td><b style="color:var(--green)">TP8 / PP1</b></td><td>c=2 (Queuing)</td><td>111.74s (+49%)</td><td>177.21ms (+1,371%)</td><td><b style="color:var(--amber)">35.28s</b></td><td>15.27%</td><td>0</td><td><span class="status s-notrun">QUEUE/TPOT CLIFF BEGINS</span></td></tr>
@@ -2032,7 +2076,7 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="grid2">
 <div class="card"><div class="header-row"><div><div class="card-title">CPU Offload @ 1M</div><div class="card-sub">Offload bytes/time correlated with TTFT/TPOT/queue/GPU telemetry</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from preserved case manifest; correlate offload bytes/time with TTFT/TPOT/queue.</strong></div></div></div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:100%;box-sizing:border-box"><!-- CPU offload canvas removed: experiment is NOT_RUN --><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — Host CPU Offload Disabled</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> NOT_RUN / Intentionally excluded.<br/><b>Architectural Rationale:</b> Host CPU memory offloading was not executed in this campaign (NOT_RUN); all measured 1M configurations operated within onboard GPU memory.</div></div></div>
-<div class="card"><div class="header-row"><div><div class="card-title">Distributed 1M — Native Fabric</div><div class="card-sub">Sourced from ONE_MILLION_COVERAGE + coverage + combined runs</div></div><span class="badge b-cyan"><span class="dot"></span>4 EXECUTED-SCOPE CELLS</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">1M / GCP_NATIVE</div><div class="mcell">TP4/PP2</div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 52.53s · TPOT 10.54ms</div></div><div class="mcell">TP8/PP2</div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 41.51s · TPOT 12.47ms</div></div><div class="mcell">TP4/PP4</div><div class="mcell"><span class="status s-completed" style="color:var(--green);font-weight:900">LOWEST TTFT</span><div class="small" style="color:var(--green)">TTFT 28.57s · ~35.0k input tok/s derived ingestion rate (~1.107 output tok/s)</div></div><div class="mcell">TP16/PP1</div><div class="mcell"><span class="status s-unres" style="color:var(--amber)">SLO BOTTLENECK</span><div class="small" style="color:var(--amber)">TTFT 68.20s (highest latency)</div></div></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">Distributed 1M — Native Fabric</div><div class="card-sub">Sourced from ONE_MILLION_COVERAGE + coverage + combined runs</div></div><span class="badge b-cyan"><span class="dot"></span>4 EXECUTED-SCOPE CELLS</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">1M / GCP_NATIVE</div><div class="mcell">TP4/PP2</div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 52.53s · TPOT 10.54ms</div></div><div class="mcell">TP8/PP2</div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 41.51s · TPOT 12.47ms</div></div><div class="mcell">TP4/PP4</div><div class="mcell"><span class="status s-completed" style="color:var(--green);font-weight:900">LOWEST TTFT</span><div class="small" style="color:var(--green)">TTFT 28.57s · ~35.0k input tok/s derived ingestion rate (~1.107 output tok/s)</div></div><div class="mcell">TP16/PP1</div><div class="mcell"><span class="status s-unres" style="color:var(--amber)">HIGHEST TTFT</span><div class="small" style="color:var(--amber)">TTFT 68.20s (highest latency)</div></div></div></div>
 </div>
 <div class="card mt8" id="long-serving-decision">
 <div class="card-title">🚦 1M Serving Decision — Fit Is Not the Same as Production Viability</div>
@@ -2047,7 +2091,7 @@ if (typeof Chart === 'undefined') {
 </thead>
 <tbody>
 <tr><td><strong>TP4 / PP1</strong></td><td>c1</td><td><span class="status s-completed">YES</span></td><td><span class="status s-completed">YES (2/2)</span></td><td>TTFT 93.25s · TPOT 10.23ms</td><td>~0.00s</td><td>KV 12.29% · 0 preempt</td><td><b style="color:var(--green)">Cleanest measured point</b></td></tr>
-<tr><td><strong>TP4 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES</span></td><td><span class="status s-completed">YES (3/3)</span></td><td>TTFT 150.5s · TPOT 181.97ms</td><td><b style="color:var(--amber)">55.40s</b></td><td>KV 15.52% · 0 preempt</td><td><b style="color:var(--amber)">Queue/TPOT cliff begins</b></td></tr>
+<tr><td><strong>TP4 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES</span></td><td><span class="status s-completed">YES (3/3)</span></td><td>TTFT 139.37s · TPOT 181.97ms</td><td><b style="color:var(--amber)">44.34s</b></td><td>KV 15.52% · 0 preempt</td><td><b style="color:var(--amber)">Queue/TPOT cliff begins</b></td></tr>
 <tr><td><strong>TP4 / PP1</strong></td><td>c4</td><td><span class="status s-completed">YES</span></td><td><span class="status s-completed">YES (4/4)</span></td><td>TTFT 231.3s · TPOT 267.41ms</td><td><b style="color:var(--red)">134.43s</b></td><td>KV 15.51% · 0 preempt</td><td><b style="color:var(--red)">Severe degradation</b></td></tr>
 <tr><td><strong>TP8 / PP1</strong></td><td>c1</td><td><span class="status s-completed">YES</span></td><td><span class="status s-completed">YES (2/2)</span></td><td>TTFT 74.89s · TPOT 12.05ms</td><td>~0.00s</td><td>KV 12.18% · 0 preempt</td><td><b style="color:var(--green)">Cleanest measured point</b></td></tr>
 <tr><td><strong>TP8 / PP1</strong></td><td>c2</td><td><span class="status s-completed">YES</span></td><td><span class="status s-completed">YES (2/2)</span></td><td>TTFT 111.7s · TPOT 177.21ms</td><td><b style="color:var(--amber)">35.28s</b></td><td>KV 15.27% · 0 preempt</td><td><b style="color:var(--amber)">Queue/TPOT cliff begins</b></td></tr>
@@ -2101,8 +2145,8 @@ if (typeof Chart === 'undefined') {
 </tr>
 </thead>
 <tbody>
-<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.365%</b></td><td>0.00001s</td><td>~88.83 GiB</td><td><span class="status s-completed">Peak KV 0.37% · 0 Preempt</span></td><td>Pipeline stage memory partitioning</td><td><b style="color:var(--green)">Interactive TTFT Compliant</b></td></tr>
-<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>1.444%</b></td><td>0.00002s</td><td>~88.83 GiB</td><td><span class="status s-completed">Peak KV 1.44% · 0 Preempt</span></td><td>Clean activation handoff across stages</td><td><b style="color:var(--green)">Sub-15s Prefill Compliant</b></td></tr>
+<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.365%</b></td><td>0.00001s</td><td>~88.83 GiB</td><td><span class="status s-completed">Peak KV 0.37% · 0 Preempt</span></td><td>Pipeline stage memory partitioning</td><td><b style="color:var(--green)">Lowest Measured TTFT (1.71s)</b></td></tr>
+<tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>1.444%</b></td><td>0.00002s</td><td>~88.83 GiB</td><td><span class="status s-completed">Peak KV 1.44% · 0 Preempt</span></td><td>Clean activation handoff across stages</td><td><b style="color:var(--green)">Lowest Measured TTFT (10.22s)</b></td></tr>
 <tr><td><b style="color:var(--purple)">TP4 / PP4 (Dist)</b></td><td>1M</td><td>c=1</td><td><b style="color:var(--green)">2.748%</b></td><td>0.00002s</td><td>~88.83 GiB</td><td><span class="status s-completed">Peak KV 2.75% · 0 Preempt</span></td><td>4-way pipeline stage KV distribution</td><td><b style="color:var(--green)">Cleanest Distributed 1M (28.57s)</b></td></tr>
 <tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>128K</td><td>c=1</td><td><b>0.785%</b></td><td>0.00001s</td><td>~88.69 GiB</td><td><span class="status s-completed">Peak KV 0.79% · 0 Preempt</span></td><td>Balanced 2-stage pipeline layout</td><td><b style="color:var(--cyan)">Lowest Measured TPOT (5.51ms)</b></td></tr>
 <tr><td><b style="color:var(--cyan)">TP4 / PP2 (Dist)</b></td><td>512K</td><td>c=1</td><td><b>3.105%</b></td><td>0.00002s</td><td>~88.69 GiB</td><td><span class="status s-completed">Peak KV 3.10% · 0 Preempt</span></td><td>Balanced 2-stage pipeline layout</td><td><b style="color:var(--cyan)">Lowest Measured TPOT (7.86ms)</b></td></tr>
@@ -2141,8 +2185,8 @@ if (typeof Chart === 'undefined') {
 <table>
 <tbody>
 <tr><th>Knee location</th><td><b>8K:</b> ~0.90x offered load (~3.811 RPS offered, ~3.302 req/s achieved); queue 0.182s, TPOT 60.86ms · <b>128K:</b> ~0.75x offered load (~0.171 RPS); queue 1.94s, TPOT 50.57ms</td></tr>
-<tr><th>Leading SLO-safe operating point</th><td><b>8K:</b> c≤8 closed-loop (TPOT 10.82ms, queue 0.19s) · <b>128K:</b> ≤0.75x offered load (~0.171 RPS, TTFT 6.94s, queue 1.94s) · <b>1M:</b> c=1 cleanest measured point (TTFT 74.89s TP8 / 93.25s TP4, queue ~0.00s)</td></tr>
-<tr><th>What breaks first</th><td><b>Queue wait time</b> and <b>TPOT</b> degrade simultaneously before memory exhaustion: at 1M c2 queue reaches 35.3s (TP8) / 55.4s (TP4) and TPOT increases to 177.2ms / 182.0ms while KV (15.3–15.5%) and preemptions (0) remain stable</td></tr>
+<tr><th>Leading Measured Operating Point (SLO Objective Dependent)</th><td><b>8K:</b> c≤8 closed-loop (TPOT 10.82ms, queue 0.19s) · <b>128K:</b> ≤0.75x offered load (~0.171 RPS, TTFT 6.94s, queue 1.94s) · <b>1M:</b> c=1 cleanest measured point (TTFT 74.89s TP8 / 93.25s TP4, queue ~0.00s)</td></tr>
+<tr><th>What breaks first</th><td><b>Queue wait time</b> and <b>TPOT</b> degrade simultaneously before memory exhaustion: at 1M c2 queue reaches 35.3s (TP8) / 44.3s (TP4) and TPOT increases to 177.2ms / 182.0ms while KV (15.3–15.5%) and preemptions (0) remain stable</td></tr>
 <tr><th>Decision</th><td>Workload-scoped admission limits: for 1M interactive/SLO workloads, admit at c=1 (cleanest measured single-node point); for 8K interactive decode, operate at c≤8 to keep TPOT ~10.8ms; for 128K open-loop, throttle admission beyond 0.75× (~0.171 RPS) before queuing cliff.</td></tr>
 <tr><th>Confidence</th><td>—</td></tr>
 <tr><th>Evidence</th><td>closed-loop + open-loop + Prometheus</td></tr>
@@ -2166,7 +2210,7 @@ if (typeof Chart === 'undefined') {
 </section>
 <!-- PROFILER -->
 <section class="tabpage" id="profiler">
-<div class="section-title"><span>Profiler — Critical Path, Kernel Activity &amp; Multi-Node Distributed Traces</span><small>100% empirical evidence from Nsight Systems SQLite exports (112,640 kernels) and PyTorch Profiler traces</small></div>
+<div class="section-title"><span>Profiler — Critical Path, Kernel Activity &amp; Multi-Node Distributed Traces</span><small>Empirical evidence from Nsight Systems SQLite exports (112,640 kernels) and PyTorch Profiler traces</small></div>
 
 <!-- PROFILER CONFIG IDENTIFICATION -->
 <div class="card mb8" id="profiler-config-identity">
@@ -2260,7 +2304,7 @@ if (typeof Chart === 'undefined') {
     </div>
     <div class="chart large"><canvas id="chart_prof_kernel_categories"></canvas></div>
     <div class="analysis">
-      <div><b>Decode Discovery</b><span style="color:var(--red)">AllReduce consumes 86.3% (TP4) to 89.1% (TP8) of decode time</span></div>
+      <div><b>Decode Discovery</b><span style="color:var(--red)">AllReduce consumes 86.3% (TP4) to 89.1% (TP8) of aggregate GPU kernel work in exact profile</span></div>
       <div><b>Prefill Contrast</b><span style="color:var(--green)">Attention (23.5%) + MoE (11.6%) dominate computation</span></div>
       <div><b>Multi-Node Stalling</b><span style="color:var(--amber)">TP16/PP1 spends 76.2% of GPU work in cross-node AllReduce barriers</span></div>
       <div><b>Pipeline Parallelism</b><span style="color:var(--purple)">TP4/PP4 P2P SendRecv represents 8.3% of captured stage work; pipelining shifts traffic to stage boundaries</span></div>
@@ -2291,7 +2335,7 @@ if (typeof Chart === 'undefined') {
     <div class="header-row">
       <div>
         <div class="card-title">⚡ CUDA Host API Overhead &amp; Synchronization (cuda_api_sum.csv)</div>
-        <div class="card-sub">CPU wall-clock time spent launching, synchronizing, and moving memory for 8K decode</div>
+        <div class="card-sub">Aggregate host API time spent launching, synchronizing, and moving memory for 8K decode</div>
       </div>
       <span class="badge b-amber"><span class="dot"></span>HOST OVERHEAD</span>
     </div>
@@ -2310,7 +2354,7 @@ if (typeof Chart === 'undefined') {
         <div class="card-title">📐 Microsecond Kernel Invocation Latency Distribution &amp; Dispersion (Log Scale)</div>
         <div class="card-sub">Empirical Min, Median, Average, and Max execution duration per kernel invocation in μs</div>
       </div>
-      <span class="badge b-green"><span class="dot"></span>KERNEL ROOFLINE</span>
+      <span class="badge b-cyan"><span class="dot"></span>MEASURED KERNEL DURATION</span>
     </div>
     <div class="chart large"><canvas id="chart_prof_kernel_latency"></canvas></div>
     <div class="analysis">
@@ -2352,7 +2396,7 @@ if (typeof Chart === 'undefined') {
           <td><b style="color:var(--muted)">1.7%</b></td>
           <td>0.86s</td>
           <td><span class="mono">flash::flash_fwd_kernel</span> &amp; <span class="mono">_fwd_stage2</span></td>
-          <td>FLOP bound during prefill (6.24ms/call on TP4 vs 4.26ms on TP8); trivial during single-token decode</td>
+          <td>High compute activity during prefill (6.24ms/call on TP4 vs 4.26ms on TP8); low work share during single-token decode</td>
         </tr>
         <tr>
           <td><b>Fused MoE Routing &amp; Experts</b></td>
@@ -2370,7 +2414,7 @@ if (typeof Chart === 'undefined') {
           <td><b style="color:var(--cyan)">4.9%</b></td>
           <td>2.38s</td>
           <td><span class="mono">internal::gemvx</span> &amp; <span class="mono">cutlass_80_tensorop_gemm</span></td>
-          <td>Memory bandwidth bound during decode (GEMV takes 6.7μs on TP4 vs 5.1μs on TP8)</td>
+          <td>Memory-intensive GEMV projections during decode (takes 6.7μs on TP4 vs 5.1μs on TP8)</td>
         </tr>
         <tr>
           <td><b>KDA Recurrent Gated Delta</b></td>
@@ -2388,7 +2432,7 @@ if (typeof Chart === 'undefined') {
           <td><b>0.7%</b></td>
           <td>0.33s</td>
           <td><span class="mono">fused_add_rms_norm</span> &amp; <span class="mono">causal_conv1d</span></td>
-          <td>Memory bandwidth bound elementwise kernels, sub-35μs runtime overhead</td>
+          <td>Lightweight elementwise and norm kernels, sub-35μs measured invocation duration</td>
         </tr>
         <tr>
           <td><b>Tensor Parallel AllReduce Sync</b></td>
@@ -2397,7 +2441,7 @@ if (typeof Chart === 'undefined') {
           <td><b style="color:var(--red)">86.3%</b></td>
           <td>41.62s</td>
           <td><span class="mono">ncclDevKernel_AllReduce_bf16_RING</span></td>
-          <td>The single greatest latency contributor in decode (112,640 ring barriers). TP8 incurs +20.8% NUMA delay</td>
+          <td>Dominant aggregate GPU kernel-work share in decode profile (112,640 ring barriers); TP8 incurs +20.8% NUMA delay</td>
         </tr>
         <tr>
           <td><b>Host CPU Launch &amp; Event Sync</b></td>
@@ -2406,7 +2450,7 @@ if (typeof Chart === 'undefined') {
           <td><b>3.0%</b></td>
           <td>3.64s</td>
           <td><span class="mono">cudaEventSynchronize</span> &amp; <span class="mono">cudaLaunchKernel</span></td>
-          <td>Host CPU launch overhead (888,504 calls @ 3.9μs/launch). Mitigated via CUDA graph captures</td>
+          <td>Host CPU launch overhead (888,504 calls @ 3.9μs/launch; candidate for CUDA graph A/B evaluation)</td>
         </tr>
       </tbody>
     </table>
@@ -2649,7 +2693,7 @@ if (typeof Chart === 'undefined') {
       </thead>
       <tbody>
         <!-- Native Complete (11) -->
-        <tr><td><span class="mono">tp4_pp4_prefill_128k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>SendRecv P2P activation handoff is 8.3% of stage work; avoids AllReduce barrier stalls</td></tr>
+        <tr><td><span class="mono">tp4_pp4_prefill_128k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>SendRecv P2P activation handoff is 8.3% of stage work, decoupling pipeline stages from cross-node tensor-parallel collective synchronization</td></tr>
         <tr><td><span class="mono">tp4_pp4_decode_8k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>NUMA-local TP4 handles layerwise collectives; remote VPC only passes inter-stage tensors</td></tr>
         <tr><td><span class="mono">tp4_pp4_prefill_512k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>512K Heavy Prefill</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Peak memory remains flat at 88.8GB VRAM; zero TCP drops across native VPC fabric</td></tr>
         <tr><td><span class="mono">tp8_pp2_prefill_128k</span></td><td><b style="color:var(--amber)">TP8 / PP2</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Intra-node 8-GPU AllReduce completes in 2.02ms; single inter-node P2P stage handoff</td></tr>
@@ -2658,7 +2702,7 @@ if (typeof Chart === 'undefined') {
         <tr><td><span class="mono">tp4_pp2_decode_8k</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Fast NUMA-local decode steps (5.51ms TPOT); solid alternative if fewer stages preferred</td></tr>
         <tr><td><span class="mono">tp4_pp2_decode_8k_c8</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=8 Batched)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Stable queuing behavior with 0 preemptions and zero TCP packet retransmissions</td></tr>
         <tr><td><span class="mono">tp16_pp1_prefill_128k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td><b>Severe TCP Bottleneck:</b> AllReduce ring barrier surges to 5.74ms (72.4% of all GPU time)</td></tr>
-        <tr><td><span class="mono">tp16_pp1_decode_8k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Decode TPOT degrades to 14.94ms due to 27 layerwise cross-node AllReduce barriers per token</td></tr>
+        <tr><td><span class="mono">tp16_pp1_decode_8k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Decode TPOT degrades to 14.94ms due to high cross-node collective synchronization exposure</td></tr>
         <tr><td><span class="mono">tp16_pp1_prefill_512k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>512K Heavy Prefill</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>TTFT climbs to 29.62s (Native) and explodes to 128.28s under 20G cap (+333% latency penalty)</td></tr>
         
         <!-- Native Incomplete (3) -->
@@ -4697,7 +4741,7 @@ if (typeof Chart === 'undefined') {
 <tr><td>Interactive scale-up candidate</td><td>TP4/PP1: 4.475ms TPOT @ 8K c1</td><td>Sub-10ms decode; 86.3% aggregate GPU kernel-work share in exact TP4 decode profile</td><td>TP4/PP1 for interactive 8K workloads</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>tp4_8192_c1 + nsys_stats.txt</td><td><span class="status s-completed">RESOLVED</span></td></tr>
 <tr><td>Long-prefill scale-up candidate</td><td>TP8/PP1: 28.089s vs TP4: 31.916s @ 512K</td><td>TP8 gains ~12.0% TTFT on 512K and ~19.9% on 1M; slower at 128K</td><td>TP8/PP1 for 512K+ prefill-heavy workloads</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>tp8_512k_c1 + profiler</td><td><span class="status s-completed">RESOLVED</span></td></tr>
 <tr><td>Native scale-out candidate @128K/512K/1M</td><td>TP4/PP4: 28.57s TTFT @ 1M (~2.39x over TP16/PP1 68.20s)</td><td>Pipeline parallelism avoids cross-node AllReduce collective stalls in tested conditions</td><td>TP4/PP4 across tested contexts on native fabric</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>12 distributed runs + NCCL + placement</td><td><span class="status s-completed">RESOLVED</span></td></tr>
-<tr><td>1M admission/capacity guidance</td><td>c2 queue wait jumps to 35.3s (TP8) / 55.4s (TP4) and TPOT jumps to 177.2ms / 182.0ms</td><td>c1 is cleanest measured point (~0.00s queue, 10.23ms/12.05ms TPOT); c2 begins queue/TPOT cliff; c4 severe degradation</td><td>Strict c=1 for interactive SLO workloads; admission limits must be SLO-driven</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>tp4_1m_c1-c4 + openloop_8192</td><td><span class="status s-completed">RESOLVED</span></td></tr>
+<tr><td>1M admission/capacity guidance</td><td>c2 queue wait jumps to 35.3s (TP8) / 44.3s (TP4) and TPOT jumps to 177.2ms / 182.0ms</td><td>c1 is cleanest measured point (~0.00s queue, 10.23ms/12.05ms TPOT); c2 begins queue/TPOT cliff; c4 severe degradation</td><td>Production admission limits depend on explicit application SLO; c=1 is cleanest measured single-node point</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>tp4_1m_concurrency_extension + tp8_1m_concurrency_extension</td><td><span class="status s-completed">RESOLVED</span></td></tr>
 <tr><td>Runtime knob sensitivity</td><td>max_num_seqs: flat @ 232.3s across 4/8/16; chunk size 16K yields 88.95s TTFT vs 122.05s (4K)</td><td>max_num_seqs is non-binding in this tested regime; 16K is lowest measured c1 TTFT among tested chunk budgets</td><td>Keep default max_num_seqs; 16K chunk size for lowest measured c1 TTFT</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>tp4_1m_maxseq + chunk sweep</td><td><span class="status s-completed">RESOLVED</span></td></tr>
 </tbody>
 </table>
@@ -5161,7 +5205,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 { label: 'TP4 / PP1 (Single Node)', data: [4.475, 5.106, 7.565, 10.267], backgroundColor: 'rgba(66,201,255,0.7)' },
                 { label: 'TP8 / PP1 (Single Node)', data: [6.350, 7.098, 9.455, 12.102], backgroundColor: 'rgba(57,217,138,0.7)' },
                 { label: 'TP4 / PP4 (Native Distributed)', data: [null, 5.632, 8.031, 10.637], backgroundColor: 'rgba(179,136,255,0.85)' },
-                { label: 'TP16 / PP1 (Cross-Node TP)', data: [null, 14.938, 16.892, 20.081], backgroundColor: 'rgba(255,93,115,0.7)' }
+                { label: 'TP16 / PP1 (Cross-Node TP)', data: [null, 14.938, 17.413, 20.081], backgroundColor: 'rgba(255,93,115,0.7)' }
             ]
         },
         options: {
@@ -5625,7 +5669,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['c=1', 'c=2', 'c=4'],
             datasets: [
-                { label: 'TP4 / PP1 TTFT (s)', data: [93.25, 150.54, 231.27], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP4 / PP1 TTFT (s)', data: [93.39, 139.37, 231.27], borderColor: '#42c9ff', tension: 0.2 },
                 { label: 'TP8 / PP1 TTFT (s)', data: [74.89, 111.74, 184.88], borderColor: '#39d98a', tension: 0.2 }
             ]
         },
@@ -5786,7 +5830,7 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['All 119 Executed Runs (Single-Node & Scale-Out 8K-1M)'],
             datasets: [
-                { label: 'Measured Preemptions Delta (Zero Memory Thrashing)', data: [0], backgroundColor: 'rgba(57,217,138,0.8)' }
+                { label: 'Measured Preemptions Delta (0 Scheduler Preemptions Observed)', data: [0], backgroundColor: 'rgba(57,217,138,0.8)' }
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 1, title: { display: true, text: 'Preemptions Count' } } } }
@@ -5999,7 +6043,7 @@ document.addEventListener('DOMContentLoaded', function() {
             plugins: {
                 tooltip: {
                     callbacks: {
-                        afterBody: () => ['100% empirical measurement from Nsight GPU kernel execution logs.']
+                        afterBody: () => ['Empirical measurement from Nsight GPU kernel execution logs.']
                     }
                 }
             },
