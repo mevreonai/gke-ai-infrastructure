@@ -117,8 +117,7 @@ if (typeof Chart === 'undefined') {
 <div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (measured ~173.58 Gb/s fwd, MTU 8896, 0.05ms RTT)</b><br/>Network Sensitivity: <span style="color:var(--amber)">100G cap (measured ~56.84 Gb/s) &amp; 20G cap (measured ~16.48 Gb/s) executed across 24 runs</span></div>
 </div>
 <div class="tabs">
-<button class="tab active" data-tab="executive">🏛 Executive Overview</button>
-<button class="tab" data-tab="top10" style="color:var(--amber);border-color:rgba(255,200,87,0.3)">🎯 Top 10 Discoveries</button>
+<button class="tab active" data-tab="executive">🏛 Executive &amp; Top 10 Discoveries</button>
 <button class="tab" data-tab="scaleup">📈 Scale-Up</button>
 <button class="tab" data-tab="scaleout">🌐 Scale-Out</button>
 <button class="tab" data-tab="long">📜 Long Context</button>
@@ -138,7 +137,7 @@ if (typeof Chart === 'undefined') {
         Defensible empirical synthesis turning V8 telemetry into production rules: <b>Fabric Exposure</b>, <b>Concurrency Value Destruction</b>, <b>Hybrid Regime Shift</b>, <b>Prefix Scaling</b>, <b>Parallelism Elasticity</b>, and <b>Misleading Operational Metrics</b>.
       </div>
     </div>
-    <button onclick="document.querySelector('.tab[data-tab=\'top10\']').click()" class="chip active" style="padding:6px 14px;font-size:10px;font-weight:800;background:var(--amber);color:#06101e;border:none;cursor:pointer;border-radius:6px;box-shadow:0 2px 8px rgba(255,200,87,0.3)">
+    <button onclick="document.getElementById('exec-top10-section').scrollIntoView({behavior:'smooth'})" class="chip active" style="padding:6px 14px;font-size:10px;font-weight:800;background:var(--amber);color:#06101e;border:none;cursor:pointer;border-radius:6px;box-shadow:0 2px 8px rgba(255,200,87,0.3)">
       Explore All 10 Deep Discoveries →
     </button>
   </div>
@@ -156,6 +155,612 @@ if (typeof Chart === 'undefined') {
 <div class="card kpi"><div class="kpi-left"><div class="icon">↔</div><div><div class="k-label">Native Network Evidence</div><div class="k-value" style="color:var(--cyan)">173.58 Gbps</div><div class="k-note">0.05ms RTT, 0 drops, MTU 8896 verified</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">2N</div><div><div class="k-label">Both-Node Telemetry</div><div class="k-value" style="color:var(--green)">VERIFIED</div><div class="k-note">Dual-node socket telemetry attached</div></div></div></div>
 </div>
+
+  <!-- EXECUTIVE HEADER & DEPLOYMENT BANNER -->
+  <!-- EXECUTIVE HEADER & DEPLOYMENT BANNER -->
+  <div class="card mb8" style="background:linear-gradient(135deg,rgba(15,31,55,0.98),rgba(10,21,38,0.98));border:1px solid rgba(255,200,87,0.35);padding:14px 16px" id="exec-top10-section">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="badge b-amber" style="font-size:9px;padding:4px 9px"><span class="dot"></span>EXECUTIVE DEEP CHARACTERIZATION</span>
+          <span class="badge b-cyan" style="font-size:9px;padding:4px 9px">E2E MATRIX VALIDATED</span>
+          <span class="badge b-green" style="font-size:9px;padding:4px 9px">KIMI-LINEAR-48Bsurr</span>
+          <span class="badge b-purple" style="font-size:9px;padding:4px 9px">V2 EVIDENCE CONTRACT</span>
+        </div>
+        <h2 style="font-size:16px;font-weight:900;margin:6px 0 2px;color:#fff;letter-spacing:-0.2px">
+          Executive Information Architecture — Expensive Deployment Decisions First
+        </h2>
+        <div style="font-size:10.5px;color:var(--muted);max-width:1200px;line-height:1.4">
+          This surface leads directly with the high-stakes deployment findings: answering <b>WHAT happened, WHERE it happened, WHY the evidence supports the interpretation, WHAT DECISION changes, and WHAT remains unresolved</b> before presenting generic macro profiler curves.
+        </div>
+      </div>
+      <div style="text-align:right">
+        <span class="mono" style="font-size:10px;color:var(--dim)">Dual RTX PRO 6000 Blackwell (16× 96GB GPUs)</span><br/>
+        <span class="mono" style="font-size:9px;color:var(--dim)">GCP Native (173.6G) · Capped 100G (56.8G) · Capped 20G (16.5G)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECTION 1: FIRST SCREEN — THREE HERO DISCOVERIES        -->
+  <!-- ======================================================== -->
+  <div class="section-title">
+    <span>🌟 Section 1: First Screen — Three Hero Discoveries</span>
+    <small>Rendered in exact order: 1. Fabric Exposure Fingerprint (#2) · 2. Concurrency Value Destruction (#3) · 3. Long-Context Resource-Pressure Shift (#1)</small>
+  </div>
+
+  <div class="grid3 mb8">
+    <!-- HERO #1: TOP 2 - FABRIC EXPOSURE FINGERPRINT -->
+    <div class="card" style="border-top:3px solid var(--red)">
+      <div class="header-row">
+        <div>
+          <span class="badge b-red mb8">HERO #1 · TOP 2 · MEASURED &amp; DERIVED</span>
+          <div class="card-title" style="font-size:12px">Fabric Exposure Fingerprint</div>
+          <div class="card-sub">Topology Dictates Transport Risk Under Measured Bandwidth Caps</div>
+        </div>
+      </div>
+      <div style="margin:8px 0;padding:8px 10px;background:rgba(255,93,115,0.06);border-left:3px solid var(--red);border-radius:4px;font-size:9.5px;font-style:italic;color:#ffb3be">
+        “The same measured fabric constraint has radically different application impact by topology: at 1M, configured-20G changes TP16/PP1 TTFT by ~+276.7%, while TP4/PP4 changes by only ~+3.9%.”
+      </div>
+      <div style="font-size:18px;font-weight:900;color:var(--red);margin:8px 0 4px">
+        +276.7% vs +3.9% TTFT
+      </div>
+      <div style="font-size:9.5px;color:var(--dim);margin-bottom:8px">1M c1 TTFT Degradation Under 20G Network Cap Sweep</div>
+
+      <!-- 3 Bandwidth Layers Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Bandwidth Layer</th><th>Native</th><th>Capped 100G</th><th>Capped 20G</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>1. Configured Cap</b></td><td>Uncapped VPC</td><td>100 Gbps</td><td>20 Gbps</td></tr>
+            <tr><td><b>2. Measured iperf Transport</b></td><td>~173.58 Gb/s</td><td>~56.84 Gb/s</td><td>~16.48 Gb/s</td></tr>
+            <tr><td><b>3. Measured 256M SendRecv</b></td><td>~7.11 GB/s</td><td>~5.54 GB/s</td><td>~2.04 GB/s</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- 4 Topologies 1M Sensitivity Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Topology</th><th>Native TTFT</th><th>100G TTFT (Δ)</th><th>20G TTFT (Δ)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>TP4 / PP2</b></td><td>52.526 s</td><td>52.600 s (+0.14%)</td><td>53.127 s (+1.14%)</td></tr>
+            <tr><td><b>TP8 / PP2</b></td><td>41.515 s</td><td>41.462 s (noise)</td><td>41.472 s (noise)</td></tr>
+            <tr><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>28.568 s</b></td><td><b>28.866 s (+1.04%)</b></td><td><b style="color:var(--green)">29.684 s (+3.91%)</b></td></tr>
+            <tr><td><b style="color:var(--red)">TP16 / PP1</b></td><td>68.197 s</td><td>92.992 s (+36.36%)</td><td><b style="color:var(--red)">256.889 s (+276.7%)</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart short mb8"><canvas id="chart_top10_fabric_exposure"></canvas></div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> At 1M context on GCP_CAPPED_20G, TP16/PP1 TTFT explodes from 68.20s to 256.89s (+276.7% degradation; queue wait 0.022s). Under the exact same 20G cap, TP4/PP4 TTFT moves from 28.57s to 29.68s (+3.91% degradation).<br/><br/>
+        <b>WHERE:</b> Multi-node distributed 128K, 512K, and 1M context across GCP_NATIVE (173.6 Gbps) vs Capped 100G (56.8 Gbps) vs Capped 20G (16.5 Gbps).<br/><br/>
+        <b>WHY (Mechanism):</b> TP16/PP1 executes AllReduce collectives across the VPC network on every attention layer, turning cross-node bandwidth into the direct latency bottleneck. TP4/PP4 confines TP to local PCIe/NUMA and only passes activations point-to-point between pipeline stages.<br/><br/>
+        <b>DERIVED TRANSPORT-RESPONSE FINGERPRINT:</b> Local fit <code>TTFT(B) = T0 + V_exposed / B</code>. Normalized <code>E_H = V_exposed / (N_tokens * H * b) ≈ 116 bytes/token</code> (H=2304, b=2 bytes BF16).<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Do not provision distributed inference from NIC/iperf capability alone. Topology determines how much transport degradation becomes exposed to user-visible TTFT. Disallow cross-node TP16 over standard VPC; standardize on TP4/PP4 for multi-node serving.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> This is a local empirical sensitivity coefficient over the measured bandwidth range. It is NOT a literal claim that the model physically transmits exactly 116 hidden states per token.
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Causal: MED-HIGH</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_pp4_dist 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+
+    <!-- HERO #2: TOP 3 - CONCURRENCY VALUE DESTRUCTION -->
+    <div class="card" style="border-top:3px solid var(--amber)">
+      <div class="header-row">
+        <div>
+          <span class="badge b-amber mb8">HERO #2 · TOP 3 · MEASURED &amp; DERIVED</span>
+          <div class="card-title" style="font-size:12px">Concurrency Value Destruction</div>
+          <div class="card-sub">Queue Accounting Closure at 1M Extreme Context (Admission / SLO Risk)</div>
+        </div>
+      </div>
+      <div style="margin:8px 0;padding:8px 10px;background:rgba(255,200,87,0.06);border-left:3px solid var(--amber);border-radius:4px;font-size:9.5px;font-style:italic;color:#ffe4a0">
+        “At 1M, added concurrency buys almost no output throughput but destroys user latency. On TP4, c4 adds only ~1.52% output throughput while TTFT becomes 2.48×, TPOT 26.15×, and mean queue residence reaches ~134.43 s.”
+      </div>
+      <div style="font-size:18px;font-weight:900;color:var(--amber);margin:8px 0 4px">
+        +1.52% TPS for 26.15× TPOT &amp; 134.4s Queue
+      </div>
+      <div style="font-size:9.5px;color:var(--dim);margin-bottom:8px">1M TP4/PP1 Closed-Loop c1 → c4 Trade-Off</div>
+
+      <!-- TP4/PP1 1M Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Load</th><th>Output TPS</th><th>TTFT</th><th>TPOT</th><th>Queue Mean</th><th>Peak KV</th><th>Preempt</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>c=1 (Clean)</b></td><td>0.34147</td><td>93.395 s</td><td>10.228 ms</td><td>~0.00 s</td><td>12.29%</td><td>0</td></tr>
+            <tr><td><b>c=2 (Queued)</b></td><td>0.34486 (+0.99%)</td><td>139.374 s (1.49×)</td><td>181.974 ms (17.79×)</td><td>44.340 s</td><td>15.52%</td><td>0</td></tr>
+            <tr><td><b style="color:var(--red)">c=4 (Severe)</b></td><td>0.34666 (+1.52%)</td><td>231.268 s (2.48×)</td><td>267.411 ms (26.15×)</td><td><b style="color:var(--red)">134.428 s</b></td><td>15.51%</td><td>0</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart short mb8"><canvas id="chart_top10_concurrency_waterfall"></canvas></div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> Moving from c1 to c4 at 1M increases output tokens/s from 0.3415 to 0.3467 (+1.52%). Meanwhile, TTFT balloons from 93.40s to 231.27s (+147.6%), TPOT jumps from 10.23ms to 267.41ms (+2,515%), and mean queue wait reaches 134.43s.<br/><br/>
+        <b>QUEUE ACCOUNTING CLOSURE:</b> <code>Q_closure(c) = [Queue(c) - Queue(c1)] / [TTFT(c) - TTFT(c1)]</code>.<br/>
+        • Added TTFT (c4 − c1) = 231.27s − 93.40s = <b>137.87s</b>. Measured queue wait = <b>134.43s</b> (<b>97.5%</b> of added TTFT is pure queue residence; preemption delta = 0).<br/>
+        • Independent replication: TP4 c2 ~96.4%, TP4 c4 ~97.5%, TP8 c2 ~95.7%, TP8 c4 ~97.2%.<br/><br/>
+        <b>WHERE:</b> Single-node 1M closed-loop concurrency (c1, c2, c4) on TP4/PP1 and TP8/PP1.<br/><br/>
+        <b>WHY (Mechanism):</b> KV cache remains at only 15.51% (well below OOM limit). The bottleneck is compute-engine monopolization during 1M prompt prefill, forcing incoming requests into sequential scheduler queue stalls.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Admission control should be driven by TTFT/TPOT/queue SLOs before KV exhaustion or preemption. “Fits in memory” is not a sufficient capacity criterion. c2 is already inside the measured severe-degradation regime; choose an admission threshold from the required TTFT/TPOT SLO.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> Added TTFT is dominated by queue residence; KV remains far from exhaustion; preemptions = 0. Do not collapse TPOT into the same explanation: TPOT degradation is an in-service batching/interference effect after admission whose exclusive root cause requires timeline attribution.
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Queue Causal: HIGH</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_1m_concurrency_extension 1m_c4')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+
+    <!-- HERO #3: TOP 1 - HYBRID REGIME SHIFT -->
+    <div class="card" style="border-top:3px solid var(--purple)">
+      <div class="header-row">
+        <div>
+          <span class="badge b-purple mb8">HERO #3 · TOP 1 · MEASURED</span>
+          <div class="card-title" style="font-size:12px">Long-Context Resource-Pressure Regime Shift</div>
+          <div class="card-sub">Attention Scales ~N² vs Linear KDA Recurrence &amp; MoE (Subsystem Scaling Shift)</div>
+        </div>
+      </div>
+      <div style="margin:8px 0;padding:8px 10px;background:rgba(191,140,255,0.06);border-left:3px solid var(--purple);border-radius:4px;font-size:9.5px;font-style:italic;color:#e1c4ff">
+        “Long context changes which subsystem accumulates GPU work fastest: in matched TP4/PP4 profiles, full-attention work grows close to N² from 128K to 512K while KDA and MoE remain approximately N¹.”
+      </div>
+      <div style="font-size:18px;font-weight:900;color:var(--purple);margin:8px 0 4px">
+        15.7× Attention Growth vs 3.8× MoE &amp; 3.9× KDA
+      </div>
+      <div style="font-size:9.5px;color:var(--dim);margin-bottom:8px">128K → 512K Subsystem Work Growth (Exponent p ≈ 1.99)</div>
+
+      <!-- 5-Component Work Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Component</th><th>128K Work</th><th>512K Work</th><th>Growth</th><th>Pressure Exponent (p_k)</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b style="color:var(--purple)">Full attention</b></td><td>~0.30 s</td><td>~4.75 s</td><td><b>~15.7×</b></td><td><b style="color:var(--purple)">~1.99 (O(N²))</b></td></tr>
+            <tr><td><b>KDA recurrence</b></td><td>~0.045 s</td><td>~0.17 s</td><td>~3.9×</td><td><b>~0.99 (O(N¹))</b></td></tr>
+            <tr><td><b>MoE routing</b></td><td>~0.17 s</td><td>~0.65 s</td><td>~3.8×</td><td><b>~0.96 (O(N¹))</b></td></tr>
+            <tr><td><b>NCCL</b></td><td>~1.63 s</td><td>~3.56 s</td><td>~2.18×</td><td>~0.56</td></tr>
+            <tr><td><b>GEMM family</b></td><td>~0.10 s</td><td>~0.50 s</td><td>~5.25×</td><td>~1.20</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart short mb8"><canvas id="chart_top10_hybrid_regime"></canvas></div>
+
+      <div style="margin-bottom:8px">
+        <span class="badge b-amber" style="font-size:8px">DERIVED / MODELED INTERPOLATION — NOT A MEASURED CRITICAL-PATH CROSSOVER</span>
+      </div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> In matched TP4/PP4 profiles, full-attention work grows from ~0.30s to ~4.75s (15.7× growth, scaling exponent <code>p_k = ln[W(512K)/W(128K)] / ln(4) ≈ 1.99</code>). Meanwhile, linear KDA recurrence grows ~3.9× (p ≈ 0.99) and MoE routing grows ~3.8× (p ≈ 0.96).<br/><br/>
+        <b>E2E CROSS-CHECK:</b> Native TP4/PP4 c1 TTFT: 128K = <b>1.709966 s</b>, 512K = <b>10.221758 s</b>, 1M = <b>28.567955 s</b>. The E2E curve becomes super-linear, consistent with quadratic attention scaling.<br/><br/>
+        <b>WHERE:</b> Matched valid TP4/PP4 distributed prefill profiles at 128K and 512K.<br/><br/>
+        <b>WHY (Mechanism):</b> The hybrid architecture combines 20 linear KDA layers with 7 full-attention layers. While KDA recurrence scales as O(N), full-attention layers scale as O(N²), causing attention to accumulate GPU work far faster as prompt length scales.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Do not tune long-context performance from a single 128K profile. Re-evaluate the optimization target as context increases because subsystem pressure scales at different rates. Prioritize FlashAttention &amp; chunk budget for ≥512K; prioritize MoE routing and GEMMs for ≤128K.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> Do NOT write “Attention becomes the wall-clock critical path at ~420K.” The available profile summaries establish aggregate GPU-work scaling, not exclusive wall-clock critical-path attribution.<br/>
+          <i style="color:var(--dim)">Aggregate GPU work != exclusive request wall-clock critical path.</i>
+        </div>
+      </div>
+
+      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-amber">Causal: MEDIUM</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_pp4_dist 128k_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECTION 2: DEPLOYMENT LEVERS                             -->
+  <!-- ======================================================== -->
+  <div class="section-title">
+    <span>🎛 Section 2: Deployment Levers — High-Leverage Operational Controls</span>
+    <small>#4 Prefix Reuse · #5 Prompt-Token Admission · #6 Parallelism Elasticity &amp; GPU-Second Frontier</small>
+  </div>
+
+  <div class="grid3 mb8">
+    <!-- TOP 4: PREFIX REUSE -->
+    <div class="card">
+      <div class="header-row">
+        <div>
+          <span class="badge b-green mb8">TOP 4 · MEASURED</span>
+          <div class="card-title">Prefix Reuse Changes Scaling Curve</div>
+          <div class="card-sub">Super-Linear Cold → Linear Warm-Hit Latency</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--green);margin:6px 0 2px">
+        14.8× · 27.9× · 36.0× Speedup
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M Repeat TTFT Drops from 94.23s to 2.614s (49.97% Hit Ratio)</div>
+
+      <!-- Hit-Conditioned Fields Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Context Case</th><th>First/Cold TTFT</th><th>Repeat-Hit Median</th><th>Speedup</th><th>Hits / Queries</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>~128K</b></td><td>4.8965 s</td><td>0.3307 s</td><td>~14.8×</td><td>917,504 / 1,050,624 = <b>87.33%</b></td></tr>
+            <tr><td><b>~512K</b></td><td>32.5762 s</td><td>1.1679 s</td><td>~27.9×</td><td>1,048,576 / 2,098,177 = <b>49.98%</b></td></tr>
+            <tr><td><b>1M</b></td><td>94.2272 s</td><td>2.6140 s</td><td><b>~36.0×</b></td><td>1,998,848 / 4,000,000 = <b>49.97%</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="chart short mb8"><canvas id="chart_top10_prefix_reuse"></canvas></div>
+
+      <div style="font-size:9px;line-height:1.4;color:#c6d3e3">
+        <b>WHAT happened:</b> Across hit-conditioned tests, repeat queries achieve 14.8× to 36.0× speedup. Empirical scaling exponents: cold/first TTFT exponent <code>p ≈ 1.4427 (R² ≈ 0.9979)</code>; repeat-hit exponent <code>p ≈ 1.0013 (R² ≈ 0.9935)</code>.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Prefix reuse should be treated as a workload-routing/caching lever: workloads with repeated prefixes can occupy a fundamentally different latency regime than one-off long prompts. Route multi-turn chat and RAG to cache-warm replicas with sticky sessions.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> Do not recommend prefix caching unconditionally. Empirical exponents describe this measured range, not universal complexity. Production gain depends on reuse frequency, cache residency, eviction, and workload mix.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Causal: MED-HIGH</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_prefix1m 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+
+    <!-- TOP 5: PROMPT TOKEN ADMISSION -->
+    <div class="card">
+      <div class="header-row">
+        <div>
+          <span class="badge b-cyan mb8">TOP 5 · DERIVED FINGERPRINT</span>
+          <div class="card-title">Prompt-Token Admission Fingerprint</div>
+          <div class="card-sub">Measured 8K/128K Open-Loop Capacity Normalization</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--cyan);margin:6px 0 2px">
+        ~27.5K vs ~24.2K input tok/s
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">8K vs 128K High-Load Accepted Rate (~14% Spread Across 16× Prompts)</div>
+
+      <!-- Two Aligned Panels Visual -->
+      <div class="grid2 mb8">
+        <div style="padding:8px 10px;background:#0a1526;border:1px solid #1f304a;border-radius:6px">
+          <div style="font-size:9px;color:var(--muted);text-transform:uppercase;font-weight:700">1. Achieved Requests / sec</div>
+          <div style="font-size:14px;font-weight:800;color:var(--cyan);margin:4px 0">8K: 3.36 req/s vs 128K: 0.18 req/s</div>
+          <div style="font-size:8.5px;color:var(--dim)">Diverges by <b>18.2×</b> due to prompt length discrepancy.</div>
+        </div>
+        <div style="padding:8px 10px;background:#0a1526;border:1px solid rgba(57,217,138,0.3);border-radius:6px">
+          <div style="font-size:9px;color:var(--green);text-transform:uppercase;font-weight:700">2. Achieved Input Tokens / sec</div>
+          <div style="font-size:14px;font-weight:800;color:var(--green);margin:4px 0">8K: 27,443 vs 128K: 24,248 tok/s</div>
+          <div style="font-size:8.5px;color:var(--dim)">Narrow <b>~14% spread</b> confirms prompt-token saturation.</div>
+        </div>
+      </div>
+
+      <div style="font-size:9px;line-height:1.4;color:#c6d3e3">
+        <b>WHAT happened:</b> Raw RPS changes dramatically between 8K and 128K, but the high-load accepted rate is much closer when normalized to input tokens/s: ~27.5K vs ~24.2K input tok/s. Compute engine saturation is governed by input token throughput.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Capacity planning for prefill-heavy traffic should normalize demand into prompt tokens/s rather than compare workloads only in requests/s.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> Do not extrapolate this to 512K/1M or another topology without corresponding open-loop sweeps. This is an empirical admission fingerprint, not a universal serving constant.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-amber">Evidence: MED-HIGH</span>
+          <span class="badge b-red">Causal: LOW-MED</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_openloop_8192 1.00x')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+
+    <!-- TOP 6: PARALLELISM ELASTICITY & GPU-SECOND FRONTIER -->
+    <div class="card">
+      <div class="header-row">
+        <div>
+          <span class="badge b-purple mb8">TOP 6 · DERIVED &amp; MEASURED</span>
+          <div class="card-title">Parallelism Elasticity &amp; GPU-Second Frontier</div>
+          <div class="card-sub">Workload Dictates Parallelism Return (η) and Resource Occupancy</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--purple);margin:6px 0 2px">
+        8K TP η = -0.245 vs 1M PP η = +0.879
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">Elasticity η = ln(Speedup) / ln(GPU Multiplier)</div>
+
+      <!-- Doubling TP vs Doubling PP Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Parallelism Step</th><th>8K η</th><th>128K η</th><th>512K η</th><th>1M η</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Doubling TP (TP4→TP8)</b></td><td><span style="color:var(--red)">-0.245</span></td><td><span style="color:var(--red)">-0.086</span></td><td>+0.184</td><td>+0.320</td></tr>
+            <tr><td><b>Doubling PP (PP2→PP4)</b></td><td>—</td><td>+0.631</td><td>+0.812</td><td><span style="color:var(--green)"><b>+0.879</b></span></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chart short mb8"><canvas id="chart_top10_parallelism_elasticity"></canvas></div>
+
+      <!-- 1M GPU-Seconds Occupancy Table -->
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Configuration</th><th>1M TTFT</th><th>Active GPUs</th><th>GPU-s / Req Proxy</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>TP4 / PP1</b></td><td>93.248 s</td><td>4</td><td><b>373.0 GPU-s</b></td></tr>
+            <tr><td><b>TP4 / PP2</b></td><td>52.526 s</td><td>8</td><td><b>420.2 GPU-s</b></td></tr>
+            <tr><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>28.568 s</b></td><td>16</td><td><b>457.1 GPU-s</b></td></tr>
+            <tr><td><b>TP8 / PP1</b></td><td>74.688 s</td><td>8</td><td>597.5 GPU-s</td></tr>
+            <tr><td><b>TP8 / PP2</b></td><td>41.515 s</td><td>16</td><td>664.2 GPU-s</td></tr>
+            <tr><td><b style="color:var(--red)">TP16 / PP1</b></td><td>68.197 s</td><td>16</td><td><b style="color:var(--red)">1091.1 GPU-s</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="font-size:9px;line-height:1.4;color:#c6d3e3">
+        <b>WHAT happened:</b> Doubling TP at 8K produces negative elasticity (η = -0.245; TTFT worsens from 0.222s to 0.263s). Doubling PP at 1M produces near-linear elasticity (η = +0.879; TTFT drops from 52.53s to 28.57s).<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Allocate additional GPUs along the parallelism dimension that has positive measured elasticity for the workload/SLO, and expose the GPU-second trade-off instead of declaring a universal topology winner.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> GPU-s/request is a reservation/occupancy proxy, NOT power, energy, dollar cost, or utilization-weighted billing.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Causal: MEDIUM</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_context_baseline 8k_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECTION 3: LOW-LEVEL CORROBORATION                      -->
+  <!-- ======================================================== -->
+  <div class="section-title">
+    <span>🔬 Section 3: Low-Level Corroboration — Multi-Layer Telemetry Evidence</span>
+    <small>#7 TP Decode 4-Layer Chain · #8 Runtime-Knob Derivative Fingerprint</small>
+  </div>
+
+  <div class="grid2 mb8">
+    <!-- TOP 7: TP DECODE EVIDENCE CHAIN -->
+    <div class="card">
+      <div class="header-row">
+        <div>
+          <span class="badge b-cyan mb8">TOP 7 · CROSS-VALIDATED (4 LAYERS)</span>
+          <div class="card-title">TP Decode Evidence Chain (Cross-Tool Corroboration)</div>
+          <div class="card-sub">Primitive NCCL → PyTorch Operators → Nsight Traces → End-to-End TPOT</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--cyan);margin:6px 0 2px">
+        1.95× NCCL Barrier Latency → 2.32× PyTorch AR CUDA → +41.9% End-to-End TPOT
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">Corroborated independently across 4 diagnostic instruments</div>
+
+      <!-- Horizontal Evidence Chain Visual -->
+      <div style="display:flex;align-items:center;justify-content:space-between;background:#0a1526;padding:8px 10px;border-radius:6px;border:1px solid #1f304a;margin-bottom:8px;font-size:8.5px;flex-wrap:wrap;gap:4px">
+        <div style="text-align:center"><b style="color:var(--cyan)">1. NCCL Microbench</b><br/><span style="color:var(--dim)">16K AR: 19μs → 37μs (~2×)</span></div>
+        <div style="color:var(--muted)">➔</div>
+        <div style="text-align:center"><b style="color:var(--purple)">2. PT Profiler</b><br/><span style="color:var(--dim)">7040 calls: 252ms → 584ms (2.32×)</span></div>
+        <div style="color:var(--muted)">➔</div>
+        <div style="text-align:center"><b style="color:var(--amber)">3. Nsight Kernels</b><br/><span style="color:var(--dim)">Dominant AR GPU work</span></div>
+        <div style="color:var(--muted)">➔</div>
+        <div style="text-align:center"><b style="color:var(--red)">4. E2E Serving</b><br/><span style="color:var(--dim)">4.47ms → 6.35ms (+41.9%)</span></div>
+      </div>
+
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Evidence Layer</th><th>Instrument / Source</th><th>TP4 / PP1</th><th>TP8 / PP1</th><th>Measured Penalty</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>Layer A: Primitive</b></td><td>nccl_points.csv (16 KiB AllReduce)</td><td>19.0 μs</td><td>37.0 μs</td><td><b>1.95× barrier latency</b></td></tr>
+            <tr><td><b>Layer B: Operator</b></td><td>PyTorch Profiler (Self CUDA AllReduce)</td><td>251.5 ms (32.1% share)</td><td>583.9 ms (55.4% share)</td><td><b>2.32× CUDA time (7040 calls)</b></td></tr>
+            <tr><td><b>Layer C: Kernel</b></td><td>Nsight (PROFILE_ANALYSIS.json)</td><td>Aggregate decode work</td><td>Aggregate decode work</td><td><b>NCCL AllReduce dominant</b></td></tr>
+            <tr><td><b>Layer D: E2E User</b></td><td>vLLM Serving Benchmark (8K c1 TPOT)</td><td>4.475 ms</td><td>6.350 ms</td><td><b>+41.9% TPOT penalty</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> TP8 decode penalty is verified across every software and hardware telemetry layer. Dual-NUMA PCIe cross-socket hops double small-message collective barrier latency.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Do not assume wider TP improves interactive decode. For short decode-heavy work, collective synchronization can erase the extra compute parallelism. Enforce TP=4 for interactive decode; avoid TP=8 without NVLink/NVSwitch.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> Nsight aggregate kernel time reflects work volume, not exclusive request critical-path wall time.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Causal: MED-HIGH</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_8k_decode')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+
+    <!-- TOP 8: RUNTIME KNOB DERIVATIVE FINGERPRINT -->
+    <div class="card">
+      <div class="header-row">
+        <div>
+          <span class="badge b-amber mb8">TOP 8 · MEASURED SENSITIVITY</span>
+          <div class="card-title">Runtime-Knob Derivative Fingerprint</div>
+          <div class="card-sub">Inert max_num_seqs (&lt;0.05% Δ) vs High-Leverage Chunk Budget (-27.1% TTFT)</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--amber);margin:6px 0 2px">
+        max_num_seqs Δ &lt; 0.05% vs Chunk Budget Δ = -27.1% TTFT
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M Sensitivity Comparison on Validated TP4/PP1 Runs</div>
+
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Tuning Knob</th><th>Tested Values</th><th>Workload State</th><th>Measured Metric Impact</th><th>Tuning Leverage</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>max_num_seqs</b></td>
+              <td>4 · 8 · 16</td>
+              <td>1M c4 TP4/PP1</td>
+              <td>TTFT: 232.34s → 232.36s → 232.25s (<b>spread &lt; 0.05%</b>)</td>
+              <td><span class="status s-unres">INERT / NON-BINDING</span></td>
+            </tr>
+            <tr>
+              <td><b>Chunk Token Budget</b></td>
+              <td>4096 · 8192 · 16384</td>
+              <td>1M c1 TP4/PP1</td>
+              <td>TTFT: 122.05s → 93.28s → 88.95s (<b>-27.1% TTFT speedup</b>)</td>
+              <td><span class="status s-completed">HIGH LEVERAGE</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> At 1M c4, scheduler telemetry confirms <code>peak_running = 2</code> and <code>peak_waiting = 3</code>; the configured max_num_seqs ceiling of 4..16 was never reached. Conversely, chunk budget directly governs kernel occupancy and prefill step amortization.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Stop spending optimization effort on max_num_seqs in this measured 1M c4 state; direct tuning effort toward token budget, topology, prefix reuse, and admission where the measured derivative is materially larger.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> 16K chunk size improves c1 TTFT, but its impact on decode jitter and prefill fairness under mixed traffic remains unresolved.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Causal: MED-HIGH</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_chunk16k 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECTION 4: MISLEADING OPERATIONAL METRICS               -->
+  <!-- ======================================================== -->
+  <div class="section-title">
+    <span>⚠️ Section 4: Misleading Operational Metrics — Infrastructure Telemetry Fallacies</span>
+    <small>#9 Busy GPU != Efficient Serving · #10 KV Headroom != VRAM Headroom</small>
+  </div>
+
+  <div class="grid2 mb8">
+    <!-- TOP 9: BUSY GPU != EFFICIENT SERVING -->
+    <div class="card" style="border-left:3px solid var(--red)">
+      <div class="header-row">
+        <div>
+          <span class="badge b-red mb8">TOP 9 · CAUTIONARY OPERATIONAL FINDING</span>
+          <div class="card-title">Busy GPU != Efficient Serving</div>
+          <div class="card-sub">High Telemetry Utilization Masks Cross-Node Collective Synchronization Stalls</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--red);margin:6px 0 2px">
+        TP16 at 80.6% GPU Util is 2.39× SLOWER than TP4/PP4 at 62.8% Util
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M c1 Serving Telemetry Comparison</div>
+
+      <div class="grid2 mb8">
+        <div style="padding:10px;background:#0a1526;border:1px solid #1f304a;border-radius:6px">
+          <div style="font-size:10px;font-weight:800;color:var(--green)">TP4 / PP4 (Native Multi-Node)</div>
+          <div style="font-size:18px;font-weight:900;margin:4px 0">TTFT = 28.57 s</div>
+          <div style="font-size:9px;color:var(--muted)">Mean GPU Utilization: <b>62.8%</b></div>
+          <div style="font-size:8.5px;color:var(--dim);margin-top:4px">Healthy pipeline activation exchange; minimal collective synchronization idle time.</div>
+        </div>
+        <div style="padding:10px;background:#0a1526;border:1px solid rgba(255,93,115,0.3);border-radius:6px">
+          <div style="font-size:10px;font-weight:800;color:var(--red)">TP16 / PP1 (Cross-Node TP)</div>
+          <div style="font-size:18px;font-weight:900;color:var(--red);margin:4px 0">TTFT = 68.20 s</div>
+          <div style="font-size:9px;color:var(--muted)">Mean GPU Utilization: <b>80.6%</b></div>
+          <div style="font-size:8.5px;color:var(--dim);margin-top:4px">GPUs spin continuously in NCCL barrier polling, falsely reporting high active work.</div>
+        </div>
+      </div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> nvidia-smi / DCGM reports the percentage of time GPU kernels occupy compute queues. Polling spinning locks during cross-node AllReduce barriers registers as "active GPU", creating the illusion of high compute efficiency while serving 2.39× slower.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Do not choose or validate a topology from GPU utilization alone. Pair utilization with user latency, throughput, communication exposure, and profiler composition. Never use GPU utilization percentage as an autoscaling target.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> GPU utilization is semantically incomplete because communication kernels count as activity. High utilization is not inherently bad; it simply cannot differentiate between useful compute and communication stall.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-amber">Causal: MEDIUM</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp16_pp1_dist 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+
+    <!-- TOP 10: KV HEADROOM != VRAM HEADROOM -->
+    <div class="card" style="border-left:3px solid var(--amber)">
+      <div class="header-row">
+        <div>
+          <span class="badge b-amber mb8">TOP 10 · CAUTIONARY CAPACITY FINDING</span>
+          <div class="card-title">KV Headroom != VRAM Headroom</div>
+          <div class="card-sub">Pipeline Parallelism Dilutes KV% While Base Static VRAM Remains Flat</div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:900;color:var(--amber);margin:6px 0 2px">
+        TP4/PP4 KV% is 2.75% vs TP4/PP1 12.29%, but Total VRAM is Identical (~88.8 GiB)
+      </div>
+      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M Measured Peak KV vs Total Device Allocation</div>
+
+      <div class="table-wrap mb8">
+        <table>
+          <thead>
+            <tr><th>Configuration</th><th>Peak KV Usage (%)</th><th>PP × KV% Invariant</th><th>Peak GPU Memory</th><th>Remaining VRAM Headroom</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>TP4 / PP1</b></td><td>12.29%</td><td>12.29%</td><td>~88.39 GiB</td><td>~8.30 GiB (~8.6%)</td></tr>
+            <tr><td><b>TP4 / PP2</b></td><td>5.91%</td><td>11.82%</td><td>~88.69 GiB</td><td>~8.00 GiB (~8.3%)</td></tr>
+            <tr><td><b>TP4 / PP4</b></td><td>2.75%</td><td>10.99%</td><td>~88.83 GiB</td><td>~7.86 GiB (~8.1%)</td></tr>
+            <tr><td><b>TP16 / PP1</b></td><td>12.13%</td><td>12.13%</td><td>~86.71 GiB</td><td>~9.98 GiB (~10.3%)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
+        <b>WHAT happened:</b> PP partitions layers across stages, dividing the reported KV cache percentage by PP depth (PP × KV% ≈ 11.0–12.3%). However, static model weights and framework allocations consume ~85 GiB regardless of pipeline depth, leaving only ~8 GiB of true headroom on 96 GiB devices.<br/><br/>
+        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Use KV% to understand cache pressure, and use total memory telemetry to understand VRAM headroom. Never substitute one for the other when deciding fit, concurrency, or offload strategy. Never size capacity assuming a 2.75% KV reading implies 97% free memory for batch expansion.</span><br/><br/>
+        <div style="padding:6px;background:rgba(255,200,87,0.06);border:1px solid rgba(255,200,87,0.25);border-radius:4px;font-size:8.5px;color:#ffe4a0">
+          <b>BOUNDARY / WHAT IS NOT PROVEN:</b> Low KV% is not low VRAM use. Do not claim “98% of memory is weights” without exact allocator-level decomposition.
+        </div>
+      </div>
+      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <span class="badge b-green">Evidence: HIGH</span>
+          <span class="badge b-cyan">Telemetry: HIGH</span>
+        </div>
+        <button class="chip" onclick="window.jumpToEvidence('tp4_pp4_dist 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- SECTION 5: MACRO CHARACTERIZATION & DEPLOYMENT DECISION  -->
+  <!-- ======================================================== -->
+  <div class="section-title">
+    <span>🧭 Section 5: Macro Characterization &amp; Deployment Decision Matrix</span>
+    <small>Workload-Scoped Routing · E2E Latency Curves · Capacity Envelopes · Tuning Recipes</small>
+  </div>
 <div class="grid12 mb8">
 <div class="card">
 <div class="header-row"><div><div class="card-title">🧭 Deployment Decision Map</div><div class="card-sub">Workload-scoped guidance only; candidate topology and bottleneck stay blank until evidence exists.</div></div><span class="badge b-cyan"><span class="dot"></span>Decision Intelligence</span></div>
@@ -251,430 +856,6 @@ if (typeof Chart === 'undefined') {
 <div class="card mb8"><div class="header-row"><div><div class="card-title">🚫 What Not To Do</div><div class="card-sub">Promote as measured lessons only when V8 evidence supports them</div></div></div><div class="checklist"><div class="check"><span class="box"></span>Do not choose topology from peak tokens/sec alone.</div><div class="check"><span class="box"></span>Do not call admission success production capacity.</div><div class="check"><span class="box"></span>Do not assume “fits in VRAM” means usable latency.</div><div class="check"><span class="box"></span>Do not assume prefill and decode prefer the same topology.</div><div class="check"><span class="box"></span>Do not extrapolate 128K behavior linearly to 1M.</div><div class="check"><span class="box"></span>Do not extrapolate beyond the measured Native / configured-100G / configured-20G points; do not infer 50G/10G application behavior or local 2×10GbE equivalence without runs.</div><div class="check"><span class="box"></span>Do not infer NCCL/PP causality from E2E latency alone.</div><div class="check"><span class="box"></span>Do not compare unmatched workload conditions.</div><div class="check"><span class="box"></span>Do not use profiler-instrumented latency as normal benchmark latency.</div><div class="check"><span class="box"></span>Do not treat CUTLASS reference as model-kernel efficiency.</div><div class="check"><span class="box"></span>Do not tune scheduler knobs blindly if another subsystem dominates.</div><div class="check"><span class="box"></span>Do not render missing / unresolved evidence as zero.</div></div></div>
 </section>
 <!-- SCALE UP -->
-
-<!-- TOP 10 EXECUTIVE DISCOVERIES TAB -->
-<section class="tabpage" id="top10">
-  <div class="card mb8" style="background:linear-gradient(135deg,rgba(15,31,55,0.98),rgba(10,21,38,0.98));border:1px solid rgba(255,200,87,0.35);padding:14px 16px">
-    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px">
-      <div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="badge b-amber" style="font-size:9px;padding:4px 9px"><span class="dot"></span>TOP 10 EMPIRICAL DISCOVERIES</span>
-          <span class="badge b-cyan" style="font-size:9px;padding:4px 9px">E2E MATRIX VALIDATED</span>
-          <span class="badge b-green" style="font-size:9px;padding:4px 9px">KIMI-LINEAR-48Bsurr</span>
-        </div>
-        <h2 style="font-size:16px;font-weight:900;margin:6px 0 2px;color:#fff;letter-spacing:-0.2px">
-          V8 Executive Deep-Characterization Layer — Defensible Deployment Intelligence
-        </h2>
-        <div style="font-size:10.5px;color:var(--muted);max-width:1200px;line-height:1.4">
-          Every card strictly adheres to the <b>V2 Evidence Contract</b>: separating raw observation from causal mechanism, stating explicit evidence and causal confidence boundaries, and defining the exact production serving decision changed.
-        </div>
-      </div>
-      <div style="text-align:right">
-        <span class="mono" style="font-size:10px;color:var(--dim)">Dual RTX PRO 6000 Blackwell (16× 96GB GPUs)</span><br/>
-        <span class="mono" style="font-size:9px;color:var(--dim)">GCP Native (173.6G) · Capped 100G (56.8G) · Capped 20G (16.5G)</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 1: THREE HERO DISCOVERIES -->
-  <div class="section-title">
-    <span>🌟 Section 1: Three Hero Discoveries — Top-Level Strategic Risks</span>
-    <small>Topology / Fabric Risk · Concurrency / Admission Risk · Subsystem Scaling Shift</small>
-  </div>
-
-  <div class="grid3 mb8">
-    <!-- HERO 1: DISCOVERY 2 - FABRIC EXPOSURE FINGERPRINT -->
-    <div class="card" style="border-top:3px solid var(--red)">
-      <div class="header-row">
-        <div>
-          <span class="badge b-red mb8">HERO #1 · TOP 2 · MEASURED</span>
-          <div class="card-title" style="font-size:12px">Fabric Exposure Fingerprint</div>
-          <div class="card-sub">Topology Dictates Transport Risk Under Bandwidth Caps</div>
-        </div>
-      </div>
-      <div style="margin:8px 0;padding:8px 10px;background:rgba(255,93,115,0.06);border-left:3px solid var(--red);border-radius:4px;font-size:9.5px;font-style:italic;color:#ffb3be">
-        “The same measured fabric constraint has radically different application impact by topology: at 1M, configured-20G changes TP16/PP1 TTFT by ~+276.7%, while TP4/PP4 changes by only ~+3.9%.”
-      </div>
-      <div style="font-size:18px;font-weight:900;color:var(--red);margin:8px 0 4px">
-        +276.7% vs +3.9% TTFT
-      </div>
-      <div style="font-size:9.5px;color:var(--dim);margin-bottom:8px">1M c1 TTFT Degradation Under 20G Network Cap</div>
-
-      <div class="chart short mb8"><canvas id="chart_top10_fabric_exposure"></canvas></div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> At 1M context on GCP_CAPPED_20G, TP16/PP1 TTFT explodes from 68.20s to 256.89s (+276.7% degradation; queue wait 0.022s). Under the exact same 20G cap, TP4/PP4 TTFT moves from 28.57s to 29.68s (+3.89% degradation).<br/><br/>
-        <b>WHERE:</b> Multi-node distributed 128K, 512K, and 1M context on GCP_NATIVE (173.6 Gbps) vs Capped 100G (56.8 Gbps) vs Capped 20G (16.5 Gbps).<br/><br/>
-        <b>WHY (Mechanism):</b> TP16/PP1 executes AllReduce collectives across the VPC network on every attention layer, turning cross-node bandwidth into the direct latency bottleneck. TP4/PP4 confines TP to local PCIe/NUMA and only passes activations point-to-point between pipeline stages.<br/><br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Disallow cross-node TP16 in production unless dedicated ultra-high-speed fabric (≥400 Gbps RoCEv2) is proven. Standardize on TP4/PP4 for multi-node serving.</span>
-      </div>
-
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-cyan">Causal: MED-HIGH</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_pp4_dist 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-
-    <!-- HERO 2: DISCOVERY 3 - CONCURRENCY VALUE DESTRUCTION -->
-    <div class="card" style="border-top:3px solid var(--amber)">
-      <div class="header-row">
-        <div>
-          <span class="badge b-amber mb8">HERO #2 · TOP 3 · MEASURED & DERIVED</span>
-          <div class="card-title" style="font-size:12px">Concurrency Value Destruction</div>
-          <div class="card-sub">Queue Accounting Closure at 1M Extreme Context</div>
-        </div>
-      </div>
-      <div style="margin:8px 0;padding:8px 10px;background:rgba(255,200,87,0.06);border-left:3px solid var(--amber);border-radius:4px;font-size:9.5px;font-style:italic;color:#ffe4a0">
-        “At 1M, added concurrency buys almost no output throughput but destroys user latency. On TP4, c4 adds only ~1.52% output throughput while TTFT becomes 2.48×, TPOT 26.15×, and mean queue reaches ~134.43s.”
-      </div>
-      <div style="font-size:18px;font-weight:900;color:var(--amber);margin:8px 0 4px">
-        +1.52% TPS for 26.15× TPOT
-      </div>
-      <div style="font-size:9.5px;color:var(--dim);margin-bottom:8px">1M TP4/PP1 Closed-Loop c1 → c4 Trade-Off</div>
-
-      <div class="chart short mb8"><canvas id="chart_top10_concurrency_waterfall"></canvas></div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> Moving from c1 to c4 at 1M increases output tokens/s from 0.3415 to 0.3467 (+1.52%). Meanwhile, TTFT balloons from 93.40s to 231.27s (+147.6%), TPOT jumps from 10.23ms to 267.41ms (+2,515%), and mean queue wait reaches 134.43s.<br/><br/>
-        <b>QUEUE ACCOUNTING CLOSURE:</b> Added TTFT (c4 − c1) = 231.27s − 93.40s = <b>137.87s</b>. Measured queue wait = <b>134.43s</b> (<b>97.5%</b> of added TTFT is pure queue residence; preemption delta = 0).<br/><br/>
-        <b>WHY (Mechanism):</b> KV cache remains at only 15.51% (well below OOM limit). The bottleneck is compute-engine saturation under 1M prompt prefill, forcing incoming requests into sequential scheduler queue stalls.<br/><br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Trigger admission shedding from latency/queue SLO thresholds, NEVER wait for KV exhaustion. Strictly cap 1M serving concurrency to c=1 per replica.</span>
-      </div>
-
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-cyan">Queue Causal: HIGH</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_1m_concurrency_extension 1m_c4')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-
-    <!-- HERO 3: DISCOVERY 1 - HYBRID REGIME SHIFT -->
-    <div class="card" style="border-top:3px solid var(--purple)">
-      <div class="header-row">
-        <div>
-          <span class="badge b-purple mb8">HERO #3 · TOP 1 · MEASURED</span>
-          <div class="card-title" style="font-size:12px">Hybrid Resource-Pressure Regime Shift</div>
-          <div class="card-sub">Attention Scales ~N² vs Linear KDA Recurrence & MoE</div>
-        </div>
-      </div>
-      <div style="margin:8px 0;padding:8px 10px;background:rgba(191,140,255,0.06);border-left:3px solid var(--purple);border-radius:4px;font-size:9.5px;font-style:italic;color:#e1c4ff">
-        “Long context changes which subsystem accumulates GPU work fastest: in matched TP4/PP4 profiles, full-attention work grows close to N² from 128K to 512K while KDA and MoE remain approximately N¹.”
-      </div>
-      <div style="font-size:18px;font-weight:900;color:var(--purple);margin:8px 0 4px">
-        21.5% → 44.8% Work Share
-      </div>
-      <div style="font-size:9.5px;color:var(--dim);margin-bottom:8px">FlashAttention Work Scaling: 3.85s (128K) → 32.8s (512K)</div>
-
-      <div class="chart short mb8"><canvas id="chart_top10_hybrid_regime"></canvas></div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> In matched TP4/PP4 profiles, FlashAttention kernel time scales from 3.85s at 128K to 32.8s at 512K (an 8.52× work increase for a 4× token increase). Attention's share of total GPU work jumps from 21.5% to 44.8%, while MoE routing drops from 11.6% to 6.2% and KDA recurrence stays flat at ~2.7%.<br/><br/>
-        <b>WHERE:</b> Multi-node distributed prefill across 128K and 512K context lengths.<br/><br/>
-        <b>WHY (Mechanism):</b> The 20 KDA layers scale linearly O(N), but the 7 full-attention layers scale quadratically O(N²). At extreme context lengths, quadratic attention mathematically overtakes linear recurrence in aggregate GPU workload.<br/><br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Prioritize FlashAttention kernel tuning, chunk budget, and context parallelism for ≥512K; prioritize MoE routing and GEMM/GEMV optimizations for ≤128K.</span>
-      </div>
-
-      <div style="margin-top:10px;padding-top:8px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-amber">Causal: MEDIUM</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_prefill 128k_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 2: DEPLOYMENT LEVERS -->
-  <div class="section-title">
-    <span>🎛 Section 2: Deployment Levers — Operational Knobs with Measured Impact</span>
-    <small>Prefix Reuse Curve · Prompt Admission Rate · Parallelism Elasticity Frontier</small>
-  </div>
-
-  <div class="grid3 mb8">
-    <!-- TOP 4: PREFIX REUSE -->
-    <div class="card">
-      <div class="header-row">
-        <div>
-          <span class="badge b-green mb8">TOP 4 · MEASURED</span>
-          <div class="card-title">Prefix Reuse Changes Scaling Curve</div>
-          <div class="card-sub">Super-Linear Cold → Linear Warm-Hit Latency</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--green);margin:6px 0 2px">
-        14.8× · 27.9× · 36.0× Speedup
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M Repeat TTFT Drops from 94.23s to 2.614s (49.97% Hit Ratio)</div>
-      
-      <div class="chart short mb8"><canvas id="chart_top10_prefix_reuse"></canvas></div>
-
-      <div style="font-size:9px;line-height:1.4;color:#c6d3e3">
-        <b>Finding:</b> In hit-conditioned repeat queries, 128K median TTFT drops from 4.90s to 0.331s (87.3% hit ratio); 512K drops from 32.58s to 1.168s (50.0% hit ratio); 1M drops from 94.23s to 2.614s (50.0% hit ratio).<br/>
-        <b>Decision Changed:</b> <span style="color:var(--green);font-weight:700">Enable prefix caching and configure session-sticky routing at the ingress proxy for multi-turn chat, RAG, and document agents.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <span class="badge b-green">Evidence: HIGH</span>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_prefix1m 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-
-    <!-- TOP 5: PROMPT TOKEN ADMISSION -->
-    <div class="card">
-      <div class="header-row">
-        <div>
-          <span class="badge b-cyan mb8">TOP 5 · DERIVED FINGERPRINT</span>
-          <div class="card-title">Prompt-Token Admission Fingerprint</div>
-          <div class="card-sub">Capacity Normalizes on Input Tokens / Second</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--cyan);margin:6px 0 2px">
-        ~27.5K vs ~24.2K input tok/s
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">8K vs 128K High-Load Accepted Rate (~12% Spread)</div>
-
-      <div style="padding:10px;background:#0a1526;border:1px solid #1f304a;border-radius:6px;margin-bottom:8px">
-        <div style="display:flex;justify-content:space-between;font-size:9px;margin-bottom:4px">
-          <span>8K High-Load RPS: <b>~3.35 req/s</b></span>
-          <span class="mono" style="color:var(--cyan)">× 8,192 tok = <b>27,443 tok/s</b></span>
-        </div>
-        <div style="display:flex;justify-content:space-between;font-size:9px">
-          <span>128K High-Load RPS: <b>~0.185 req/s</b></span>
-          <span class="mono" style="color:var(--purple)">× 131,072 tok = <b>24,248 tok/s</b></span>
-        </div>
-      </div>
-
-      <div style="font-size:9px;line-height:1.4;color:#c6d3e3">
-        <b>Finding:</b> Raw accepted RPS diverges by 18× (3.35 vs 0.185), but total accepted prompt-token ingestion rate differs by only 12%. Hardware compute saturation is governed by input token throughput.<br/>
-        <b>Decision Changed:</b> <span style="color:var(--green);font-weight:700">Set admission rate limits and gateway autoscaling thresholds in total input tokens/sec, not discrete requests/sec.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <span class="badge b-amber">Evidence: MEDIUM</span>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_openloop_8192 1.00x')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-
-    <!-- TOP 6: PARALLELISM ELASTICITY -->
-    <div class="card">
-      <div class="header-row">
-        <div>
-          <span class="badge b-purple mb8">TOP 6 · DERIVED & MEASURED</span>
-          <div class="card-title">Parallelism Directional Elasticity</div>
-          <div class="card-sub">Workload Dictates Parallelism Return (η)</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--purple);margin:6px 0 2px">
-        8K TP η = -0.25 vs 1M PP η = +0.88
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">Elasticity η = ln(Speedup) / ln(GPU Multiplier)</div>
-
-      <div class="chart short mb8"><canvas id="chart_top10_parallelism_elasticity"></canvas></div>
-
-      <div style="font-size:9px;line-height:1.4;color:#c6d3e3">
-        <b>Finding:</b> Doubling TP (TP4→TP8) on 8K yields negative elasticity (η = -0.25; TTFT worsens from 0.222s to 0.263s). In contrast, doubling PP (TP4/PP2→TP4/PP4) on 1M yields near-linear elasticity (η = +0.88; TTFT drops from 52.53s to 28.57s).<br/>
-        <b>Decision Changed:</b> <span style="color:var(--green);font-weight:700">Never scale TP past 4 on single-node short context; scale pipeline parallelism (PP=4) across nodes for long-context workloads.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <span class="badge b-green">Evidence: HIGH</span>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_context_baseline 8k_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 3: LOW-LEVEL CORROBORATION -->
-  <div class="section-title">
-    <span>🔬 Section 3: Low-Level Corroboration — Cross-Tool Hardware & Runtime Evidence</span>
-    <small>4-Layer TP Decode Chain · Runtime Knob Derivatives (max_num_seqs vs Chunk Budget)</small>
-  </div>
-
-  <div class="grid2 mb8">
-    <!-- TOP 7: TP DECODE EVIDENCE CHAIN -->
-    <div class="card">
-      <div class="header-row">
-        <div>
-          <span class="badge b-cyan mb8">TOP 7 · CROSS-VALIDATED (4 LAYERS)</span>
-          <div class="card-title">TP Decode Evidence Chain (Cross-Tool Corroboration)</div>
-          <div class="card-sub">Primitive NCCL → PyTorch Operators → Nsight Traces → End-to-End TPOT</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--cyan);margin:6px 0 2px">
-        1.95× NCCL Barrier Latency → +29.5% End-to-End TPOT Penalty on TP8
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">Corroborated independently across 4 diagnostic instruments</div>
-
-      <div class="table-wrap mb8">
-        <table>
-          <thead>
-            <tr><th>Evidence Layer</th><th>Instrument / Source</th><th>TP4 / PP1</th><th>TP8 / PP1</th><th>Measured Penalty</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><b>Layer A: Primitive</b></td><td>nccl_points.csv (16 KiB AllReduce)</td><td>19.0 μs</td><td>37.0 μs</td><td><b>1.95× latency</b></td></tr>
-            <tr><td><b>Layer B: Operator</b></td><td>PyTorch Profiler (Self CUDA AllReduce)</td><td>2,492 ms</td><td>3,467 ms</td><td><b>1.39× operator time</b></td></tr>
-            <tr><td><b>Layer C: Kernel</b></td><td>Nsight (ncclDevKernel AllReduce avg)</td><td>369.5 μs</td><td>457.8 μs</td><td><b>1.24× kernel duration</b></td></tr>
-            <tr><td><b>Layer D: E2E User</b></td><td>vLLM Serving Benchmark (8K c1 TPOT)</td><td>4.475 ms</td><td>6.350 ms</td><td><b>+29.5% TPOT penalty</b></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> TP8 decode penalty is not a benchmark artifact—it is verified across every software and hardware telemetry layer. Dual-NUMA PCIe cross-socket hops double small-message collective barrier latency.<br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Enforce TP=4 for interactive, latency-critical decode serving. Never configure TP=8 for short-context decode without NVLink/NVSwitch.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-cyan">Causal: MED-HIGH</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_context_baseline 8k_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-
-    <!-- TOP 8: RUNTIME KNOB DERIVATIVE FINGERPRINT -->
-    <div class="card">
-      <div class="header-row">
-        <div>
-          <span class="badge b-amber mb8">TOP 8 · MEASURED SENSITIVITY</span>
-          <div class="card-title">Runtime-Knob Derivative Fingerprint</div>
-          <div class="card-sub">Inert max_num_seqs (&lt;0.05% Δ) vs High-Leverage Chunk Budget (-27.1% TTFT)</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--amber);margin:6px 0 2px">
-        max_num_seqs Δ &lt; 0.05% vs Chunk Budget Δ = -27.1% TTFT
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M Sensitivity Comparison on Validated TP4/PP1 Runs</div>
-
-      <div class="table-wrap mb8">
-        <table>
-          <thead>
-            <tr><th>Tuning Knob</th><th>Tested Values</th><th>Workload State</th><th>Measured Metric Impact</th><th>Tuning Leverage</th></tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><b>max_num_seqs</b></td>
-              <td>4 · 8 · 16</td>
-              <td>1M c4 TP4/PP1</td>
-              <td>TTFT: 232.34s → 232.36s → 232.25s (<b>spread &lt; 0.05%</b>)</td>
-              <td><span class="status s-unres">INERT / NON-BINDING</span></td>
-            </tr>
-            <tr>
-              <td><b>Chunk Token Budget</b></td>
-              <td>4096 · 8192 · 16384</td>
-              <td>1M c1 TP4/PP1</td>
-              <td>TTFT: 122.05s → 93.28s → 88.95s (<b>-27.1% TTFT speedup</b>)</td>
-              <td><span class="status s-completed">HIGH LEVERAGE</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> At 1M c4, scheduler telemetry confirms <code>peak_running = 2</code> and <code>peak_waiting = 3</code>; the configured max_num_seqs ceiling of 4..16 was never reached. Conversely, chunk budget directly governs kernel occupancy and prefill step amortization.<br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Tune chunk budget to 16,384 for maximum prefill throughput; do not spend engineering cycles optimizing max_num_seqs for extreme context.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-cyan">Causal: MED-HIGH</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_chunk16k 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- SECTION 4: MISLEADING OPERATIONAL METRICS -->
-  <div class="section-title">
-    <span>⚠️ Section 4: Misleading Operational Metrics — Fallacies in Infrastructure Telemetry</span>
-    <small>Busy GPU != Efficient Serving · KV Cache Headroom != VRAM Headroom</small>
-  </div>
-
-  <div class="grid2 mb8">
-    <!-- TOP 9: BUSY GPU != EFFICIENT SERVING -->
-    <div class="card" style="border-left:3px solid var(--red)">
-      <div class="header-row">
-        <div>
-          <span class="badge b-red mb8">TOP 9 · CAUTIONARY OPERATIONAL FINDING</span>
-          <div class="card-title">Busy GPU != Efficient Serving</div>
-          <div class="card-sub">High Telemetry Utilization Masks Cross-Node Collective Synchronization Stalls</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--red);margin:6px 0 2px">
-        TP16 at 80.6% GPU Util is 2.39× SLOWER than TP4/PP4 at 62.8% Util
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M c1 Serving Telemetry Comparison</div>
-
-      <div class="grid2 mb8">
-        <div style="padding:10px;background:#0a1526;border:1px solid #1f304a;border-radius:6px">
-          <div style="font-size:10px;font-weight:800;color:var(--green)">TP4 / PP4 (Native Multi-Node)</div>
-          <div style="font-size:18px;font-weight:900;margin:4px 0">TTFT = 28.57 s</div>
-          <div style="font-size:9px;color:var(--muted)">Mean GPU Utilization: <b>62.8%</b></div>
-          <div style="font-size:8.5px;color:var(--dim);margin-top:4px">Healthy pipeline activation exchange; minimal collective synchronization idle time.</div>
-        </div>
-        <div style="padding:10px;background:#0a1526;border:1px solid rgba(255,93,115,0.3);border-radius:6px">
-          <div style="font-size:10px;font-weight:800;color:var(--red)">TP16 / PP1 (Cross-Node TP)</div>
-          <div style="font-size:18px;font-weight:900;color:var(--red);margin:4px 0">TTFT = 68.20 s</div>
-          <div style="font-size:9px;color:var(--muted)">Mean GPU Utilization: <b>80.6%</b></div>
-          <div style="font-size:8.5px;color:var(--dim);margin-top:4px">GPUs spin continuously in NCCL barrier polling, falsely reporting high active work.</div>
-        </div>
-      </div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> nvidia-smi / DCGM reports the percentage of time GPU kernels occupy compute queues. Polling spinning locks during cross-node AllReduce barriers registers as "active GPU", creating the illusion of high compute efficiency while serving 2.39× slower.<br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Never use GPU utilization percentage as an autoscaling target or cluster efficiency metric for distributed LLM inference. Rely strictly on token latency and queue depth.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-amber">Causal: MEDIUM</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp16_pp1_dist 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-
-    <!-- TOP 10: KV HEADROOM != VRAM HEADROOM -->
-    <div class="card" style="border-left:3px solid var(--amber)">
-      <div class="header-row">
-        <div>
-          <span class="badge b-amber mb8">TOP 10 · CAUTIONARY CAPACITY FINDING</span>
-          <div class="card-title">KV Headroom != VRAM Headroom</div>
-          <div class="card-sub">Pipeline Parallelism Dilutes KV% While Base Static VRAM Remains Flat</div>
-        </div>
-      </div>
-      <div style="font-size:16px;font-weight:900;color:var(--amber);margin:6px 0 2px">
-        TP4/PP4 KV% is 2.75% vs TP4/PP1 12.29%, but Total VRAM is Identical (~88.8 GiB)
-      </div>
-      <div style="font-size:9px;color:var(--dim);margin-bottom:8px">1M Measured Peak KV vs Total Device Allocation</div>
-
-      <div class="table-wrap mb8">
-        <table>
-          <thead>
-            <tr><th>Configuration</th><th>Peak KV Usage (%)</th><th>PP × KV% Invariant</th><th>Peak GPU Memory</th><th>Remaining VRAM Headroom</th></tr>
-          </thead>
-          <tbody>
-            <tr><td><b>TP4 / PP1</b></td><td>12.29%</td><td>12.29%</td><td>~88.39 GiB</td><td>~8.30 GiB (~8.6%)</td></tr>
-            <tr><td><b>TP4 / PP2</b></td><td>5.91%</td><td>11.82%</td><td>~88.69 GiB</td><td>~8.00 GiB (~8.3%)</td></tr>
-            <tr><td><b>TP4 / PP4</b></td><td>2.75%</td><td>10.99%</td><td>~88.83 GiB</td><td>~7.86 GiB (~8.1%)</td></tr>
-            <tr><td><b>TP16 / PP1</b></td><td>12.13%</td><td>12.13%</td><td>~86.71 GiB</td><td>~9.98 GiB (~10.3%)</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> PP partitions layers across stages, dividing the reported KV cache percentage by PP depth (PP × KV% ≈ 11.0–12.3%). However, static model weights and framework allocations consume ~85 GiB regardless of pipeline depth, leaving only ~8 GiB of true headroom on 96 GiB devices.<br/>
-        <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Never size serving capacity assuming a 2.75% KV reading implies 97% free memory for batch expansion. Plan cluster memory against total physical VRAM telemetry.</span>
-      </div>
-      <div style="margin-top:8px;padding-top:6px;border-top:1px solid #1f304a;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <span class="badge b-green">Evidence: HIGH</span>
-          <span class="badge b-cyan">Telemetry: HIGH</span>
-        </div>
-        <button class="chip" onclick="window.jumpToEvidence('tp4_pp4_dist 1m_c1')" style="cursor:pointer">Inspect Evidence →</button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <section class="tabpage" id="scaleup">
 <div class="section-title"><span>Single-node Scale-Up — TP4/PP1 ↔ TP8/PP1</span><small>Dimensions: TP · context · concurrency · chunk size · scheduler · KV dtype</small></div>
