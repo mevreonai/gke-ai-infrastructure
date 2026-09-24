@@ -1,0 +1,373 @@
+attaching the results files zip as github access not working, can we validate with this zip file data now?
+Something went wrong. Please try again.
+Yes. With the ZIP, I can now validate this properly against the actual V8 run outputs, not just against the HTML.
+The result is mixed: a large part of the dashboard is legitimate, but several important Executive, Scale-Up, Scheduler/KV and Profiler views are still numerically or semantically wrong. The raw package is actually richer than the dashboard, so the best next step is not to add more guessed visuals—it is to rebuild the questionable plots directly from the canonical JSON/CSV.
+The current HTML itself states that FINAL_VALIDATION is authoritative and that hard-coded frontend arrays are not the source of truth. 
+The biggest finding
+The canonical FINAL_VALIDATION.json says:
+126 coverage rows 
+119 completed 
+7 NOT_RUN 
+0 failed 
+hardware validation = true 
+both-node telemetry = true 
+all required 1M topology × network application points completed 
+distributed profiles complete = 14/22 
+nccl_policy_ok = false 
+profiles_all_complete = false 
+strict_full_coverage = false 
+full_suite_valid = false 
+So the dashboard's current top cards saying “Run Validation PASS” and “NCCL Policy AUDITED” are too strong. 
+I would change that to something like:
+Application run matrix: validatedStrict suite sign-off: incompleteDistributed profiler coverage: 14/22NCCL policy audit: partial/incomplete
+That is much more accurate and still reflects that the campaign produced a large amount of valid evidence.
+
+Most serious correctness problems
+1. 1M concurrency is currently wrong
+The dashboard says:
+TP4/PP4 (c ≤ 2), zero queue at c1/c2, queue 1.45 s at c4.
+That is not what the canonical run summary says, and the c1/c2/c4 experiment is single-node TP4/PP1 and TP8/PP1, not distributed TP4/PP4. 
+From combined_vllm_runs.csv, TP4/PP1 at 1M is approximately:
+Load
+TTFT
+TPOT
+Queue mean
+c1
+93.39 s
+10.23 ms
+~0 s
+c2
+139.37 s
+181.97 ms
+44.34 s
+c4
+231.27 s
+267.41 ms
+134.43 s
+TP8/PP1 shows the same pattern:
+c2 queue ≈ 35.28 s 
+c4 queue ≈ 106.91 s 
+So the collapse begins at c2, not at c4.
+This materially changes the recommendation:
+Do not say “c≤2 viable.”Say “c1 is the clean measured operating point; c2 already exhibits severe queue and TPOT degradation. Production admission must be SLO-driven.”
+
+2. The Executive Capacity curve is not backed by canonical runs
+The current chart includes c32/c48/c64 values such as ~1240–1325 tok/s and a comparable TP8 curve.
+Those points do not exist in the canonical 119-run table in that form.
+The real TP4 closed-loop 8K series is:
+c1 
+c4 
+c8 
+c16 
+c32 
+and the real TP4 c32 output throughput is around 784 tok/s, not 1240.
+There is also no canonical TP8 high-concurrency curve through c32/c48/c64.
+So the current Executive/Scheduler recommendations around:
+c32 safe point 
+c48 knee 
+c64 saturation 
+TP8 1,290 tok/s 
+should be removed until rebuilt from actual runs.
+
+3. Network sensitivity is actually measured
+The dashboard still says bandwidth-cap sensitivity is not measured/deferred. 
+The ZIP proves otherwise.
+At application level, all 36 Scale-Out cells were run across:
+Native 
+configured 100G cap 
+configured 20G cap 
+And at hardware level you also have:
+Native 
+100G 
+50G 
+20G 
+10G 
+This enables one of the best findings in the entire dataset.
+At 1M TTFT, relative to Native:
+Topology
+100G-configured
+20G-configured
+TP4/PP2
++0.13%
++1.14%
+TP8/PP2
+~0%
+~0%
+TP4/PP4
++1.04%
++3.91%
+TP16/PP1
++36.36%
++276.69%
+That is a powerful result:
+network sensitivity is strongly topology-dependent.
+TP16/PP1 is extremely sensitive to constrained fabric; PP-oriented configurations are much more robust in this experiment.
+This deserves a first-class Executive discovery and a heatmap in Scale-Out.
+
+Chart-by-chart status
+I audited all 26 charts against the raw/canonical files.
+Chart
+Status
+Executive TTFT
+🟠 Mostly real, some stale single-node values
+Executive TPOT
+🔴 Mixed valid and unsupported points
+Executive Capacity
+🔴 Legacy / unsupported
+Scale-Up TTFT
+🟠 Mostly real; correct 512K values
+Scale-Up TPOT
+🟠 Some wrong values
+Scale-Up Throughput
+🔴 1M has unit/data error
+Scale-Up Concurrency
+🔴 Unsupported c48/c64 + TP8 curve
+Scale-Up NCCL
+🔴 Interpolated/mislabeled message sizes
+Scale-Out topology comparison
+🟢 Correct
+Scale-Out context scaling
+🟢 Correct values
+Long 1M concurrency TTFT
+🟢 Correct
+Long “scheduler” chart
+🔴 Wrong graph for its title
+Chunk-size TTFT
+🟢 Correct
+FP8 KV
+🟢 Correct NOT_RUN treatment
+Prefix reuse
+🟢 Correct
+CPU Offload
+🔴 Unit error
+Scheduler KV utilization
+🔴 Many values wrong/invented
+Running/waiting
+🟠 Mostly valid if relabeled as peak
+Queue mean
+🔴 Major numerical error
+Preemptions
+🟢 Correct
+max_num_seqs
+🟢 Correct
+Offload bytes
+🟠 Zero not actually measured
+Open-loop 8K
+🟢 Correct
+Profiler kernel categories
+🟠 Real values, wrong interpretation
+Profiler operator chart
+🟠 Real Nsight values, wrong provenance
+Profile completeness
+🔴 Misleading
+The exact detail is in the audit document below.
+
+Scale-Up: what is really supported
+A cleaner matched comparison comes from tp4_context_baseline and tp8_context_baseline.
+TTFT
+Context
+TP4/PP1
+TP8/PP1
+8K
+0.222 s
+0.263 s
+128K
+4.532 s
+4.810 s
+512K
+31.916 s
+28.089 s
+1M
+93.248 s
+74.688 s
+This is a very clean architectural story:
+TP4 leads at short context; TP8 overtakes for long prefill.
+That should be the central Scale-Up message.
+The current 512K 35.8 vs 27.8 figures are stale.
+TPOT
+Matched context-baseline values are approximately:
+TP4: 4.48 / 5.11 / 7.57 / 10.27 ms 
+TP8: 6.35 / 7.10 / 9.46 / 12.10 ms 
+So the current 7.84 vs 8.41 ms claim is not the clean matched context baseline.
+
+Scale-Out is the strongest tab
+The main topology TTFT chart is legitimate.
+Native values:
+Topology
+128K
+512K
+1M
+TP4/PP2
+2.647 s
+17.945 s
+52.526 s
+TP8/PP2
+2.788 s
+15.576 s
+41.515 s
+TP4/PP4
+1.710 s
+10.222 s
+28.568 s
+TP16/PP1
+6.420 s
+29.624 s
+68.197 s
+This chart should absolutely stay.
+But the table immediately below it is stale. For example, it shows TP16 128K TTFT = 3.412 s, whereas canonical Native is 6.420 s. 
+So the chart is more trustworthy than that table.
+
+Scheduler/KV needs substantial rebuilding
+The current Peak KV Usage chart is largely wrong.
+Canonical examples:
+Single-node TP4
+8K: 0.126% 
+128K: 1.633% 
+512K: 6.456% 
+1M: 12.290% 
+Native TP4/PP4
+128K: 0.365% 
+512K: 1.444% 
+1M: 2.748% 
+Native TP16/PP1
+128K: 1.595% 
+512K: 6.362% 
+1M: 12.129% 
+This is actually a great result and should be shown correctly.
+It demonstrates that the runtime KV allocation is much lower per stage for TP4/PP4.
+But be careful: the current dashboard then converts that into “pipeline stage memory = 11.3 / 44.8 / 88.7 GB.” Those are not the measured total GPU memory numbers.
+Actual total GPU memory stays roughly constant per topology because weights dominate:
+TP4/PP2 ≈ 88.69 GiB 
+TP8/PP2 ≈ 87.51 GiB 
+TP4/PP4 ≈ 88.83 GiB 
+TP16/PP1 ≈ 86.71 GiB 
+So V7 should keep separate concepts:
+KV cache utilization %versustotal GPU memory used
+
+Profiler: real data, wrong semantic interpretation
+This is an important nuance.
+The dashboard's:
+46.0% NCCL in prefill 
+86.3% NCCL in decode 
+are real numbers.
+But they are from single-node TP4 Nsight:
+profiles_single_node/tp4_prefill/cuda_gpu_kern_sum.csv
+and
+profiles_single_node/tp4_decode/cuda_gpu_kern_sum.csv.
+They represent:
+share of aggregate GPU kernel time, not request wall-clock critical path.
+The raw PROFILE_ANALYSIS.json explicitly warns:
+aggregate GPU kernel work is NOT wall-clock critical-path time.
+So the existing “Where did the time go?” ledger is too strong.
+For example:
+54% GPU compute + 46% NCCL = full prefill critical path
+is not justified.
+Similarly:
+residual = 0%
+is not defensible.
+A better title would be:
+“TP4/PP1 Aggregate GPU Kernel-Time Composition”
+Then the values are legitimate.
+For true critical-path attribution, you need a timeline-aware join that accounts for:
+parallel streams 
+overlap 
+multiple GPUs 
+NCCL concurrency 
+host gaps 
+pipeline boundaries 
+
+Profile completeness is also overstated
+The dashboard shows 22 captured as:
+14 distributed + 6 Nsight + 2 PyTorch.
+But distributed expected coverage is 22, and only 14 are complete.
+Three Native c8 batched-decode captures are incomplete:
+TP16/PP1: Node1 Nsight missing 
+TP4/PP4: both node reports missing 
+TP8/PP2: Node0 report missing 
+And additional capped profile points expected by the matrix were not all captured.
+So the proper message is:
+Single node: 6 Nsight + 2 PyTorch availableDistributed: 14/22 complete
+Not “22 fully captured profiles.”
+
+Several excellent new plots are available from the ZIP
+These would make V7/V8 much more intelligent.
+1. Network sensitivity heatmap
+Rows = topologyColumns = 128K / 512K / 1MColor = TTFT delta vs NativePanels = configured 100G and configured 20G
+This may be the most insightful new Scale-Out plot.
+2. Configured network cap vs actual measured bandwidth
+Important because:
+configured 100G ≠ achieved 100G 
+measured was roughly 56.8 Gb/s 
+configured 20G ≈ 16.5 Gb/s measured 
+Hardware also has 50G and 10G sensitivity.
+This avoids misleading labels.
+3. 1M SLO degradation dashboard
+For TP4 and TP8 show:
+TTFT 
+TPOT 
+queue 
+KV % 
+preemptions 
+for c1/c2/c4.
+This makes the real bottleneck obvious:
+latency and queue collapse while memory remains healthy.
+4. Prefix-reuse scaling
+You actually have prefix experiments at:
+128K 
+512K 
+1M 
+Not just 1M.
+Examples:
+128K: ~4.53 s baseline → ~0.90 s prefix case 
+512K: ~31.92 s → ~16.87 s 
+1M: ~93.39 s → ~48.35 s 
+Add hit/query counters next to it.
+5. 128K open-loop curve
+The dashboard only shows 8K open-loop.
+Raw data also has 128K open-loop, which shows a much sharper capacity cliff and is very relevant to long-context serving.
+6. Closed-loop vs open-loop separated
+Do not mix these.
+Show:
+Closed loop: concurrency c1/c4/c8/c16/c32Open loop: offered RPS
+This solves a lot of the current capacity confusion.
+7. Profiler coverage matrix
+22 expected cells with:
+topology 
+workload 
+network 
+Node0 
+Node1 
+complete/incomplete 
+Much more honest than seven 100% bars.
+
+My recommendation for V7 now
+The V7 concept we discussed remains right, but the data layer needs one stricter rule:
+No manually maintained numerical Chart.js arrays.
+Every chart should be generated from a normalized data object produced from:
+FINAL_VALIDATION.json 
+coverage.json 
+combined_vllm_runs.json 
+hardware_processed/summary.json 
+NCCL_POLICY_AUDIT.json 
+SCALEOUT_TELEMETRY_AUDIT.json 
+per-profile PROFILE_VALIDATION.json 
+raw profile CSV only for profile-specific views 
+That would prevent the exact drift we're seeing now.
+The current dashboard already says every result should preserve configuration identity and evidence lineage. The implementation now needs to follow that contract literally.
+Full deep audit
+I created a detailed 603-line audit covering:
+campaign validation 
+Executive 
+Scale-Up 
+Scale-Out 
+Long Context 
+Scheduler/KV 
+Profiler 
+Evidence 
+all 26 charts 
+exact replacement values 
+missing views available from the ZIP 
+publication gates 
+Download the full V8 raw-data dashboard audit
+The strongest overall story I would make V7 communicate is:
+TP4/PP4 leads long-context distributed c1; topology—not just bandwidth—determines network sensitivity; TP4 vs TP8 preference flips with workload phase; 1M memory fit is not the problem, concurrency queue/latency is; and prefix reuse is one of the clearest production optimizations in the dataset.

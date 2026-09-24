@@ -1,0 +1,70 @@
+{
+  "meta": {
+    "source": "rtx_g4_smoke_v5/02_v6_production_suite/multi_node_distributed/summary/MULTI_NODE_SUMMARY.md",
+    "provenance": "current UI value pending raw production validation",
+    "hardware": "16 x NVIDIA RTX 6000 Ada (GCP us-central1-b)",
+    "disclaimer": "Evaluated on GCP VPC TCP interconnect, not local NVLink/InfiniBand fabrics"
+  },
+  "rows": [
+    {
+      "row_id": "tp4_pp4_dist::128k_c1",
+      "case": "tp4_pp4_dist",
+      "bench": "128k_c1",
+      "topology": "TP4 / PP4",
+      "input_tokens": 131072,
+      "concurrency": 1,
+      "ttft_ms": 1723.66,
+      "tpot_ms": 5.53,
+      "output_tok_s": 30.89,
+      "inter_node_traffic_gb_s": 1.2,
+      "evidence_class": "MEASURED-48B",
+      "network_evidence_class": "MEASURED-GCP-HW",
+      "provenance": "current UI value pending raw production validation"
+    },
+    {
+      "row_id": "tp4_pp2_dist::128k_c1",
+      "case": "tp4_pp2_dist",
+      "bench": "128k_c1",
+      "topology": "Forced TP4 / PP2",
+      "input_tokens": 131072,
+      "concurrency": 1,
+      "ttft_ms": 2646.62,
+      "tpot_ms": 5.43,
+      "output_tok_s": 21.41,
+      "inter_node_traffic_gb_s": 8.6,
+      "evidence_class": "MEASURED-48B",
+      "network_evidence_class": "MEASURED-GCP-HW",
+      "provenance": "current UI value pending raw production validation"
+    },
+    {
+      "row_id": "tp8_pp2_dist::128k_c1",
+      "case": "tp8_pp2_dist",
+      "bench": "128k_c1",
+      "topology": "TP8 / PP2",
+      "input_tokens": 131072,
+      "concurrency": 1,
+      "ttft_ms": 2817.62,
+      "tpot_ms": 7.47,
+      "output_tok_s": 19.46,
+      "inter_node_traffic_gb_s": 2.4,
+      "evidence_class": "MEASURED-48B",
+      "network_evidence_class": "MEASURED-GCP-HW",
+      "provenance": "current UI value pending raw production validation"
+    },
+    {
+      "row_id": "tp16_pp1_dist::128k_c1",
+      "case": "tp16_pp1_dist",
+      "bench": "128k_c1",
+      "topology": "TP16 / PP1",
+      "input_tokens": 131072,
+      "concurrency": 1,
+      "ttft_ms": 6024.89,
+      "tpot_ms": 11.35,
+      "output_tok_s": 9.49,
+      "inter_node_traffic_gb_s": 22.4,
+      "evidence_class": "MEASURED-48B",
+      "network_evidence_class": "MEASURED-GCP-HW",
+      "provenance": "current UI value pending raw production validation"
+    }
+  ]
+}

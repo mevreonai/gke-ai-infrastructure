@@ -45,74 +45,13 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 .table-wrap{overflow-x:auto}
 .takeaway-box{margin-top:8px;padding:9px 11px;border:1px solid #24415f;border-radius:6px;background:#0c1728;color:#cbd5e1;font-size:10px;line-height:1.45}
 .mini-panel{border:1px solid var(--border,#22324a);background:#0c1423;border-radius:6px;padding:9px;font-size:10px;line-height:1.45;color:#cbd5e1}
-
-/* V5 — decision-impact layer */
-.impact-strip{display:grid;grid-template-columns:1.25fr .75fr;gap:8px;margin:8px 0}
-.impact-hero{border:1px solid rgba(66,201,255,.28);background:
- linear-gradient(135deg,rgba(66,201,255,.09),rgba(191,140,255,.055) 55%,rgba(57,217,138,.045));
- border-radius:11px;padding:11px 12px;box-shadow:0 8px 22px rgba(0,0,0,.13)}
-.impact-kicker{font-size:7px;text-transform:uppercase;letter-spacing:.65px;color:var(--cyan);font-weight:900}
-.impact-title{font-size:15px;font-weight:920;line-height:1.15;margin:3px 0 5px}
-.impact-copy{font-size:9px;color:#b8c8dc;line-height:1.5}
-.impact-copy strong{color:#fff}
-.impact-side{border:1px solid rgba(255,200,87,.24);background:rgba(255,200,87,.045);border-radius:11px;padding:10px 11px}
-.impact-side .big{font-size:11px;font-weight:900;color:var(--amber);margin-bottom:4px}
-.impact-side .small{font-size:8px;color:var(--muted);line-height:1.45}
-.answer-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.answer-card{border:1px solid #253957;background:#0a1629;border-radius:9px;padding:8px;min-height:112px}
-.answer-card .q{font-size:7px;color:var(--dim);font-weight:900;text-transform:uppercase;letter-spacing:.35px}
-.answer-card .w{font-size:9px;font-weight:900;margin:3px 0 4px}
-.answer-card .ans{font-size:10px;color:var(--cyan);font-weight:900;line-height:1.2}
-.answer-card .why{font-size:7.5px;color:#9fb1c8;line-height:1.35;margin-top:4px}
-.answer-card .evidence{font-size:6.8px;color:#7085a1;margin-top:5px}
-.decision-funnel{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;align-items:stretch}
-.funnel-step{border:1px solid #243854;background:#0a1527;border-radius:8px;padding:7px;position:relative}
-.funnel-step:not(:last-child)::after{content:"→";position:absolute;right:-7px;top:38%;color:#617895;font-weight:900;z-index:2}
-.funnel-step b{display:block;font-size:7px;color:var(--cyan);text-transform:uppercase;letter-spacing:.3px;margin-bottom:3px}
-.funnel-step span{font-size:7.5px;color:#b6c5d7;line-height:1.25}
-.readiness{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
-.read-step{border:1px solid #243854;background:#091527;border-radius:8px;padding:7px}
-.read-step .n{font-size:7px;color:var(--dim);font-weight:900}.read-step .t{font-size:9px;font-weight:900;margin:2px 0}.read-step .d{font-size:7px;color:#91a4bc;line-height:1.25}
-.read-step.active{border-color:rgba(66,201,255,.38);background:rgba(66,201,255,.055)}
-.read-step.warn{border-color:rgba(255,200,87,.30);background:rgba(255,200,87,.04)}
-.question-banner{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;border:1px solid rgba(191,140,255,.22);background:rgba(191,140,255,.045);border-radius:9px;padding:7px 9px;margin-bottom:8px}
-.question-banner .left strong{font-size:9px}.question-banner .left div{font-size:7.5px;color:#aebed2;margin-top:2px}
-.question-banner .outcome{font-size:7px;color:var(--purple);font-weight:900;text-transform:uppercase;text-align:right}
-.question-banner .outcome span{display:block;color:#d4c0ff;font-size:8px;text-transform:none;margin-top:2px}
-.discovery-card{border-left:3px solid var(--cyan);padding-left:9px}
-.discovery-card.amber{border-left-color:var(--amber)}.discovery-card.green{border-left-color:var(--green)}.discovery-card.red{border-left-color:var(--red)}
-.discovery-title{font-size:8px;color:var(--muted);font-weight:900;text-transform:uppercase}
-.discovery-msg{font-size:10px;font-weight:900;margin:2px 0 3px;line-height:1.25}
-.discovery-how{font-size:7.5px;color:#99abc2;line-height:1.35}
-.compare-matrix{display:grid;grid-template-columns:1.1fr repeat(4,1fr);border:1px solid #243750;border-radius:8px;overflow:hidden}
-.compare-matrix>div{padding:6px;border-right:1px solid #1e3049;border-bottom:1px solid #1e3049;font-size:7.5px}
-.compare-matrix>div:nth-child(5n){border-right:none}.compare-matrix .head{background:#0a1628;color:#91a6c0;font-size:6.8px;font-weight:900;text-transform:uppercase}
-.compare-matrix .rowlab{font-weight:850;color:#c3d2e4}.compare-matrix .cell{color:#7890ad}.compare-matrix .lead{color:var(--cyan);font-weight:850}
-.callout{border:1px solid rgba(66,201,255,.22);background:rgba(66,201,255,.04);border-radius:8px;padding:7px 8px;font-size:7.7px;color:#afc0d5;line-height:1.4}
-.callout strong{color:var(--cyan)}
-.callout.warn{border-color:rgba(255,200,87,.25);background:rgba(255,200,87,.04)}.callout.warn strong{color:var(--amber)}
-.callout.red{border-color:rgba(255,93,115,.25);background:rgba(255,93,115,.04)}.callout.red strong{color:var(--red)}
-.recipe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
-.recipe{border:1px solid #243854;border-radius:9px;background:#0a1628;padding:8px}
-.recipe .name{font-size:9px;font-weight:900}.recipe .goal{font-size:7px;color:var(--cyan);margin:2px 0 5px}
-.recipe .row{font-size:7.4px;color:#9db0c9;line-height:1.35;margin:2px 0}.recipe .row b{color:#d2dfef}
-.mini-ledger{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
-.ledger-cell{border:1px solid #243854;border-radius:7px;background:#091526;padding:6px}
-.ledger-cell .l{font-size:6.5px;color:var(--dim);font-weight:900;text-transform:uppercase}
-.ledger-cell .v{font-size:9px;color:#cbd8e7;font-weight:900;margin-top:2px}
-.evidence-flow{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;align-items:center}
-.evidence-node{border:1px solid #29405f;background:#0a1628;border-radius:8px;padding:7px;text-align:center;min-height:54px;display:grid;place-items:center;font-size:7.5px;color:#bfd0e4;font-weight:800;position:relative}
-.evidence-node:not(:last-child)::after{content:"→";position:absolute;right:-8px;color:#68809d;font-weight:1000}
-.pill-row{display:flex;gap:5px;flex-wrap:wrap}.pill{padding:3px 6px;border:1px solid #29405f;border-radius:999px;font-size:6.7px;color:#9eb2ca;background:#091526}
-.pill.good{color:var(--green);border-color:rgba(57,217,138,.3)}.pill.warn{color:var(--amber);border-color:rgba(255,200,87,.3)}.pill.bad{color:var(--red);border-color:rgba(255,93,115,.3)}
-@media(max-width:1300px){.answer-grid,.recipe-grid{grid-template-columns:repeat(2,1fr)}.decision-funnel{grid-template-columns:repeat(3,1fr)}.impact-strip{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
 <div class="shell">
 <div class="topbar">
 <div>
-<div class="brandline"><div class="brandmark">V5</div><div><h1>V8-FULL Native Dashboard — Decision-Intelligence Mockup v5</h1><div class="subtitle">Deployment decision system · Kimi-Linear-48B-A3B-Instruct <b>BF16-weight baseline</b> · RTX PRO 6000 Blackwell Server Edition · <b>GCP_NATIVE only</b></div></div></div>
+<div class="brandline"><div class="brandmark">V8</div><div><h1>V8-FULL Characterization Dashboard — Native-Only Decision-Intelligence Mockup v4</h1><div class="subtitle">Evidence-backed deployment decision UI · Kimi-Linear-48B-A3B-Instruct BF16 surrogate · RTX PRO 6000 Blackwell Server Edition · <b>GCP_NATIVE only</b></div></div></div>
 </div>
 <div class="topright">
 <div class="scope-line">
@@ -128,23 +67,6 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="preview-banner">
 <div><strong>UI CONTRACT PREVIEW — NO V8 RESULT TREE LOADED.</strong> Numeric metric fields are intentionally blank. Planned-scope counts are shown only where explicitly defined by the V8 native-only dashboard contract.</div>
 <div class="right">Bandwidth-cap sensitivity: <b style="color:var(--red)">NOT MEASURED / UNRESOLVED</b><br/>100G / 50G / 20G / 10G were not executed in this campaign.</div>
-</div><div class="impact-strip">
-<div class="impact-hero">
-<div class="impact-kicker">V5 message</div>
-<div class="impact-title">From benchmark dashboard → deployment decision system</div>
-<div class="impact-copy">
-      The first question is no longer “what was fastest?” It is:
-      <strong>for my workload and SLO, which measured configuration should I investigate, what becomes the first limiter, and what evidence proves it?</strong>
-      V5 makes that answer visible before the user dives into individual charts.
-    </div>
-</div>
-<div class="impact-side">
-<div class="big">Current campaign boundary</div>
-<div class="small">
-      V8 network-dependent evidence is <b>GCP_NATIVE only</b>. Bandwidth-cap sensitivity and equivalence to the local 2×10GbE cluster remain
-      <b>UNRESOLVED</b>. The current surrogate baseline uses <b>BF16 model weights</b>; alternate weight formats are a future campaign dimension, not a V8 result.
-    </div>
-</div>
 </div>
 <div class="tabs">
 <button class="tab active" data-tab="executive">🏛 Executive</button>
@@ -224,60 +146,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="header-row"><div><div class="card-title">🎯 TPOT vs Context</div><div class="card-sub">Decode behavior separated from prefill · series labeled with full TP/PP configuration</div></div><span class="badge b-purple"><span class="dot"></span>MEASURED-48B</span></div><div class="chart"><div class="axis-y">TPOT</div><div class="axis-x"><span>8K</span><span>128K</span><span>512K</span><span>1M</span></div><div class="chart-watermark"><div><strong>Awaiting validated V8 data</strong>Topology is workload-dependent</div></div></div><div class="analysis"><div><b>Observation</b><span class="placeholder">literal result</span></div><div><b>Interpretation</b><span class="placeholder">not causality by default</span></div><div><b>Implication</b><span class="placeholder">SLO scoped</span></div><div><b>Next evidence</b><span class="placeholder">decode profile</span></div><div><b>Evidence</b><span class="placeholder">manifest + row</span></div></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">⚖ Capacity / SLO Envelope</div><div class="card-sub">Throughput vs TTFT/TPOT/queue knee</div></div><span class="badge b-amber"><span class="dot"></span>DERIVED</span></div><div class="chart"><div class="axis-y">Throughput / latency</div><div class="axis-x"><span>low load</span><span>capacity knee</span><span>high load</span></div><div class="chart-watermark"><div><strong>Awaiting closed/open-loop evidence</strong>Do not call this “max users”</div></div></div><div class="analysis"><div><b>Observation</b><span class="placeholder">measured load points</span></div><div><b>Interpretation</b><span class="placeholder">knee after data</span></div><div><b>Implication</b><span class="placeholder">admission control</span></div><div><b>Next evidence</b><span class="placeholder">open-loop where executed</span></div><div><b>Evidence</b><span class="placeholder">queue + TTFT + TPOT</span></div></div></div>
 </div>
-<div class="section-title"><span>Decision-Intelligence Outputs</span><small>These views turn validated V8 evidence into deployment guidance — no ranking without workload/SLO scope</small></div><div class="question-banner">
-<div class="left"><strong>What should I run for this workload, and how confident is that answer?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Workload → SLO → measured config → limiter → action</span></div>
-</div><div class="card mb8" id="v5-60-second-deployment-brief">
-<div class="header-row">
-<div>
-<div class="card-title">⚡ 60-Second Deployment Brief</div>
-<div class="card-sub">These are the six decisions an operator should understand before opening a detailed chart. Values remain post-run until validated V8 evidence is loaded.</div>
-</div>
-<span class="badge b-cyan"><span class="dot"></span>Decision-first</span>
-</div>
-<div class="answer-grid">
-<div class="answer-card"><div class="q">Interactive decode</div><div class="w">Lowest TPOT under SLO</div><div class="ans">post-run config</div><div class="why">Show whether narrower or wider TP is favored during decode and what synchronization/launch cost explains it.</div><div class="evidence">Bench + decode Nsight + local NCCL</div></div>
-<div class="answer-card"><div class="q">Long-prompt c1</div><div class="w">Lowest TTFT</div><div class="ans">post-run config</div><div class="why">Expose where extra TP compute scaling overtakes communication overhead, if it does.</div><div class="evidence">Prefill bench + Nsight + HW ceiling</div></div>
-<div class="answer-card"><div class="q">512K serving</div><div class="w">Latency + memory + queue</div><div class="ans">post-run config</div><div class="why">Do not select on TTFT alone; surface TPOT, queue, KV and preemption together.</div><div class="evidence">Matched run + telemetry + profile</div></div>
-<div class="answer-card"><div class="q">1M single request</div><div class="w">Fit + finish + latency</div><div class="ans">post-run config</div><div class="why">A successful admission is only step one; the dashboard must show whether completion and latency are usable.</div><div class="evidence">1M run + engine status + KV</div></div>
-<div class="answer-card"><div class="q">1M concurrent</div><div class="w">Admission / capacity knee</div><div class="ans">post-run limit</div><div class="why">Find where additional load stops producing useful throughput and instead grows queue/TPOT.</div><div class="evidence">c1/c2/c4 + open-loop if executed</div></div>
-<div class="answer-card"><div class="q">2-node native</div><div class="w">Topology by context</div><div class="ans">post-run topology</div><div class="why">Compare TP4/PP2 · TP8/PP2 · TP4/PP4 · TP16/PP1 without assuming PP or TP superiority.</div><div class="evidence">Scale-out bench + distributed Nsight + placement</div></div>
-</div>
-</div><div class="card mb8" id="v5-decision-funnel">
-<div class="card-title">🧭 Decision Funnel — How a User Should Read V5</div>
-<div class="card-sub">The dashboard should move from objective to evidence, not from chart to chart.</div>
-<div class="decision-funnel" style="margin-top:7px">
-<div class="funnel-step"><b>1 · Workload</b><span>8K decode · 128K/512K prefill · 1M · open-loop</span></div>
-<div class="funnel-step"><b>2 · SLO</b><span>TTFT · TPOT · throughput · queue · memory</span></div>
-<div class="funnel-step"><b>3 · Candidate</b><span>Exact TP/PP + runtime identity</span></div>
-<div class="funnel-step"><b>4 · Limiter</b><span>GPU · TP · PP · PCIe/offload · scheduler · CPU</span></div>
-<div class="funnel-step"><b>5 · Action</b><span>Topology · admission · scheduler · KV · placement</span></div>
-<div class="funnel-step"><b>6 · Proof</b><span>Run row · trace · telemetry · raw artifact</span></div>
-</div>
-</div><div class="grid2 mb8">
-<div class="card">
-<div class="card-title">🧬 Current V8 Model / Precision Identity</div>
-<div class="card-sub">Prevents a user from confusing KV-cache precision with model-weight precision.</div>
-<div class="mini-ledger" style="margin-top:7px">
-<div class="ledger-cell"><div class="l">Model</div><div class="v">Kimi-Linear-48B-A3B</div></div>
-<div class="ledger-cell"><div class="l">Weights</div><div class="v">BF16 baseline</div></div>
-<div class="ledger-cell"><div class="l">KV cache</div><div class="v">case-specific</div></div>
-<div class="ledger-cell"><div class="l">Network</div><div class="v">GCP_NATIVE</div></div>
-</div>
-<div class="callout warn" style="margin-top:7px"><strong>Precision guardrail:</strong> FP8-KV changes the KV cache, not the BF16 checkpoint. MXFP4/NVFP4 weight-format comparison belongs to a future matched campaign and must not be presented as measured V8 evidence.</div>
-</div>
-<div class="card">
-<div class="card-title">🧾 Decision Readiness / Evidence Health</div>
-<div class="card-sub">A recommendation is publishable only when the required evidence chain is complete.</div>
-<div class="readiness" style="margin-top:7px">
-<div class="read-step active"><div class="n">01</div><div class="t">Run</div><div class="d">status + exact tokens</div></div>
-<div class="read-step active"><div class="n">02</div><div class="t">Metrics</div><div class="d">TTFT/TPOT/TPS/queue</div></div>
-<div class="read-step"><div class="n">03</div><div class="t">Telemetry</div><div class="d">KV/GPU/CPU/network</div></div>
-<div class="read-step"><div class="n">04</div><div class="t">Trace</div><div class="d">causal confidence</div></div>
-<div class="read-step warn"><div class="n">05</div><div class="t">Decision</div><div class="d">scoped + reproducible</div></div>
-</div>
-</div>
-</div><div class="card mb8" id="global-config-identity-rule">
+<div class="section-title"><span>Decision-Intelligence Outputs</span><small>These views turn validated V8 evidence into deployment guidance — no ranking without workload/SLO scope</small></div><div class="card mb8" id="global-config-identity-rule">
 <div class="card-title">🏷 Configuration Identity Convention — Applies to Every Tab</div>
 <div class="card-sub">A result is not identified by “TP4” or “TP8” alone. Visible chart labels must carry TP/PP; the Evidence key carries the full runtime configuration.</div>
 <div class="grid2">
@@ -302,38 +171,11 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="header-row"><div><div class="card-title">🧩 Bottleneck Regime Map</div><div class="card-sub">No bottleneck label without DIRECT_MEASURED / TIMELINE_ATTRIBUTED / DERIVED evidence</div></div></div><div class="table-wrap"><table><thead><tr><th>Context</th><th>Load</th><th>Phase</th><th>Supporting evidence</th><th>Bottleneck classification</th><th>Confidence</th></tr></thead><tbody><tr><td>8K</td><td>post-run</td><td>decode / mixed</td><td>—</td><td><span class="status s-unknown">UNKNOWN</span></td><td>—</td></tr><tr><td>128K</td><td>post-run</td><td>prefill / mixed</td><td>—</td><td><span class="status s-unknown">UNKNOWN</span></td><td>—</td></tr><tr><td>512K</td><td>post-run</td><td>prefill / mixed</td><td>—</td><td><span class="status s-unknown">UNKNOWN</span></td><td>—</td></tr><tr><td>1M</td><td>c1/c2/c4</td><td>prefill / mixed</td><td>—</td><td><span class="status s-unknown">UNKNOWN</span></td><td>—</td></tr></tbody></table></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">🗂 Deployment Recipe Card</div><div class="card-sub">Generated per workload after V8 evidence validation</div></div><span class="badge b-amber"><span class="dot"></span>WORKLOAD-SCOPED</span></div><div class="table-wrap"><table><tbody><tr><td><b>Workload / SLO</b></td><td class="unknown">post-run selection</td></tr><tr><td><b>Measured regime</b></td><td class="unknown">prefill / decode / mixed</td></tr><tr><td><b>Candidate topology</b></td><td class="unknown">evidence-backed candidate(s)</td></tr><tr><td><b>Native fabric behavior</b></td><td class="unknown">measured; bandwidth sensitivity unresolved</td></tr><tr><td><b>Primary limiter</b></td><td class="unknown">only with supporting evidence</td></tr><tr><td><b>Memory / KV state</b></td><td class="unknown">post-run</td></tr><tr><td><b>Settings that matter</b></td><td class="unknown">sensitivity table</td></tr><tr><td><b>Low-sensitivity settings</b></td><td class="unknown">avoid unnecessary tuning</td></tr><tr><td><b>Production validation</b></td><td class="unknown">remaining gap</td></tr><tr><td><b>Evidence</b></td><td class="unknown">run IDs + profile IDs + raw artifacts</td></tr></tbody></table></div></div>
 </div>
-<div class="card mb8" id="v5-recipe-cards">
-<div class="card-title">🗂 Deployment Recipe Cards — Final Outcome Format</div>
-<div class="card-sub">Each recipe becomes populated only after evidence validation; this is the intended operator-facing outcome.</div>
-<div class="recipe-grid" style="margin-top:7px">
-<div class="recipe"><div class="name">Interactive decode</div><div class="goal">Minimize TPOT under TTFT SLO</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Admission:</b> post-run</div><div class="row"><b>First limiter:</b> post-run</div><div class="row"><b>Trade-off:</b> throughput / sync</div></div>
-<div class="recipe"><div class="name">Long-prompt c1</div><div class="goal">Minimize TTFT</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Context:</b> 128K/512K/1M</div><div class="row"><b>First limiter:</b> post-run</div><div class="row"><b>Confidence:</b> post-run</div></div>
-<div class="recipe"><div class="name">512K serving</div><div class="goal">Latency + queue + KV</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Concurrency:</b> post-run</div><div class="row"><b>KV state:</b> post-run</div><div class="row"><b>Trade-off:</b> post-run</div></div>
-<div class="recipe"><div class="name">1M c1</div><div class="goal">Fit + finish + useful TTFT</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Memory:</b> post-run</div><div class="row"><b>Runtime:</b> post-run</div><div class="row"><b>Boundary:</b> c1 only?</div></div>
-<div class="recipe"><div class="name">1M concurrent</div><div class="goal">SLO-safe admission</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Knee:</b> post-run</div><div class="row"><b>Queue:</b> post-run</div><div class="row"><b>Policy:</b> post-run</div></div>
-<div class="recipe"><div class="name">2-node native</div><div class="goal">Best measured topology by context</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Fabric:</b> GCP_NATIVE</div><div class="row"><b>Mechanism:</b> trace-backed</div><div class="row"><b>Gap:</b> cap sensitivity unresolved</div></div>
-</div>
-</div><div class="card mb8"><div class="header-row"><div><div class="card-title">🚫 What Not To Do</div><div class="card-sub">Promote as measured lessons only when V8 evidence supports them</div></div></div><div class="checklist"><div class="check"><span class="box"></span>Do not choose topology from peak tokens/sec alone.</div><div class="check"><span class="box"></span>Do not call admission success production capacity.</div><div class="check"><span class="box"></span>Do not assume “fits in VRAM” means usable latency.</div><div class="check"><span class="box"></span>Do not assume prefill and decode prefer the same topology.</div><div class="check"><span class="box"></span>Do not extrapolate 128K behavior linearly to 1M.</div><div class="check"><span class="box"></span>Do not infer bandwidth sensitivity from a native-only campaign.</div><div class="check"><span class="box"></span>Do not infer NCCL/PP causality from E2E latency alone.</div><div class="check"><span class="box"></span>Do not compare unmatched workload conditions.</div><div class="check"><span class="box"></span>Do not use profiler-instrumented latency as normal benchmark latency.</div><div class="check"><span class="box"></span>Do not treat CUTLASS reference as model-kernel efficiency.</div><div class="check"><span class="box"></span>Do not tune scheduler knobs blindly if another subsystem dominates.</div><div class="check"><span class="box"></span>Do not render missing / unresolved evidence as zero.</div></div></div>
+<div class="card mb8"><div class="header-row"><div><div class="card-title">🚫 What Not To Do</div><div class="card-sub">Promote as measured lessons only when V8 evidence supports them</div></div></div><div class="checklist"><div class="check"><span class="box"></span>Do not choose topology from peak tokens/sec alone.</div><div class="check"><span class="box"></span>Do not call admission success production capacity.</div><div class="check"><span class="box"></span>Do not assume “fits in VRAM” means usable latency.</div><div class="check"><span class="box"></span>Do not assume prefill and decode prefer the same topology.</div><div class="check"><span class="box"></span>Do not extrapolate 128K behavior linearly to 1M.</div><div class="check"><span class="box"></span>Do not infer bandwidth sensitivity from a native-only campaign.</div><div class="check"><span class="box"></span>Do not infer NCCL/PP causality from E2E latency alone.</div><div class="check"><span class="box"></span>Do not compare unmatched workload conditions.</div><div class="check"><span class="box"></span>Do not use profiler-instrumented latency as normal benchmark latency.</div><div class="check"><span class="box"></span>Do not treat CUTLASS reference as model-kernel efficiency.</div><div class="check"><span class="box"></span>Do not tune scheduler knobs blindly if another subsystem dominates.</div><div class="check"><span class="box"></span>Do not render missing / unresolved evidence as zero.</div></div></div>
 </section>
 <!-- SCALE UP -->
 <section class="tabpage" id="scaleup">
-<div class="section-title"><span>Single-node Scale-Up — TP4/PP1 ↔ TP8/PP1</span><small>Dimensions: TP · context · concurrency · chunk size · scheduler · KV dtype</small></div><div class="question-banner">
-<div class="left"><strong>When does TP4/PP1 beat TP8/PP1 — and is the difference prefill, decode, or batching?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Single-node topology choice by workload phase</span></div>
-</div><div class="grid3 mb8">
-<div class="card discovery-card">
-<div class="discovery-title">Discovery 1</div><div class="discovery-msg">Prefill and decode may prefer different TP widths.</div>
-<div class="discovery-how">Put TTFT and TPOT side-by-side so the user sees workload phase, not a single “winner”.</div>
-</div>
-<div class="card discovery-card green">
-<div class="discovery-title">Discovery 2</div><div class="discovery-msg">The useful crossover is workload/SLO-specific.</div>
-<div class="discovery-how">Annotate only measured context points; any fitted crossover remains DERIVED.</div>
-</div>
-<div class="card discovery-card amber">
-<div class="discovery-title">Discovery 3</div><div class="discovery-msg">Hardware headroom explains whether more TP can still help.</div>
-<div class="discovery-how">Pair application TTFT/TPOT with memory/BW/NCCL ceilings rather than showing latency alone.</div>
-</div>
-</div>
+<div class="section-title"><span>Single-node Scale-Up — TP4/PP1 ↔ TP8/PP1</span><small>Dimensions: TP · context · concurrency · chunk size · scheduler · KV dtype</small></div>
 <div class="card mb8" id="scaleup-config-identity">
 <div class="card-title">⚙ Exact Configuration Identity — Single-Node Scale-Up</div>
 <div class="card-sub">The V8 Scale-Up matrix is single-node. Always show the full TP/PP identity on charts and legends.</div>
@@ -367,17 +209,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="header-row"><div><div class="card-title">TTFT / TPOT vs Concurrency</div></div></div><div class="chart short"><div class="chart-watermark"><div><strong>Awaiting V8 metrics</strong>Only contexts where matrix exists</div></div></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">Local TP4/PP1 vs TP8/PP1 NCCL Correlation</div><div class="card-sub">Native hardware evidence only</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="chart short"><div class="chart-watermark"><div><strong>Awaiting hardware_processed/*</strong>No forced-P2P rows in native series</div></div></div></div>
 </div>
-<div class="card mb8" id="v5-scaleup-phase-map">
-<div class="card-title">🧭 Prefill ↔ Decode Topology Trade-off Map</div>
-<div class="card-sub">The user should immediately see whether the topology ordering changes by phase or context.</div>
-<div class="compare-matrix" style="margin-top:7px">
-<div class="head">Workload phase</div><div class="head">TP4/PP1</div><div class="head">TP8/PP1</div><div class="head">What decides it?</div><div class="head">Evidence</div>
-<div class="rowlab">8K decode</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">TPOT + launch/collective cost</div><div class="cell">decode Nsight</div>
-<div class="rowlab">128K prefill</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">compute scaling vs TP NCCL</div><div class="cell">prefill Nsight</div>
-<div class="rowlab">512K prefill</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">long-prefill amortization</div><div class="cell">bench + trace</div>
-<div class="rowlab">1M c1</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">memory/runtime regime + TTFT</div><div class="cell">1M telemetry</div>
-</div>
-</div><div class="card mt8" id="scaleup-decision-output">
+<div class="card mt8" id="scaleup-decision-output">
 <div class="card-title">🎯 Scale-Up Decision Output — When Does TP4/PP1 vs TP8/PP1 Make Sense?</div>
 <div class="card-sub">Turns TTFT/TPOT/TPS/NCCL evidence into a workload-specific full-configuration decision.</div>
 <div class="table-wrap">
@@ -396,23 +228,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 </section>
 <!-- SCALE OUT -->
 <section class="tabpage" id="scaleout">
-<div class="section-title"><span>Scale-Out — Topology × Context on Native Fabric</span><small>One measured network provenance in this campaign</small></div><div class="question-banner">
-<div class="left"><strong>Which 2-node TP/PP structure is strongest at 128K, 512K, and 1M on native fabric?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Topology × context decision + mechanism confidence</span></div>
-</div><div class="grid3 mb8">
-<div class="card discovery-card">
-<div class="discovery-title">Discovery 1</div><div class="discovery-msg">Topology ordering can change with context.</div>
-<div class="discovery-how">Make 128K → 512K → 1M a first-class comparison, not three isolated benchmark tables.</div>
-</div>
-<div class="card discovery-card amber">
-<div class="discovery-title">Discovery 2</div><div class="discovery-msg">Native fabric is measured; bandwidth sensitivity is not.</div>
-<div class="discovery-how">Do not convert GCP_NATIVE into a 10G/20G/50G requirement or local-cluster prediction.</div>
-</div>
-<div class="card discovery-card green">
-<div class="discovery-title">Discovery 3</div><div class="discovery-msg">Placement is part of topology.</div>
-<div class="discovery-how">Rank → node → GPU → PCI → NUMA must be visible before interpreting NCCL or PP behavior.</div>
-</div>
-</div><div class="card mb8" id="scaleout-config-identity">
+<div class="section-title"><span>Scale-Out — Topology × Context on Native Fabric</span><small>One measured network provenance in this campaign</small></div><div class="card mb8" id="scaleout-config-identity">
 <div class="card-title">🏷 Scale-Out Configuration Identity</div>
 <div class="card-sub">All distributed charts use complete TP/PP topology labels; network provenance remains a separate mandatory dimension.</div>
 <div class="selector-row">
@@ -429,20 +245,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card mb8"><div class="selector-row"><span class="select-label">Network provenance</span><span class="chip active">GCP_NATIVE</span><span class="chip disabled">100G</span><span class="chip disabled">50G</span><span class="chip disabled">20G</span><span class="chip disabled">10G</span><span class="select-label" style="margin-left:10px">Context</span><span class="chip active" data-context="128K">128K</span><span class="chip" data-context="512K">512K</span><span class="chip" data-context="1M">1M</span><span class="select-label" style="margin-left:10px">Metric</span><select class="select"><option>TTFT</option><option>TPOT</option><option>Request throughput</option><option>Output throughput</option><option>Queue</option><option>KV usage</option><option>Preemptions</option></select></div></div>
 <div class="scope-note mb8"><strong>Bandwidth-cap sensitivity: NOT MEASURED / UNRESOLVED.</strong> Native-only due lab availability. The network dimension remains in the schema for a later supplemental run.</div>
 <div class="grid2 mb8">
-<div class="card mb8" id="v5-scaleout-money-matrix">
-<div class="header-row">
-<div><div class="card-title">💰 Topology × Context Decision Matrix — The Scale-Out “Money Chart”</div>
-<div class="card-sub">One view should make the workload-dependent ordering visible. No global winner badge.</div></div>
-<span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span>
-</div>
-<div class="compare-matrix">
-<div class="head">Context</div><div class="head">TP4/PP2</div><div class="head">TP8/PP2</div><div class="head">TP4/PP4</div><div class="head">TP16/PP1</div>
-<div class="rowlab">128K</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">post-run</div>
-<div class="rowlab">512K</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">post-run</div>
-<div class="rowlab">1M</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">post-run</div><div class="cell">post-run</div>
-</div>
-<div class="callout" style="margin-top:7px"><strong>Cell content after ingest:</strong> selected metric + status + confidence. Click/drill-down should open TTFT/TPOT/TPS/queue/KV + profile/placement evidence for that exact cell.</div>
-</div><div class="card"><div class="header-row"><div><div class="card-title">Topology Comparison @ Selected Context</div><div class="card-sub">TP4/PP2 · TP8/PP2 · TP4/PP4 · TP16/PP1</div></div><span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span></div><div class="chart large"><div class="axis-x"><span>TP4/PP2</span><span>TP8/PP2</span><span>TP4/PP4</span><span>TP16/PP1</span></div><div class="chart-watermark"><div><strong>Awaiting native scale-out rows</strong>Metric chosen from validated result tree</div></div></div><div class="analysis"><div><b>Observation</b><span class="placeholder">selected context</span></div><div><b>Interpretation</b><span class="placeholder">confidence required</span></div><div><b>Implication</b><span class="placeholder">workload scoped</span></div><div><b>Next evidence</b><span class="placeholder">distributed Nsight</span></div><div><b>Evidence</b><span class="placeholder">native case + N</span></div></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">Topology Comparison @ Selected Context</div><div class="card-sub">TP4/PP2 · TP8/PP2 · TP4/PP4 · TP16/PP1</div></div><span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span></div><div class="chart large"><div class="axis-x"><span>TP4/PP2</span><span>TP8/PP2</span><span>TP4/PP4</span><span>TP16/PP1</span></div><div class="chart-watermark"><div><strong>Awaiting native scale-out rows</strong>Metric chosen from validated result tree</div></div></div><div class="analysis"><div><b>Observation</b><span class="placeholder">selected context</span></div><div><b>Interpretation</b><span class="placeholder">confidence required</span></div><div><b>Implication</b><span class="placeholder">workload scoped</span></div><div><b>Next evidence</b><span class="placeholder">distributed Nsight</span></div><div><b>Evidence</b><span class="placeholder">native case + N</span></div></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">Context Scaling by Topology</div><div class="card-sub">128K → 512K → 1M on GCP_NATIVE</div></div><span class="badge b-purple"><span class="dot"></span>MEASURED-48B</span></div><div class="chart large"><div class="axis-x"><span>128K</span><span>512K</span><span>1M</span></div><div class="chart-watermark"><div><strong>Awaiting native context series</strong>No bandwidth-cap series in this campaign</div></div></div><div class="analysis"><div><b>Observation</b><span class="placeholder">post-run</span></div><div><b>Interpretation</b><span class="placeholder">post-run</span></div><div><b>Implication</b><span class="placeholder">post-run</span></div><div><b>Next evidence</b><span class="placeholder">profile</span></div><div><b>Evidence</b><span class="placeholder">native provenance</span></div></div></div>
 </div>
 <div class="grid2 mb8">
@@ -459,8 +262,8 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="header-row"><div><div class="card-title">Topology Semantics / Placement</div><div class="card-sub">Rank → node → GPU UUID → PCI bus → NUMA/socket</div></div></div><div class="topology-diagram"><div class="node"><div class="node-title">Node 0</div><div class="gpu-row"><div class="gpu">GPU 0</div><div class="gpu">GPU 1</div><div class="gpu">GPU 2</div><div class="gpu">GPU 3</div><div class="gpu">GPU 4</div><div class="gpu">GPU 5</div><div class="gpu">GPU 6</div><div class="gpu">GPU 7</div></div></div><div class="link">⇄<small>native fabric</small></div><div class="node"><div class="node-title">Node 1</div><div class="gpu-row"><div class="gpu">GPU 8</div><div class="gpu">GPU 9</div><div class="gpu">GPU 10</div><div class="gpu">GPU 11</div><div class="gpu">GPU 12</div><div class="gpu">GPU 13</div><div class="gpu">GPU 14</div><div class="gpu">GPU 15</div></div></div></div><div class="card-sub" style="margin-top:6px">TP16/PP1 spans both nodes; TP8/PP2 uses one TP8 stage per node; TP4/PP2 uses one TP4 stage per node; TP4/PP4 uses four TP4 stages — actual placement evidence decides which boundaries are remote.</div></div>
 </div>
 <div class="card mt8" id="scaleout-decision-output">
-<div class="card-title">🏗 Scale-Out Decision Output — Which TP/PP Structure Leads for This Context, and WHY?</div>
-<div class="card-sub">Native fabric only. The leading measured topology may change with context; profiler evidence controls causal confidence.</div>
+<div class="card-title">🏗 Scale-Out Decision Output — Which TP/PP Structure Wins for This Context, and WHY?</div>
+<div class="card-sub">Native fabric only. The winner may change with context; profiler evidence controls causal confidence.</div>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Context</th><th>Leading measured topology</th><th>Literal observation</th><th>Interpretation / WHY</th><th>Decision</th><th>Confidence</th><th>Next evidence</th></tr></thead>
@@ -479,20 +282,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 </section>
 <!-- LONG CONTEXT -->
 <section class="tabpage" id="long">
-<div class="section-title"><span>Long Context &amp; 1M — Fit, Finish, Usability, Concurrency</span><small>Requested input 1,000,000 · max_model_len 1,048,576</small></div><div class="question-banner">
-<div class="left"><strong>At 512K–1M, does the model merely fit, or can it finish within a useful service envelope?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Fit → finish → usable → concurrent serving</span></div>
-</div><div class="card mb8" id="v5-long-readiness-ladder">
-<div class="card-title">🚦 Long-Context Readiness Ladder</div>
-<div class="card-sub">The central 1M message: “supported” is not binary. A deployment must pass four increasingly strict gates.</div>
-<div class="readiness" style="margin-top:7px">
-<div class="read-step active"><div class="n">Gate 1</div><div class="t">Fits</div><div class="d">Memory allocation / admission succeeds</div></div>
-<div class="read-step"><div class="n">Gate 2</div><div class="t">Finishes</div><div class="d">No EngineDead / timeout / failure</div></div>
-<div class="read-step"><div class="n">Gate 3</div><div class="t">Usable</div><div class="d">TTFT / TPOT / E2E meet objective</div></div>
-<div class="read-step"><div class="n">Gate 4</div><div class="t">Concurrent</div><div class="d">c2/c4 without queue cliff</div></div>
-<div class="read-step warn"><div class="n">Gate 5</div><div class="t">Operational</div><div class="d">stable admission policy + evidence</div></div>
-</div>
-</div>
+<div class="section-title"><span>Long Context &amp; 1M — Fit, Finish, Usability, Concurrency</span><small>Requested input 1,000,000 · max_model_len 1,048,576</small></div>
 <div class="card mb8" id="long-context-config-identity">
 <div class="card-title">🧬 Configuration Identity — Long Context / 1M</div>
 <div class="card-sub">Every chart must show the topology plus the modifier being tested. Do not label a series only “TP4” or “TP8”.</div>
@@ -548,27 +338,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="header-row"><div><div class="card-title">CPU Offload @ 1M</div><div class="card-sub">Offload bytes/time correlated with TTFT/TPOT/queue/GPU telemetry</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from preserved case manifest; correlate offload bytes/time with TTFT/TPOT/queue.</strong></div></div></div><div class="chart short"><div class="chart-watermark"><div><strong>Awaiting preserved native offload-pressure evidence</strong>Do not call memory the bottleneck without evidence</div></div></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">Distributed 1M — Native Fabric</div><div class="card-sub">Sourced from ONE_MILLION_COVERAGE + coverage + combined runs</div></div><span class="badge b-cyan"><span class="dot"></span>4 EXECUTED-SCOPE CELLS</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">1M / GCP_NATIVE</div><div class="mcell">TP4/PP2</div><div class="mcell"><span class="status s-unknown">UNKNOWN</span></div><div class="mcell">TP8/PP2</div><div class="mcell"><span class="status s-unknown">UNKNOWN</span></div><div class="mcell">TP4/PP4</div><div class="mcell"><span class="status s-unknown">UNKNOWN</span></div><div class="mcell">TP16/PP1</div><div class="mcell"><span class="status s-unknown">UNKNOWN</span></div></div></div>
 </div>
-<div class="grid2 mb8" id="v5-regime-change">
-<div class="card">
-<div class="card-title">📈 512K → 1M Regime-Change Lens</div>
-<div class="card-sub">Do not describe 1M as a linear extension of 512K.</div>
-<div class="callout" style="margin-top:7px"><strong>Compare together:</strong> TTFT growth factor · TPOT growth · queue/waiting · KV utilization · preemption · offload · GPU/CPU telemetry · scheduler state.</div>
-<div class="analysis" style="grid-template-columns:repeat(4,1fr)">
-<div><b>Observation</b><span class="placeholder">post-run measured deltas</span></div>
-<div><b>Interpretation</b><span class="placeholder">regime hypothesis + confidence</span></div>
-<div><b>Decision</b><span class="placeholder">usable / c1 only / restrict</span></div>
-<div><b>Next evidence</b><span class="placeholder">trace or telemetry gap</span></div>
-</div>
-</div>
-<div class="card">
-<div class="card-title">🧮 1M Admission Policy Output</div>
-<div class="card-sub">Translate c1/c2/c4 into an operator action.</div>
-<div class="recipe-grid" style="grid-template-columns:1fr 1fr;margin-top:7px">
-<div class="recipe"><div class="name">Safe admission</div><div class="goal">post-run</div><div class="row"><b>Config:</b> post-run</div><div class="row"><b>Concurrency:</b> post-run</div><div class="row"><b>SLO:</b> explicit</div></div>
-<div class="recipe"><div class="name">First failure mode</div><div class="goal">post-run</div><div class="row"><b>Queue / TPOT / memory:</b> post-run</div><div class="row"><b>Confidence:</b> post-run</div><div class="row"><b>Evidence:</b> linked</div></div>
-</div>
-</div>
-</div><div class="card mt8" id="long-serving-decision">
+<div class="card mt8" id="long-serving-decision">
 <div class="card-title">🚦 1M Serving Decision — Fit Is Not the Same as Production Viability</div>
 <div class="card-sub">The dashboard must convert c1/c2/c4 evidence into an admission/SLO decision, not merely report “1M passed”.</div>
 <div class="table-wrap">
@@ -594,23 +364,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 </section>
 <!-- SCHEDULER -->
 <section class="tabpage" id="sched">
-<div class="section-title"><span>Scheduler &amp; KV — Capacity, Queueing, Runtime State</span><small>Client concurrency ≠ arrival RPS ≠ running sequences ≠ max_num_seqs</small></div><div class="question-banner">
-<div class="left"><strong>Where is the capacity knee, what causes queue growth, and which runtime knobs actually matter?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Admission policy + high/low-sensitivity knobs</span></div>
-</div><div class="grid3 mb8">
-<div class="card discovery-card">
-<div class="discovery-title">Operator question</div><div class="discovery-msg">Where does throughput stop scaling?</div>
-<div class="discovery-how">Mark the first knee where throughput flattens while queue/TTFT/TPOT rise materially.</div>
-</div>
-<div class="card discovery-card green">
-<div class="discovery-title">Tuning question</div><div class="discovery-msg">Which knobs are actually high sensitivity?</div>
-<div class="discovery-how">Show matched A/B delta and stop spending engineering time on low-sensitivity knobs.</div>
-</div>
-<div class="card discovery-card amber">
-<div class="discovery-title">Semantics</div><div class="discovery-msg">Concurrency is not “users”.</div>
-<div class="discovery-how">Keep client concurrency, arrival RPS, running/waiting sequences and max_num_seqs distinct.</div>
-</div>
-</div><div class="card mb8" id="scheduler-config-identity">
+<div class="section-title"><span>Scheduler &amp; KV — Capacity, Queueing, Runtime State</span><small>Client concurrency ≠ arrival RPS ≠ running sequences ≠ max_num_seqs</small></div><div class="card mb8" id="scheduler-config-identity">
 <div class="card-title">🏷 Scheduler / KV Configuration Identity</div>
 <div class="card-sub">Scheduler effects are configuration-specific. Each series must include TP/PP before context, concurrency, or scheduler modifier.</div>
 <div class="table-wrap">
@@ -648,17 +402,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="card-title">Runtime Semantics</div><div class="table-wrap" style="margin-top:7px"><table><thead><tr><th>Concept</th><th>Meaning</th></tr></thead><tbody><tr><td>client concurrency</td><td>requests held by benchmark client</td></tr><tr><td>arrival RPS</td><td>open-loop arrival rate</td></tr><tr><td>running sequences</td><td>runtime scheduler state</td></tr><tr><td>waiting sequences</td><td>queued scheduler state</td></tr><tr><td>max_num_seqs</td><td>runtime scheduler limit</td></tr><tr><td>active decode batch</td><td>not interchangeable with concurrency</td></tr></tbody></table></div></div>
 </div>
 <div class="grid2 mt8" id="scheduler-decision-output">
-<div class="card mb8" id="v5-capacity-knee-rule">
-<div class="card-title">📐 Capacity Knee — Explicit Decision Rule</div>
-<div class="card-sub">Do not label the highest completed concurrency as capacity.</div>
-<div class="analysis" style="grid-template-columns:repeat(4,1fr);margin-top:7px">
-<div><b>Throughput</b><span>Look for plateau / diminishing gain</span></div>
-<div><b>Latency</b><span>TTFT/TPOT accelerates upward</span></div>
-<div><b>Queue</b><span>waiting / queue time becomes persistent</span></div>
-<div><b>Decision</b><span>SLO-safe admission is before the cliff</span></div>
-</div>
-<div class="callout warn" style="margin-top:7px"><strong>Statistical rule:</strong> do not publish percentile claims beyond sample support. P95 requires N≥20; P99 requires N≥100. Otherwise show N, median/min/max (and p50 where appropriate).</div>
-</div><div class="card">
+<div class="card">
 <div class="card-title">📍 Capacity Knee / Admission Decision</div>
 <table>
 <tbody>
@@ -688,27 +432,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 </section>
 <!-- PROFILER -->
 <section class="tabpage" id="profiler">
-<div class="section-title"><span>Profiler — Critical Path, Kernel Activity, Trace Completeness</span><small>Numeric wall-time attribution only when timeline method avoids double counting</small></div><div class="question-banner">
-<div class="left"><strong>Where does wall-clock time go for the selected topology and workload?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Critical-path cause → deployment action</span></div>
-</div><div class="grid2 mb8">
-<div class="card">
-<div class="card-title">🧮 Critical-Path Ledger — Required Interpretation</div>
-<div class="card-sub">Profiler data becomes useful only when mapped to the workload wall clock without double counting.</div>
-<div class="code" style="margin-top:7px">T_workload = A_GPU + B_TP + C_PP + D_PCIe/offload + E_vLLM + F_CPU/launch + G_other − O_overlap</div>
-<div class="callout red" style="margin-top:7px"><strong>Do not:</strong> sum kernel time across ranks, treat profiler-instrumented latency as benchmark latency, or assign PP/NCCL causality from E2E timing alone.</div>
-</div>
-<div class="card">
-<div class="card-title">🎯 Profiler Answer Template</div>
-<div class="card-sub">Every selected trace should produce this compact conclusion.</div>
-<div class="analysis" style="grid-template-columns:repeat(4,1fr);margin-top:7px">
-<div><b>Observation</b><span class="placeholder">timeline fact</span></div>
-<div><b>Mechanism</b><span class="placeholder">confidence-tagged</span></div>
-<div><b>Action</b><span class="placeholder">topology/runtime change</span></div>
-<div><b>Boundary</b><span class="placeholder">what this trace does not prove</span></div>
-</div>
-</div>
-</div><div class="card mb8" id="profiler-config-identity">
+<div class="section-title"><span>Profiler — Critical Path, Kernel Activity, Trace Completeness</span><small>Numeric wall-time attribution only when timeline method avoids double counting</small></div><div class="card mb8" id="profiler-config-identity">
 <div class="card-title">🏷 Profiler Configuration Identity</div>
 <div class="card-sub">A profiler trace is valid evidence only for the exact topology and workload it captured.</div>
 <div class="table-wrap">
@@ -764,17 +488,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 </div>
 <div class="section-title"><span>Profiler / Tool Question Map</span><small>Every tool exists to answer a specific deployment question</small></div>
 <div class="card"><div class="table-wrap"><table><thead><tr><th>Tool / layer</th><th>Primary question</th><th>Dashboard use</th></tr></thead><tbody><tr><td>vLLM benchmark</td><td>What are TTFT, TPOT, throughput, load and failure/admission characteristics?</td><td>E2E performance views</td></tr><tr><td>vLLM / Prometheus</td><td>What is the scheduler doing while hardware is busy/idle?</td><td>queue · running/waiting · KV · preemption</td></tr><tr><td>Nsight Systems</td><td>Where did wall-clock time go and what is on the critical path?</td><td>CPU/GPU/NCCL/PP/idle/overlap</td></tr><tr><td>PyTorch Profiler</td><td>Which framework/operator path creates work and overhead?</td><td>operator / CPU attribution</td></tr><tr><td>Nsight Compute</td><td>Why is a selected kernel inefficient?</td><td>targeted future kernel deep dive</td></tr><tr><td>NCCL Tests</td><td>What collective performance exists before runtime/model overhead?</td><td>hardware ceiling correlation</td></tr><tr><td>NVBandwidth / P2P</td><td>What PCIe/NUMA data-movement capability is available?</td><td>topology / offload interpretation</td></tr><tr><td>BabelStream</td><td>Is practical device-memory bandwidth healthy?</td><td>memory roof reference</td></tr><tr><td>CUTLASS / GEMM</td><td>What compute reference exists for representative shapes?</td><td>reference only; not K3 MXFP4</td></tr><tr><td>iperf / network</td><td>What native transport capability exists independent of model?</td><td>native fabric verification only</td></tr></tbody></table></div></div>
-<div class="card mb8" id="v5-placement-lens">
-<div class="card-title">🧩 Rank / NUMA / Fabric Placement Lens</div>
-<div class="card-sub">A topology name is insufficient without the physical mapping that implements it.</div>
-<div class="mini-ledger" style="margin-top:7px">
-<div class="ledger-cell"><div class="l">Rank</div><div class="v">manifest</div></div>
-<div class="ledger-cell"><div class="l">Node / GPU UUID</div><div class="v">manifest</div></div>
-<div class="ledger-cell"><div class="l">PCI / NUMA</div><div class="v">manifest</div></div>
-<div class="ledger-cell"><div class="l">NCCL transport</div><div class="v">validated</div></div>
-</div>
-<div class="callout" style="margin-top:7px"><strong>Discovery:</strong> if a TP or PP result looks anomalous, the first drill-down is placement + transport provenance before inventing a model-level explanation.</div>
-</div><div class="card mt8" id="profiler-root-cause-action">
+<div class="card mt8" id="profiler-root-cause-action">
 <div class="card-title">🧭 Root Cause → Deployment Action</div>
 <div class="card-sub">This is where “what happened” becomes “why” and then a configuration action. Populate only from validated timeline/operator evidence.</div>
 <div class="table-wrap">
@@ -795,27 +509,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 </section>
 <!-- EVIDENCE -->
 <section class="tabpage" id="evidence">
-<div class="section-title"><span>Evidence &amp; Audit Backbone</span><small>Chart point → evidence row → raw artifact</small></div><div class="question-banner">
-<div class="left"><strong>Can every recommendation be reproduced from raw run evidence?</strong><div>Read the outcome first; use charts to verify the mechanism and evidence.</div></div>
-<div class="outcome">Decision produced<span>Claim → canonical row → manifest → telemetry/profile/log</span></div>
-</div><div class="card mb8" id="v5-evidence-flow">
-<div class="card-title">🔗 Evidence Flow — Make Every Recommendation Clickable</div>
-<div class="card-sub">The final UI should support this drill-down path for every chart point and decision claim.</div>
-<div class="evidence-flow" style="margin-top:8px">
-<div class="evidence-node">Decision / chart point</div>
-<div class="evidence-node">Canonical evidence row</div>
-<div class="evidence-node">Run / profile manifest</div>
-<div class="evidence-node">Metrics + telemetry + trace</div>
-<div class="evidence-node">Raw logs / artifacts</div>
-</div>
-<div class="pill-row" style="margin-top:8px">
-<span class="pill good">DIRECT_MEASURED</span>
-<span class="pill good">TIMELINE_ATTRIBUTED</span>
-<span class="pill warn">DERIVED</span>
-<span class="pill bad">UNRESOLVED</span>
-<span class="pill">Missing ≠ 0</span>
-</div>
-</div><div class="card mb8" id="evidence-config-key">
+<div class="section-title"><span>Evidence &amp; Audit Backbone</span><small>Chart point → evidence row → raw artifact</small></div><div class="card mb8" id="evidence-config-key">
 <div class="card-title">🔑 Evidence Configuration Key</div>
 <div class="card-sub">Every evidence row must preserve enough identity to reproduce the exact plotted point.</div>
 <div class="code">config_id = model_revision + TP + PP + DP + EP + rank_placement + context + concurrency_or_RPS + max_num_seqs + max_num_batched_tokens + kv_cache_dtype + prefix_caching + offload + backend + network_provenance</div>
@@ -834,22 +528,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 <div class="card"><div class="card-title">Runtime Dashboard Acceptance</div><div class="checklist" style="margin-top:7px"><div class="check"><span class="box"></span>Read FINAL_VALIDATION first</div><div class="check"><span class="box"></span>Join coverage + metrics</div><div class="check"><span class="box"></span>Keep 7 top-level tabs</div><div class="check"><span class="box"></span>GCP_NATIVE only measured</div><div class="check"><span class="box"></span>128K/512K/1M scale-out</div><div class="check"><span class="box"></span>4 distributed topologies</div><div class="check"><span class="box"></span>TP4/TP8 1M c1/c2/c4</div><div class="check"><span class="box"></span>1M scheduler / FP8-KV / prefix</div><div class="check"><span class="box"></span>p95/p99 sample gating</div><div class="check"><span class="box"></span>No invented profiler %</div><div class="check"><span class="box"></span>Both-node telemetry visible</div><div class="check"><span class="box"></span>Every point traceable</div><div class="check"><span class="box"></span>Every chart exposes full TP/PP config identity</div><div class="check"><span class="box"></span>Scheduler/KV charts expose exact TP/PP per series</div><div class="check"><span class="box"></span>Profiler rows expose exact TP/PP per trace</div><div class="check"><span class="box"></span>Distributed profiler matrix lists all four topologies explicitly</div><div class="check"><span class="box"></span>Evidence rows preserve complete configuration identity</div></div></div>
 <div class="card"><div class="card-title">Evidence Drill-Down Targets</div><div class="table-wrap" style="margin-top:7px"><table><thead><tr><th>Artifact</th><th>Purpose</th></tr></thead><tbody><tr><td class="mono">case_manifest.json</td><td>configuration / placement / provenance</td></tr><tr><td class="mono">benchmark result JSON</td><td>request metrics</td></tr><tr><td class="mono">server.log</td><td>runtime / failure evidence</td></tr><tr><td class="mono">COMMAND.txt</td><td>exact invocation</td></tr><tr><td class="mono">metrics_*.jsonl / prom.log</td><td>GPU / runtime telemetry</td></tr><tr><td class="mono">network_validation/*</td><td>native fabric evidence</td></tr><tr><td class="mono">PROFILE_VALIDATION.json / .nsys-rep</td><td>profile completeness / raw trace</td></tr></tbody></table></div></div>
 </div>
-<div class="grid2 mb8" id="v5-analysis-boundary">
-<div class="card">
-<div class="card-title">✅ Safe to Derive From Existing V8 Evidence</div>
-<div class="card-sub">Only after the result tree is ingested and matched by configuration.</div>
-<div class="callout" style="margin-top:7px">
-      Matched topology ordering · context scaling · c1/c2/c4 queue/latency deltas · max_num_seqs sensitivity · chunk-size sensitivity · FP8-KV matched delta · prefix cold/reuse delta · hardware ceiling vs achieved · trace-supported critical-path attribution.
-    </div>
-</div>
-<div class="card">
-<div class="card-title">⛔ Requires New / Supplemental Evidence</div>
-<div class="card-sub">Do not imply these from the native-only V8 campaign.</div>
-<div class="callout red" style="margin-top:7px">
-      10G/20G/50G/100G bandwidth sensitivity · minimum production network requirement · equivalence to local 2×10GbE · alternate MXFP4/NVFP4 weight-format performance · full Kimi K3 absolute performance · causal mechanism not captured in timeline/profile evidence.
-    </div>
-</div>
-</div><div class="card mt8" id="decision-claim-registry">
+<div class="card mt8" id="decision-claim-registry">
 <div class="card-title">🔗 Decision Claim Registry — Prove Every Recommendation</div>
 <div class="card-sub">High-level guidance is publishable only when the observation, interpretation, decision, confidence, and raw evidence are all linked.</div>
 <div class="table-wrap">

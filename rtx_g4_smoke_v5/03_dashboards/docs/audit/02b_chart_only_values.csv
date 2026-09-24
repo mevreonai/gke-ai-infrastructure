@@ -1,0 +1,39 @@
+figure,series,x_label,value,unit,method,approx_tolerance,authoritative,note
+fig04,Evidence rows (blue),c1,187.6,output tok/s,table row tp4_closedloop_8k::c1,exact,yes,from 02_evidence_rows.csv
+fig04,Evidence rows (blue),c4,415.3,output tok/s,table row tp4_closedloop_8k::c4,exact,yes,from 02_evidence_rows.csv
+fig04,Evidence rows (blue),c8,559.7,output tok/s,table row tp4_closedloop_8k::c8,exact,yes,from 02_evidence_rows.csv
+fig04,Evidence rows (blue),c16,673.2,output tok/s,table row tp4_closedloop_8k::c16,exact,yes,from 02_evidence_rows.csv
+fig04,Evidence rows (blue),c32,774.4,output tok/s,table row tp4_closedloop_8k::c32,exact,yes,from 02_evidence_rows.csv
+fig04,Current UI JS (orange),c1,188,output tok/s,pixel-measured from PNG,+/-3,NO,report gives no table; read the real array from the dashboard HTML
+fig04,Current UI JS (orange),c4,483,output tok/s,pixel-measured from PNG,+/-3,NO,evidence row is 415.3 => UI overstates ~16%
+fig04,Current UI JS (orange),c8,553,output tok/s,pixel-measured from PNG,+/-3,NO,evidence row is 559.7 => UI slightly UNDERstates
+fig04,Current UI JS (orange),c16,838,output tok/s,pixel-measured from PNG,+/-3,NO,evidence row is 673.2 => UI overstates ~24%
+fig04,Current UI JS (orange),c32,1118,output tok/s,pixel-measured from PNG,+/-3,NO,evidence row is 774.4 => UI overstates ~44%
+fig11,Evidence rows (blue),c1,1.6,KV peak %,table row tp4_closedloop_128k::c1,exact,yes,from 02_evidence_rows.csv
+fig11,Evidence rows (blue),c4,6.5,KV peak %,table row tp4_closedloop_128k::c4,exact,yes,from 02_evidence_rows.csv
+fig11,Evidence rows (blue),c8,13.1,KV peak %,table row tp4_closedloop_128k::c8,exact,yes,from 02_evidence_rows.csv
+fig11,Evidence rows (blue),c16,14.6,KV peak %,table row tp4_closedloop_128k::c16,exact,yes,from 02_evidence_rows.csv
+fig11,Current UI JS (orange),c1,1.9,KV peak %,pixel-measured from PNG,+/-0.1,NO,report gives no table
+fig11,Current UI JS (orange),c4,7.4,KV peak %,pixel-measured from PNG,+/-0.1,NO,
+fig11,Current UI JS (orange),c8,14.7,KV peak %,pixel-measured from PNG,+/-0.1,NO,
+fig11,Current UI JS (orange),c16,29.44,KV peak %,stated in report text (pixel read 29.47),exact per report text,yes (text),report: "current chart logic scales to 29.44%"
+fig09,Scale-out 128K TTFT,TP4/PP4,1722,ms,pixel-measured from PNG,+/-12,NO,current UI value pending raw production validation
+fig09,Scale-out 128K TTFT,Forced TP4/PP2,2642,ms,pixel-measured from PNG,+/-12,NO,current UI value pending raw production validation
+fig09,Scale-out 128K TTFT,TP8/PP2,2813,ms,pixel-measured from PNG,+/-12,NO,current UI value pending raw production validation
+fig09,Scale-out 128K TTFT,TP16/PP1,6028,ms,pixel-measured from PNG,+/-12,NO,current UI value pending raw production validation
+fig10,Scale-out throughput,TP4/PP4,30.8,output tok/s,pixel-measured from PNG,+/-0.1,NO,current UI value pending raw production validation
+fig10,Scale-out throughput,Forced TP4/PP2,21.4,output tok/s,pixel-measured from PNG,+/-0.1,NO,current UI value pending raw production validation
+fig10,Scale-out throughput,TP8/PP2,19.5,output tok/s,pixel-measured from PNG,+/-0.1,NO,current UI value pending raw production validation
+fig10,Scale-out throughput,TP16/PP1,9.4,output tok/s,pixel-measured from PNG,+/-0.1,NO,current UI value pending raw production validation
+fig01,Configured,Long context,39,benchmark rows,pixel-measured from PNG,+/-0.1,NO,only group where configured > present
+fig01,Present in dashboard,Long context,33,benchmark rows,pixel-measured from PNG,+/-0.1,NO,39-33=6 = the 3 FP8-KV + 3 native-offload cases
+fig01,Present in dashboard,Qualification,8,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
+fig01,Present in dashboard,Baseline,8,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
+fig01,Present in dashboard,Prefill/decode,7,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
+fig01,Present in dashboard,Chunking,12,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
+fig01,Present in dashboard,Concurrency,17,benchmark rows,pixel-measured from PNG,+/-0.1,NO,package case-prefix grouping gives 15 - UNRESOLVED taxonomy difference
+fig01,Present in dashboard,Scheduler limits,3,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
+fig01,Present in dashboard,Prefix cache,2,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
+fig01,Configured but absent,KV dtype,3,benchmark rows,pixel-measured from PNG,+/-0.1,NO,tp4_fp8_kv x3
+fig01,Configured but absent,Offload,3,benchmark rows,pixel-measured from PNG,+/-0.1,NO,tp4_native_offload_pressure x3
+fig01,Present in dashboard,Observer overhead,4,benchmark rows,pixel-measured from PNG,+/-0.1,NO,
