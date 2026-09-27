@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "provider": "local",
+  "head_index": 0,
+  "ssh_key": "/home/ayu23/.ssh/id_rsa",
+  "ssh_user": "ayu23",
+  "venv_dir": "/home/ayu23/vllm_env",
+  "bench_root": "/home/ayu23/v9_bench",
+  "expected_gpu_name_contains": "RTX",
+  "nodes": [
+    {
+      "name": "kimi-node-0",
+      "host": "10.128.0.39",
+      "gpus": 8,
+      "interface": "ens3"
+    },
+    {
+      "name": "kimi-node-1",
+      "host": "10.128.0.40",
+      "gpus": 8,
+      "interface": "ens3"
+    }
+  ],
+  "ray_env": {
+    "NCCL_DEBUG": "WARN",
+    "NCCL_IB_DISABLE": "0",
+    "NCCL_SOCKET_IFNAME": "ens3"
+  }
+}

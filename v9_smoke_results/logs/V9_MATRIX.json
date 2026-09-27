@@ -1,0 +1,1931 @@
+{
+  "schema_version": 1,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "profile_id": "kimi_linear_48b_bf16",
+  "precision_label": "BF16",
+  "contexts": [
+    1024,
+    8192,
+    131072,
+    524288,
+    1000000
+  ],
+  "single_node_cases": [
+    {
+      "name": "tp4_context_baseline",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "baseline",
+        "context_scaling",
+        "tp_compare"
+      ],
+      "purpose": "TP4 context scaling baseline.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp8_context_baseline",
+      "tp": 8,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "groups": [
+        "baseline",
+        "context_scaling",
+        "tp_compare"
+      ],
+      "purpose": "TP8 context scaling baseline.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_prefill_focus",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "prefill",
+        "context_scaling"
+      ],
+      "purpose": "Prefill/TTFT focus with minimal decode.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "1024_prefill",
+          "input": 1024,
+          "output": 4,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_prefill",
+          "input": 8192,
+          "output": 4,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "131072_prefill",
+          "input": 131072,
+          "output": 4,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "524288_prefill",
+          "input": 524288,
+          "output": 4,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_prefill",
+          "input": 1000000,
+          "output": 4,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_decode_focus",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "decode"
+      ],
+      "purpose": "Decode/TPOT focus.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "1024_decode_c1",
+          "input": 1024,
+          "output": 512,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_decode_c1",
+          "input": 8192,
+          "output": 512,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "1024_decode_c8",
+          "input": 1024,
+          "output": 512,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 1
+        },
+        {
+          "name": "8192_decode_c8",
+          "input": 8192,
+          "output": 512,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 1
+        }
+      ]
+    },
+    {
+      "name": "tp4_closedloop_1024",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "closed_loop",
+        "concurrency"
+      ],
+      "purpose": "Controlled concurrency sweep at input=1024.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "1024_c2",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "1024_c4",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 16,
+          "warmups": 1
+        },
+        {
+          "name": "1024_c8",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 1
+        }
+      ]
+    },
+    {
+      "name": "tp4_closedloop_8192",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "closed_loop",
+        "concurrency"
+      ],
+      "purpose": "Controlled concurrency sweep at input=8192.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c2",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 16,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 1
+        }
+      ]
+    },
+    {
+      "name": "tp4_closedloop_131072",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "closed_loop",
+        "concurrency"
+      ],
+      "purpose": "Controlled concurrency sweep at input=131072.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c2",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 2,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c4",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1
+        }
+      ]
+    },
+    {
+      "name": "tp4_closedloop_524288",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "closed_loop",
+        "concurrency"
+      ],
+      "purpose": "Controlled concurrency sweep at input=524288.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "524288_c2",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "524288_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "524288_c4",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0,
+          "gate": {
+            "after": "524288_c2",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_closedloop_1000000",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "closed_loop",
+        "concurrency"
+      ],
+      "purpose": "Controlled concurrency sweep at input=1000000.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "1000000_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1000000_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0,
+          "gate": {
+            "after": "1000000_c2",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_chunk4096",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "chunking",
+        "scheduler"
+      ],
+      "purpose": "max_num_batched_tokens=4096 sensitivity.",
+      "max_num_batched_tokens": 4096,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_chunk8192",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "chunking",
+        "scheduler"
+      ],
+      "purpose": "max_num_batched_tokens=8192 sensitivity.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_chunk16384",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "chunking",
+        "scheduler"
+      ],
+      "purpose": "max_num_batched_tokens=16384 sensitivity.",
+      "max_num_batched_tokens": 16384,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_prefix_131072",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "prefix_cache"
+      ],
+      "purpose": "Deterministic repeated-prefix case; first request cold, later requests conditionally hit.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": true,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "prefix_131072",
+          "dataset": "prefix_repetition",
+          "prefix": 130816,
+          "suffix": 256,
+          "num_prefixes": 1,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_prefix_524288",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "prefix_cache"
+      ],
+      "purpose": "Deterministic repeated-prefix case; first request cold, later requests conditionally hit.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": true,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "prefix_524288",
+          "dataset": "prefix_repetition",
+          "prefix": 524032,
+          "suffix": 256,
+          "num_prefixes": 1,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_prefix_1000000",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "prefix_cache"
+      ],
+      "purpose": "Deterministic repeated-prefix case; first request cold, later requests conditionally hit.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": true,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "prefix_1000000",
+          "dataset": "prefix_repetition",
+          "prefix": 999744,
+          "suffix": 256,
+          "num_prefixes": 1,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_kv_fp8_probe",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "capability_probe",
+        "kv_dtype"
+      ],
+      "purpose": "Capability probe for KV dtype fp8.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "kv_cache_dtype": "fp8",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        }
+      ]
+    },
+    {
+      "name": "tp4_offload_probe",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "capability_probe",
+        "offload"
+      ],
+      "purpose": "Capability probe for native KV offload; runtime may reject.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 8.0,
+      "enable_expert_parallel": false,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        }
+      ]
+    },
+    {
+      "name": "tp8_ep_probe",
+      "tp": 8,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "groups": [
+        "capability_probe",
+        "moe",
+        "expert_parallel"
+      ],
+      "purpose": "Expert-parallel capability/performance probe on a detected MoE model; optional evidence.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0.0,
+      "enable_expert_parallel": true,
+      "benchmarks": [
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        }
+      ]
+    }
+  ],
+  "scaleout_topologies": [
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs."
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes."
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth."
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure."
+    }
+  ],
+  "scaleout_cases": [
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "groups": [
+        "topology",
+        "scaleout"
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "kv_cache_dtype": "auto",
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 16,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c4",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "131072_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "524288_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes.",
+      "groups": [
+        "topology",
+        "scaleout"
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "kv_cache_dtype": "auto",
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 16,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c4",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "131072_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "524288_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth.",
+      "groups": [
+        "topology",
+        "scaleout"
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "kv_cache_dtype": "auto",
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 16,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c4",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "131072_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "524288_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "groups": [
+        "topology",
+        "scaleout"
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "kv_cache_dtype": "auto",
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1024_c1",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1
+        },
+        {
+          "name": "8192_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 16,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "131072_c4",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "524288_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "131072_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1000000_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0,
+          "gate": {
+            "after": "524288_c1",
+            "max_peak_kv_usage": 0.9,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp8_pp2_ep_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Optional native Expert-Parallel scale-out probe; validates model/runtime routing and All-to-All behavior without making EP a core requirement.",
+      "groups": [
+        "topology",
+        "scaleout",
+        "capability_probe",
+        "moe",
+        "expert_parallel"
+      ],
+      "optional_capability_probe": true,
+      "enable_expert_parallel": true,
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "kv_cache_dtype": "auto",
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8192_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 8,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        },
+        {
+          "name": "131072_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1,
+          "network_modes": [
+            "native"
+          ]
+        }
+      ]
+    }
+  ],
+  "single_node_profiles": [
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "prefill_1024",
+      "input": 1024,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "decode_8k",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "prefill_131072",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "prefill_524288",
+      "input": 524288,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "batched_decode_8k_c8",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 8,
+      "prompts": 8
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "prefill_1024",
+      "input": 1024,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "decode_8k",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "prefill_131072",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "prefill_524288",
+      "input": 524288,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "batched_decode_8k_c8",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 8,
+      "prompts": 8
+    }
+  ],
+  "single_node_torch_profiles": [
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "torch_decode_8k",
+      "input": 8192,
+      "output": 256,
+      "concurrency": 1,
+      "prompts": 2,
+      "instrument": "torch"
+    },
+    {
+      "topology": "tp4_pp1",
+      "tp": 4,
+      "pp": 1,
+      "mode": "torch_prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1,
+      "instrument": "torch"
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "torch_decode_8k",
+      "input": 8192,
+      "output": 256,
+      "concurrency": 1,
+      "prompts": 2,
+      "instrument": "torch"
+    },
+    {
+      "topology": "tp8_pp1",
+      "tp": 8,
+      "pp": 1,
+      "mode": "torch_prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1,
+      "instrument": "torch"
+    }
+  ],
+  "distributed_profiles": [
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_1024",
+      "input": 1024,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_131072",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "decode_8k",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "batched_decode_8k_c8",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 8,
+      "prompts": 8
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "100g",
+        "20g"
+      ],
+      "mode": "prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_1024",
+      "input": 1024,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_131072",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "decode_8k",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "batched_decode_8k_c8",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 8,
+      "prompts": 8
+    },
+    {
+      "name": "tp8_pp2_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "One TP8 stage per node; TP remains node-local while PP crosses nodes.",
+      "network_modes": [
+        "100g",
+        "20g"
+      ],
+      "mode": "prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_1024",
+      "input": 1024,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_131072",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "decode_8k",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "batched_decode_8k_c8",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 8,
+      "prompts": 8
+    },
+    {
+      "name": "tp4_pp4_dist",
+      "tp": 4,
+      "pp": 4,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Two TP4 stages per 8-GPU node; uses all GPUs and increases PP depth.",
+      "network_modes": [
+        "100g",
+        "20g"
+      ],
+      "mode": "prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_1024",
+      "input": 1024,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "prefill_131072",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "decode_8k",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "batched_decode_8k_c8",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 8,
+      "prompts": 8
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "100g",
+        "20g"
+      ],
+      "mode": "prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "long_prefill_512k",
+      "input": 524288,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1,
+      "optional_heavy": true
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "native"
+      ],
+      "mode": "long_prefill_512k",
+      "input": 524288,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1,
+      "optional_heavy": true
+    },
+    {
+      "name": "tp4_pp2_dist",
+      "tp": 4,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 4,
+      "purpose": "One local TP4 stage per node; isolates PP boundaries while leaving unused GPUs.",
+      "network_modes": [
+        "100g",
+        "20g"
+      ],
+      "mode": "decode_8k_capped",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1,
+      "optional_targeted": true
+    },
+    {
+      "name": "tp16_pp1_dist",
+      "tp": 16,
+      "pp": 1,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Global TP across all participating nodes; maximum collective exposure.",
+      "network_modes": [
+        "100g",
+        "20g"
+      ],
+      "mode": "decode_8k_capped",
+      "input": 8192,
+      "output": 512,
+      "concurrency": 1,
+      "prompts": 1,
+      "optional_targeted": true
+    },
+    {
+      "name": "tp8_pp2_ep_dist",
+      "tp": 8,
+      "pp": 2,
+      "nodes_required": 2,
+      "ray_gpus_per_node": 8,
+      "purpose": "Optional native Expert-Parallel scale-out probe; validates model/runtime routing and All-to-All behavior without making EP a core requirement.",
+      "groups": [
+        "topology",
+        "scaleout",
+        "capability_probe",
+        "moe",
+        "expert_parallel"
+      ],
+      "optional_capability_probe": true,
+      "enable_expert_parallel": true,
+      "network_modes": [
+        "native"
+      ],
+      "mode": "ep_prefill_128k",
+      "input": 131072,
+      "output": 8,
+      "concurrency": 1,
+      "prompts": 1
+    }
+  ],
+  "skipped_generation": [],
+  "open_loop_contexts_expected": [
+    1024,
+    8192,
+    131072
+  ],
+  "network_modes": [
+    "native",
+    "100g",
+    "20g"
+  ],
+  "config_identity": {
+    "model_profile_sha256": "3c07683f96a5a0a09b54b1d7ac84dddbc7403c8a72cfc9e2b326a49c6da2a21b",
+    "suite_config_sha256": "65578e8a35ed9a91e1efb9a9bad3e8d016c0c2cb5156a7a800ea838eb0d822e8",
+    "cluster_config_sha256": "b525380a65e0c5bdbdcda441c45c2cf9c12ad638aecd49c55d1f80e8698bd32d"
+  }
+}

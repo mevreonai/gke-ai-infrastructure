@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "suite": "V9_FULL",
+  "generated_at": 1790512561.2573712,
+  "configured_points": 125,
+  "coverage_counts": {
+    "NOT_RUN": 125
+  },
+  "core_points": 119,
+  "optional_capability_points": 6,
+  "core_serving_complete": false,
+  "optional_capability_attempted": false,
+  "profiles_expected": 45,
+  "profiles_complete": 0,
+  "profile_core_complete": false,
+  "network_smoke": {
+    "NETWORK_NATIVE": {
+      "present": true,
+      "path": "/home/ayu23/v9_full_results/v9_20260927_121410/hardware_raw/network_node0/NETWORK_NATIVE/NETWORK_VALIDATION.json"
+    },
+    "NETWORK_CAPPED_100G": {
+      "present": true,
+      "path": "/home/ayu23/v9_full_results/v9_20260927_121410/hardware_raw/network_node0/NETWORK_CAPPED_100G/NETWORK_VALIDATION.json"
+    },
+    "NETWORK_CAPPED_20G": {
+      "present": true,
+      "path": "/home/ayu23/v9_full_results/v9_20260927_121410/hardware_raw/network_node0/NETWORK_CAPPED_20G/NETWORK_VALIDATION.json"
+    }
+  },
+  "network_smoke_complete": true,
+  "status_semantics_ok": true,
+  "extra_observed_records": 0,
+  "full_suite_valid": false,
+  "note": "CAPABILITY_BLOCKED and SERVER_START_FAILED are attempted states, not NOT_RUN and never zero-valued measurements."
+}

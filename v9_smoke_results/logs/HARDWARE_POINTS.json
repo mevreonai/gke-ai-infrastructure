@@ -1,0 +1,222 @@
+{
+  "schema_version": 1,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "config": {
+    "model_type": "kimi_linear",
+    "architectures": [
+      "KimiLinearForCausalLM"
+    ],
+    "hidden_size": 2304,
+    "num_hidden_layers": 27,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 32,
+    "model_max_length": 1048576,
+    "torch_dtype": "torch.bfloat16",
+    "dtype": "torch.bfloat16",
+    "num_experts": 256,
+    "num_experts_per_token": 8,
+    "moe_intermediate_size": 1024,
+    "head_dim": 72,
+    "kv_lora_rank": 512,
+    "qk_nope_head_dim": 128,
+    "qk_rope_head_dim": 64,
+    "v_head_dim": 128,
+    "resolved_commit_hash": "e1df551a447157d4658b573f9a695d57658590e9"
+  },
+  "num_hidden_layers": 27,
+  "standard_and_derived_collective_sizes": [
+    8,
+    16,
+    1024,
+    2048,
+    4096,
+    16384,
+    32768,
+    65536,
+    131072,
+    262144,
+    524288,
+    1048576,
+    2097152,
+    4194304,
+    8388608,
+    16777216,
+    33554432,
+    67108864,
+    134217728,
+    268435456,
+    536870912
+  ],
+  "derived_reference_sizes": [
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 1,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 2304,
+      "nearest_power2_bytes": 2048,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 1,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 4608,
+      "nearest_power2_bytes": 4096,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 8,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 18432,
+      "nearest_power2_bytes": 16384,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 8,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 36864,
+      "nearest_power2_bytes": 32768,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 32,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 73728,
+      "nearest_power2_bytes": 65536,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 32,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 147456,
+      "nearest_power2_bytes": 131072,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 128,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 294912,
+      "nearest_power2_bytes": 262144,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 128,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 589824,
+      "nearest_power2_bytes": 524288,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 512,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 1179648,
+      "nearest_power2_bytes": 1048576,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 512,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 2359296,
+      "nearest_power2_bytes": 2097152,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 2048,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 4718592,
+      "nearest_power2_bytes": 4194304,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 2048,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 9437184,
+      "nearest_power2_bytes": 8388608,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 8192,
+      "bytes_per_element_hypothesis": 1,
+      "raw_bytes": 18874368,
+      "nearest_power2_bytes": 16777216,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    },
+    {
+      "kind": "hidden_state_size_hypothesis",
+      "hidden_size": 2304,
+      "tokens": 8192,
+      "bytes_per_element_hypothesis": 2,
+      "raw_bytes": 37748736,
+      "nearest_power2_bytes": 33554432,
+      "evidence_class": "DERIVED_REFERENCE",
+      "warning": "Not an assertion that vLLM emits this collective size; validate actual NCCL calls with profiler traces."
+    }
+  ],
+  "reference_gemm_shapes": [
+    {
+      "name": "hidden_square_reference",
+      "m_values": [
+        8,
+        32,
+        128,
+        512,
+        2048,
+        8192
+      ],
+      "n": 2304,
+      "k": 2304,
+      "dtype": "f16_reference"
+    },
+    {
+      "name": "moe_intermediate_size_reference",
+      "m_values": [
+        8,
+        32,
+        128,
+        512,
+        2048
+      ],
+      "n": 1024,
+      "k": 2304,
+      "dtype": "f16_reference"
+    }
+  ],
+  "guardrail": "Reference sizes/shapes guide hardware coverage only. Actual model kernel shapes, dtypes and collective calls come from Nsight/PyTorch/vLLM runtime evidence."
+}
