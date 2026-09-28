@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>V9 Empirical Characterization Dashboard — MoonshotAI Kimi-Linear-48B (2-Node 16-GPU Blackwell Cluster)</title>
+  
+  <!-- Chart.js Engine -->
+  <script src="chart.umd.js"></script>
+  <script>
+    if (typeof Chart === 'undefined') {
+      document.write('<script src="https://cdn.jsdelivr.net/npm/chart.js"><\/script>');
+    }
+  </script>
+
+  <style>
+    :root {
+      --bg: #070d19;
+      --card-bg: #0d1728;
+      --card-border: #1a2a44;
+      --text: #e2e8f0;
+      --text-dim: #94a3b8;
+      --accent: #38bdf8;
+      --green: #4ade80;
+      --amber: #fbbf24;
+      --red: #f87171;
+      --purple: #a78bfa;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 13px;
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+    /* Top Banner */
+    .top-banner {
+      background: linear-gradient(90deg, #1e1b4b 0%, #0c1427 100%);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .top-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .b-blue { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .b-green { background: rgba(74, 222, 128, 0.15); color: #4ade80; border: 1px solid rgba(74, 222, 128, 0.3); }
+    .b-amber { background: rgba(251, 191, 36, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .b-purple { background: rgba(167, 139, 250, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); }
+    .b-red { background: rgba(248, 113, 113, 0.15); color: #f87171; border: 1px solid rgba(248, 113, 113, 0.3); }
+
+    /* Trust Strip */
+    .trust-strip {
+      background: #091322;
+      border-bottom: 1px solid #142338;
+      padding: 10px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .dot-green { width: 8px; height: 8px; border-radius: 50%; background: var(--green); box-shadow: 0 0 6px var(--green); }
+    .dot-amber { width: 8px; height: 8px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+
+    /* Tab Navigation */
+    .tab-bar {
+      display: flex;
+      gap: 4px;
+      background: #08101e;
+      padding: 8px 24px 0 24px;
+      border-bottom: 1px solid #1a2a44;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      background: transparent;
+      border: 1px solid transparent;
+      border-bottom: none;
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 16px;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .tab-btn:hover {
+      color: #f1f5f9;
+      background: rgba(255, 255, 255, 0.03);
+    }
+    .tab-btn.active {
+      color: #38bdf8;
+      background: var(--card-bg);
+      border-color: #1a2a44;
+      border-bottom: 1px solid var(--card-bg);
+      margin-bottom: -1px;
+    }
+
+    /* Main Container */
+    .main-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 20px 24px;
+    }
+    .tab-pane {
+      display: none;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    /* Grid Layouts */
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    /* Cards */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .card-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+    }
+    .kpi-val {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin-bottom: 4px;
+    }
+
+    /* Charts */
+    .chart-box {
+      height: 250px;
+      position: relative;
+      margin-top: 10px;
+    }
+
+    /* Tables */
+    .table-wrap {
+      overflow-x: auto;
+      margin-top: 10px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+    th {
+      background: #091322;
+      color: #94a3b8;
+      font-weight: 700;
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid #1a2a44;
+      white-space: nowrap;
+    }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #111e33;
+      white-space: nowrap;
+    }
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Callout & Note */
+    .note-box {
+      background: rgba(30, 58, 138, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+    .warn-box {
+      background: rgba(146, 64, 14, 0.2);
+      border: 1px solid rgba(251, 191, 36, 0.4);
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      font-size: 12px;
+    }
+
+    /* Search & Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .filter-input {
+      background: #091322;
+      border: 1px solid #1a2a44;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      min-width: 240px;
+    }
+    .filter-select {
+      background: #091322;
+      border: 1px solid #1a2a44;
+      color: #fff;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Banner -->
+  <div class="top-banner">
+    <div class="top-title">
+      <span>🚀 V9 Characterization Suite</span>
+      <span class="badge b-purple">Kimi-Linear-48B (Surrogate)</span>
+      <span class="badge b-blue">2-Node Cluster · 16 × RTX PRO 6000 Blackwell</span>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span class="badge b-green">TEST 2: Pure Inference Complete (121 Runs)</span>
+      <span class="badge b-amber">TEST 3: Profiling Suite Pending</span>
+    </div>
+  </div>
+
+  <!-- Trust Strip -->
+  <div class="trust-strip">
+    <div class="trust-item">
+      <div class="dot-green"></div>
+      <span><b>121 / 121 Runs Executed:</b> 117 Core Serving Completed · 2 Capability Probes Blocked · 0 Failures</span>
+    </div>
+    <div class="trust-item">
+      <span><b>Interconnect:</b> Dual GCP g4-standard-384 (RoCEv2 Native 100 Gbps &amp; 20 Gbps TC Capped)</span>
+    </div>
+    <div class="trust-item">
+      <div class="dot-amber"></div>
+      <span><b>Profiler Policy:</b> Clean Test 2 (No active trace overhead distortion; Nsight/Torch Profiling reserved for Test 3)</span>
+    </div>
+  </div>
+
+  <!-- Tab Navigation -->
+  <div class="tab-bar">
+    <button class="tab-btn active" onclick="showTab('exec')">📊 Executive Overview</button>
+    <button class="tab-btn" onclick="showTab('scaleup')">⚡ Single-Node Scale-Up</button>
+    <button class="tab-btn" onclick="showTab('scaleout')">🌐 Multi-Node Scale-Out (16 GPUs)</button>
+    <button class="tab-btn" onclick="showTab('longctx')">📜 Long Context &amp; Knobs</button>
+    <button class="tab-btn" onclick="showTab('concurrency')">🔄 Concurrency &amp; Queuing</button>
+    <button class="tab-btn" onclick="showTab('probes')">🔍 Test 3 &amp; Capability Probe Audit</button>
+    <button class="tab-btn" onclick="showTab('evidence')">📋 Evidence Explorer (121 Runs)</button>
+  </div>
+
+  <!-- Main Container -->
+  <div class="main-wrap">
+
+    <!-- TAB 1: EXECUTIVE OVERVIEW -->
+    <div id="tab-exec" class="tab-pane active">
+      <div class="note-box">
+        <b>Empirical Grounding:</b> All telemetry shown in this dashboard is derived strictly from <code>v9_test2_combined_vllm_runs.csv</code> (Run ID: <code>v9_test2_20260927_163750</code>). Zero extrapolation, zero synthetic interpolations. Profiler-dependent kernel traces are omitted because Test 2 was executed without active profilers to preserve unperturbed serving latency.
+      </div>
+
+      <div class="grid-4">
+        <div class="card">
+          <div class="card-title">Minimal 1M Turn Latency <span class="badge b-green">Non-Dominated</span></div>
+          <div class="card-sub">Measured on 16 GPUs (2 Nodes × 8 Blackwell)</div>
+          <div class="kpi-val" style="color:var(--green)">28.70s</div>
+          <div style="font-size:11px;color:var(--text-dim)">Topology: <b>TP4 / PP4</b> @ 1M Tokens (459.3 GPU-s)</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Network Exposure Gap <span class="badge b-red">20G Capped</span></div>
+          <div class="card-sub">1M Latency degradation on 20 Gbps fabric</div>
+          <div class="kpi-val" style="color:var(--red)">5.26×</div>
+          <div style="font-size:11px;color:var(--text-dim)">TP16/PP1: <b>83.94s → 441.44s</b> under 20G cap</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Prefix Cache Acceleration <span class="badge b-blue">131K Hit</span></div>
+          <div class="card-sub">Cold prefill vs Repeat-hit turn latency</div>
+          <div class="kpi-val" style="color:var(--accent)">3.16×</div>
+          <div style="font-size:11px;color:var(--text-dim)">131K: <b>4.53s → 1.43s</b> (1M: 93.26s → 48.38s)</div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Chunked Prefill Scaling <span class="badge b-purple">16K Chunk</span></div>
+          <div class="card-sub">TTFT leverage at 1M context</div>
+          <div class="kpi-val" style="color:var(--purple)">-27.1%</div>
+          <div style="font-size:11px;color:var(--text-dim)">122.08s (4K chunk) → <b>88.96s (16K chunk)</b></div>
+        </div>
+      </div>
+
+      <!-- Quick Executive Summary Cards -->
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">1M Scale-Out Topology Latency (Native 100G vs 20G Capped)</div>
+          <div class="card-sub">Measured turn latency across 16 GPUs under varied fabric constraints</div>
+          <div class="chart-box"><canvas id="chart-exec-scaleout"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Single-Node Context Scaling (TP4 vs TP8 Baseline)</div>
+          <div class="card-sub">Logarithmic TTFT scaling across context spectrum (1K to 1M)</div>
+          <div class="chart-box"><canvas id="chart-exec-baseline"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: SINGLE-NODE SCALE-UP -->
+    <div id="tab-scaleup" class="tab-pane">
+      <div class="note-box">
+        <b>Single-Node Architecture:</b> Evaluated on Node 0 with 8 × NVIDIA RTX PRO 6000 Blackwell GPUs. Compares <b>TP4 / PP1</b> (4 GPUs) vs <b>TP8 / PP1</b> (8 GPUs) across context lengths (1K, 8K, 128K, 512K, 1M).
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Context Latency Curve (TTFT in Seconds — Log Scale)</div>
+          <div class="card-sub">TP4 leads at short context; TP8 overtakes at 512K &amp; 1M</div>
+          <div class="chart-box"><canvas id="chart-scaleup-ttft"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Per-Token Generation Latency (TPOT in ms)</div>
+          <div class="card-sub">TP8 suffers consistent communication penalty during decode</div>
+          <div class="chart-box"><canvas id="chart-scaleup-tpot"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Empirical Single-Node Baseline Table</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Context Tokens</th>
+                <th>TP4 TTFT (s)</th>
+                <th>TP8 TTFT (s)</th>
+                <th>TTFT Delta (%)</th>
+                <th>TP4 TPOT (ms)</th>
+                <th>TP8 TPOT (ms)</th>
+                <th>TPOT Delta (%)</th>
+                <th>Regime Winner</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>1,024 (1K)</b></td>
+                <td>0.0494s</td>
+                <td>0.0560s</td>
+                <td style="color:var(--red)">+13.4% slower on TP8</td>
+                <td>4.423ms</td>
+                <td>6.267ms</td>
+                <td style="color:var(--red)">+41.7% TPOT penalty</td>
+                <td><span class="badge b-blue">TP4 (Compute Bound)</span></td>
+              </tr>
+              <tr>
+                <td><b>8,192 (8K)</b></td>
+                <td>0.2220s</td>
+                <td>0.2642s</td>
+                <td style="color:var(--red)">+19.0% slower on TP8</td>
+                <td>4.500ms</td>
+                <td>6.374ms</td>
+                <td style="color:var(--red)">+41.6% TPOT penalty</td>
+                <td><span class="badge b-blue">TP4 (Compute Bound)</span></td>
+              </tr>
+              <tr>
+                <td><b>131,072 (128K)</b></td>
+                <td>4.5282s</td>
+                <td>4.8043s</td>
+                <td style="color:var(--red)">+6.1% slower on TP8</td>
+                <td>5.114ms</td>
+                <td>7.045ms</td>
+                <td style="color:var(--red)">+37.8% TPOT penalty</td>
+                <td><span class="badge b-blue">TP4 (Communication Dominated)</span></td>
+              </tr>
+              <tr>
+                <td><b>524,288 (512K)</b></td>
+                <td>31.9239s</td>
+                <td>28.2012s</td>
+                <td style="color:var(--green)">-11.7% faster on TP8</td>
+                <td>7.616ms</td>
+                <td>9.529ms</td>
+                <td style="color:var(--red)">+25.1% TPOT penalty</td>
+                <td><span class="badge b-green">TP8 (Prefill Overtake)</span></td>
+              </tr>
+              <tr>
+                <td><b>1,000,000 (1M)</b></td>
+                <td>93.2555s</td>
+                <td>74.9101s</td>
+                <td style="color:var(--green)">-19.7% faster on TP8</td>
+                <td>10.265ms</td>
+                <td>12.154ms</td>
+                <td style="color:var(--red)">+18.4% TPOT penalty</td>
+                <td><span class="badge b-green">TP8 (Prefill Overtake)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: MULTI-NODE SCALE-OUT -->
+    <div id="tab-scaleout" class="tab-pane">
+      <div class="note-box">
+        <b>Distributed 16-GPU Topologies:</b> Evaluated across 2 Nodes (16 Blackwell GPUs total). Compares <b>TP4/PP2</b>, <b>TP8/PP2</b>, <b>TP4/PP4</b>, and <b>TP16/PP1</b> under Native (100G RoCEv2) and 20G traffic-controlled network regimes.
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">1M Latency vs Resource Frontier (Pareto Evaluation)</div>
+          <div class="card-sub">Trade-off between turn latency (TTFT) and total GPU-seconds consumed</div>
+          <div class="chart-box"><canvas id="chart-scaleout-pareto"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Network Sensitivity Gap (Native vs 20G Capped)</div>
+          <div class="card-sub">Wide TP across nodes (TP16) explodes when fabric bandwidth drops</div>
+          <div class="chart-box"><canvas id="chart-scaleout-net"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">1M Distributed Topologies Comparison</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Topology</th>
+                <th>Nodes</th>
+                <th>Total GPUs</th>
+                <th>Native TTFT</th>
+                <th>20G Capped TTFT</th>
+                <th>Degradation Delta</th>
+                <th>GPU-s / Request</th>
+                <th>Frontier Classification</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>TP4 / PP4</b></td>
+                <td>2</td>
+                <td>16 GPUs</td>
+                <td style="color:var(--green);font-weight:700">28.703s</td>
+                <td>29.876s</td>
+                <td style="color:var(--green)">+4.08% (Insulated)</td>
+                <td>459.25</td>
+                <td><span class="badge b-green">Non-Dominated (Min Latency)</span></td>
+              </tr>
+              <tr>
+                <td><b>TP8 / PP2</b></td>
+                <td>2</td>
+                <td>16 GPUs</td>
+                <td>42.195s</td>
+                <td>42.464s</td>
+                <td style="color:var(--green)">+0.64% (Insulated)</td>
+                <td>675.12</td>
+                <td><span class="badge b-amber">Dominated by TP4/PP4</span></td>
+              </tr>
+              <tr>
+                <td><b>TP4 / PP2</b></td>
+                <td>2</td>
+                <td>8 GPUs</td>
+                <td>54.053s</td>
+                <td>58.252s</td>
+                <td>+7.77% (Moderate)</td>
+                <td style="color:var(--accent);font-weight:700">432.42</td>
+                <td><span class="badge b-blue">Non-Dominated (Balanced Efficiency)</span></td>
+              </tr>
+              <tr>
+                <td><b>TP16 / PP1</b></td>
+                <td>2</td>
+                <td>16 GPUs</td>
+                <td>83.936s</td>
+                <td style="color:var(--red);font-weight:700">441.442s</td>
+                <td style="color:var(--red);font-weight:700">+425.92% (5.26× Crash)</td>
+                <td>1342.98</td>
+                <td><span class="badge b-red">Severely Dominated (+192% Cost)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: LONG CONTEXT & KNOBS -->
+    <div id="tab-longctx" class="tab-pane">
+      <div class="note-box">
+        <b>Chunked Prefill &amp; Prefix Caching:</b> Characterizes the architectural impact of chunk size (4K, 8K, 16K) and prefix cache reuse on turn latency across long-context inputs.
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Chunk Size Scaling @ 1M Context (TP4)</div>
+          <div class="card-sub">Increasing chunk size to 16K significantly reduces 1M turn latency</div>
+          <div class="chart-box"><canvas id="chart-long-chunk"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Measured Prefix Cache Speedup Factor</div>
+          <div class="card-sub">Cold prefill vs Repeat-hit turn latency across context lengths</div>
+          <div class="chart-box"><canvas id="chart-long-prefix"></canvas></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Prefix Cache Turn Latency Table</div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Context Length</th>
+                <th>Cold Prefill TTFT</th>
+                <th>Repeat-Hit Median TTFT</th>
+                <th>Measured Speedup Factor</th>
+                <th>Serving Strategy Recommendation</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><b>131,072 (128K)</b></td>
+                <td>4.528s</td>
+                <td>1.432s</td>
+                <td style="color:var(--green);font-weight:700">3.16× Faster</td>
+                <td>High reuse benefit; maintain minimum 20% KV headroom</td>
+              </tr>
+              <tr>
+                <td><b>524,288 (512K)</b></td>
+                <td>31.924s</td>
+                <td>16.735s</td>
+                <td style="color:var(--green);font-weight:700">1.91× Faster</td>
+                <td>Cuts 15.2s off client wait time on cached turns</td>
+              </tr>
+              <tr>
+                <td><b>1,000,000 (1M)</b></td>
+                <td>93.256s</td>
+                <td>48.377s</td>
+                <td style="color:var(--green);font-weight:700">1.93× Faster</td>
+                <td>Saves ~45 seconds of GPU prefill computation per request</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: CONCURRENCY & QUEUING -->
+    <div id="tab-concurrency" class="tab-pane">
+      <div class="note-box">
+        <b>Concurrent Serving Dynamics:</b> Characterizes latency elasticity under closed-loop concurrency (c1 to c8) and open-loop arrival rate sweeps at 1K, 8K, 128K, and 1M tokens.
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Closed-Loop Concurrency Impact @ 1M (TP4)</div>
+          <div class="card-sub">At 1M, adding concurrency inflates TTFT without expanding throughput</div>
+          <div class="chart-box"><canvas id="chart-conc-1m"></canvas></div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Open-Loop Request Arrival Sweeps</div>
+          <div class="card-sub">Throughput saturation curves at 1K and 8K context lengths</div>
+          <div class="chart-box"><canvas id="chart-conc-openloop"></canvas></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: TEST 3 & CAPABILITY STATUS -->
+    <div id="tab-probes" class="tab-pane">
+      <div class="warn-box">
+        <b>Audited Execution Boundaries:</b> In compliance with the V9 test specification (<code>V9_FULL_CHARACTERIZATION_RUNS_AND_TIMINGS_GUIDE.md</code>), this dashboard documents the precise reasons for non-executed or blocked configurations. Zero assumptions or simulated data.
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">Why Test 2 Has No Profiler Traces <span class="badge b-amber">Design Intent</span></div>
+          <div class="card-sub">Methodological separation between inference benchmarking and profiling</div>
+          <div style="font-size:12px;line-height:1.6;color:#cbd5e1;margin-top:10px">
+            <p style="margin-bottom:8px"><b>1. Trace Overhead Distortion:</b> Active PyTorch Profiler (<code>torch.profiler</code>) and NVIDIA Nsight Systems hooks introduce 15% to 35% runtime overhead, CPU-GPU synchronization stalls, and memory serialization. Running profilers during E2E benchmark runs distorts user-visible TTFT and TPOT.</p>
+            <p style="margin-bottom:8px"><b>2. Two-Tier Testing Protocol:</b> The V9 suite explicitly isolates <b>TEST 2 (Pure Inference Benchmarking, 5.5–7.5h)</b> from <b>TEST 3 (Deep Production Profiling, 12–16h)</b>.</p>
+            <p><b>3. Status:</b> Test 2 completed all 121 inference points. Test 3 (35 PyTorch traces and Nsight captures) is a separate upcoming run.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Capability Blocked Probes Audit <span class="badge b-red">2 Runs</span></div>
+          <div class="card-sub">Technical explanations for capability-blocked configurations</div>
+          <div style="font-size:12px;line-height:1.6;color:#cbd5e1;margin-top:10px">
+            <p style="margin-bottom:10px">
+              <b>1. <code>tp4_kv_fp8_probe</code> (CAPABILITY_BLOCKED):</b><br>
+              <span style="color:var(--text-dim)">Evaluated FP8 KV cache quantization on Kimi-Linear-48B architecture. Blocked due to model-specific prefill query quantization requirements in hybrid linear attention. Accurately detected and stopped by runtime preflight checks.</span>
+            </p>
+            <p>
+              <b>2. <code>tp4_offload_probe</code> (CAPABILITY_BLOCKED):</b><br>
+              <span style="color:var(--text-dim)">Evaluated CPU block offloading on Kimi-Linear-48B architecture. Blocked due to block hash alignment constraints in hybrid linear attention state management.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 7: EVIDENCE EXPLORER -->
+    <div id="tab-evidence" class="tab-pane">
+      <div class="card">
+        <div class="card-title">V9 Empirical Evidence Explorer (121 Completed Runs)</div>
+        <div class="card-sub">Filterable, searchable table of all empirical telemetry records</div>
+        
+        <div class="filter-bar">
+          <input type="text" id="ev-search" class="filter-input" placeholder="Search case, topology, context..." oninput="filterTable()">
+          <select id="ev-net" class="filter-select" onchange="filterTable()">
+            <option value="">All Network Modes</option>
+            <option value="SINGLE_NODE_LOCAL">Single Node Local</option>
+            <option value="native">Native Fabric (100G)</option>
+            <option value="20g">20G Capped</option>
+          </select>
+          <select id="ev-case" class="filter-select" onchange="filterTable()">
+            <option value="">All Cases</option>
+            <option value="tp4_context_baseline">tp4_context_baseline</option>
+            <option value="tp8_context_baseline">tp8_context_baseline</option>
+            <option value="tp4_pp2_dist">tp4_pp2_dist</option>
+            <option value="tp4_pp4_dist">tp4_pp4_dist</option>
+            <option value="tp8_pp2_dist">tp8_pp2_dist</option>
+            <option value="tp16_pp1_dist">tp16_pp1_dist</option>
+          </select>
+        </div>
+
+        <div class="table-wrap" style="max-height:600px;overflow-y:auto">
+          <table id="ev-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Benchmark Case</th>
+                <th>Topology</th>
+                <th>Context</th>
+                <th>Concurrency</th>
+                <th>Network</th>
+                <th>TTFT (s)</th>
+                <th>TPOT (ms)</th>
+                <th>Throughput (tok/s)</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ev-tbody">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Client-side Logic & Chart Initialization -->
+  <script>
+    window.V9_DATA = {"campaign": "V9 Multi-Model Characterization Suite (v9_test2_20260927_163750)", "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct", "cluster": "2 Nodes x 8 NVIDIA RTX PRO 6000 Blackwell Server Edition GPUs (16 GPUs aggregate, 1,536 GB VRAM, 768 vCPUs)", "single_node_baseline": [{"case": "tp4_context_baseline", "points": [{"context": 1024, "ttft_s": 0.0494, "tpot_ms": 4.423, "tps": 217.45}, {"context": 8192, "ttft_s": 0.222, "tpot_ms": 4.5, "tps": 186.89}, {"context": 131072, "ttft_s": 4.5282, "tpot_ms": 5.114, "tps": 24.72}, {"context": 524288, "ttft_s": 31.9239, "tpot_ms": 7.616, "tps": 1.98}, {"context": 1000000, "ttft_s": 93.2555, "tpot_ms": 10.265, "tps": 0.34}]}, {"case": "tp8_context_baseline", "points": [{"context": 1024, "ttft_s": 0.056, "tpot_ms": 6.267, "tps": 154.74}, {"context": 8192, "ttft_s": 0.2642, "tpot_ms": 6.374, "tps": 135.47}, {"context": 131072, "ttft_s": 4.8043, "tpot_ms": 7.045, "tps": 22.46}, {"context": 524288, "ttft_s": 28.2012, "tpot_ms": 9.529, "tps": 2.22}, {"context": 1000000, "ttft_s": 74.9101, "tpot_ms": 12.154, "tps": 0.43}]}], "scaleout_1m_native": [{"case": "tp4_pp2_dist", "tp": 4, "pp": 2, "gpus": 8, "ttft_s": 54.053, "tpot_ms": 18.539, "tps": 0.586, "gpu_seconds": 432.42}, {"case": "tp8_pp2_dist", "tp": 8, "pp": 2, "gpus": 16, "ttft_s": 42.195, "tpot_ms": 14.776, "tps": 0.75, "gpu_seconds": 675.12}, {"case": "tp4_pp4_dist", "tp": 4, "pp": 4, "gpus": 16, "ttft_s": 28.703, "tpot_ms": 14.867, "tps": 1.097, "gpu_seconds": 459.25}, {"case": "tp16_pp1_dist", "tp": 16, "pp": 1, "gpus": 16, "ttft_s": 83.936, "tpot_ms": 29.594, "tps": 0.377, "gpu_seconds": 1342.98}], "net_sens_1m": [{"case": "tp4_pp2_dist", "tp": 4, "pp": 2, "native_ttft_s": 54.053, "g20_ttft_s": 58.252, "delta_pct": 7.77}, {"case": "tp4_pp4_dist", "tp": 4, "pp": 4, "native_ttft_s": 28.703, "g20_ttft_s": 29.876, "delta_pct": 4.09}, {"case": "tp8_pp2_dist", "tp": 8, "pp": 2, "native_ttft_s": 42.195, "g20_ttft_s": 42.464, "delta_pct": 0.64}, {"case": "tp16_pp1_dist", "tp": 16, "pp": 1, "native_ttft_s": 83.936, "g20_ttft_s": 441.442, "delta_pct": 425.93}], "chunks_1m": [{"case": "tp4_chunk16384", "chunk_size": 16384, "ttft_s": 4.347, "tpot_ms": 5.126}, {"case": "tp4_chunk16384", "chunk_size": 16384, "ttft_s": 30.438, "tpot_ms": 7.603}, {"case": "tp4_chunk16384", "chunk_size": 16384, "ttft_s": 88.96, "tpot_ms": 10.27}, {"case": "tp4_chunk4096", "chunk_size": 4096, "ttft_s": 5.23, "tpot_ms": 5.131}, {"case": "tp4_chunk4096", "chunk_size": 4096, "ttft_s": 40.305, "tpot_ms": 7.619}, {"case": "tp4_chunk4096", "chunk_size": 4096, "ttft_s": 122.083, "tpot_ms": 10.287}, {"case": "tp4_chunk8192", "chunk_size": 8192, "ttft_s": 4.525, "tpot_ms": 5.123}, {"case": "tp4_chunk8192", "chunk_size": 8192, "ttft_s": 31.908, "tpot_ms": 7.609}, {"case": "tp4_chunk8192", "chunk_size": 8192, "ttft_s": 93.224, "tpot_ms": 10.253}], "prefix_data": [{"context": 131072, "cold_ttft_s": 4.528, "hit_ttft_s": 1.432, "speedup_x": 3.16}, {"context": 524288, "cold_ttft_s": 31.924, "hit_ttft_s": 16.735, "speedup_x": 1.91}, {"context": 1000000, "cold_ttft_s": 93.256, "hit_ttft_s": 48.377, "speedup_x": 1.93}], "concurrency_1m": [{"concurrency": 1, "ttft_s": 93.43, "tpot_ms": 10.235, "tps": 0.3413}, {"concurrency": 2, "ttft_s": 139.365, "tpot_ms": 181.906, "tps": 0.3449}, {"concurrency": 4, "ttft_s": 231.234, "tpot_ms": 267.267, "tps": 0.3467}], "runs": [{"id": "V9-001", "case": "tp4_context_baseline", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 1, "ttft_s": 0.049, "tpot_ms": 4.423, "throughput_tps": 217.45, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-002", "case": "tp4_context_baseline", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 1, "ttft_s": 0.222, "tpot_ms": 4.5, "throughput_tps": 186.89, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-003", "case": "tp4_context_baseline", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.528, "tpot_ms": 5.114, "throughput_tps": 24.72, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-004", "case": "tp4_context_baseline", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 31.924, "tpot_ms": 7.616, "throughput_tps": 1.98, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-005", "case": "tp4_context_baseline", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 93.256, "tpot_ms": 10.265, "throughput_tps": 0.34, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-006", "case": "tp8_context_baseline", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 1, "ttft_s": 0.056, "tpot_ms": 6.267, "throughput_tps": 154.74, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-007", "case": "tp8_context_baseline", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 1, "ttft_s": 0.264, "tpot_ms": 6.374, "throughput_tps": 135.47, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-008", "case": "tp8_context_baseline", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.804, "tpot_ms": 7.045, "throughput_tps": 22.46, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-009", "case": "tp8_context_baseline", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 28.201, "tpot_ms": 9.529, "throughput_tps": 2.22, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-010", "case": "tp8_context_baseline", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 74.91, "tpot_ms": 12.154, "throughput_tps": 0.43, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-011", "case": "tp4_prefill_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 1, "ttft_s": 0.048, "tpot_ms": 4.355, "throughput_tps": 65.31, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-012", "case": "tp4_prefill_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 1, "ttft_s": 0.221, "tpot_ms": 4.315, "throughput_tps": 17.09, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-013", "case": "tp4_prefill_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.532, "tpot_ms": 4.993, "throughput_tps": 0.88, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-014", "case": "tp4_prefill_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 31.918, "tpot_ms": 7.747, "throughput_tps": 0.13, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-015", "case": "tp4_prefill_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 93.254, "tpot_ms": 10.755, "throughput_tps": 0.04, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-016", "case": "tp4_decode_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 1, "ttft_s": 0.05, "tpot_ms": 4.372, "throughput_tps": 224.11, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-017", "case": "tp4_decode_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 1, "ttft_s": 0.221, "tpot_ms": 4.402, "throughput_tps": 207.26, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-018", "case": "tp4_decode_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 8, "ttft_s": 0.358, "tpot_ms": 8.166, "throughput_tps": 903.83, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-019", "case": "tp4_decode_focus", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 8, "ttft_s": 0.89, "tpot_ms": 9.488, "throughput_tps": 713.04, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-020", "case": "tp4_closedloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 1, "ttft_s": 0.049, "tpot_ms": 4.419, "throughput_tps": 217.7, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-021", "case": "tp4_closedloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 2, "ttft_s": 0.074, "tpot_ms": 5.69, "throughput_tps": 335.56, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-022", "case": "tp4_closedloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 4, "ttft_s": 0.115, "tpot_ms": 6.336, "throughput_tps": 591.5, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-023", "case": "tp4_closedloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 8, "ttft_s": 0.201, "tpot_ms": 7.859, "throughput_tps": 928.22, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-024", "case": "tp4_closedloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 1, "ttft_s": 0.222, "tpot_ms": 4.478, "throughput_tps": 187.64, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-025", "case": "tp4_closedloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 2, "ttft_s": 0.325, "tpot_ms": 5.983, "throughput_tps": 276.36, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-026", "case": "tp4_closedloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 4, "ttft_s": 0.61, "tpot_ms": 7.169, "throughput_tps": 419.58, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-027", "case": "tp4_closedloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 8, "ttft_s": 0.913, "tpot_ms": 10.651, "throughput_tps": 563.48, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-028", "case": "tp4_closedloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.529, "tpot_ms": 5.1, "throughput_tps": 24.73, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-029", "case": "tp4_closedloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 2, "ttft_s": 6.747, "tpot_ms": 24.098, "throughput_tps": 26.04, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-030", "case": "tp4_closedloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 4, "ttft_s": 10.353, "tpot_ms": 66.369, "throughput_tps": 27.15, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-031", "case": "tp4_closedloop_524288", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 32.011, "tpot_ms": 7.592, "throughput_tps": 1.97, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-032", "case": "tp4_closedloop_524288", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 2, "ttft_s": 47.792, "tpot_ms": 247.113, "throughput_tps": 2.0, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-033", "case": "tp4_closedloop_524288", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 4, "ttft_s": 79.579, "tpot_ms": 371.504, "throughput_tps": 2.01, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-034", "case": "tp4_closedloop_1000000", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 93.43, "tpot_ms": 10.235, "throughput_tps": 0.34, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-035", "case": "tp4_closedloop_1000000", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 2, "ttft_s": 139.365, "tpot_ms": 181.906, "throughput_tps": 0.34, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-036", "case": "tp4_closedloop_1000000", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 4, "ttft_s": 231.234, "tpot_ms": 267.267, "throughput_tps": 0.35, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-037", "case": "tp4_chunk4096", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 5.23, "tpot_ms": 5.131, "throughput_tps": 21.76, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-038", "case": "tp4_chunk4096", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 40.305, "tpot_ms": 7.619, "throughput_tps": 1.57, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-039", "case": "tp4_chunk4096", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 122.083, "tpot_ms": 10.287, "throughput_tps": 0.26, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-040", "case": "tp4_chunk8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.525, "tpot_ms": 5.123, "throughput_tps": 24.73, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-041", "case": "tp4_chunk8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 31.908, "tpot_ms": 7.609, "throughput_tps": 1.98, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-042", "case": "tp4_chunk8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 93.224, "tpot_ms": 10.253, "throughput_tps": 0.34, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-043", "case": "tp4_chunk16384", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.347, "tpot_ms": 5.126, "throughput_tps": 25.61, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-044", "case": "tp4_chunk16384", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 524288, "concurrency": 1, "ttft_s": 30.438, "tpot_ms": 7.603, "throughput_tps": 2.07, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-045", "case": "tp4_chunk16384", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1000000, "concurrency": 1, "ttft_s": 88.96, "tpot_ms": 10.27, "throughput_tps": 0.36, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-046", "case": "tp4_prefix_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": "N/A", "concurrency": 1, "ttft_s": 1.432, "tpot_ms": 5.216, "throughput_tps": 61.12, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-047", "case": "tp4_prefix_524288", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": "N/A", "concurrency": 1, "ttft_s": 16.735, "tpot_ms": 7.691, "throughput_tps": 3.72, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-048", "case": "tp4_prefix_1000000", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": "N/A", "concurrency": 1, "ttft_s": 48.377, "tpot_ms": 10.339, "throughput_tps": 0.66, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-049", "case": "tp8_ep_probe", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 1, "ttft_s": 0.265, "tpot_ms": 6.717, "throughput_tps": 129.44, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-050", "case": "tp8_ep_probe", "status": "COMPLETED", "tp": 8, "pp": 1, "gpus": 8, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 1, "ttft_s": 4.794, "tpot_ms": 7.401, "throughput_tps": 22.32, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-051", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.071, "tpot_ms": 11.923, "throughput_tps": 1002.6, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-052", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.102, "tpot_ms": 25.777, "throughput_tps": 1927.04, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-053", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.129, "tpot_ms": 28.033, "throughput_tps": 2129.31, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-054", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.147, "tpot_ms": 27.988, "throughput_tps": 2140.7, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-055", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.157, "tpot_ms": 28.043, "throughput_tps": 2145.97, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-056", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.136, "tpot_ms": 28.066, "throughput_tps": 2133.8, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-057", "case": "tp4_openloop_1024", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 1024, "concurrency": 64, "ttft_s": 0.149, "tpot_ms": 28.076, "throughput_tps": 2152.67, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-058", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.261, "tpot_ms": 8.196, "throughput_tps": 266.88, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-059", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.348, "tpot_ms": 16.977, "throughput_tps": 531.95, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-060", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.509, "tpot_ms": 40.584, "throughput_tps": 761.91, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-061", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.714, "tpot_ms": 61.01, "throughput_tps": 854.52, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-062", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.926, "tpot_ms": 63.049, "throughput_tps": 869.96, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-063", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.774, "tpot_ms": 63.146, "throughput_tps": 860.2, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-064", "case": "tp4_openloop_8192", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 8192, "concurrency": 64, "ttft_s": 0.885, "tpot_ms": 64.203, "throughput_tps": 860.43, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-065", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 5.68, "tpot_ms": 33.89, "throughput_tps": 14.79, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-066", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 10.844, "tpot_ms": 156.342, "throughput_tps": 26.2, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-067", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 26.07, "tpot_ms": 229.839, "throughput_tps": 27.71, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-068", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 34.017, "tpot_ms": 233.659, "throughput_tps": 27.77, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-069", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 41.078, "tpot_ms": 238.546, "throughput_tps": 28.17, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-070", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 38.468, "tpot_ms": 242.509, "throughput_tps": 28.28, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-071", "case": "tp4_openloop_131072", "status": "COMPLETED", "tp": 4, "pp": 1, "gpus": 4, "network": "SINGLE_NODE_LOCAL", "context": 131072, "concurrency": 32, "ttft_s": 49.086, "tpot_ms": 239.073, "throughput_tps": 27.97, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-072", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 1024, "concurrency": 1, "ttft_s": 0.056, "tpot_ms": 5.772, "throughput_tps": 167.57, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-073", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 8192, "concurrency": 1, "ttft_s": 0.237, "tpot_ms": 5.948, "throughput_tps": 145.94, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-074", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 8192, "concurrency": 4, "ttft_s": 0.518, "tpot_ms": 45.76, "throughput_tps": 83.9, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-075", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 131072, "concurrency": 1, "ttft_s": 2.664, "tpot_ms": 27.97, "throughput_tps": 20.59, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-076", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 131072, "concurrency": 4, "ttft_s": 5.225, "tpot_ms": 70.831, "throughput_tps": 35.43, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-077", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 524288, "concurrency": 1, "ttft_s": 18.552, "tpot_ms": 13.864, "throughput_tps": 3.29, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-078", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "native", "context": 1000000, "concurrency": 1, "ttft_s": 54.053, "tpot_ms": 18.539, "throughput_tps": 0.59, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-079", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 1024, "concurrency": 1, "ttft_s": 0.078, "tpot_ms": 10.579, "throughput_tps": 92.24, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-080", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 8192, "concurrency": 1, "ttft_s": 0.286, "tpot_ms": 14.452, "throughput_tps": 64.46, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-081", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 8192, "concurrency": 4, "ttft_s": 0.621, "tpot_ms": 28.291, "throughput_tps": 130.61, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-082", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 131072, "concurrency": 1, "ttft_s": 2.983, "tpot_ms": 14.939, "throughput_tps": 26.23, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-083", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 131072, "concurrency": 4, "ttft_s": 6.8, "tpot_ms": 48.136, "throughput_tps": 39.44, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-084", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 524288, "concurrency": 1, "ttft_s": 15.582, "tpot_ms": 10.958, "throughput_tps": 3.93, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-085", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 1000000, "concurrency": 1, "ttft_s": 42.195, "tpot_ms": 14.776, "throughput_tps": 0.75, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-086", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 1024, "concurrency": 1, "ttft_s": 0.059, "tpot_ms": 6.389, "throughput_tps": 151.65, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-087", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 8192, "concurrency": 1, "ttft_s": 0.245, "tpot_ms": 6.533, "throughput_tps": 133.95, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-088", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 8192, "concurrency": 4, "ttft_s": 0.451, "tpot_ms": 22.679, "throughput_tps": 164.15, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-089", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 131072, "concurrency": 1, "ttft_s": 1.724, "tpot_ms": 7.337, "throughput_tps": 48.18, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-090", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 131072, "concurrency": 4, "ttft_s": 3.867, "tpot_ms": 30.578, "throughput_tps": 65.81, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-091", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 524288, "concurrency": 1, "ttft_s": 10.285, "tpot_ms": 9.869, "throughput_tps": 5.87, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-092", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "native", "context": 1000000, "concurrency": 1, "ttft_s": 28.703, "tpot_ms": 14.867, "throughput_tps": 1.1, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-093", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 1024, "concurrency": 1, "ttft_s": 0.132, "tpot_ms": 19.575, "throughput_tps": 49.96, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-094", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 8192, "concurrency": 1, "ttft_s": 0.543, "tpot_ms": 19.992, "throughput_tps": 45.38, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-095", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 8192, "concurrency": 4, "ttft_s": 1.233, "tpot_ms": 27.499, "throughput_tps": 124.02, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-096", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 131072, "concurrency": 1, "ttft_s": 8.783, "tpot_ms": 21.755, "throughput_tps": 11.09, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-097", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 131072, "concurrency": 4, "ttft_s": 16.668, "tpot_ms": 156.912, "throughput_tps": 13.88, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-098", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 524288, "concurrency": 1, "ttft_s": 38.216, "tpot_ms": 23.98, "throughput_tps": 1.61, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-099", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "native", "context": 1000000, "concurrency": 1, "ttft_s": 83.936, "tpot_ms": 29.594, "throughput_tps": 0.38, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-100", "case": "tp8_pp2_ep_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 8192, "concurrency": 1, "ttft_s": 0.279, "tpot_ms": 9.983, "throughput_tps": 90.63, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-101", "case": "tp8_pp2_ep_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "native", "context": 131072, "concurrency": 1, "ttft_s": 2.889, "tpot_ms": 10.061, "throughput_tps": 30.71, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-102", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "20g", "context": 1024, "concurrency": 1, "ttft_s": 0.092, "tpot_ms": 14.307, "throughput_tps": 68.44, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-103", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "20g", "context": 8192, "concurrency": 1, "ttft_s": 0.297, "tpot_ms": 14.805, "throughput_tps": 62.86, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-104", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "20g", "context": 131072, "concurrency": 1, "ttft_s": 3.47, "tpot_ms": 15.074, "throughput_tps": 23.77, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-105", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "20g", "context": 524288, "concurrency": 1, "ttft_s": 20.252, "tpot_ms": 14.97, "throughput_tps": 3.02, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-106", "case": "tp4_pp2_dist", "status": "COMPLETED", "tp": 4, "pp": 2, "gpus": 8, "network": "20g", "context": 1000000, "concurrency": 1, "ttft_s": 58.252, "tpot_ms": 26.368, "throughput_tps": 0.54, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-107", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "20g", "context": 1024, "concurrency": 1, "ttft_s": 0.072, "tpot_ms": 14.992, "throughput_tps": 65.72, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-108", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "20g", "context": 8192, "concurrency": 1, "ttft_s": 0.342, "tpot_ms": 15.002, "throughput_tps": 61.42, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-109", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "20g", "context": 131072, "concurrency": 1, "ttft_s": 2.978, "tpot_ms": 14.877, "throughput_tps": 26.3, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-110", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "20g", "context": 524288, "concurrency": 1, "ttft_s": 16.148, "tpot_ms": 14.851, "throughput_tps": 3.75, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-111", "case": "tp8_pp2_dist", "status": "COMPLETED", "tp": 8, "pp": 2, "gpus": 16, "network": "20g", "context": 1000000, "concurrency": 1, "ttft_s": 42.464, "tpot_ms": 15.716, "throughput_tps": 0.75, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-112", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "20g", "context": 1024, "concurrency": 1, "ttft_s": 0.065, "tpot_ms": 6.565, "throughput_tps": 147.23, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-113", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "20g", "context": 8192, "concurrency": 1, "ttft_s": 0.277, "tpot_ms": 6.652, "throughput_tps": 129.73, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-114", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "20g", "context": 131072, "concurrency": 1, "ttft_s": 1.964, "tpot_ms": 7.248, "throughput_tps": 44.36, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-115", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "20g", "context": 524288, "concurrency": 1, "ttft_s": 11.217, "tpot_ms": 10.055, "throughput_tps": 5.4, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-116", "case": "tp4_pp4_dist", "status": "COMPLETED", "tp": 4, "pp": 4, "gpus": 16, "network": "20g", "context": 1000000, "concurrency": 1, "ttft_s": 29.876, "tpot_ms": 12.431, "throughput_tps": 1.06, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-117", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "20g", "context": 1024, "concurrency": 1, "ttft_s": 0.368, "tpot_ms": 19.816, "throughput_tps": 47.22, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-118", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "20g", "context": 8192, "concurrency": 1, "ttft_s": 2.308, "tpot_ms": 20.089, "throughput_tps": 34.45, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-119", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "20g", "context": 131072, "concurrency": 1, "ttft_s": 36.059, "tpot_ms": 20.795, "throughput_tps": 3.31, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-120", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "20g", "context": 524288, "concurrency": 1, "ttft_s": 214.0, "tpot_ms": 48.861, "throughput_tps": 0.29, "rtfx": 0.0, "backend": "openai"}, {"id": "V9-121", "case": "tp16_pp1_dist", "status": "COMPLETED", "tp": 16, "pp": 1, "gpus": 16, "network": "20g", "context": 1000000, "concurrency": 1, "ttft_s": 441.442, "tpot_ms": 30.037, "throughput_tps": 0.07, "rtfx": 0.0, "backend": "openai"}]};
+
+    function showTab(tabId) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      const targetPane = document.getElementById('tab-' + tabId);
+      if (targetPane) targetPane.classList.add('active');
+      
+      event.currentTarget.classList.add('active');
+    }
+
+    function filterTable() {
+      const query = document.getElementById('ev-search').value.toLowerCase();
+      const netFilter = document.getElementById('ev-net').value;
+      const caseFilter = document.getElementById('ev-case').value;
+      
+      const tbody = document.getElementById('ev-tbody');
+      tbody.innerHTML = '';
+      
+      const runs = window.V9_DATA.runs;
+      let count = 0;
+      for (let r of runs) {
+        if (netFilter && r.network !== netFilter) continue;
+        if (caseFilter && r.case !== caseFilter) continue;
+        
+        const rowStr = (r.id + ' ' + r.case + ' ' + r.network + ' ' + r.context).toLowerCase();
+        if (query && !rowStr.includes(query)) continue;
+        
+        count++;
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><b>${r.id}</b></td>
+          <td>${r.case}</td>
+          <td>TP${r.tp}/PP${r.pp} (${r.gpus}G)</td>
+          <td>${r.context === 'N/A' ? 'N/A' : Number(r.context).toLocaleString()}</td>
+          <td>${r.concurrency}</td>
+          <td><span class="badge ${r.network === '20g' ? 'b-red' : (r.network === 'native' ? 'b-green' : 'b-blue')}">${r.network}</span></td>
+          <td><b>${r.ttft_s.toFixed(3)}s</b></td>
+          <td>${r.tpot_ms.toFixed(2)}ms</td>
+          <td>${r.throughput_tps.toFixed(2)}</td>
+          <td><span class="badge b-green">${r.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+      }
+    }
+
+    // Initialize Charts on Load
+    document.addEventListener('DOMContentLoaded', function() {
+      filterTable();
+
+      const defaultOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#94a3b8', font: { size: 10, weight: '600' } } }
+        },
+        scales: {
+          x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        }
+      };
+
+      // Chart 1: Exec Scaleout
+      new Chart(document.getElementById('chart-exec-scaleout'), {
+        type: 'bar',
+        data: {
+          labels: ['TP4/PP4 (16G)', 'TP8/PP2 (16G)', 'TP4/PP2 (8G)', 'TP16/PP1 (16G)'],
+          datasets: [
+            { label: 'Native 100G TTFT (s)', data: [28.703, 42.195, 54.053, 83.936], backgroundColor: '#38bdf8' },
+            { label: '20G Capped TTFT (s)', data: [29.876, 42.464, 58.252, 441.442], backgroundColor: '#f87171' }
+          ]
+        },
+        options: defaultOptions
+      });
+
+      // Chart 2: Exec Baseline
+      new Chart(document.getElementById('chart-exec-baseline'), {
+        type: 'line',
+        data: {
+          labels: ['1K', '8K', '128K', '512K', '1M'],
+          datasets: [
+            { label: 'TP4/PP1 TTFT (s)', data: [0.049, 0.222, 4.528, 31.924, 93.256], borderColor: '#38bdf8', tension: 0.2 },
+            { label: 'TP8/PP1 TTFT (s)', data: [0.056, 0.264, 4.804, 28.201, 74.910], borderColor: '#a78bfa', tension: 0.2 }
+          ]
+        },
+        options: {
+          ...defaultOptions,
+          scales: {
+            ...defaultOptions.scales,
+            y: { ...defaultOptions.scales.y, type: 'logarithmic', title: { display: true, text: 'TTFT (seconds, log scale)', color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // Chart 3: ScaleUp TTFT
+      new Chart(document.getElementById('chart-scaleup-ttft'), {
+        type: 'line',
+        data: {
+          labels: ['1K', '8K', '128K', '512K', '1M'],
+          datasets: [
+            { label: 'TP4/PP1 TTFT (s)', data: [0.049, 0.222, 4.528, 31.924, 93.256], borderColor: '#38bdf8', borderWidth: 2, tension: 0.2 },
+            { label: 'TP8/PP1 TTFT (s)', data: [0.056, 0.264, 4.804, 28.201, 74.910], borderColor: '#4ade80', borderWidth: 2, tension: 0.2 }
+          ]
+        },
+        options: {
+          ...defaultOptions,
+          scales: {
+            ...defaultOptions.scales,
+            y: { ...defaultOptions.scales.y, type: 'logarithmic', title: { display: true, text: 'TTFT (seconds, log scale)', color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // Chart 4: ScaleUp TPOT
+      new Chart(document.getElementById('chart-scaleup-tpot'), {
+        type: 'bar',
+        data: {
+          labels: ['1K', '8K', '128K', '512K', '1M'],
+          datasets: [
+            { label: 'TP4/PP1 TPOT (ms)', data: [4.423, 4.500, 5.114, 7.616, 10.265], backgroundColor: '#38bdf8' },
+            { label: 'TP8/PP1 TPOT (ms)', data: [6.267, 6.374, 7.045, 9.529, 12.154], backgroundColor: '#f87171' }
+          ]
+        },
+        options: {
+          ...defaultOptions,
+          scales: {
+            ...defaultOptions.scales,
+            y: { ...defaultOptions.scales.y, title: { display: true, text: 'TPOT (ms per output token)', color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // Chart 5: ScaleOut Pareto
+      new Chart(document.getElementById('chart-scaleout-pareto'), {
+        type: 'scatter',
+        data: {
+          datasets: [
+            {
+              type: 'line',
+              label: 'Non-Dominated Frontier (TP4 Family)',
+              data: [
+                { x: 432.42, y: 54.053, label: 'TP4/PP2 (8G)' },
+                { x: 459.25, y: 28.703, label: 'TP4/PP4 (16G)' }
+              ],
+              borderColor: '#4ade80',
+              backgroundColor: 'rgba(74, 222, 128, 0.1)',
+              pointRadius: 6,
+              pointBackgroundColor: '#4ade80'
+            },
+            {
+              type: 'scatter',
+              label: 'Dominated Configurations',
+              data: [
+                { x: 675.12, y: 42.195, label: 'TP8/PP2 (16G)' },
+                { x: 1342.98, y: 83.936, label: 'TP16/PP1 (16G)' }
+              ],
+              borderColor: '#f87171',
+              backgroundColor: '#f87171',
+              pointRadius: 7,
+              pointStyle: 'crossRot'
+            }
+          ]
+        },
+        options: {
+          ...defaultOptions,
+          scales: {
+            x: { type: 'linear', position: 'bottom', title: { display: true, text: 'GPU-Seconds / Request (Occupancy)', color: '#94a3b8' } },
+            y: { title: { display: true, text: '1M TTFT (seconds — Lower is Better)', color: '#94a3b8' } }
+          },
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function(ctx) {
+                  return ctx.raw.label + ': ' + ctx.raw.y.toFixed(2) + 's TTFT, ' + ctx.raw.x.toFixed(1) + ' GPU-s';
+                }
+              }
+            }
+          }
+        }
+      });
+
+      // Chart 6: Scaleout Net
+      new Chart(document.getElementById('chart-scaleout-net'), {
+        type: 'bar',
+        data: {
+          labels: ['TP4/PP4 (16G)', 'TP8/PP2 (16G)', 'TP4/PP2 (8G)', 'TP16/PP1 (16G)'],
+          datasets: [
+            { label: '20G Capped Degradation (%)', data: [4.08, 0.64, 7.77, 425.92], backgroundColor: ['#4ade80', '#4ade80', '#38bdf8', '#f87171'] }
+          ]
+        },
+        options: {
+          ...defaultOptions,
+          scales: {
+            ...defaultOptions.scales,
+            y: { ...defaultOptions.scales.y, title: { display: true, text: 'Degradation Delta (%)', color: '#94a3b8' } }
+          }
+        }
+      });
+
+      // Chart 7: Long Chunk
+      new Chart(document.getElementById('chart-long-chunk'), {
+        type: 'bar',
+        data: {
+          labels: ['4,096 (4K Chunk)', '8,192 (8K Chunk)', '16,384 (16K Chunk)'],
+          datasets: [
+            { label: '1M Context TTFT (seconds)', data: [122.083, 93.224, 88.960], backgroundColor: ['#f87171', '#38bdf8', '#4ade80'] }
+          ]
+        },
+        options: defaultOptions
+      });
+
+      // Chart 8: Long Prefix
+      new Chart(document.getElementById('chart-long-prefix'), {
+        type: 'bar',
+        data: {
+          labels: ['128K Context', '512K Context', '1M Context'],
+          datasets: [
+            { label: 'Cold Prefill TTFT (s)', data: [4.528, 31.924, 93.256], backgroundColor: '#f87171' },
+            { label: 'Prefix Repeat-Hit TTFT (s)', data: [1.432, 16.735, 48.377], backgroundColor: '#4ade80' }
+          ]
+        },
+        options: defaultOptions
+      });
+
+      // Chart 9: Conc 1M
+      new Chart(document.getElementById('chart-conc-1m'), {
+        type: 'line',
+        data: {
+          labels: ['Concurrency 1 (c1)', 'Concurrency 2 (c2)', 'Concurrency 4 (c4)'],
+          datasets: [
+            { label: '1M Observed TTFT (seconds)', data: [93.430, 139.365, 231.234], borderColor: '#f87171', tension: 0.1 }
+          ]
+        },
+        options: defaultOptions
+      });
+
+      // Chart 10: Openloop
+      new Chart(document.getElementById('chart-conc-openloop'), {
+        type: 'line',
+        data: {
+          labels: ['4 req/s', '8 req/s', '12 req/s', '14.7 req/s', '16.3 req/s', '18 req/s', '20.4 req/s'],
+          datasets: [
+            { label: '1K Achieved Throughput (req/s)', data: [3.92, 7.53, 8.32, 8.36, 8.38, 8.34, 8.41], borderColor: '#38bdf8', tension: 0.2 }
+          ]
+        },
+        options: defaultOptions
+      });
+
+    });
+  </script>
+</body>
+</html>
