@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>V8-FULL Empirical Characterization Dashboard — Native Fabric & RTX PRO 6000 Blackwell Server Edition</title>
+<title>Performance Characterization Dashboard — Native Fabric & RTX PRO 6000 Blackwell Server Edition</title>
 <style>
 :root{
   --bg:#07101f;--bg2:#091426;--card:#0d1a2f;--card2:#101f37;--line:#22324d;
@@ -2695,7 +2695,7 @@ if (typeof Chart === 'undefined') {
 <div class="shell">
 <div class="topbar">
 <div>
-<div class="brandline"><div class="brandmark">V8</div><div><h1>V8-FULL Characterization Dashboard — Primary Fabric &amp; Network Sensitivity Edition</h1><div class="subtitle">Evidence-backed deployment decision UI · Kimi-Linear-48B-A3B-Instruct BF16 surrogate · RTX PRO 6000 Blackwell Server Edition · <b>Primary deployment evidence: GCP_NATIVE · auxiliary application sensitivity: configured-100G / configured-20G</b></div></div></div>
+<div class="brandline"><div class="brandmark">PERF</div><div><h1>Performance Characterization Dashboard — Primary Fabric &amp; Network Sensitivity Edition</h1><div class="subtitle">Evidence-backed deployment decision UI · Kimi-Linear-48B-A3B-Instruct BF16 surrogate · RTX PRO 6000 Blackwell Server Edition · <b>Primary deployment evidence: GCP_NATIVE · auxiliary application sensitivity: configured-100G / configured-20G</b></div></div></div>
 </div>
 <div class="topright">
 <div class="scope-line">
@@ -2709,7 +2709,7 @@ if (typeof Chart === 'undefined') {
 </div>
 </div>
 <div class="preview-banner" style="border-color:rgba(57,217,138,.35);background:linear-gradient(90deg,rgba(57,217,138,.08),rgba(66,201,255,.05))">
-<div><strong style="color:var(--green)">✓ V8-FULL EMPIRICAL CAMPAIGN LOADED</strong> — 95 Native Completed Runs (80 Fixed Serving + 15 Open-Loop) + 24 Auxiliary Capped Sweeps · 7 Safety-Guarded NOT_RUN · Dual-Node Socket Telemetry &amp; Hardware Roof Verified.</div>
+<div><strong style="color:var(--green)">✓ PERFORMANCE CHARACTERIZATION CAMPAIGN LOADED</strong> — 95 Native Completed Runs (80 Fixed Serving + 15 Open-Loop) + 24 Auxiliary Capped Sweeps · 7 Safety-Guarded NOT_RUN · Dual-Node Socket Telemetry &amp; Hardware Roof Verified.</div>
 <div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (measured ~173.58 Gb/s fwd, MTU 8896, 0.05ms RTT)</b><br/>Network Sensitivity: <span style="color:var(--amber)">100G cap (measured ~56.84 Gb/s) &amp; 20G cap (measured ~16.48 Gb/s) executed across 24 runs</span></div>
 </div>
 <div class="tabs">
@@ -2758,7 +2758,7 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="card mb8" id="executive-config-guidance">
 <div class="card-title">🧠 Configuration Guidance Matrix — What Should I Deploy, and Why?</div>
-<div class="card-sub">This is the executive decision output. Populate only from validated V8 evidence; no universal winner.</div>
+<div class="card-sub">This is the executive decision output. Populate only from validated performance characterization evidence; no universal winner.</div>
 <div class="table-wrap">
 <table>
 <thead>
@@ -2792,7 +2792,7 @@ if (typeof Chart === 'undefined') {
 <div class="card"><div class="header-row"><div><div class="card-title">🎯 TPOT vs Context</div><div class="card-sub">Decode behavior separated from prefill · series labeled with full TP/PP configuration</div></div><span class="badge b-purple"><span class="dot"></span>MEASURED-48B</span></div><div class="chart"><canvas id="chart_exec_tpot"></canvas></div><div class="analysis"><div><b>Observation</b><span style="color:var(--cyan)">TP4/PP1 leads 8K interactive (4.475ms vs 6.350ms on TP8)</span></div><div><b>Interpretation</b><span>Cross-validated: 4-GPU barrier avoids NUMA bridge crossing</span></div><div><b>Implication</b><span>Single-node interactive vs long-batch</span></div><div><b>Next evidence</b><span>Single-node Nsight (6 traces)</span></div><div><b>Evidence</b><span class="mono">tp4_context_baseline / tp8_context_baseline</span></div></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">⚖ Capacity / SLO Envelope</div><div class="card-sub">Throughput vs TTFT/TPOT/queue knee</div></div><span class="badge b-amber"><span class="dot"></span>DERIVED</span></div><div class="chart"><canvas id="chart_exec_capacity"></canvas></div><div class="analysis"><div><b>Observation</b><span style="color:var(--amber)">TP4 closed-loop c32 achieves 784.1 output tok/s</span></div><div><b>Interpretation</b><span style="color:var(--green)">c=1 to c=32 closed-loop</span></div><div><b>Implication</b><span>Operating point depends on application TPOT/TTFT SLO</span></div><div><b>Next evidence</b><span>Verified via 8K Poisson sweep</span></div><div><b>Evidence</b><span class="mono">tp4_closedloop_8k</span></div></div></div>
 </div>
-<div class="section-title"><span>Decision-Intelligence Outputs</span><small>These views turn validated V8 evidence into deployment guidance — no ranking without workload/SLO scope</small></div><div class="card mb8" id="global-config-identity-rule">
+<div class="section-title"><span>Decision-Intelligence Outputs</span><small>These views turn validated performance characterization evidence into deployment guidance — no ranking without workload/SLO scope</small></div><div class="card mb8" id="global-config-identity-rule">
 <div class="card-title">🏷 Configuration Identity Convention — Applies to Every Tab</div>
 <div class="card-sub">A result is not identified by “TP4” or “TP8” alone. Visible chart labels must carry TP/PP; the Evidence key carries the full runtime configuration.</div>
 <div class="grid2">
@@ -2827,9 +2827,9 @@ if (typeof Chart === 'undefined') {
 <tr><td><b>512K</b></td><td>c=1</td><td>prefill dominated</td><td>TTFT 10.22s (TP4/PP4) vs 28.09s (TP8 single) · 90,967 MiB peak GPU memory</td><td><span class="status s-completed">Prefill Dominated</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 <tr><td><b>1M</b></td><td>c=1 / c=2 / c=4</td><td>prefill &amp; queue</td><td>TTFT 28.57s (TP4/PP4) · single-node c4 queue mean 134.43s (TP4) vs 107.01s (TP8) · 0 preemptions</td><td><span class="status s-completed">Prefill &amp; Queue Knee</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 </tbody></table></div></div>
-<div class="card"><div class="header-row"><div><div class="card-title">🗂 Deployment Recipe Card</div><div class="card-sub">Generated per workload after V8 evidence validation</div></div><span class="badge b-green"><span class="dot"></span>WORKLOAD-SCOPED</span></div><div class="table-wrap"><table><tbody><tr><td><b>Workload / SLO</b></td><td>Defined by target SLO (e.g. interactive TPOT &lt; 10ms or TTFT &lt; 30s)</td></tr><tr><td><b>Measured regime</b></td><td>Separated by observed prefill latency vs decode token pacing (bandwidth and collective sync contributors)</td></tr><tr><td><b>Candidate topology</b></td><td>TP4/PP1 for interactive 8K; TP8/PP1 for single-node long context; TP4/PP4 for scale-out</td></tr><tr><td><b>Native fabric behavior</b></td><td>Measured on Native (173.6 Gbps) + configured 100G/20G; TP4/PP4 has +3.91% TTFT delta at 20G</td></tr><tr><td><b>Candidate mechanism / next evidence</b></td><td>Decode: intra-node collective synchronization (cross-validated); Prefill: compute scaling vs pipeline latency (NCU/timeline verification pending)</td></tr><tr><td><b>Memory / KV state</b></td><td>GPU peak ~86.7–88.8 GiB across models; KV cache utilization 0.13% (8K) to 12.3% (1M)</td></tr><tr><td><b>Settings that matter</b></td><td>Chunk size (16K lowest c1 TTFT), Prefix caching (cuts repeat 1M TTFT to 2.61s)</td></tr><tr><td><b>Low-sensitivity settings</b></td><td>max_num_seqs (flat ~0.05% across 4/8/16 @ 1M c4)</td></tr><tr><td><b>Production validation</b></td><td>Timeline profiling across all ranks and nodes</td></tr><tr><td><b>Evidence</b></td><td>119 completed runs in combined_vllm_runs.csv + Nsight SQLite traces</td></tr></tbody></table></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">🗂 Deployment Recipe Card</div><div class="card-sub">Generated per workload after performance characterization evidence validation</div></div><span class="badge b-green"><span class="dot"></span>WORKLOAD-SCOPED</span></div><div class="table-wrap"><table><tbody><tr><td><b>Workload / SLO</b></td><td>Defined by target SLO (e.g. interactive TPOT &lt; 10ms or TTFT &lt; 30s)</td></tr><tr><td><b>Measured regime</b></td><td>Separated by observed prefill latency vs decode token pacing (bandwidth and collective sync contributors)</td></tr><tr><td><b>Candidate topology</b></td><td>TP4/PP1 for interactive 8K; TP8/PP1 for single-node long context; TP4/PP4 for scale-out</td></tr><tr><td><b>Native fabric behavior</b></td><td>Measured on Native (173.6 Gbps) + configured 100G/20G; TP4/PP4 has +3.91% TTFT delta at 20G</td></tr><tr><td><b>Candidate mechanism / next evidence</b></td><td>Decode: intra-node collective synchronization (cross-validated); Prefill: compute scaling vs pipeline latency (NCU/timeline verification pending)</td></tr><tr><td><b>Memory / KV state</b></td><td>GPU peak ~86.7–88.8 GiB across models; KV cache utilization 0.13% (8K) to 12.3% (1M)</td></tr><tr><td><b>Settings that matter</b></td><td>Chunk size (16K lowest c1 TTFT), Prefix caching (cuts repeat 1M TTFT to 2.61s)</td></tr><tr><td><b>Low-sensitivity settings</b></td><td>max_num_seqs (flat ~0.05% across 4/8/16 @ 1M c4)</td></tr><tr><td><b>Production validation</b></td><td>Timeline profiling across all ranks and nodes</td></tr><tr><td><b>Evidence</b></td><td>119 completed runs in combined_vllm_runs.csv + Nsight SQLite traces</td></tr></tbody></table></div></div>
 </div>
-<div class="card mb8"><div class="header-row"><div><div class="card-title">🚫 What Not To Do</div><div class="card-sub">Promote as measured lessons only when V8 evidence supports them</div></div></div><div class="checklist"><div class="check"><span class="box"></span>Do not choose topology from peak tokens/sec alone.</div><div class="check"><span class="box"></span>Do not call admission success production capacity.</div><div class="check"><span class="box"></span>Do not assume “fits in VRAM” means usable latency.</div><div class="check"><span class="box"></span>Do not assume prefill and decode prefer the same topology.</div><div class="check"><span class="box"></span>Do not extrapolate 128K behavior linearly to 1M.</div><div class="check"><span class="box"></span>Do not extrapolate beyond the measured Native / configured-100G / configured-20G points; do not infer 50G/10G application behavior or local 2×10GbE equivalence without runs.</div><div class="check"><span class="box"></span>Do not infer NCCL/PP causality from E2E latency alone.</div><div class="check"><span class="box"></span>Do not compare unmatched workload conditions.</div><div class="check"><span class="box"></span>Do not use profiler-instrumented latency as normal benchmark latency.</div><div class="check"><span class="box"></span>Do not treat CUTLASS reference as model-kernel efficiency.</div><div class="check"><span class="box"></span>Do not tune scheduler knobs blindly if another subsystem dominates.</div><div class="check"><span class="box"></span>Do not render missing / unresolved evidence as zero.</div></div></div>
+<div class="card mb8"><div class="header-row"><div><div class="card-title">🚫 What Not To Do</div><div class="card-sub">Promote as measured lessons only when performance characterization evidence supports them</div></div></div><div class="checklist"><div class="check"><span class="box"></span>Do not choose topology from peak tokens/sec alone.</div><div class="check"><span class="box"></span>Do not call admission success production capacity.</div><div class="check"><span class="box"></span>Do not assume “fits in VRAM” means usable latency.</div><div class="check"><span class="box"></span>Do not assume prefill and decode prefer the same topology.</div><div class="check"><span class="box"></span>Do not extrapolate 128K behavior linearly to 1M.</div><div class="check"><span class="box"></span>Do not extrapolate beyond the measured Native / configured-100G / configured-20G points; do not infer 50G/10G application behavior or local 2×10GbE equivalence without runs.</div><div class="check"><span class="box"></span>Do not infer NCCL/PP causality from E2E latency alone.</div><div class="check"><span class="box"></span>Do not compare unmatched workload conditions.</div><div class="check"><span class="box"></span>Do not use profiler-instrumented latency as normal benchmark latency.</div><div class="check"><span class="box"></span>Do not treat CUTLASS reference as model-kernel efficiency.</div><div class="check"><span class="box"></span>Do not tune scheduler knobs blindly if another subsystem dominates.</div><div class="check"><span class="box"></span>Do not render missing / unresolved evidence as zero.</div></div></div>
 </section>
 
 <!-- KEY FINDS -->
@@ -3523,7 +3523,7 @@ if (typeof Chart === 'undefined') {
       <div class="kd-header-top">
         <div class="kd-title-group">
           <h1>Key Deployment Discoveries</h1>
-          <p>Ten evidence-backed architectural findings from the V8 characterization campaign. Single-page Signal view first, persistent 10-finding explorer below, with in-place forensic evidence viewer.</p>
+          <p>Ten evidence-backed architectural findings from the performance characterization campaign. Single-page Signal view first, persistent 10-finding explorer below, with in-place forensic evidence viewer.</p>
         </div>
       </div>
       <div class="kd-trust-strip">
@@ -4398,7 +4398,7 @@ if (typeof Chart === 'undefined') {
     <!-- 6. FOOTER TRUST & CONFORMANCE STRIP FOR SIGNALS -->
     <div style="background:#091322;border:1px solid #1a2a44;border-radius:6px;padding:8px 14px;font-size:9.5px;color:#94a3b8;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px">
       <div>
-        &#8505; All values shown above are taken from canonical V8 run data, HTML evidence, or validated profiler traces. Derived values are explicitly labeled.
+        &#8505; All values shown above are taken from canonical performance characterization run data, HTML evidence, or validated profiler traces. Derived values are explicitly labeled.
       </div>
       <div style="display:flex;gap:8px;align-items:center">
         <span>Evidence: <b style="color:#4ade80">&#9679; HIGH</b> <b style="color:#facc15">&#9679; MEDIUM</b> <b style="color:#f87171">&#9679; LOW</b></span>
@@ -4809,7 +4809,7 @@ if (typeof Chart === 'undefined') {
 <div class="section-title"><span>Single-node Scale-Up — TP4/PP1 ↔ TP8/PP1</span><small>Dimensions: TP · context · concurrency · chunk size · scheduler · KV dtype</small></div>
 <div class="card mb8" id="scaleup-config-identity">
 <div class="card-title">⚙ Exact Configuration Identity — Single-Node Scale-Up</div>
-<div class="card-sub">The V8 Scale-Up matrix is single-node. Always show the full TP/PP identity on charts and legends.</div>
+<div class="card-sub">The performance characterization Scale-Up matrix is single-node. Always show the full TP/PP identity on charts and legends.</div>
 <div class="table-wrap">
 <table>
 <thead><tr><th>Series</th><th>Topology shown in UI</th><th>Scope</th><th>Other config fields</th></tr></thead>
@@ -4820,7 +4820,7 @@ if (typeof Chart === 'undefined') {
 </table>
 </div>
 <div class="scope-note">
-<strong>Important:</strong> <code>TP4/PP2</code> is <em>not</em> part of the current V8 single-node Scale-Up matrix described by the handoff.
+<strong>Important:</strong> <code>TP4/PP2</code> is <em>not</em> part of the current single-node Scale-Up matrix described by the handoff.
     It belongs to the Scale-Out topology set. If a future single-node TP4/PP2 run is added, it should appear only when an actual evidence row exists.
   </div>
 </div>
@@ -4852,7 +4852,7 @@ if (typeof Chart === 'undefined') {
 </tbody>
 </table>
 </div>
-<div class="takeaway-box"><strong>Architectural lesson:</strong> More TP is not automatically better. V8 demonstrates where reduced compute/GPU outweighs additional synchronization — and where it does not.</div>
+<div class="takeaway-box"><strong>Architectural lesson:</strong> More TP is not automatically better. Performance characterization demonstrates where reduced compute/GPU outweighs additional synchronization — and where it does not.</div>
 </div>
 </section>
 <!-- SCALE OUT -->
@@ -4935,7 +4935,7 @@ if (typeof Chart === 'undefined') {
 <div class="card"><div class="header-row"><div><div class="card-title">Native 1M Scale-Out Matrix</div><div class="card-sub">4 executed-campaign cells · missing is never zero</div></div><span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">GCP_NATIVE · 1M</div><div class="mcell"><div class="big">TP4 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 52.53s · TPOT 10.54ms</div></div><div class="mcell"><div class="big">TP8 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 41.51s · TPOT 12.47ms</div></div><div class="mcell"><div class="big">TP4 / PP4</div></div><div class="mcell"><span class="status s-completed" style="color:var(--green);font-weight:900">LOWEST TTFT</span><div class="small" style="color:var(--green)">TTFT 28.57s · ~35,005 input tok/s derived ingestion rate (~1.107 output tok/s)</div></div><div class="mcell"><div class="big">TP16 / PP1</div></div><div class="mcell"><span class="status s-unres" style="color:var(--amber)">HIGHEST TTFT</span><div class="small" style="color:var(--amber)">TTFT 68.20s (highest latency)</div></div></div></div>
 </div>
 <div class="grid2">
-<div class="card"><div class="header-row"><div><div class="card-title">Native Network Verification</div><div class="card-sub">Only evidence actually captured in V8</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Value</th><th>Status</th><th>Source</th></tr></thead><tbody><tr><td><b>Interface / MTU</b></td><td><span class="mono">ens4 / MTU 8896 (Jumbo)</span></td><td><span class="status s-completed">VALIDATED</span></td><td>native validation</td></tr><tr><td><b>iperf forward/reverse</b></td><td><b>173.58 Gbps Fwd (smoke ~173.60 Fwd / ~173.59 Rev)</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware/network</td></tr><tr><td><b>NCCL SendRecv (P2P)</b></td><td><b>Large-msg BusBW: 64M: 7.24 GB/s · 128M: 6.98 GB/s · 256M: 7.11 GB/s</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr><tr><td><b>Local TP4/TP8 &amp; Cross-Node TP16</b></td><td><b>25.95 GB/s (TP4) / 25.40 GB/s (TP8) PCIe/NUMA BusBW</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr></tbody></table></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">Native Network Verification</div><div class="card-sub">Only evidence actually captured in performance characterization</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Value</th><th>Status</th><th>Source</th></tr></thead><tbody><tr><td><b>Interface / MTU</b></td><td><span class="mono">ens4 / MTU 8896 (Jumbo)</span></td><td><span class="status s-completed">VALIDATED</span></td><td>native validation</td></tr><tr><td><b>iperf forward/reverse</b></td><td><b>173.58 Gbps Fwd (smoke ~173.60 Fwd / ~173.59 Rev)</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware/network</td></tr><tr><td><b>NCCL SendRecv (P2P)</b></td><td><b>Large-msg BusBW: 64M: 7.24 GB/s · 128M: 6.98 GB/s · 256M: 7.11 GB/s</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr><tr><td><b>Local TP4/TP8 &amp; Cross-Node TP16</b></td><td><b>25.95 GB/s (TP4) / 25.40 GB/s (TP8) PCIe/NUMA BusBW</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr></tbody></table></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">Topology Semantics / Placement</div><div class="card-sub">Rank → node → GPU UUID → PCI bus → NUMA/socket</div></div></div><div class="topology-diagram"><div class="node"><div class="node-title">Node 0</div><div class="gpu-row"><div class="gpu">GPU 0</div><div class="gpu">GPU 1</div><div class="gpu">GPU 2</div><div class="gpu">GPU 3</div><div class="gpu">GPU 4</div><div class="gpu">GPU 5</div><div class="gpu">GPU 6</div><div class="gpu">GPU 7</div></div></div><div class="link">⇄<small>native fabric</small></div><div class="node"><div class="node-title">Node 1</div><div class="gpu-row"><div class="gpu">GPU 8</div><div class="gpu">GPU 9</div><div class="gpu">GPU 10</div><div class="gpu">GPU 11</div><div class="gpu">GPU 12</div><div class="gpu">GPU 13</div><div class="gpu">GPU 14</div><div class="gpu">GPU 15</div></div></div></div><div class="card-sub" style="margin-top:6px">TP16/PP1 spans both nodes; TP8/PP2 uses one TP8 stage per node; TP4/PP2 uses one TP4 stage per node; TP4/PP4 uses four TP4 stages — actual placement evidence decides which boundaries are remote.</div></div>
 </div>
 
@@ -5062,7 +5062,7 @@ if (typeof Chart === 'undefined') {
 <tr><td>Single-node 1M concurrency</td><td><strong>TP4/PP1</strong> and <strong>TP8/PP1</strong></td><td>c1 / c2 / c4</td></tr>
 <tr><td>TP4 scheduler sensitivity</td><td><strong>TP4/PP1</strong></td><td>1M c4 · max_num_seqs 4 / 8 / 16</td></tr>
 <tr><td>Chunked prefill</td><td><strong>TP4/PP1</strong> preserved V6 lineage</td><td>4K / 8K / 16K chunk size</td></tr>
-<tr><td>KV-cache dtype sensitivity</td><td><strong>Bind exact TP/PP from matched V8 evidence row</strong></td><td>baseline KV vs FP8-KV; model weights unchanged</td></tr>
+<tr><td>KV-cache dtype sensitivity</td><td><strong>Bind exact TP/PP from matched performance characterization evidence row</strong></td><td>baseline KV vs FP8-KV; model weights unchanged</td></tr>
 <tr><td>Prefix reuse</td><td><strong>Bind exact TP/PP from case manifest</strong></td><td>cold vs repeated-prefix</td></tr>
 <tr><td>CPU/offload pressure</td><td><strong>Bind exact TP/PP from preserved case manifest</strong></td><td>offload bytes/time + latency</td></tr>
 <tr><td>Distributed 1M</td><td><strong>TP4/PP2 · TP8/PP2 · TP4/PP4 · TP16/PP1</strong></td><td>GCP_NATIVE · 1M c1</td></tr>
@@ -5137,7 +5137,7 @@ if (typeof Chart === 'undefined') {
 <thead><tr><th>View</th><th>Configuration identity rule</th><th>Modifier / load identity</th></tr></thead>
 <tbody>
 <tr><td>Context / concurrency / KV / queue</td><td><strong>TP4/PP1</strong> and/or <strong>TP8/PP1</strong> only where matching evidence exists</td><td>context · c/RPS · KV dtype · scheduler fields</td></tr>
-<tr><td>V8 1M max_num_seqs sweep</td><td><strong>TP4/PP1</strong></td><td>1M · c4 · max_num_seqs 4/8/16</td></tr>
+<tr><td>Performance Characterization 1M max_num_seqs sweep</td><td><strong>TP4/PP1</strong></td><td>1M · c4 · max_num_seqs 4/8/16</td></tr>
 <tr><td>Preserved 512K max_num_seqs sweep</td><td><strong>TP4/PP1</strong></td><td>512K · c4 · max_num_seqs 4/8/16, if surfaced</td></tr>
 <tr><td>Open-loop capacity</td><td><strong>Bind exact TP/PP from generated-case manifest</strong></td><td>offered RPS · achieved TPS · queue · TTFT/TPOT</td></tr>
 <tr><td>Offload / prefix / KV variants</td><td><strong>Bind exact TP/PP from matched evidence rows</strong></td><td>only intended knob should differ</td></tr>
@@ -5156,7 +5156,7 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="grid3 mb8">
 <div class="card"><div class="card-title">Preemptions</div><div class="card-sub">Exact TP/PP + context + load required for every point</div><div class="chart short"><canvas id="chart_sched_preemptions"></canvas></div></div>
-<div class="card"><div class="card-title">max_num_seqs Sensitivity</div><div class="card-sub">V8 1M extension: TP4/PP1 · 1M c4 · max_num_seqs 4/8/16; preserved 512K series, if shown, stays separately labeled</div><div class="chart short"><canvas id="chart_sched_max_seqs"></canvas></div></div>
+<div class="card"><div class="card-title">max_num_seqs Sensitivity</div><div class="card-sub">Performance Characterization 1M extension: TP4/PP1 · 1M c4 · max_num_seqs 4/8/16; preserved 512K series, if shown, stays separately labeled</div><div class="chart short"><canvas id="chart_sched_max_seqs"></canvas></div></div>
 <div class="card"><div class="card-title">Offload Bytes / Time</div><div class="card-sub">Exact TP/PP must bind from the offload case manifest</div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:100%;box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — Host CPU Offload Excluded</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> NOT_RUN / Excluded from execution scope.<br/><b>Architectural Rationale:</b> Host memory offload was intentionally disabled as all tested models and KV states operated entirely within onboard GPU memory without requiring host tiering.</div></div></div>
 </div>
 
@@ -5813,7 +5813,7 @@ if (typeof Chart === 'undefined') {
 <div class="card"><div class="card-title">Status Contract</div><div class="card-sub">Never coerce absent evidence to numeric zero</div><div style="display:flex;gap:5px;flex-wrap:wrap;margin-top:8px"><span class="status s-scope">COMPLETED</span><span class="status s-unres">FAILED</span><span class="status s-unknown">SAFETY_SKIPPED</span><span class="status s-na">NOT_RUN</span><span class="status s-na">UNKNOWN</span><span class="status s-na">NOT_CAPTURED</span><span class="status s-unres">UNRESOLVED</span></div><div class="scope-note" style="margin-top:9px"><strong>Primary vs Auxiliary Evidence Contract:</strong> 95 primary GCP_NATIVE runs + 24 auxiliary bandwidth-capped runs (100G &amp; 20G) + 7 guarded points = 126 total catalogued rows (119 completed application rows). Capped sweeps provide network sensitivity telemetry and are not execution failures.</div></div>
 </div>
 
-<div class="card mb8" id="v8-evidence-table-container">
+<div class="card mb8" id="perf-evidence-table-container">
 <div class="header-row">
 <div>
 <div class="card-title">🔍 Comprehensive Audited Evidence Ledger (126 Canonical Runs)</div>
@@ -7751,7 +7751,7 @@ if (typeof Chart === 'undefined') {
 
 <div class="grid2 mb8">
 <div class="card"><div class="card-title">Derived Decision-Intelligence Build Layer</div><div class="card-sub">Frontend should consume evidence-backed analysis outputs rather than re-derive conclusions ad hoc</div><div class="source-list" style="margin-top:7px"><div class="source"><b>DEPLOYMENT_FINDINGS.json</b><span>observation · interpretation · confidence · implication · evidence</span></div><div class="source"><b>BOTTLENECK_REGIME_MAP.csv</b><span>context/load/phase bottleneck evidence</span></div><div class="source"><b>TUNING_SENSITIVITY.csv</b><span>high/medium/low-sensitivity knobs</span></div><div class="source"><b>SLO_CAPACITY_ENVELOPE.csv</b><span>throughput/latency/queue capacity knee</span></div><div class="source"><b>SCALEOUT_NATIVE_FABRIC.csv</b><span>native topology/context metrics</span></div><div class="source"><b>SCALEOUT_NETWORK_COVERAGE.md</b><span>records multi-node network sensitivity findings across native and capped sweeps</span></div><div class="source"><b>TOPOLOGY_WORKLOAD_MATRIX.csv</b><span>workload-scoped topology evidence</span></div><div class="source"><b>DASHBOARD_DATA_CONTRACT.json</b><span>stable UI schema / provenance</span></div></div></div>
-<div class="card"><div class="card-title">Provenance / Statistical Guardrails</div><div class="scope-note good-note" style="margin-top:7px"><strong>V6 vs V8:</strong> never silently merge. Every row carries suite_version, run_id, model revision, runtime version, network provenance and evidence class. Compare only sufficiently matched workloads.</div><div class="scope-note" style="margin-top:7px"><strong>Percentiles:</strong> promote p95 only when completed sample count ≥ 20; promote p99 only when completed sample count ≥ 100. Raw low-N percentile fields may exist but must not be presented as reliable SLO statistics.</div><div class="scope-note" style="margin-top:7px"><strong>Evidence classes:</strong> DIRECT_MEASURED · TIMELINE_ATTRIBUTED · DERIVED · UNRESOLVED.</div></div>
+<div class="card"><div class="card-title">Provenance / Statistical Guardrails</div><div class="scope-note good-note" style="margin-top:7px"><strong>Baseline vs Performance Characterization:</strong> never silently merge. Every row carries suite_version, run_id, model revision, runtime version, network provenance and evidence class. Compare only sufficiently matched workloads.</div><div class="scope-note" style="margin-top:7px"><strong>Percentiles:</strong> promote p95 only when completed sample count ≥ 20; promote p99 only when completed sample count ≥ 100. Raw low-N percentile fields may exist but must not be presented as reliable SLO statistics.</div><div class="scope-note" style="margin-top:7px"><strong>Evidence classes:</strong> DIRECT_MEASURED · TIMELINE_ATTRIBUTED · DERIVED · UNRESOLVED.</div></div>
 </div>
 <div class="grid2">
 <div class="card"><div class="card-title">Runtime Dashboard Acceptance</div><div class="checklist" style="margin-top:7px"><div class="check"><span class="box"></span>Read FINAL_VALIDATION first</div><div class="check"><span class="box"></span>Join coverage + metrics</div><div class="check"><span class="box"></span>Keep 7 top-level tabs</div><div class="check"><span class="box"></span>GCP_NATIVE primary + configured-100G/20G auxiliary measured</div><div class="check"><span class="box"></span>128K/512K/1M scale-out</div><div class="check"><span class="box"></span>4 distributed topologies</div><div class="check"><span class="box"></span>TP4/TP8 1M c1/c2/c4</div><div class="check"><span class="box"></span>1M scheduler / FP8-KV / prefix</div><div class="check"><span class="box"></span>p95/p99 sample gating</div><div class="check"><span class="box"></span>No invented profiler %</div><div class="check"><span class="box"></span>Both-node telemetry visible</div><div class="check"><span class="box"></span>Every point traceable</div><div class="check"><span class="box"></span>Every chart exposes full TP/PP config identity</div><div class="check"><span class="box"></span>Scheduler/KV charts expose exact TP/PP per series</div><div class="check"><span class="box"></span>Profiler rows expose exact TP/PP per trace</div><div class="check"><span class="box"></span>Distributed profiler matrix lists all four topologies explicitly</div><div class="check"><span class="box"></span>Evidence rows preserve complete configuration identity</div></div></div>
@@ -7774,7 +7774,7 @@ if (typeof Chart === 'undefined') {
 </div>
 </div>
 </section>
-<div class="footer"><span>V8-FULL Empirical Characterization Dashboard · Native Fabric &amp; Configured Sweeps · Grounded in 119 Completed Application Runs &amp; Nsight Profiles.</span><span>Dual-Node NVIDIA RTX PRO 6000 Blackwell Server Edition (16× 96GB GPUs).</span></div>
+<div class="footer"><span>Performance Characterization Dashboard · Native Fabric &amp; Configured Sweeps · Grounded in 119 Completed Application Runs &amp; Nsight Profiles.</span><span>Dual-Node NVIDIA RTX PRO 6000 Blackwell Server Edition (16× 96GB GPUs).</span></div>
 </div>
 
 <div id="toast-notification" class="toast-msg"></div>
@@ -8019,9 +8019,9 @@ function initTabNavigation() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("Initializing Audited V8 Characterization Controller...");
+    console.log("Initializing Audited Performance Characterization Controller...");
     initTabNavigation();
-    console.log("Initializing Audited V8 Characterization Controller...");
+    console.log("Initializing Audited Performance Characterization Controller...");
     // === SAFE CHART INITIALIZER ===
     function safeInitChart(canvasId, config) {
         if (typeof Chart === 'undefined') {
@@ -8930,7 +8930,7 @@ document.addEventListener('DOMContentLoaded', function() {
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { max: 1, title: { display: true, text: 'Preemptions Count' } } } }
     });
 
-    // Chart 21: Real V8 1M c4 max_num_seqs Experiment
+    // Chart 21: Real Performance Characterization 1M c4 max_num_seqs Experiment
     safeInitChart('chart_sched_max_seqs', {
         type: 'bar',
         data: {
