@@ -9502,7 +9502,7 @@ window.KD_PAGES_DATA = [
         "sub": "empirical p\u22480.99 (near-linear)"
       }
     ],
-    "why_matters": "System optimization targets change radically across the context spectrum. Profiling only at 128K misleads optimization teams into focusing on GEMM or communication kernels that cease to dominate at extreme context.",
+    "why_matters": "System optimization targets change radically across the context spectrum. Profiling only at 128K misleads optimization teams into focusing on GEMM or communication kernels that shift in relative importance as context grows.",
     "confidence": {
       "evidence": "HIGH for matched profiler endpoints",
       "cause": "MEDIUM for user-visible bottleneck interpretation",
@@ -9636,7 +9636,7 @@ window.KD_PAGES_DATA = [
         "sub": "4.897s cold \u2192 0.331s repeat-hit"
       }
     ],
-    "why_matters": "Repeated-prefix requests (RAG, multi-turn chat, system prompt reuse) bypass the standard quadratic/super-linear prefill curve, transforming user-visible latency from 94 seconds down to 2.6 seconds.",
+    "why_matters": "Repeated-prefix requests (RAG, multi-turn chat, system prompt reuse) moves the measured TTFT curve from a super-linear cold regime toward a much lower near-linear repeat-hit regime over the tested range, transforming user-visible latency from 94 seconds down to 2.6 seconds.",
     "confidence": {
       "evidence": "HIGH",
       "cause": "HIGH",
@@ -9724,7 +9724,7 @@ window.KD_PAGES_DATA = [
       "Cold TTFT scales super-linearly (empirical fit p=1.4427, R\u00b2=0.9979) while repeat-hit median scales near-linearly (p=1.0013, R\u00b2=0.9935).",
       "Do not describe this as 'quadratic to constant'; the empirical fit proves near-linear scaling (p\u22481.00) with context length.",
       "Do not claim '100% prefix hit'; the runtime counter hit ratio ranges from 49.97% to 87.33% across the test points.",
-      "Prefix-caching clusters should be separated into dedicated pools with prefix-aware load balancing."
+      "Treat repeated-prefix traffic as a distinct workload class; evaluate routing or dedicated-pool strategies against actual reuse, residency and eviction behavior."
     ],
     "decision_changed": "Route and capacity-plan repeated-prefix traffic as a distinct workload class; topology sensitivity remains unmeasured.",
     "boundary": "TP4/PP1 single-node only; multi-node distributed prefix caching was not measured in this run."
@@ -9972,8 +9972,8 @@ window.KD_PAGES_DATA = [
     "chart_primary_title": "TP4 vs TP8 Baseline TTFT Across Context",
     "chart_secondary_title": "1M Latency vs Resource Frontier (TTFT vs GPU-s)",
     "takeaways": [
-      "TP8 is +18.5% slower at 8K and +6.1% slower at 128K due to AllReduce communication overhead dominating small compute.",
-      "TP8 becomes -12.0% faster at 512K and -19.9% faster at 1M as Tensor Core compute scaling overcomes collective latency.",
+      "At 8K/128K, the added TP synchronization cost is consistent with offsetting the compute benefit of wider TP (+18.5% and +6.1% TTFT penalty).",
+      "At 512K/1M, measured E2E TTFT shows the compute-side benefit of wider TP outweighing the additional TP overhead in these runs (-12.0% and -19.9% TTFT).",
       "At 1M, the TP4 pipeline family (TP4/PP1 \u2192 TP4/PP2 \u2192 TP4/PP4) forms the optimal Pareto frontier.",
       "TP8/PP2 achieves 41.52s TTFT but consumes 664.24 GPU-s (dominated by TP4/PP4 at 28.57s and 457.09 GPU-s). Never extrapolate to 32-GPU topologies as they were not configured in this campaign."
     ],
@@ -10095,7 +10095,7 @@ window.KD_PAGES_DATA = [
     "chart_secondary_title": "E2E Decode TPOT Across Context Lengths (ms)",
     "takeaways": [
       "At 8K decode, TP8 executes the exact same 7040 AllReduce calls as TP4, but rank-local Self CUDA time jumps from 251.53ms to 583.87ms (2.32\u00d7).",
-      "This collective synchronization cost causes an immediate +41.9% TPOT penalty (4.475ms vs 6.350ms).",
+      "The 8K PyTorch-profiler AllReduce evidence contributes strongly to the observed short-context TPOT penalty (+41.9%, 4.475ms vs 6.350ms).",
       "The TPOT penalty persists all the way to 1M (+17.9%), proving that TP8 decode does not achieve parity with TP4 on this hardware.",
       "Do not conflate PyTorch Self CUDA % with Nsight aggregate work %; label instrument and denominator explicitly."
     ],

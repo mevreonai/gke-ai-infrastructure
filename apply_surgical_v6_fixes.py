@@ -81,6 +81,48 @@ c = c.replace("41.472 s (noise)", "41.472 s (-0.10%)")
 c = c.replace("(noise)", "(small signed delta)")
 print("Cleaned legacy noise language.")
 
+# 5.1 P1 SCIENTIFIC WORDING TIGHTENINGS (Sections 8.1 - 8.6)
+# Finding 3:
+c = c.replace(
+    "Profiling only at 128K misleads optimization teams into focusing on GEMM or communication kernels that cease to dominate at extreme context.",
+    "Profiling only at 128K misleads optimization teams into focusing on GEMM or communication kernels that shift in relative importance as context grows."
+)
+c = c.replace(
+    "KDA and MoE scale linearly (~3.95× and ~3.80× for 4× context growth)",
+    "KDA and MoE grouped GPU work grew ~3.8–4.0× over the same interval, consistent with approximately linear scaling over this measured range"
+)
+c = c.replace(
+    "KDA and MoE scale linearly (~3.95\u00d7 and ~3.80\u00d7 for 4\u00d7 context growth)",
+    "KDA and MoE grouped GPU work grew ~3.8–4.0× over the same interval, consistent with approximately linear scaling over this measured range"
+)
+
+# Finding 4:
+c = c.replace(
+    "bypass the standard quadratic/super-linear prefill curve",
+    "moves the measured TTFT curve from a super-linear cold regime toward a much lower near-linear repeat-hit regime over the tested range"
+)
+c = c.replace(
+    "Prefix-caching clusters should be separated into dedicated pools with prefix-aware load balancing.",
+    "Treat repeated-prefix traffic as a distinct workload class; evaluate routing or dedicated-pool strategies against actual reuse, residency and eviction behavior."
+)
+
+# Finding 6:
+c = c.replace(
+    "TP8 is +18.5% slower at 8K and +6.1% slower at 128K due to AllReduce communication overhead dominating small compute.",
+    "At 8K/128K, the added TP synchronization cost is consistent with offsetting the compute benefit of wider TP (+18.5% and +6.1% TTFT penalty)."
+)
+c = c.replace(
+    "TP8 becomes -12.0% faster at 512K and -19.9% faster at 1M as Tensor Core compute scaling overcomes collective latency.",
+    "At 512K/1M, measured E2E TTFT shows the compute-side benefit of wider TP outweighing the additional TP overhead in these runs (-12.0% and -19.9% TTFT)."
+)
+
+# Finding 7:
+c = c.replace(
+    "This collective synchronization cost causes an immediate +41.9% TPOT penalty (4.475ms vs 6.350ms).",
+    "The 8K PyTorch-profiler AllReduce evidence contributes strongly to the observed short-context TPOT penalty (+41.9%, 4.475ms vs 6.350ms)."
+)
+print("Applied P1 scientific wording tightenings.")
+
 # 6. FIX BUTTONS & FORENSIC ROUTING (Lines 4420-4422, 4538, 10682, 10555-10567)
 # Transition bar button:
 c = c.replace(
