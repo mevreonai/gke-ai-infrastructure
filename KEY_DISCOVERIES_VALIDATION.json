@@ -8,7 +8,7 @@
     {
       "test": "P0_Stable_IDs_1_to_10",
       "passed": true,
-      "detail": "10 cards and 10 pages in exact canonical sequence 1..10"
+      "detail": "10 full-depth discovery pages in exact canonical sequence 1..10"
     },
     {
       "test": "P0_Trust_Strip_Wording",
@@ -43,17 +43,17 @@
     {
       "test": "P0_Finding3_Complexity_Wording",
       "passed": true,
-      "detail": "Uses 'empirical p\u22481.99'; removed 'exclusive bottleneck' and quadratic claims"
+      "detail": "Uses 'empirical p\u22481.99'; removed quadratic prefill expansion claims"
     },
     {
       "test": "P0_Finding4_Prefix_Reuse",
       "passed": true,
-      "detail": "Validated 94.2272s -> 2.6140s (36.0x); no '100% prefix hit' or bypass claims"
+      "detail": "Validated cold vs repeat-hit speedup (36.0x @ 1M)"
     },
     {
       "test": "P0_Finding5_Admission_Data",
       "passed": true,
-      "detail": "Validated 3.3586 vs 0.1846 req/s, 27.51K vs 24.19K tok/s (~1.14x token gap)"
+      "detail": "Validated 3.3586 vs 0.1846 req/s admission throughput"
     },
     {
       "test": "P0_Finding6_Parallelism_Frontier",
@@ -63,12 +63,12 @@
     {
       "test": "P0_Finding7_TP_Decode_TPOT",
       "passed": true,
-      "detail": "Validated TP4 4.475..10.267ms, TP8 6.350..12.102ms, PyTorch AllReduce 251.53/583.87ms"
+      "detail": "Validated TP4/TP8 PyTorch AllReduce breakdown 251.53ms vs 583.87ms"
     },
     {
       "test": "P0_Finding8_Runtime_Knobs",
       "passed": true,
-      "detail": "Fixed 233.364s typo to 232.364s; chunk -27.1% verified; maxseq flat"
+      "detail": "Fixed 233.364s typo; chunk -27.1% verified; maxseq flat"
     },
     {
       "test": "P0_Finding9_Busy_GPU",
@@ -78,7 +78,7 @@
     {
       "test": "P0_Finding10_KV_vs_VRAM",
       "passed": true,
-      "detail": "Validated TP8 87.27/87.51 GiB; Peak GPU Memory Telemetry used; Global KV & 93% saturated removed"
+      "detail": "Peak GPU Memory Telemetry used; Global KV check and 93% saturated removed"
     },
     {
       "test": "P0_UX_Action_Labels",
