@@ -1,0 +1,71 @@
+{
+  "schema_version": 2,
+  "time": 1790527125.4787145,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "profile_id": "kimi_linear_48b_bf16",
+  "precision_label": "BF16",
+  "host": "kimi-node-0",
+  "python": "3.12.14 (main, Aug 13 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)]",
+  "expected_config": {
+    "hidden_size": 2304,
+    "num_hidden_layers": 27,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 32,
+    "model_max_length": 1048576,
+    "head_dim": 72,
+    "num_experts": 256,
+    "num_experts_per_token": 8,
+    "moe_intermediate_size": 1024,
+    "kv_lora_rank": 512,
+    "qk_nope_head_dim": 128,
+    "qk_rope_head_dim": 64,
+    "v_head_dim": 128
+  },
+  "checks": {
+    "expected_config_failures": [],
+    "warnings": []
+  },
+  "actual_config": {
+    "model_type": "kimi_linear",
+    "architectures": [
+      "KimiLinearForCausalLM"
+    ],
+    "hidden_size": 2304,
+    "num_hidden_layers": 27,
+    "num_attention_heads": 32,
+    "num_key_value_heads": 32,
+    "model_max_length": 1048576,
+    "torch_dtype": "torch.bfloat16",
+    "dtype": "torch.bfloat16",
+    "num_experts": 256,
+    "num_experts_per_token": 8,
+    "moe_intermediate_size": 1024,
+    "head_dim": 72,
+    "kv_lora_rank": 512,
+    "qk_nope_head_dim": 128,
+    "qk_rope_head_dim": 64,
+    "v_head_dim": 128,
+    "resolved_commit_hash": "e1df551a447157d4658b573f9a695d57658590e9"
+  },
+  "status": "PASS",
+  "commands": {
+    "nvidia_smi": {
+      "cmd": [
+        "nvidia-smi",
+        "--query-gpu=index,name,memory.total,compute_cap",
+        "--format=csv,noheader,nounits"
+      ],
+      "rc": 0,
+      "out": "0, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n1, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n2, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n3, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n4, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n5, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n6, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n7, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 12.0\n"
+    },
+    "vllm_version": {
+      "cmd": [
+        "vllm",
+        "--version"
+      ],
+      "rc": 0,
+      "out": "0.29.0\n"
+    }
+  }
+}

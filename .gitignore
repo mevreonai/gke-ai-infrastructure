@@ -61,3 +61,7 @@ backups/
 v8_full_release_package/
 v4_mockup_extracted/
 
+# Temporary scratch scripts & media
+scratch/
+user_prompt.txt
+WhatsApp Image*

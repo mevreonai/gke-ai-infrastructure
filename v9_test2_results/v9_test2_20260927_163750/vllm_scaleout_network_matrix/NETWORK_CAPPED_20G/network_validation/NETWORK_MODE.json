@@ -1,0 +1,6 @@
+{
+  "network_provenance": "NETWORK_CAPPED_20G",
+  "provider": "local",
+  "mode": "20g",
+  "configured_cap_gbps": 20
+}

@@ -1,0 +1,489 @@
+{
+  "schema_version": 1,
+  "suite": "V9_FULL",
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "profile_id": "kimi_linear_48b_bf16",
+  "generation": "EVIDENCE_DERIVED_OPEN_LOOP",
+  "single_node_cases": [
+    {
+      "name": "tp4_openloop_1024",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "open_loop",
+        "generated_load"
+      ],
+      "purpose": "Open-loop arrival sweep derived only from measured closed-loop service rate; not an absolute capacity claim.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "rps_0.25x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 245,
+          "warmups": 0,
+          "request_rate": 4.082017,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 0.25,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        },
+        {
+          "name": "rps_0.50x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 490,
+          "warmups": 0,
+          "request_rate": 8.164035,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 0.5,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        },
+        {
+          "name": "rps_0.75x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 512,
+          "warmups": 0,
+          "request_rate": 12.246052,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 0.75,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        },
+        {
+          "name": "rps_0.90x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 512,
+          "warmups": 0,
+          "request_rate": 14.695262,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 0.9,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        },
+        {
+          "name": "rps_1.00x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 512,
+          "warmups": 0,
+          "request_rate": 16.328069,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 1.0,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        },
+        {
+          "name": "rps_1.10x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 512,
+          "warmups": 0,
+          "request_rate": 17.960876,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 1.1,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        },
+        {
+          "name": "rps_1.25x",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 512,
+          "warmups": 0,
+          "request_rate": 20.410086,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 16.328069149548636,
+          "rate_fraction": 1.25,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "1024_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+            "request_throughput": 16.328069149548636
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_openloop_8192",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "open_loop",
+        "generated_load"
+      ],
+      "purpose": "Open-loop arrival sweep derived only from measured closed-loop service rate; not an absolute capacity claim.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "rps_0.25x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 65,
+          "warmups": 0,
+          "request_rate": 1.067993,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 0.25,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        },
+        {
+          "name": "rps_0.50x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 129,
+          "warmups": 0,
+          "request_rate": 2.135986,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 0.5,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        },
+        {
+          "name": "rps_0.75x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 193,
+          "warmups": 0,
+          "request_rate": 3.203979,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 0.75,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        },
+        {
+          "name": "rps_0.90x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 231,
+          "warmups": 0,
+          "request_rate": 3.844775,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 0.9,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        },
+        {
+          "name": "rps_1.00x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 257,
+          "warmups": 0,
+          "request_rate": 4.271973,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 1.0,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        },
+        {
+          "name": "rps_1.10x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 282,
+          "warmups": 0,
+          "request_rate": 4.69917,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 1.1,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        },
+        {
+          "name": "rps_1.25x",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 321,
+          "warmups": 0,
+          "request_rate": 5.339966,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 4.271972666329182,
+          "rate_fraction": 1.25,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+            "benchmark": "8192_prefill",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+            "request_throughput": 4.271972666329182
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_openloop_131072",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "groups": [
+        "open_loop",
+        "generated_load"
+      ],
+      "purpose": "Open-loop arrival sweep derived only from measured closed-loop service rate; not an absolute capacity claim.",
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 32,
+      "prefix_caching": false,
+      "kv_cache_dtype": "auto",
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "rps_0.25x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.119384,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 0.25,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        },
+        {
+          "name": "rps_0.50x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.238768,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 0.5,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        },
+        {
+          "name": "rps_0.75x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 24,
+          "warmups": 0,
+          "request_rate": 0.358152,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 0.75,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        },
+        {
+          "name": "rps_0.90x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 26,
+          "warmups": 0,
+          "request_rate": 0.429783,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 0.9,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        },
+        {
+          "name": "rps_1.00x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 29,
+          "warmups": 0,
+          "request_rate": 0.477536,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 1.0,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        },
+        {
+          "name": "rps_1.10x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 0,
+          "request_rate": 0.52529,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 1.1,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        },
+        {
+          "name": "rps_1.25x",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 36,
+          "warmups": 0,
+          "request_rate": 0.596921,
+          "burstiness": 1.0,
+          "rate_basis_request_throughput": 0.47753649583281843,
+          "rate_fraction": 1.25,
+          "rate_basis_evidence": {
+            "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+            "benchmark": "prefix_131072",
+            "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+            "request_throughput": 0.47753649583281843
+          }
+        }
+      ]
+    }
+  ],
+  "skipped_generation": [],
+  "rate_evidence": {
+    "1024": {
+      "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+      "benchmark": "1024_prefill",
+      "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/1024_prefill/1024_prefill.json",
+      "request_throughput": 16.328069149548636
+    },
+    "8192": {
+      "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/case_manifest.json",
+      "benchmark": "8192_prefill",
+      "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefill_focus/8192_prefill/8192_prefill.json",
+      "request_throughput": 4.271972666329182
+    },
+    "131072": {
+      "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/case_manifest.json",
+      "benchmark": "prefix_131072",
+      "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_131072/prefix_131072/prefix_131072.json",
+      "request_throughput": 0.47753649583281843
+    },
+    "524288": {
+      "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_524288/case_manifest.json",
+      "benchmark": "prefix_524288",
+      "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_524288/prefix_524288/prefix_524288.json",
+      "request_throughput": 0.05807118191291443
+    },
+    "1000000": {
+      "manifest": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_1000000/case_manifest.json",
+      "benchmark": "prefix_1000000",
+      "result_json": "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_prefix_1000000/prefix_1000000/prefix_1000000.json",
+      "request_throughput": 0.020534934791447607
+    }
+  }
+}

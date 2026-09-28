@@ -1,0 +1,6471 @@
+{
+  "schema_version": 2,
+  "source_files": [
+    "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/8192_c1/metrics_node0.jsonl",
+    "/home/ayu23/v9_full_results/v9_test2_20260927_163750/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/8192_c1/metrics_node1.jsonl"
+  ],
+  "scheduler_and_phase_metric_series": {
+    "vllm:num_requests_running|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:num_requests_running",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 1.0,
+      "min": 0.0,
+      "max": 1.0,
+      "delta": 1.0,
+      "samples": 53
+    },
+    "vllm:num_requests_waiting|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:num_requests_waiting",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:num_requests_waiting_by_reason|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\",\"reason\":\"capacity\"}": {
+      "name": "vllm:num_requests_waiting_by_reason",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+        "reason": "capacity"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:num_requests_waiting_by_reason|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\",\"reason\":\"deferred\"}": {
+      "name": "vllm:num_requests_waiting_by_reason",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+        "reason": "deferred"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:kv_cache_usage_perc|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:kv_cache_usage_perc",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0006041748482010778,
+      "min": 0.0,
+      "max": 0.0006041748482010778,
+      "delta": 0.0006041748482010778,
+      "samples": 53
+    },
+    "vllm:prefix_cache_queries_total|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:prefix_cache_queries_total",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:prefix_cache_queries_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:prefix_cache_queries_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9844632,
+      "last": 1790547694.9844632,
+      "min": 1790547694.9844632,
+      "max": 1790547694.9844632,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:prefix_cache_hits_total|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:prefix_cache_hits_total",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:prefix_cache_hits_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:prefix_cache_hits_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.984472,
+      "last": 1790547694.984472,
+      "min": 1790547694.984472,
+      "max": 1790547694.984472,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:external_prefix_cache_queries_total|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:external_prefix_cache_queries_total",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:external_prefix_cache_queries_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:external_prefix_cache_queries_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9844809,
+      "last": 1790547694.9844809,
+      "min": 1790547694.9844809,
+      "max": 1790547694.9844809,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:external_prefix_cache_hits_total|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:external_prefix_cache_hits_total",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:external_prefix_cache_hits_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:external_prefix_cache_hits_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9844897,
+      "last": 1790547694.9844897,
+      "min": 1790547694.9844897,
+      "max": 1790547694.9844897,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:num_preemptions_total|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:num_preemptions_total",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:num_preemptions_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:num_preemptions_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9845135,
+      "last": 1790547694.9845135,
+      "min": 1790547694.9845135,
+      "max": 1790547694.9845135,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"8.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "8.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"16.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "16.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"32.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "32.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"64.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "64.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"128.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "128.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"256.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "256.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"512.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "512.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"1024.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1024.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"2048.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2048.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2304.0,
+      "last": 4567.0,
+      "min": 2304.0,
+      "max": 4567.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"4096.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "4096.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2304.0,
+      "last": 4567.0,
+      "min": 2304.0,
+      "max": 4567.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"8192.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "8192.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2304.0,
+      "last": 4567.0,
+      "min": 2304.0,
+      "max": 4567.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"16384.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "16384.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2304.0,
+      "last": 4576.0,
+      "min": 2304.0,
+      "max": 4576.0,
+      "delta": 2272.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2304.0,
+      "last": 4576.0,
+      "min": 2304.0,
+      "max": 4576.0,
+      "delta": 2272.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2304.0,
+      "last": 4576.0,
+      "min": 2304.0,
+      "max": 4576.0,
+      "delta": 2272.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 11520.0,
+      "last": 87520.0,
+      "min": 11520.0,
+      "max": 87520.0,
+      "delta": 76000.0,
+      "samples": 53
+    },
+    "vllm:iteration_tokens_total_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:iteration_tokens_total_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9847078,
+      "last": 1790547694.9847078,
+      "min": 1790547694.9847078,
+      "max": 1790547694.9847078,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.001\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.001",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.005\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.005",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.01\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.01",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.02\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.02",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.04\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.04",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.06\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.06",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 7.0,
+      "last": 7.0,
+      "min": 7.0,
+      "max": 7.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.08\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.08",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 9.0,
+      "min": 9.0,
+      "max": 9.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.1\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.1",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 9.0,
+      "min": 9.0,
+      "max": 9.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.25\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.25",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.75\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.75",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"7.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"80.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "80.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"160.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "160.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"640.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "640.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"2560.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2560.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 18.0,
+      "min": 9.0,
+      "max": 18.0,
+      "delta": 9.0,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.5016567707061768,
+      "last": 2.6251087188720703,
+      "min": 0.5016567707061768,
+      "max": 2.6251087188720703,
+      "delta": 2.1234519481658936,
+      "samples": 53
+    },
+    "vllm:time_to_first_token_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:time_to_first_token_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9847984,
+      "last": 1790547694.9847984,
+      "min": 1790547694.9847984,
+      "max": 1790547694.9847984,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.01\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.01",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2000.0,
+      "last": 3990.0,
+      "min": 2000.0,
+      "max": 3990.0,
+      "delta": 1990.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.025\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.025",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.05\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.05",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.075\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.075",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.1\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.1",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.15\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.15",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.2\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.2",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.3\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.3",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.4\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.4",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.75\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.75",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"7.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"80.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "80.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2295.0,
+      "last": 4558.0,
+      "min": 2295.0,
+      "max": 4558.0,
+      "delta": 2263.0,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 13.23965518300065,
+      "last": 26.691474513003413,
+      "min": 13.23965518300065,
+      "max": 26.691474513003413,
+      "delta": 13.451819330002763,
+      "samples": 53
+    },
+    "vllm:inter_token_latency_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:inter_token_latency_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9848268,
+      "last": 1790547694.9848268,
+      "min": 1790547694.9848268,
+      "max": 1790547694.9848268,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.01\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.01",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.025\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.025",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.05\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.05",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.075\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.075",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.1\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.1",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.15\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.15",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.2\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.2",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.3\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.3",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.4\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.4",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.75\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.75",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"7.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"80.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "80.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.051920216403924115,
+      "last": 0.09953371788628738,
+      "min": 0.051920216403924115,
+      "max": 0.09953371788628738,
+      "delta": 0.04761350148236327,
+      "samples": 53
+    },
+    "vllm:request_time_per_output_token_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_time_per_output_token_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.98485,
+      "last": 1790547694.98485,
+      "min": 1790547694.98485,
+      "max": 1790547694.98485,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.3\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.3",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.8\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.8",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"15.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "15.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"30.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "30.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"50.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "50.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"60.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "60.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"120.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "120.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"240.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "240.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"480.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "480.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"960.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "960.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1920.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1920.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"7680.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7680.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 8.232000254793093e-05,
+      "last": 0.0001507600063632708,
+      "min": 8.232000254793093e-05,
+      "max": 0.0001507600063632708,
+      "delta": 6.844000381533988e-05,
+      "samples": 53
+    },
+    "vllm:request_queue_time_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_queue_time_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9849243,
+      "last": 1790547694.9849243,
+      "min": 1790547694.9849243,
+      "max": 1790547694.9849243,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.3\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.3",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.8\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.8",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 2.0,
+      "last": 2.0,
+      "min": 2.0,
+      "max": 2.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"15.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "15.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"30.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "30.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"50.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "50.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"60.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "60.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"120.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "120.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"240.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "240.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"480.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "480.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"960.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "960.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1920.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1920.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"7680.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7680.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 13.699957083998015,
+      "last": 27.613651904994185,
+      "min": 13.699957083998015,
+      "max": 27.613651904994185,
+      "delta": 13.91369482099617,
+      "samples": 53
+    },
+    "vllm:request_inference_time_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_inference_time_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9849474,
+      "last": 1790547694.9849474,
+      "min": 1790547694.9849474,
+      "max": 1790547694.9849474,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.3\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.3",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.8\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.8",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"15.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "15.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"30.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "30.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"50.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "50.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"60.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "60.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"120.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "120.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"240.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "240.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"480.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "480.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"960.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "960.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1920.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1920.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"7680.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7680.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.460301900997365,
+      "last": 2.2325538439908996,
+      "min": 0.460301900997365,
+      "max": 2.2325538439908996,
+      "delta": 1.7722519429935346,
+      "samples": 53
+    },
+    "vllm:request_prefill_time_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_time_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.984971,
+      "last": 1790547694.984971,
+      "min": 1790547694.984971,
+      "max": 1790547694.984971,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.3\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.3",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"0.8\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "0.8",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 8.0,
+      "last": 9.0,
+      "min": 8.0,
+      "max": 9.0,
+      "delta": 1.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"2.5\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.5",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"15.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "15.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"30.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "30.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"40.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "40.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"50.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "50.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"60.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "60.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"120.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "120.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"240.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "240.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"480.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "480.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"960.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "960.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"1920.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1920.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"7680.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "7680.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 13.23965518300065,
+      "last": 25.381098061003286,
+      "min": 13.23965518300065,
+      "max": 25.381098061003286,
+      "delta": 12.141442878002636,
+      "samples": 53
+    },
+    "vllm:request_decode_time_seconds_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_decode_time_seconds_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9849932,
+      "last": 1790547694.9849932,
+      "min": 1790547694.9849932,
+      "max": 1790547694.9849932,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"1.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"2.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"5.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"10.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"20.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"50.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "50.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"100.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "100.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"200.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "200.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"500.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "500.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"1000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 0.0,
+      "last": 0.0,
+      "min": 0.0,
+      "max": 0.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"2000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "2000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 9.0,
+      "min": 9.0,
+      "max": 9.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"5000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "5000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 9.0,
+      "min": 9.0,
+      "max": 9.0,
+      "delta": 0.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"10000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "10000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"20000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "20000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"50000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "50000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"100000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "100000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"200000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "200000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"500000.0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "500000.0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"1e+06\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "1e+06",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_bucket|{\"engine\":\"0\",\"le\":\"+Inf\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+      "labels": {
+        "engine": "0",
+        "le": "+Inf",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_count|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_count",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9.0,
+      "last": 17.0,
+      "min": 9.0,
+      "max": 17.0,
+      "delta": 8.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_sum|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_sum",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 9216.0,
+      "last": 74752.0,
+      "min": 9216.0,
+      "max": 74752.0,
+      "delta": 65536.0,
+      "samples": 53
+    },
+    "vllm:request_prefill_kv_computed_tokens_created|{\"engine\":\"0\",\"model_name\":\"moonshotai/Kimi-Linear-48B-A3B-Instruct\"}": {
+      "name": "vllm:request_prefill_kv_computed_tokens_created",
+      "labels": {
+        "engine": "0",
+        "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+      },
+      "first": 1790547694.9850228,
+      "last": 1790547694.9850228,
+      "min": 1790547694.9850228,
+      "max": 1790547694.9850228,
+      "delta": 0.0,
+      "samples": 53
+    }
+  },
+  "scheduler_and_phase_metrics_by_family": {
+    "vllm:num_requests_running": [
+      {
+        "name": "vllm:num_requests_running",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 1.0,
+        "min": 0.0,
+        "max": 1.0,
+        "delta": 1.0,
+        "samples": 53
+      }
+    ],
+    "vllm:num_requests_waiting": [
+      {
+        "name": "vllm:num_requests_waiting",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:num_requests_waiting_by_reason": [
+      {
+        "name": "vllm:num_requests_waiting_by_reason",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+          "reason": "capacity"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:num_requests_waiting_by_reason",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+          "reason": "deferred"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:kv_cache_usage_perc": [
+      {
+        "name": "vllm:kv_cache_usage_perc",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0006041748482010778,
+        "min": 0.0,
+        "max": 0.0006041748482010778,
+        "delta": 0.0006041748482010778,
+        "samples": 53
+      }
+    ],
+    "vllm:prefix_cache_queries_total": [
+      {
+        "name": "vllm:prefix_cache_queries_total",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:prefix_cache_queries_created": [
+      {
+        "name": "vllm:prefix_cache_queries_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9844632,
+        "last": 1790547694.9844632,
+        "min": 1790547694.9844632,
+        "max": 1790547694.9844632,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:prefix_cache_hits_total": [
+      {
+        "name": "vllm:prefix_cache_hits_total",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:prefix_cache_hits_created": [
+      {
+        "name": "vllm:prefix_cache_hits_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.984472,
+        "last": 1790547694.984472,
+        "min": 1790547694.984472,
+        "max": 1790547694.984472,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:external_prefix_cache_queries_total": [
+      {
+        "name": "vllm:external_prefix_cache_queries_total",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:external_prefix_cache_queries_created": [
+      {
+        "name": "vllm:external_prefix_cache_queries_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9844809,
+        "last": 1790547694.9844809,
+        "min": 1790547694.9844809,
+        "max": 1790547694.9844809,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:external_prefix_cache_hits_total": [
+      {
+        "name": "vllm:external_prefix_cache_hits_total",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:external_prefix_cache_hits_created": [
+      {
+        "name": "vllm:external_prefix_cache_hits_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9844897,
+        "last": 1790547694.9844897,
+        "min": 1790547694.9844897,
+        "max": 1790547694.9844897,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:num_preemptions_total": [
+      {
+        "name": "vllm:num_preemptions_total",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:num_preemptions_created": [
+      {
+        "name": "vllm:num_preemptions_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9845135,
+        "last": 1790547694.9845135,
+        "min": 1790547694.9845135,
+        "max": 1790547694.9845135,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:iteration_tokens_total_bucket": [
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "8.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "16.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "32.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "64.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "128.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "256.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "512.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1024.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2048.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2304.0,
+        "last": 4567.0,
+        "min": 2304.0,
+        "max": 4567.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "4096.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2304.0,
+        "last": 4567.0,
+        "min": 2304.0,
+        "max": 4567.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "8192.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2304.0,
+        "last": 4567.0,
+        "min": 2304.0,
+        "max": 4567.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "16384.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2304.0,
+        "last": 4576.0,
+        "min": 2304.0,
+        "max": 4576.0,
+        "delta": 2272.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:iteration_tokens_total_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2304.0,
+        "last": 4576.0,
+        "min": 2304.0,
+        "max": 4576.0,
+        "delta": 2272.0,
+        "samples": 53
+      }
+    ],
+    "vllm:iteration_tokens_total_count": [
+      {
+        "name": "vllm:iteration_tokens_total_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2304.0,
+        "last": 4576.0,
+        "min": 2304.0,
+        "max": 4576.0,
+        "delta": 2272.0,
+        "samples": 53
+      }
+    ],
+    "vllm:iteration_tokens_total_sum": [
+      {
+        "name": "vllm:iteration_tokens_total_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 11520.0,
+        "last": 87520.0,
+        "min": 11520.0,
+        "max": 87520.0,
+        "delta": 76000.0,
+        "samples": 53
+      }
+    ],
+    "vllm:iteration_tokens_total_created": [
+      {
+        "name": "vllm:iteration_tokens_total_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9847078,
+        "last": 1790547694.9847078,
+        "min": 1790547694.9847078,
+        "max": 1790547694.9847078,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:time_to_first_token_seconds_bucket": [
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.001",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.005",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.01",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.02",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.04",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.06",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 7.0,
+        "last": 7.0,
+        "min": 7.0,
+        "max": 7.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.08",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 9.0,
+        "min": 9.0,
+        "max": 9.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.1",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 9.0,
+        "min": 9.0,
+        "max": 9.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.25",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.75",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "80.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "160.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "640.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2560.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:time_to_first_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      }
+    ],
+    "vllm:time_to_first_token_seconds_count": [
+      {
+        "name": "vllm:time_to_first_token_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 18.0,
+        "min": 9.0,
+        "max": 18.0,
+        "delta": 9.0,
+        "samples": 53
+      }
+    ],
+    "vllm:time_to_first_token_seconds_sum": [
+      {
+        "name": "vllm:time_to_first_token_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.5016567707061768,
+        "last": 2.6251087188720703,
+        "min": 0.5016567707061768,
+        "max": 2.6251087188720703,
+        "delta": 2.1234519481658936,
+        "samples": 53
+      }
+    ],
+    "vllm:time_to_first_token_seconds_created": [
+      {
+        "name": "vllm:time_to_first_token_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9847984,
+        "last": 1790547694.9847984,
+        "min": 1790547694.9847984,
+        "max": 1790547694.9847984,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:inter_token_latency_seconds_bucket": [
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.01",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2000.0,
+        "last": 3990.0,
+        "min": 2000.0,
+        "max": 3990.0,
+        "delta": 1990.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.025",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.05",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.075",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.1",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.15",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.2",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.3",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.4",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.75",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "80.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:inter_token_latency_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      }
+    ],
+    "vllm:inter_token_latency_seconds_count": [
+      {
+        "name": "vllm:inter_token_latency_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2295.0,
+        "last": 4558.0,
+        "min": 2295.0,
+        "max": 4558.0,
+        "delta": 2263.0,
+        "samples": 53
+      }
+    ],
+    "vllm:inter_token_latency_seconds_sum": [
+      {
+        "name": "vllm:inter_token_latency_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 13.23965518300065,
+        "last": 26.691474513003413,
+        "min": 13.23965518300065,
+        "max": 26.691474513003413,
+        "delta": 13.451819330002763,
+        "samples": 53
+      }
+    ],
+    "vllm:inter_token_latency_seconds_created": [
+      {
+        "name": "vllm:inter_token_latency_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9848268,
+        "last": 1790547694.9848268,
+        "min": 1790547694.9848268,
+        "max": 1790547694.9848268,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_time_per_output_token_seconds_bucket": [
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.01",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.025",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.05",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.075",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.1",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.15",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.2",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.3",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.4",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.75",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "80.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_time_per_output_token_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_time_per_output_token_seconds_count": [
+      {
+        "name": "vllm:request_time_per_output_token_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_time_per_output_token_seconds_sum": [
+      {
+        "name": "vllm:request_time_per_output_token_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.051920216403924115,
+        "last": 0.09953371788628738,
+        "min": 0.051920216403924115,
+        "max": 0.09953371788628738,
+        "delta": 0.04761350148236327,
+        "samples": 53
+      }
+    ],
+    "vllm:request_time_per_output_token_seconds_created": [
+      {
+        "name": "vllm:request_time_per_output_token_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.98485,
+        "last": 1790547694.98485,
+        "min": 1790547694.98485,
+        "max": 1790547694.98485,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_queue_time_seconds_bucket": [
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.3",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.8",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "15.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "30.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "50.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "60.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "120.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "240.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "480.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "960.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1920.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7680.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_queue_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_queue_time_seconds_count": [
+      {
+        "name": "vllm:request_queue_time_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_queue_time_seconds_sum": [
+      {
+        "name": "vllm:request_queue_time_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 8.232000254793093e-05,
+        "last": 0.0001507600063632708,
+        "min": 8.232000254793093e-05,
+        "max": 0.0001507600063632708,
+        "delta": 6.844000381533988e-05,
+        "samples": 53
+      }
+    ],
+    "vllm:request_queue_time_seconds_created": [
+      {
+        "name": "vllm:request_queue_time_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9849243,
+        "last": 1790547694.9849243,
+        "min": 1790547694.9849243,
+        "max": 1790547694.9849243,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_inference_time_seconds_bucket": [
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.3",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.8",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 2.0,
+        "last": 2.0,
+        "min": 2.0,
+        "max": 2.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "15.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "30.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "50.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "60.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "120.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "240.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "480.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "960.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1920.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7680.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_inference_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_inference_time_seconds_count": [
+      {
+        "name": "vllm:request_inference_time_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_inference_time_seconds_sum": [
+      {
+        "name": "vllm:request_inference_time_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 13.699957083998015,
+        "last": 27.613651904994185,
+        "min": 13.699957083998015,
+        "max": 27.613651904994185,
+        "delta": 13.91369482099617,
+        "samples": 53
+      }
+    ],
+    "vllm:request_inference_time_seconds_created": [
+      {
+        "name": "vllm:request_inference_time_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9849474,
+        "last": 1790547694.9849474,
+        "min": 1790547694.9849474,
+        "max": 1790547694.9849474,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_time_seconds_bucket": [
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.3",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.8",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "15.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "30.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "50.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "60.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "120.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "240.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "480.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "960.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1920.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7680.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_time_seconds_count": [
+      {
+        "name": "vllm:request_prefill_time_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_time_seconds_sum": [
+      {
+        "name": "vllm:request_prefill_time_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.460301900997365,
+        "last": 2.2325538439908996,
+        "min": 0.460301900997365,
+        "max": 2.2325538439908996,
+        "delta": 1.7722519429935346,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_time_seconds_created": [
+      {
+        "name": "vllm:request_prefill_time_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.984971,
+        "last": 1790547694.984971,
+        "min": 1790547694.984971,
+        "max": 1790547694.984971,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_decode_time_seconds_bucket": [
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.3",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "0.8",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 8.0,
+        "last": 9.0,
+        "min": 8.0,
+        "max": 9.0,
+        "delta": 1.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.5",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "15.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "30.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "40.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "50.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "60.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "120.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "240.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "480.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "960.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1920.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "7680.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_decode_time_seconds_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_decode_time_seconds_count": [
+      {
+        "name": "vllm:request_decode_time_seconds_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_decode_time_seconds_sum": [
+      {
+        "name": "vllm:request_decode_time_seconds_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 13.23965518300065,
+        "last": 25.381098061003286,
+        "min": 13.23965518300065,
+        "max": 25.381098061003286,
+        "delta": 12.141442878002636,
+        "samples": 53
+      }
+    ],
+    "vllm:request_decode_time_seconds_created": [
+      {
+        "name": "vllm:request_decode_time_seconds_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9849932,
+        "last": 1790547694.9849932,
+        "min": 1790547694.9849932,
+        "max": 1790547694.9849932,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_kv_computed_tokens_bucket": [
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "50.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "100.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "200.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "500.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 0.0,
+        "last": 0.0,
+        "min": 0.0,
+        "max": 0.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "2000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 9.0,
+        "min": 9.0,
+        "max": 9.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "5000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 9.0,
+        "min": 9.0,
+        "max": 9.0,
+        "delta": 0.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "10000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "20000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "50000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "100000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "200000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "500000.0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "1e+06",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      },
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_bucket",
+        "labels": {
+          "engine": "0",
+          "le": "+Inf",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_kv_computed_tokens_count": [
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_count",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9.0,
+        "last": 17.0,
+        "min": 9.0,
+        "max": 17.0,
+        "delta": 8.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_kv_computed_tokens_sum": [
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_sum",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 9216.0,
+        "last": 74752.0,
+        "min": 9216.0,
+        "max": 74752.0,
+        "delta": 65536.0,
+        "samples": 53
+      }
+    ],
+    "vllm:request_prefill_kv_computed_tokens_created": [
+      {
+        "name": "vllm:request_prefill_kv_computed_tokens_created",
+        "labels": {
+          "engine": "0",
+          "model_name": "moonshotai/Kimi-Linear-48B-A3B-Instruct"
+        },
+        "first": 1790547694.9850228,
+        "last": 1790547694.9850228,
+        "min": 1790547694.9850228,
+        "max": 1790547694.9850228,
+        "delta": 0.0,
+        "samples": 53
+      }
+    ]
+  },
+  "gpu_by_node": {
+    "node0": {
+      "0": {
+        "util_mean_pct": 46.84905660377358,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.4,
+        "mem_peak_mib": 88789.0
+      },
+      "1": {
+        "util_mean_pct": 46.18867924528302,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.0,
+        "mem_peak_mib": 88853.0
+      },
+      "2": {
+        "util_mean_pct": 48.264150943396224,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.0,
+        "mem_peak_mib": 88789.0
+      },
+      "3": {
+        "util_mean_pct": 46.81132075471698,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.4,
+        "mem_peak_mib": 88853.0
+      }
+    },
+    "node1": {
+      "0": {
+        "util_mean_pct": 43.888888888888886,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.0,
+        "mem_peak_mib": 88939.0
+      },
+      "1": {
+        "util_mean_pct": 44.351851851851855,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.0,
+        "mem_peak_mib": 89003.0
+      },
+      "2": {
+        "util_mean_pct": 43.592592592592595,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.0,
+        "mem_peak_mib": 88939.0
+      },
+      "3": {
+        "util_mean_pct": 45.0,
+        "util_p50_pct": 0.0,
+        "util_p95_pct": 99.0,
+        "mem_peak_mib": 89003.0
+      }
+    }
+  },
+  "gpu_imbalance_proxy": {
+    "per_gpu_util_mean_pct": [
+      46.84905660377358,
+      46.18867924528302,
+      48.264150943396224,
+      46.81132075471698,
+      43.888888888888886,
+      44.351851851851855,
+      43.592592592592595,
+      45.0
+    ],
+    "max_minus_min_pct_points": 4.671558350803629,
+    "coefficient_of_variation": 0.034087412612982204,
+    "evidence_class": "UTILIZATION_IMBALANCE_PROXY"
+  },
+  "node_orchestration_imbalance_proxy": {
+    "per_node_gpu_util_mean_pct": {
+      "node0": 47.02830188679245,
+      "node1": 44.208333333333336
+    },
+    "max_minus_min_pct_points": 2.8199685534591126,
+    "coefficient_of_variation": 0.030908291901114073,
+    "evidence_class": "NODE_ORCHESTRATION_IMBALANCE_PROXY"
+  },
+  "sampler_errors": [],
+  "unresolved": [
+    "Exact wave imbalance requires rank/stream-resolved profiler timeline analysis.",
+    "Scheduler causal attribution requires matching request-level/E2E and profiler evidence; aggregate counters alone are not causal proof.",
+    "Prometheus histogram buckets are retained with labels; this processor does not invent request percentiles from incomplete scrapes."
+  ]
+}

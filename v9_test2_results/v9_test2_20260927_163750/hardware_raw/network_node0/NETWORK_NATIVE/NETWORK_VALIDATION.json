@@ -1,0 +1,13 @@
+{
+  "configured_cap_gbps": 0,
+  "measured_forward_gbps_by_worker": [
+    173.6034256645012
+  ],
+  "measured_reverse_gbps_by_worker": [
+    173.59010174462227
+  ],
+  "measurement_ok": true,
+  "cap_enforced_upper_bound": true,
+  "network_provenance": "NETWORK_NATIVE",
+  "provider": "local"
+}

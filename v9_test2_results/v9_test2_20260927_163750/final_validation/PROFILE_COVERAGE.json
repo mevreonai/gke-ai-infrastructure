@@ -1,0 +1,452 @@
+[
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "prefill_1024",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "prefill_131072",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "prefill_524288",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "batched_decode_8k_c8",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "prefill_1024",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "prefill_131072",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "prefill_524288",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "batched_decode_8k_c8",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "torch_decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp4_pp1",
+    "profile_mode": "torch_prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "torch_decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "single",
+    "network_mode": "native",
+    "topology": "tp8_pp1",
+    "profile_mode": "torch_prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "prefill_1024",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "prefill_131072",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "batched_decode_8k_c8",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "100g",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "20g",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp8_pp2_dist",
+    "profile_mode": "prefill_1024",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp8_pp2_dist",
+    "profile_mode": "prefill_131072",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp8_pp2_dist",
+    "profile_mode": "decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp8_pp2_dist",
+    "profile_mode": "batched_decode_8k_c8",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "100g",
+    "topology": "tp8_pp2_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "20g",
+    "topology": "tp8_pp2_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp4_dist",
+    "profile_mode": "prefill_1024",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp4_dist",
+    "profile_mode": "prefill_131072",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp4_dist",
+    "profile_mode": "decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp4_dist",
+    "profile_mode": "batched_decode_8k_c8",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "100g",
+    "topology": "tp4_pp4_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "20g",
+    "topology": "tp4_pp4_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "prefill_1024",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "prefill_131072",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "decode_8k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "batched_decode_8k_c8",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "100g",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "20g",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "prefill_128k",
+    "optional": false,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "long_prefill_512k",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "long_prefill_512k",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "100g",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "decode_8k_capped",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "20g",
+    "topology": "tp4_pp2_dist",
+    "profile_mode": "decode_8k_capped",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "100g",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "decode_8k_capped",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "20g",
+    "topology": "tp16_pp1_dist",
+    "profile_mode": "decode_8k_capped",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  },
+  {
+    "scope": "distributed",
+    "network_mode": "native",
+    "topology": "tp8_pp2_ep_dist",
+    "profile_mode": "ep_prefill_128k",
+    "optional": true,
+    "status": "NOT_CAPTURED",
+    "complete": false,
+    "path": null
+  }
+]

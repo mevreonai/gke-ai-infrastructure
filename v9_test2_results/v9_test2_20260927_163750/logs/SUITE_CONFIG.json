@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "suite": "V9_FULL",
+  "contexts": [
+    1024,
+    8192,
+    131072,
+    524288,
+    1000000
+  ],
+  "network_modes": [
+    "native",
+    "20g"
+  ],
+  "single_node_tp_values": [
+    4,
+    8
+  ],
+  "base_tp": 4,
+  "concurrency": {
+    "short": [
+      1,
+      2,
+      4,
+      8
+    ],
+    "long": [
+      1,
+      2,
+      4
+    ],
+    "long_context_threshold": 131072
+  },
+  "scaleout": {
+    "include_1k": true,
+    "include_8k": true,
+    "include_128k": true,
+    "include_512k": true,
+    "include_1m": true,
+    "native_extra_concurrency_contexts": [
+      8192,
+      131072
+    ],
+    "native_extra_concurrency": [
+      4
+    ],
+    "topology_templates": [
+      "tp4_pp_one_stage_per_node",
+      "tp8_pp_one_stage_per_node",
+      "tp4_pp_fill_all_gpus",
+      "global_tp_pp1"
+    ]
+  },
+  "chunk_sizes": [
+    4096,
+    8192,
+    16384
+  ],
+  "prefix_contexts": [
+    131072,
+    524288,
+    1000000
+  ],
+  "open_loop_contexts": [
+    1024,
+    8192,
+    131072
+  ],
+  "profilers": {
+    "single_node_contexts": [
+      1024,
+      8192,
+      131072,
+      524288
+    ],
+    "distributed_native_prefill_contexts": [
+      1024,
+      131072
+    ],
+    "distributed_native_decode_context": 8192,
+    "distributed_native_batched_decode_context": 8192,
+    "distributed_heavy_prefill_context": 524288,
+    "capped_prefill_context": 131072,
+    "capped_decode_context": 8192,
+    "enable_1m_nsys": false
+  },
+  "hardware": {
+    "standard_collective_sizes": [
+      8,
+      16,
+      1024,
+      4096,
+      16384,
+      131072,
+      524288,
+      1048576,
+      8388608,
+      67108864,
+      134217728,
+      268435456,
+      536870912
+    ],
+    "model_token_blocks": [
+      1,
+      8,
+      32,
+      128,
+      512,
+      2048,
+      8192
+    ],
+    "collectives": [
+      "all_reduce",
+      "all_gather",
+      "reduce_scatter",
+      "sendrecv",
+      "all_to_all"
+    ]
+  },
+  "strict": {
+    "missing_configured_point_fails": true,
+    "capability_blocked_is_not_zero": true,
+    "startup_failure_is_not_not_run": true,
+    "require_both_node_telemetry": true
+  },
+  "model_adaptive": {
+    "enable_moe_ep_probe": true,
+    "moe_ep_contexts": [
+      8192,
+      131072
+    ],
+    "include_scaleout_ep_probe": true,
+    "note": "EP cases are capability/architecture probes only and become configured only when runtime/model config exposes MoE experts. They do not silently become core coverage."
+  }
+}

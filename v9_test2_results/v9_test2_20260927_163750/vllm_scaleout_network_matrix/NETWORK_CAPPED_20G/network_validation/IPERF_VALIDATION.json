@@ -1,0 +1,11 @@
+{
+  "configured_cap_gbps": 20,
+  "measured_forward_gbps_by_worker": [
+    16.81361983920317
+  ],
+  "measured_reverse_gbps_by_worker": [
+    14.665701974009027
+  ],
+  "measurement_ok": true,
+  "cap_enforced_upper_bound": true
+}
