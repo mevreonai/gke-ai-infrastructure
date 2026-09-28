@@ -12,7 +12,9 @@ v8_full_results/dashboards/v4_dashboard/
 ├── MASTER_CHARACTERIZATION_DASHBOARD.html                 # Canonical distribution dashboard (Dual-Tab)
 ├── MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html   # Version 1: Preserves legacy 'Key Finds' & canonical 'Key Discoveries'
 ├── MASTER_CHARACTERIZATION_DASHBOARD_NO_KEYFINDS.html     # Version 2: Production-hardened with sole 'Key Discoveries' top-10
+├── KEY_DISCOVERIES_STANDALONE_DASHBOARD.html             # Version 3: Pure standalone slice with JUST Key Discoveries (OG intact)
 ├── apply_surgical_v6_fixes.py                            # Deterministic dashboard generator script
+├── create_standalone_slice.py                            # Standalone slice extractor script
 ├── run_final_parity_validation.py                        # Automated 18-gate parity validation suite
 ├── KEY_DISCOVERIES_VALIDATION.json                       # Machine-readable validation audit report (18/18 PASS)
 ├── KEY_DISCOVERIES_VALIDATION.md                         # Markdown sign-off validation matrix (18/18 PASS)
@@ -27,17 +29,22 @@ v8_full_results/dashboards/v4_dashboard/
 
 ## 2. Dashboard Variants
 
-To accommodate both organizational continuity and strict single-source production criteria, two release versions are maintained:
+Three tailored release variants are maintained to meet different sharing and sign-off needs:
 
 ### Version 1 — Dual-Tab Master Dashboard
 * **Files:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](./MASTER_CHARACTERIZATION_DASHBOARD.html), [`MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html`](./MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html), and [`index.html`](./index.html).
-* **Audience:** Engineering leads, cross-functional teams, and stakeholders who cross-reference prior benchmarks.
+* **Audience:** Engineering leads and team members cross-referencing previous iterations.
 * **Navigation:** Exposes both the historical `🎯 Key Finds` tab and the updated canonical `✨ Key Discoveries` tab.
 
 ### Version 2 — Clean Production Master Dashboard
 * **Files:** [`MASTER_CHARACTERIZATION_DASHBOARD_NO_KEYFINDS.html`](./MASTER_CHARACTERIZATION_DASHBOARD_NO_KEYFINDS.html).
 * **Audience:** Final executive technical sign-off and public release.
-* **Navigation:** Removes `🎯 Key Finds` from top navigation, presenting `✨ Key Discoveries` as the single canonical Top-10 experience to eliminate duplicate representations.
+* **Navigation:** Removes `🎯 Key Finds` from top navigation, presenting `✨ Key Discoveries` as the single canonical Top-10 experience.
+
+### Version 3 — Pure Standalone Key Discoveries Slice
+* **Files:** [`KEY_DISCOVERIES_STANDALONE_DASHBOARD.html`](./KEY_DISCOVERIES_STANDALONE_DASHBOARD.html).
+* **Audience:** Quick-sharing, executive briefs, and presentations focused strictly on the Top-10 findings.
+* **Architecture:** An exact, lightweight (~409 KB) slice containing solely the `✨ Key Discoveries` experience: Finding Map, Signal Rail cards, 10-page deep explorer, all 20 charts, and in-place forensic evidence popups—while leaving the full master dashboard completely untouched.
 
 ---
 
