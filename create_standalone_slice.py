@@ -19,6 +19,10 @@ kd_section = c[kd_start:kd_end]
 # Ensure section is displayed in standalone mode
 kd_section = kd_section.replace('<section class="tabpage" id="keydiscoveries">', '<section class="tabpage active" id="keydiscoveries" style="display:block !important">')
 
+# In standalone mode, fold 60-sec map list by default
+kd_section = kd_section.replace('<details class="kd-map-card" id="kd-map-details" open>', '<details class="kd-map-card" id="kd-map-details">')
+kd_section = kd_section.replace('Fold 60-sec Map ▲', 'Unfold 60-sec Map ▼')
+
 # 3. Evidence popup modal & Subpage modal
 modal_backdrop_start = c.find('<div id="evidence-popup-backdrop"')
 modal_modal_start = c.find('<div id="evidence-popup-modal"')
@@ -116,7 +120,7 @@ standalone_html = f"""<!DOCTYPE html>
   <!-- Top Standalone Header Banner -->
   <div class="kd-standalone-banner">
     <div>
-      <b>V8 Characterization Suite</b> &middot; Exact Standalone Slice: <b>Key Discoveries V6</b>
+      <b>Performance Characterization Suite</b> &middot; Exact Standalone Slice: <b>Key Discoveries V6</b>
     </div>
     <div style="display:flex;gap:12px;align-items:center">
       <span class="badge b-purple">10 Key Findings</span>

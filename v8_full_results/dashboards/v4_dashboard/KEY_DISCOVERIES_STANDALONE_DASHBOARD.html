@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Performance Characterization — Key Discoveries — MoonshotAI Kimi-K1.5-Preview Characterization</title>
+  <title>V8 Key Discoveries — MoonshotAI Kimi-K1.5-Preview Characterization</title>
   
   <!-- Chart.js Engine -->
   <script src="chart.umd.js"></script>
@@ -429,6 +429,16 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
     padding: 12px 16px;
     margin-bottom: 16px;
 }
+details.kd-map-card summary::-webkit-details-marker {
+    display: none;
+}
+details.kd-map-card summary {
+    list-style: none;
+}
+details.kd-map-card[open] summary {
+    margin-bottom: 8px !important;
+}
+
 .kd-map-title {
     font-size: 12px;
     font-weight: 800;
@@ -1843,11 +1853,21 @@ body.kd-mode-forensics .kd-eng-detail {
     </div>
 
     <!-- 2. 60-SECOND FINDING MAP TABLE (WITH SCOPE COLUMN) -->
-    <div class="kd-map-card">
-      <div class="kd-map-title">
-        <span>&#128506;</span> 60-second Finding Map
-      </div>
-      <table class="kd-map-table">
+    <details class="kd-map-card" id="kd-map-details">
+      <summary class="kd-map-title" style="cursor:pointer; display:flex; align-items:center; justify-content:space-between; list-style:none; user-select:none; margin-bottom:0; padding:2px 0;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:14px">&#128506;</span>
+          <span style="font-size:13px; font-weight:800; color:#38bdf8; letter-spacing:0.3px;">60-second Finding Map</span>
+          <span class="badge b-blue" style="font-size:10px; padding:2px 8px; border-radius:4px;">10 Findings Executive Overview</span>
+        </div>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="kd-map-fold-badge" style="font-size:11px; font-weight:600; color:#38bdf8; background:rgba(56, 189, 248, 0.12); border:1px solid rgba(56, 189, 248, 0.3); padding:4px 12px; border-radius:4px; display:inline-flex; align-items:center; gap:6px;">
+            <span class="kd-fold-state-text">Unfold 60-sec Map ▼</span>
+          </span>
+        </div>
+      </summary>
+      <div style="margin-top:12px; overflow-x:auto;">
+        <table class="kd-map-table">
         <thead>
           <tr>
             <th>#</th>
@@ -1941,7 +1961,8 @@ body.kd-mode-forensics .kd-eng-detail {
           </tr>
         </tbody>
       </table>
-    </div>
+      </div>
+    </details>
 
     <!-- 3. ROW 1: CARDS 1, 2, 3 (FABRIC EXPOSURE, CONCURRENCY, LONG CONTEXT) -->
     <div class="kd-grid-3">
@@ -5530,9 +5551,9 @@ window.initKeyDiscoveryCharts = function(pageId, prefix) {
                             type: 'line',
                             label: 'Measured Non-Dominated Frontier (TP4 Family)',
                             data: [
-                                { x: 372.99, y: 93.248 },
-                                { x: 420.21, y: 52.526 },
-                                { x: 457.09, y: 28.568 }
+                                { x: 372.99, y: 93.248, name: 'TP4 / PP1 (93.2s)', classification: 'Non-Dominated (Max Efficiency)', align: 'left', offsetX: 10, offsetY: 0 },
+                                { x: 420.21, y: 52.526, name: 'TP4 / PP2 (52.5s)', classification: 'Non-Dominated (Balanced)', align: 'left', offsetX: 10, offsetY: -4 },
+                                { x: 457.09, y: 28.568, name: 'TP4 / PP4 (28.6s)', classification: 'Non-Dominated (Min Latency)', align: 'left', offsetX: 10, offsetY: 4 }
                             ],
                             borderColor: '#4ade80',
                             backgroundColor: 'rgba(74, 222, 128, 0.1)',
@@ -5548,9 +5569,9 @@ window.initKeyDiscoveryCharts = function(pageId, prefix) {
                             type: 'scatter',
                             label: 'Dominated Configurations (Measured)',
                             data: [
-                                { x: 597.50, y: 74.688 },
-                                { x: 664.24, y: 41.515 },
-                                { x: 1091.15, y: 68.197 }
+                                { x: 597.50, y: 74.688, name: 'TP8 / PP1 (74.7s)', classification: 'Dominated (sub-optimal)', align: 'left', offsetX: 10, offsetY: 0 },
+                                { x: 664.24, y: 41.515, name: 'TP8 / PP2 (41.5s)', classification: 'Dominated by TP4/PP4', align: 'left', offsetX: 10, offsetY: 0 },
+                                { x: 1091.15, y: 68.197, name: 'TP16 / PP1 (68.2s)', classification: 'Severely Dominated (+139% cost)', align: 'right', offsetX: -12, offsetY: -6 }
                             ],
                             borderColor: '#f87171',
                             backgroundColor: '#f87171',
@@ -5565,15 +5586,22 @@ window.initKeyDiscoveryCharts = function(pageId, prefix) {
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: { top: 14, right: 32, bottom: 8, left: 8 }
+                    },
                     scales: {
                         x: {
                             type: 'linear',
                             position: 'bottom',
+                            suggestedMin: 320,
+                            suggestedMax: 1180,
                             title: { display: true, text: 'Resource Occupancy Proxy (GPU-seconds / request)', color: '#94a3b8' },
                             ticks: { color: '#94a3b8' },
                             grid: { color: 'rgba(255, 255, 255, 0.05)' }
                         },
                         y: {
+                            suggestedMin: 18,
+                            suggestedMax: 105,
                             title: { display: true, text: '1M TTFT (seconds — Lower is Better)', color: '#94a3b8' },
                             ticks: { color: '#94a3b8' },
                             grid: { color: 'rgba(255, 255, 255, 0.05)' }
@@ -5583,13 +5611,73 @@ window.initKeyDiscoveryCharts = function(pageId, prefix) {
                         legend: { labels: { color: '#cbd5e1', font: { size: 10, weight: '600' } } },
                         tooltip: {
                             callbacks: {
+                                title: function(items) {
+                                    if (!items.length) return '';
+                                    var p = items[0].raw;
+                                    return p.name ? (p.name.split(' (')[0]) : items[0].dataset.label;
+                                },
                                 label: function(ctx) {
-                                    return ctx.dataset.label + ': ' + ctx.raw.x.toFixed(1) + ' GPU-s, ' + ctx.raw.y.toFixed(2) + 's TTFT';
+                                    var p = ctx.raw;
+                                    var name = p.name ? (p.name.split(' (')[0] + ': ') : '';
+                                    var frontier = p.classification ? (' — ' + p.classification) : '';
+                                    return name + p.y.toFixed(2) + 's TTFT, ' + p.x.toFixed(1) + ' GPU-s' + frontier;
                                 }
                             }
                         }
                     }
-                }
+                },
+                plugins: [{
+                    id: 'frontierPointLabels',
+                    afterDatasetsDraw: function(chart) {
+                        var ctx = chart.ctx;
+                        chart.data.datasets.forEach(function(dataset, dIdx) {
+                            var meta = chart.getDatasetMeta(dIdx);
+                            if (!meta.hidden) {
+                                meta.data.forEach(function(element, idx) {
+                                    var p = dataset.data[idx];
+                                    if (p && p.name) {
+                                        ctx.save();
+                                        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+                                        var isFrontier = (dIdx === 0);
+                                        var textColor = isFrontier ? '#86efac' : '#fca5a5';
+                                        var bgColor = isFrontier ? 'rgba(6, 78, 59, 0.88)' : 'rgba(127, 29, 29, 0.88)';
+                                        var borderColor = isFrontier ? 'rgba(74, 222, 128, 0.6)' : 'rgba(248, 113, 113, 0.6)';
+                                        
+                                        var textWidth = ctx.measureText(p.name).width;
+                                        var padH = 6;
+                                        var h = 18;
+                                        var w = textWidth + (padH * 2);
+                                        
+                                        var align = p.align || 'left';
+                                        var offX = p.offsetX || 10;
+                                        var offY = p.offsetY || 0;
+                                        
+                                        var boxX = (align === 'right') ? (element.x + offX - w) : (element.x + offX);
+                                        var boxY = element.y + offY - (h / 2);
+                                        
+                                        ctx.fillStyle = bgColor;
+                                        ctx.strokeStyle = borderColor;
+                                        ctx.lineWidth = 1;
+                                        ctx.beginPath();
+                                        if (ctx.roundRect) {
+                                            ctx.roundRect(boxX, boxY, w, h, 4);
+                                        } else {
+                                            ctx.rect(boxX, boxY, w, h);
+                                        }
+                                        ctx.fill();
+                                        ctx.stroke();
+                                        
+                                        ctx.fillStyle = textColor;
+                                        ctx.textAlign = 'left';
+                                        ctx.textBaseline = 'middle';
+                                        ctx.fillText(p.name, boxX + padH, boxY + (h / 2));
+                                        ctx.restore();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }]
             });
         }
     } else if (pageId === 7) {
@@ -5763,6 +5851,17 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+
+  // Handle 60-sec Finding Map fold/unfold dynamic toggle indicator
+  var kdDetails = document.getElementById('kd-map-details');
+  if (kdDetails) {
+    var foldText = kdDetails.querySelector('.kd-fold-state-text');
+    kdDetails.addEventListener('toggle', function() {
+      if (foldText) {
+        foldText.textContent = kdDetails.open ? 'Fold 60-sec Map ▲' : 'Unfold 60-sec Map ▼';
+      }
+    });
+  }
 
 
   // Standalone Auto-Render on DOM Load
