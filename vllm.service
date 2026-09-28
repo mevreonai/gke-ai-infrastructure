@@ -1,0 +1,16 @@
+[Unit]
+Description=DeepSeek V4.1 Flash OpenAI Server
+After=network.target
+
+[Service]
+Type=simple
+User=ayu23
+WorkingDirectory=/data/models/deepseek-v4.1-flash/inference
+ExecStart=/usr/local/bin/start-vllm.sh
+ExecStop=/usr/bin/pkill -f api_server.py
+Restart=on-failure
+RestartSec=5
+LimitNOFILE=1048576
+
+[Install]
+WantedBy=multi-user.target

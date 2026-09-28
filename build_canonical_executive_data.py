@@ -159,7 +159,7 @@ discoveries = [
         "stable_discovery_id": "TOP_2_FABRIC_EXPOSURE_FINGERPRINT",
         "version": "2.0.0",
         "formula_version": "V2-EMPIRICAL-FIT-TTFT(B)=T0+V/B",
-        "fit_quality": "Normalized transport footprint E_H ≈ 116 bytes/token (H=2304, b=2 bytes BF16)",
+        "fit_quality": "Hidden-width-equivalent exposure coefficient: E_H ≈ 25.18 dimensionless (normalized transport footprint ≈ 116 bytes/token relative to H=2304, BF16 b=2)",
         "top_id": 2,
         "hero_order": 1,
         "title": "Fabric Exposure Fingerprint",
@@ -184,7 +184,7 @@ discoveries = [
                 {"topo": "TP16 / PP1", "native": "68.197 s", "capped_100g": "92.992 s (+36.36%)", "capped_20g": "256.889 s (+276.7%)"}
             ]
         },
-        "formula_derivation": "Local transport sensitivity fit: TTFT(B) = T0 + V_exposed / B. Normalized transport footprint: E_H = V_exposed / (N_tokens * H * b) ≈ 116 bytes/token (H=2304, b=2 bytes BF16).",
+        "formula_derivation": "Local transport sensitivity fit: TTFT(B) = T0 + V_exposed / B. Normalized transport footprint: E_H = V_exposed / (N_tokens * H * b) ≈ 116 (dimensionless hidden-width-equivalent exposure coefficient, E_H, with H=2304, b=2 bytes BF16).",
         "case_bench_network_provenance": "tp4_pp4_dist, tp16_pp1_dist, tp4_pp2_dist, tp8_pp2_dist across GCP_NATIVE (173.6 Gbps), GCP_CAPPED_100G (56.8 Gbps), and GCP_CAPPED_20G (16.5 Gbps) at 1M context.",
         "exact_profile_rank_aggregation_rule": "N/A — E2E wall-clock client metric across 3 independent network environments.",
         "raw_artifact_paths": [
@@ -196,7 +196,7 @@ discoveries = [
         ],
         "boundary": "This is a local empirical sensitivity coefficient over the measured bandwidth range. It is NOT a literal claim that the model physically transmits exactly 116 hidden states per token.",
         "required_follow_up_experiment": "Validate with packet-level NIC queue counters and NCCL ring vs tree algorithm profiling under tc netem to isolate bufferbloat from serialization latency.",
-        "decision_changed": "Do not provision distributed inference from NIC/iperf capability alone. Topology determines how much transport degradation becomes exposed to user-visible TTFT. Disallow cross-node TP16 over standard VPC; standardize on TP4/PP4 for multi-node serving.",
+        "decision_changed": "Do not provision distributed inference from NIC/iperf capability alone. Topology determines how much transport degradation becomes exposed to user-visible TTFT. For bandwidth-constrained networks, candidate topology favors TP4/PP4, but topology selection should be evaluated per workload SLO rather than applying a universal constraint.",
         "visual": {
             "canvas_id": "chart_top10_fabric_exposure",
             "type": "bar",
@@ -275,7 +275,7 @@ discoveries = [
         ],
         "boundary": "Applies directly to 1M closed-loop client load. Does not prove the exact internal scheduler dispatch ordering without thread-trace events.",
         "required_follow_up_experiment": "Run open-loop Poisson arrival schedule at 1M to map the exact queue bifurcation boundary as a function of request arrival rate.",
-        "decision_changed": "Enforce admission control on queue/TTFT SLO thresholds, NOT on KV cache exhaustion. At 1M context, KV capacity remains ~84% free while latency SLOs are destroyed 26× over.",
+        "decision_changed": "Enforce admission control on queue/TTFT SLO thresholds, NOT on reported KV cache exhaustion. At 1M context, reported KV utilization remains ~15.5% while TTFT and TPOT degrade sharply; evaluate admission gating at candidate knees depending on target SLO.",
         "visual": {
             "canvas_id": "chart_top10_concurrency_waterfall",
             "type": "bar",
@@ -346,7 +346,7 @@ discoveries = [
         "large_number": "15.7× Attention Growth vs 3.8× MoE (128K → 512K)",
         "large_number_caption": "Subsystem Work Scaling Exponent Shift",
         "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "causal_confidence": "MED-HIGH",
         "evidence_class": ["MEASURED", "DERIVED", "MODELED_INTERPOLATION"],
         "observation": "Across 128K to 512K context scaling on TP4, FlashAttention kernel execution time scales by ~15.7× (scaling exponent p ≈ 1.99, confirming O(N^2)). In contrast, KDA linear recurrence scales by ~3.9× (p ≈ 0.99, O(N)), and MoE gating/routing scales by ~3.8× (p ≈ 0.96, O(N)). E2E wall-clock TTFT reflects this shift: TP4/PP4 Native TTFT scales from 1.71s (128K) to 10.22s (512K) to 28.57s (1M).",
         "exact_measured_values": {
@@ -374,7 +374,7 @@ discoveries = [
         ],
         "boundary": "DERIVED / MODELED INTERPOLATION — NOT A MEASURED CRITICAL-PATH CROSSOVER. Cross-kernel overlap and CUDA stream concurrency prevent simple summation from representing absolute wall-clock time.",
         "required_follow_up_experiment": "Run intermediate context sweeps (256K, 384K, 768K) with instrumented PyTorch NVTX ranges to measure true per-layer critical path wall-clock latency.",
-        "decision_changed": "Engineers optimizing 8K–128K should focus on MoE dispatch and recurrence kernel launch overhead. For 512K–1M deployments, all optimization efforts must pivot to FlashAttention chunk budgeting, sequence parallelism, and KV cache layout.",
+        "decision_changed": "Candidate optimization focus to validate: For 8K–128K, evaluate MoE dispatch and recurrence kernel launch overhead; for ≥512K, prioritize FlashAttention chunk budgeting, sequence parallelism, and KV cache layout.",
         "visual": {
             "canvas_id": "chart_top10_hybrid_regime",
             "type": "line",
@@ -421,7 +421,7 @@ discoveries = [
                 "scales": {"y": {"title": {"display": True, "text": "Aggregate GPU Work Share (%)"}}}
             }
         },
-        "drilldown": ["EV-082", "EV-083", "EV-084", "EV-003", "EV-004"]
+        "drilldown": ["EV-082", "EV-083", "EV-084", "PR-005", "PR-007"]
     },
 
     # 4. TOP 4 - Prefix Reuse Changes Scaling Curve
@@ -459,7 +459,7 @@ discoveries = [
         ],
         "boundary": "Represents 100% full-prefix hit with near-zero generation length. Real multi-turn chat exhibits variable prefix hit ratios and eviction dynamics under multi-tenant load.",
         "required_follow_up_experiment": "Benchmark partial prefix hit ratios (25%, 50%, 75%) and measure cache eviction latency under concurrent multi-tenant churn.",
-        "decision_changed": "Deploy prefix caching for agents, long-document Q&A, and few-shot workloads. Size KV cache specifically to prevent prefix eviction on primary shared system prompts.",
+        "decision_changed": "Prefix reuse should be treated as a workload-routing/caching lever; as a candidate deployment experiment, evaluate routing multi-turn chat and RAG to cache-warm replicas with sticky sessions.",
         "visual": {
             "canvas_id": "chart_top10_prefix_reuse",
             "type": "line",
@@ -507,7 +507,7 @@ discoveries = [
         "stable_discovery_id": "TOP_5_PROMPT_TOKEN_ADMISSION_FINGERPRINT",
         "version": "2.0.0",
         "formula_version": "V2-TOKEN-ADMISSION-CAPACITY-C=RPS*N_tokens",
-        "fit_quality": "8K: 27,443 tok/s vs 128K: 24,248 tok/s (11.6% spread across 16x prompt span)",
+        "fit_quality": "8K: 27,443 tok/s vs 128K: 24,248 tok/s (11.6% spread across 16x prompt span; candidate saturation heuristic)",
         "top_id": 5,
         "hero_order": None,
         "title": "Prompt-Token Admission Fingerprint",
@@ -515,8 +515,8 @@ discoveries = [
         "one_line_finding": "At open-loop saturation, the engine admits ~24K–27K prompt tokens/s across both 8K and 128K context regimes, dictating admission control rules.",
         "large_number": "~24.2K vs ~27.4K Prompt Tok/s",
         "large_number_caption": "Open-Loop Saturation Ingestion Ceiling",
-        "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "evidence_confidence": "MED-HIGH",
+        "causal_confidence": "LOW-MED",
         "evidence_class": ["MEASURED", "DERIVED"],
         "observation": "Under open-loop Poisson arrival sweeps, maximum stable request throughput scales inversely with prompt length: 8K sustains up to ~3.36 req/s (yielding 3.36 * 8192 = 27,443 prompt tok/s), while 128K sustains up to ~0.185 req/s (yielding 0.185 * 131072 = 24,248 prompt tok/s). The prompt-token throughput difference is only ~14%.",
         "exact_measured_values": {
@@ -534,7 +534,7 @@ discoveries = [
         ],
         "boundary": "Measured specifically for 8K and 128K context regimes on TP4 with chunk size 8192. Do not extrapolate to unseen topologies or chunk configurations without validation.",
         "required_follow_up_experiment": "Execute open-loop sweeps on 512K and 1M context to test if the token absorption rate remains bounded between 20K–28K tok/s.",
-        "decision_changed": "Rate limiters and ingress gateways must enforce prompt-token concurrency budgets, not simple request counts. Admitting ten 128K requests generates 160× the prefill token stress of ten 8K requests.",
+        "decision_changed": "Rate limiters and ingress gateways must enforce prompt-token concurrency budgets, not simple request counts. Admitting ten 128K requests generates 16× the prefill token stress of ten 8K requests (16× prompt length ratio; candidate deployment takeaway: capacity planning should normalize demand into prompt tokens/s).",
         "visual": {
             "canvas_id": "chart_top10_admission_law",
             "type": "bar",
@@ -558,7 +558,7 @@ discoveries = [
                 "scales": {"y": {"title": {"display": True, "text": "Prompt Tokens / s"}, "min": 20000, "max": 30000}}
             }
         },
-        "drilldown": ["EV-112", "EV-113", "EV-114", "EV-115", "EV-116", "EV-117", "EV-118", "EV-119", "EV-120", "EV-121", "EV-122", "EV-123", "EV-124", "EV-125"]
+        "drilldown": ["EV-116", "EV-117", "EV-118", "EV-123", "EV-124", "EV-125"]
     },
 
     # 6. TOP 6 - Parallelism Directional Elasticity + GPU-Second Frontier
@@ -576,7 +576,7 @@ discoveries = [
         "large_number": "η = -0.245 (8K TP) vs η = +0.879 (1M PP)",
         "large_number_caption": "Scaling Elasticity Coefficient Crossover",
         "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "causal_confidence": "MED-HIGH",
         "evidence_class": ["MEASURED", "DERIVED"],
         "observation": "At 8K context, scaling from TP4 to TP8 increases TTFT from 416.7ms to 493.5ms (η = -0.245) due to small-message AllReduce overhead. At 1M context, scaling pipeline stages from PP2 to PP4 on TP4 reduces TTFT from 52.53s to 28.57s (η = +0.879). Total GPU-seconds per 1M request: TP4/PP1 (373.6s), TP4/PP2 (420.2s), TP4/PP4 (457.1s), TP8/PP1 (597.5s), TP8/PP2 (664.2s), TP16/PP1 (1091.1s).",
         "exact_measured_values": {
@@ -605,7 +605,7 @@ discoveries = [
         ],
         "boundary": "GPU-seconds/request is an occupancy proxy, NOT a billing cost model. Does not include idle cluster overhead or electricity costs.",
         "required_follow_up_experiment": "Evaluate pipeline microbatch tuning under continuous streaming inference to reduce pipeline flush bubbles.",
-        "decision_changed": "Deploy TP4 for short-context instances to maximize single-node efficiency. Scale out via Pipeline Parallelism (PP4) rather than wide Tensor Parallelism (TP16) for extreme 1M contexts.",
+        "decision_changed": "Allocate additional GPUs along the parallelism dimension that has positive measured elasticity for the workload/SLO, and expose the GPU-second trade-off instead of declaring a universal topology winner.",
         "visual": {
             "canvas_id": "chart_top10_parallelism_elasticity",
             "type": "bar",
@@ -630,7 +630,7 @@ discoveries = [
                 "scales": {"y": {"title": {"display": True, "text": "Elasticity (η) [1.0 = Ideal Linear]"}}}
             }
         },
-        "drilldown": ["EV-001", "EV-005", "EV-076", "EV-078", "EV-082", "EV-084", "EV-079", "EV-081", "EV-085", "EV-087"]
+        "drilldown": ["EV-009", "EV-010", "EV-011", "EV-012", "EV-013", "EV-014", "EV-015", "EV-016", "EV-076", "EV-077", "EV-078", "EV-079", "EV-080", "EV-081", "EV-082", "EV-083", "EV-084", "EV-085", "EV-086", "EV-087"]
     },
 
     # 7. TOP 7 - TP Decode Evidence Chain
@@ -648,9 +648,9 @@ discoveries = [
         "large_number": "+41.9% Token Latency on TP8 (4.48ms → 6.35ms)",
         "large_number_caption": "8K Decode TPOT Degradation from AllReduce Bus Contention",
         "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "causal_confidence": "MED-HIGH",
         "evidence_class": ["MEASURED", "CROSS_VALIDATED"],
-        "observation": "Widening Tensor Parallelism from TP4 to TP8 at 8K degrades mean TPOT from 4.475ms to 6.350ms (+41.9%). The 4-layer evidence chain confirms: 1) Hardware NCCL 16K AllReduce latency doubles (19.0us → 37.0us); 2) PyTorch self-CUDA allreduce time increases by 2.32× (251.5ms → 583.9ms across 7040 calls); 3) Nsight decode kernel work confirms small-tensor synchronization overhead; 4) E2E TPOT reflects the aggregate slowdown.",
+        "observation": "Widening Tensor Parallelism from TP4 to TP8 at 8K degrades mean TPOT from 4.475ms to 6.350ms (+41.9%). The 4-layer evidence chain confirms: 1) Hardware NCCL 16K AllReduce latency doubles (19.0us → 37.0us); 2) PyTorch self-CUDA allreduce time increases by 2.32× (251.5ms → 583.9ms across 7040 traced AllReduce calls); 3) Nsight decode kernel work confirms small-tensor synchronization overhead; 4) E2E TPOT reflects the aggregate slowdown.",
         "exact_measured_values": {
             "evidence_layers": [
                 {"layer": "1. Raw NCCL Microbench", "metric": "16K AllReduce Latency", "tp4": "19.0 μs", "tp8": "37.0 μs", "delta": "+94.7% (1.95x)"},
@@ -671,7 +671,7 @@ discoveries = [
         ],
         "boundary": "Applies to decode phases with small token batches (batch tokens ≤ 16). Prefill phases with large batched tensors saturate bus bandwidth and overcome latency penalties.",
         "required_follow_up_experiment": "Profile custom allreduce kernels (OneShot / Tree-based) with CUDA graph capture to test if kernel launch overhead can be eliminated.",
-        "decision_changed": "Cap Tensor Parallelism at TP4 for decode-heavy or conversational workloads. Avoid TP8 unless model parameters exceed 4-GPU VRAM capacity.",
+        "decision_changed": "For interactive short-context decode, prefer TP=4 as candidate deployment topology; TP=8 incurs cross-NUMA socket collective synchronization overhead.",
         "visual": {
             "canvas_id": "chart_top10_tp_decode",
             "type": "bar",
@@ -706,7 +706,7 @@ discoveries = [
                 "scales": {"y": {"title": {"display": True, "text": "Normalized Metric Units"}}}
             }
         },
-        "drilldown": ["EV-001", "EV-005"]
+        "drilldown": ["EV-009", "EV-013", "PR-002", "PR-003"]
     },
 
     # 8. TOP 8 - Runtime-Knob Derivative Fingerprint
@@ -724,7 +724,7 @@ discoveries = [
         "large_number": "<0.05% (max_seqs) vs -27.1% (chunk size) TTFT",
         "large_number_caption": "Runtime Knob Sensitivity Spread @ 1M",
         "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "causal_confidence": "MED-HIGH",
         "evidence_class": ["MEASURED", "DERIVED"],
         "observation": "At 1M context c4 on TP4, changing max_num_seqs (4 → 8 → 16) yields almost identical TTFT: 232.342s, 232.364s, 232.250s (total variance < 0.05%) because peak_running is 2 and peak_waiting is 3 (configured ceiling is never reached). Conversely, increasing max_num_batched_tokens from 4K to 16K reduces 1M c1 TTFT from 122.05s to 93.28s to 88.95s (-27.1% reduction).",
         "exact_measured_values": {
@@ -748,9 +748,9 @@ discoveries = [
             "vllm_single_node_v8_1m_extensions/tp4_chunk4k/tp4_chunk4k_1m_c1.json",
             "vllm_single_node_v8_1m_extensions/tp4_chunk16k/tp4_chunk16k_1m_c1.json"
         ],
-        "boundary": "16K chunk size requires sufficient activation VRAM. In constrained memory configs, 16K chunks increase risk of Out-Of-Memory during high concurrent prefill.",
+        "boundary": "16K chunk size was evaluated for single-stream prefill (c=1); multi-tenant concurrent prefill dynamics require further instrumentation.",
         "required_follow_up_experiment": "Sweep intermediate chunk sizes (10K, 12K, 14K) under concurrent multi-tenant load to identify the precise VRAM headroom inflection point.",
-        "decision_changed": "Do not spend engineering time tuning max_num_seqs when operating below concurrency saturation. Focus tuning effort entirely on max_num_batched_tokens and chunk size allocation.",
+        "decision_changed": "Candidate operational focus: evaluate tuning chunked prefill / token budget (which reduced measured TTFT by ~27.1%) while max_num_seqs spread was <0.05% across tested points; tune chunk budget according to workload SLO.",
         "visual": {
             "canvas_id": "chart_top10_runtime_knobs",
             "type": "bar",
@@ -793,16 +793,16 @@ discoveries = [
         "large_number": "80.6% Util (68.2s) vs 62.8% Util (28.6s)",
         "large_number_caption": "TP16/PP1 vs TP4/PP4 Utilization vs Latency Paradox @ 1M",
         "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "causal_confidence": "MEDIUM",
         "evidence_class": ["MEASURED", "CROSS_VALIDATED"],
-        "observation": "SMI telemetry shows TP16/PP1 running at ~80.6% average GPU utilization during 1M prefill, yet it takes 68.20s to complete. TP4/PP4 runs at only ~62.8% GPU utilization, yet completes in 28.57s (2.39× faster). Nsight profiling reveals that for TP16, over 40% of the active GPU cycles are spent in active CUDA spin-wait loops inside NCCL AllReduce barriers awaiting cross-node network packets.",
+        "observation": "SMI telemetry shows TP16/PP1 running at ~80.6% average GPU utilization during 1M prefill, yet it takes 68.20s to complete. TP4/PP4 runs at only ~62.8% GPU utilization, yet completes in 28.57s (2.39× faster). Profiler traces show TP16 incurs significant collective wait and barrier communication overhead across nodes during distributed execution.",
         "exact_measured_values": {
             "util_comparison": [
                 {"topo": "TP16 / PP1 Distributed", "util": "~80.6%", "ttft": "68.197 s", "state": "Barrier spinning & collective wait", "efficiency": "Low"},
                 {"topo": "TP4 / PP4 Distributed", "util": "~62.8%", "ttft": "28.568 s", "state": "Pipelined forward compute", "efficiency": "2.39x Higher"}
             ]
         },
-        "formula_derivation": "Effective compute efficiency: Eff = Work_useful / (Utilization * Time). TP4/PP4 achieves 2.39x higher useful token progression per unit of time despite lower reported utilization.",
+        "formula_derivation": "Heuristic efficiency proxy: Eff_heuristic = Work_useful / (Utilization * Time). TP4/PP4 achieves 2.39x higher useful token progression per unit of time despite lower reported utilization; this is an operational heuristic proxy, not a direct micro-architectural FLOP count.",
         "case_bench_network_provenance": "tp16_pp1_dist vs tp4_pp4_dist at 1m_c1 on GCP_NATIVE; corroborated by SCALEOUT_TELEMETRY_AUDIT.json.",
         "exact_profile_rank_aggregation_rule": "Mean GPU utilization logged across all 16 GPUs via nvidia-smi DCGM sampling at 100ms intervals.",
         "raw_artifact_paths": [
@@ -812,7 +812,7 @@ discoveries = [
         ],
         "boundary": "SMI utilization metrics do not distinguish between useful GEMM tensor core compute and active spin-polling in CUDA communication loops.",
         "required_follow_up_experiment": "Deploy NVIDIA Nsight Systems timeline traces with PM counters (SM active vs Tensor Pipe active) to quantify exact non-spin FLOPS.",
-        "decision_changed": "Never use nvidia-smi GPU utilization as an operational health metric or auto-scaling trigger for distributed LLM inference. Rely exclusively on E2E TTFT, TPOT, and queue residency.",
+        "decision_changed": "Hardware GPU utilization alone does not indicate productive token generation efficiency; cross-validate throughput and TTFT alongside device telemetry. In collective-heavy topologies, high device utilization can correlate with communication wait cycles.",
         "visual": {
             "canvas_id": "chart_top10_gpu_utilization",
             "type": "bar",
@@ -859,50 +859,61 @@ discoveries = [
         "stable_discovery_id": "TOP_10_KV_VRAM_HEADROOM_DIVERGENCE",
         "version": "2.0.0",
         "formula_version": "V2-PHYSICAL-VRAM-HEADROOM-SPLIT",
-        "fit_quality": "Reported KV% = 2.75% (PP divides KV), actual physical VRAM = 88.83 GiB (7.86 GiB margin)",
+        "fit_quality": "Reported peak KV% = 2.75% (PP divides KV per stage), peak physical GPU memory allocation = ~88.83 GiB",
         "top_id": 10,
         "hero_order": None,
         "title": "KV Headroom != VRAM Headroom",
         "sub_title": "Pipeline Parallelism Divides KV Cache Usage While Physical VRAM Remains Near-Full",
-        "one_line_finding": "On TP4/PP4 at 1M, reported peak KV cache usage is only ~2.75% (PP divides KV per stage), yet physical VRAM allocation is ~88.83 GiB out of 96.0 GiB (~7.86 GiB actual headroom).",
+        "one_line_finding": "On TP4/PP4 at 1M, reported peak KV cache usage is only ~2.75% (PP divides KV per stage), yet physical GPU memory allocation peaks at ~88.83 GiB.",
         "large_number": "2.75% Reported KV vs 88.83 GiB Allocated VRAM",
-        "large_number_caption": "Reported KV Headroom vs Physical VRAM Reality @ 1M",
+        "large_number_caption": "Reported KV Headroom vs Physical VRAM Telemetry @ 1M",
         "evidence_confidence": "HIGH",
-        "causal_confidence": "HIGH",
+        "causal_confidence": "MED-HIGH",
         "evidence_class": ["MEASURED", "CROSS_VALIDATED"],
-        "observation": "On TP4/PP4, reported peak KV cache usage appears trivial (~2.75%) because pipeline parallelism distributes layers across stages (PP * KV% = 4 * 2.75% ≈ 11.0% total model KV footprint). However, physical GPU VRAM allocation peaks at ~88.83 GiB per GPU due to model weights, activation buffers, CUDA runtime, and NCCL transport buffers, leaving only ~7.86 GiB of true headroom.",
+        "observation": "On TP4/PP4, reported peak KV cache usage appears trivial (~2.75%) because pipeline parallelism distributes layers across stages (PP * KV% = 4 * 2.75% ≈ 11.0% total model KV footprint). However, physical GPU VRAM allocation peaks at ~88.83 GiB per GPU due to model weights, activation buffers, CUDA runtime, and NCCL transport buffers, leaving limited margin before memory exhaustion.",
         "exact_measured_values": {
-            "vram_breakdown": [
-                {"metric": "Reported Peak KV Usage", "value": "2.75%", "implication": "Appears 97.25% free"},
-                {"metric": "True Total Model KV Footprint (PP × KV%)", "value": "11.00%", "implication": "Distributed across 4 stages"},
-                {"metric": "Peak Physical VRAM Allocated", "value": "88.83 GiB", "implication": "Measured via nvidia-smi"},
-                {"metric": "Total GPU VRAM Capacity", "value": "96.00 GiB", "implication": "NVIDIA RTX PRO 6000 Server Edition (dual-die 48GB x 2 / NUMA)"},
-                {"metric": "Actual Physical VRAM Headroom", "value": "7.86 GiB", "implication": "Real margin before OOM crash"}
+            "vram_telemetry": [
+                {"configuration": "TP4 / PP1", "peak_kv_pct": "12.29%", "peak_vram_gib": "88.42 GiB", "implication": "Single pipeline stage active KV"},
+                {"configuration": "TP4 / PP2", "peak_kv_pct": "5.88%", "peak_vram_gib": "88.67 GiB", "implication": "KV distributed across 2 stages"},
+                {"configuration": "TP4 / PP4", "peak_kv_pct": "2.75%", "peak_vram_gib": "88.83 GiB", "implication": "KV distributed across 4 stages; flat total physical allocation"}
             ]
         },
-        "formula_derivation": "True VRAM Headroom = VRAM_total - VRAM_peak_physical. 96.00 - 88.83 = 7.17 GiB. Normalized KV usage: KV_global = PP * KV_reported.",
+        "formula_derivation": "VRAM telemetry shows flat ~88.4–88.8 GiB physical allocation across pipeline stages, while reported KV cache usage is divided across stages (2.75% on PP4 vs 12.29% on PP1). Global KV consistency check: PP * reported KV% ≈ 11.0% (assuming symmetric stage distribution; exact allocator sharding unmeasured).",
         "case_bench_network_provenance": "tp4_pp4_dist at 1m_c1 on GCP_NATIVE; corroborated by STATIC_VALIDATION.json and memory telemetry.",
         "exact_profile_rank_aggregation_rule": "Max VRAM allocated across all 16 GPUs during the entire 1M request execution lifecycle.",
         "raw_artifact_paths": [
             "scaleout_matrix/vllm_scaleout_network_matrix/tp4_pp4_dist_1m_c1_native.json",
             "final_validation/STATIC_VALIDATION.json"
         ],
-        "boundary": "Exact activation and runtime memory split cannot be fully separated without CUDA allocator instrumentation.",
+        "boundary": "Exact activation, runtime, and buffer memory breakdown cannot be fully separated without CUDA allocator instrumentation; true headroom depends on driver and allocator reservations.",
         "required_follow_up_experiment": "Instrument PyTorch cudaMemGetInfo and torch.cuda.memory_summary() at 100ms intervals to track peak activation memory spikes during attention prefill.",
         "decision_changed": "Never base capacity planning or concurrent request limits solely on vLLM's reported KV cache percentage. Size workloads against physical VRAM limits (peak physical memory buffer).",
         "visual": {
             "canvas_id": "chart_top10_kv_vram_divergence",
             "type": "bar",
             "data": {
-                "labels": ["Reported Free KV Cache Space", "Actual Physical VRAM Headroom"],
+                "labels": ["TP4 / PP1", "TP4 / PP2", "TP4 / PP4"],
                 "datasets": [
                     {
-                        "label": "Percentage / Headroom Reality",
-                        "data": [97.25, 8.19],
-                        "backgroundColor": ["rgba(57,217,138,0.85)", "rgba(255,93,115,0.85)"],
+                        "label": "Peak Reported KV Usage (%)",
+                        "data": [12.29, 5.88, 2.75],
+                        "backgroundColor": "rgba(66,201,255,0.85)",
+                        "yAxisID": "y",
                         "datums": [
-                            get_datum("tp4_pp4_dist", "1m_c1", "GCP_NATIVE", "reported_free_kv_pct", 97.25, "%"),
-                            get_datum("tp4_pp4_dist", "1m_c1", "GCP_NATIVE", "actual_vram_headroom_pct", 8.19, "%")
+                            get_datum("tp4_pp1_dist", "1m_c1", "GCP_NATIVE", "reported_kv_pct", 12.29, "%"),
+                            get_datum("tp4_pp2_dist", "1m_c1", "GCP_NATIVE", "reported_kv_pct", 5.88, "%"),
+                            get_datum("tp4_pp4_dist", "1m_c1", "GCP_NATIVE", "reported_kv_pct", 2.75, "%")
+                        ]
+                    },
+                    {
+                        "label": "Peak Measured GPU Memory (GiB)",
+                        "data": [88.42, 88.67, 88.83],
+                        "backgroundColor": "rgba(255,200,87,0.85)",
+                        "yAxisID": "y1",
+                        "datums": [
+                            get_datum("tp4_pp1_dist", "1m_c1", "GCP_NATIVE", "peak_vram_gib", 88.42, "GiB"),
+                            get_datum("tp4_pp2_dist", "1m_c1", "GCP_NATIVE", "peak_vram_gib", 88.67, "GiB"),
+                            get_datum("tp4_pp4_dist", "1m_c1", "GCP_NATIVE", "peak_vram_gib", 88.83, "GiB")
                         ]
                     }
                 ]
@@ -910,10 +921,13 @@ discoveries = [
             "options": {
                 "responsive": True,
                 "maintainAspectRatio": False,
-                "scales": {"y": {"title": {"display": True, "text": "Percentage (%)"}, "max": 100}}
+                "scales": {
+                    "y": {"title": {"display": True, "text": "Reported KV (%)"}, "max": 20},
+                    "y1": {"position": "right", "title": {"display": True, "text": "Measured VRAM (GiB)"}, "min": 80, "max": 96}
+                }
             }
         },
-        "drilldown": ["EV-084", "EV-078", "EV-065"]
+        "drilldown": ["EV-084", "EV-078", "EV-087", "EV-065"]
     }
 ]
 

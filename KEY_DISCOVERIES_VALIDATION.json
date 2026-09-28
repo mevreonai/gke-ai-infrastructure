@@ -1,0 +1,93 @@
+{
+  "target_file": "MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_2amIST.html",
+  "audit_status": "FAIL",
+  "total_tests": 17,
+  "passed_tests": 13,
+  "tests": [
+    {
+      "test": "P0_Stable_IDs_1_to_10",
+      "passed": true,
+      "detail": "10 cards and 10 pages in exact canonical sequence 1..10"
+    },
+    {
+      "test": "P0_Trust_Strip_Wording",
+      "passed": true,
+      "detail": "Contains '119/126 COMPLETED E2E ROWS VALIDATED' & 'STRICT SUITE SIGN-OFF INCOMPLETE'"
+    },
+    {
+      "test": "P0_Measured_Transports",
+      "passed": true,
+      "detail": "Contains Native 173.58 Gb/s, 100G 56.84 Gb/s, 20G 16.48 Gb/s"
+    },
+    {
+      "test": "P0_Map_Scope_Column",
+      "passed": true,
+      "detail": "Finding map table includes dedicated Scope column"
+    },
+    {
+      "test": "P0_Coverage_Rails_On_Cards",
+      "passed": true,
+      "detail": "Found 10/10 coverage rails on Signal cards"
+    },
+    {
+      "test": "P0_Finding1_Fabric_Data",
+      "passed": true,
+      "detail": "Contains 256.889s, +276.69%, EV-078/EV-111"
+    },
+    {
+      "test": "P0_Finding2_Concurrency_Data",
+      "passed": true,
+      "detail": "Validated 0.3415->0.3467 tok/s, 231.268s, 267.411ms, 134.428s queue; stale values eliminated"
+    },
+    {
+      "test": "P0_Finding3_Complexity_Wording",
+      "passed": true,
+      "detail": "Uses 'empirical p\u22481.99'; removed 'exclusive bottleneck'"
+    },
+    {
+      "test": "P0_Finding4_Prefix_Reuse",
+      "passed": false,
+      "detail": "Validated 94.2272s -> 2.6140s (36.0x); no '100% prefix hit'"
+    },
+    {
+      "test": "P0_Finding5_Admission_Data",
+      "passed": true,
+      "detail": "Validated 3.3586 vs 0.1846 req/s, 27.51K vs 24.19K tok/s, EV-116/EV-125"
+    },
+    {
+      "test": "P0_Finding6_Parallelism_Frontier",
+      "passed": false,
+      "detail": "Contains TP8/PP2 @ 664.24 GPU-s / 41.515s; never renders TP8/PP4"
+    },
+    {
+      "test": "P0_Finding7_TP_Decode_TPOT",
+      "passed": false,
+      "detail": "Validated 4.475/6.350ms, 10.267/12.102ms, PyTorch 251.529/583.866ms"
+    },
+    {
+      "test": "P0_Finding8_Runtime_Knobs",
+      "passed": true,
+      "detail": "Fixed 233.364s typo to 232.364s; non-binding wording present"
+    },
+    {
+      "test": "P0_Finding9_Busy_GPU",
+      "passed": true,
+      "detail": "Validated Util/TTFT pairs EV-082..EV-087; removed barrier stall claim"
+    },
+    {
+      "test": "P0_Finding10_KV_vs_VRAM",
+      "passed": false,
+      "detail": "Validated TP8 87.27/87.51 GiB, 88.83 GiB peak; removed Global KV check & 93% saturated"
+    },
+    {
+      "test": "P0_UX_Action_Labels",
+      "passed": true,
+      "detail": "Found 30 'View Detailed Finding \u2193' and 2 'Inspect Forensic Evidence \u2192'"
+    },
+    {
+      "test": "P0_Other_Tabs_Preserved",
+      "passed": true,
+      "detail": "All 7 other tab sections verified intact and untouched"
+    }
+  ]
+}

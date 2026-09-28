@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "model": "deepseek-ai/DeepSeek-V4.1-Flash",
+  "model_local_path": "/data/models/deepseek-v4.1-flash",
+  "gcs_source": "gs://mevreon-deepseek-models/deepseek-ai/DeepSeek-V4.1-Flash",
+  "container_image": "vllm/vllm-openai:deepseekv41-flash-0909",
+  "evidence_class": "MEASURED-DEEPSEEK-V41-FLASH",
+  "target_node": "kimi-node-0",
+
+  "server_config": {
+    "tensor_parallel_size": 8,
+    "tokenizer_mode": "deepseek_v41",
+    "language_model_only": true,
+    "block_size": 64,
+    "gpu_memory_utilization": 0.92,
+    "port": 8000,
+    "max_model_len": 1048576
+  },
+
+  "network_conditions": [
+    {
+      "name": "native",
+      "label": "Native (unrestricted)",
+      "tc_command": null,
+      "description": "No bandwidth cap — full PCIe Gen5 / VPC bandwidth"
+    },
+    {
+      "name": "100gbps",
+      "label": "100 Gbps Cap",
+      "tc_command": "tc qdisc replace dev eth0 root tbf rate 100gbit burst 256mb latency 1ms",
+      "description": "Simulates 100 Gbps NIC bandwidth ceiling"
+    },
+    {
+      "name": "20gbps",
+      "label": "20 Gbps Cap",
+      "tc_command": "tc qdisc replace dev eth0 root tbf rate 20gbit burst 64mb latency 1ms",
+      "description": "Simulates 20 Gbps standard-tier GCP network"
+    }
+  ],
+
+  "benchmark_groups": [
+    {
+      "name": "tp8_context_baseline",
+      "purpose": "Context-scaling baseline across 8K to 512K input tokens on full TP8.",
+      "tp": 8,
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 32,
+      "prefix_caching": false,
+      "cases": [
+        {"name": "8k_c1",   "input": 8192,   "output": 256, "concurrency": 1, "prompts": 12, "warmups": 2},
+        {"name": "8k_c8",   "input": 8192,   "output": 256, "concurrency": 8, "prompts": 32, "warmups": 2},
+        {"name": "128k_c1", "input": 131072, "output": 128, "concurrency": 1, "prompts": 5,  "warmups": 1},
+        {"name": "512k_c1", "input": 524288, "output": 64,  "concurrency": 1, "prompts": 3,  "warmups": 0}
+      ]
+    },
+    {
+      "name": "tp8_decode_focus",
+      "purpose": "Stable decode/TPOT characterization with longer output generation.",
+      "tp": 8,
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "cases": [
+        {"name": "8k_decode_c1", "input": 8192, "output": 512, "concurrency": 1, "prompts": 8,  "warmups": 2},
+        {"name": "8k_decode_c8", "input": 8192, "output": 512, "concurrency": 8, "prompts": 24, "warmups": 2}
+      ]
+    },
+    {
+      "name": "tp8_prefill_focus",
+      "purpose": "Isolate prefill/TTFT with minimal decode work (output=4 tokens).",
+      "tp": 8,
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "cases": [
+        {"name": "8k_prefill",   "input": 8192,   "output": 4, "concurrency": 1, "prompts": 8, "warmups": 1},
+        {"name": "128k_prefill", "input": 131072, "output": 4, "concurrency": 1, "prompts": 5, "warmups": 1}
+      ]
+    }
+  ]
+}
