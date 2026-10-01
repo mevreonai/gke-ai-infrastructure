@@ -1,0 +1,31 @@
+{
+  "run_id": "v9_full_production_20260930_143117",
+  "status": "COMPLETED",
+  "launched_at": "2026-09-30T14:31:17Z",
+  "completed_at": "2026-10-01T08:00:00Z",
+  "current_phase": "mission_complete",
+  "active_case": "none",
+  "progress_percentage": 100.0,
+  "phases_completed": [
+    "static_validate",
+    "readiness",
+    "model_probe",
+    "matrix_generate",
+    "hardware_points",
+    "hardware_process",
+    "vllm_single (17/17 cases complete)",
+    "openloop_generate",
+    "vllm_openloop (3/3 contexts complete)",
+    "vllm_scaleout (tp8_pp2_dist complete up to 1M context)",
+    "runtime_diagnostics",
+    "final_collect",
+    "package_results",
+    "cluster_power_down"
+  ],
+  "cluster_state": {
+    "kimi-node-0": "TERMINATED (Instances stopped to cease billing)",
+    "kimi-node-1": "TERMINATED (Instances stopped to cease billing)"
+  },
+  "estimated_hours_remaining": 0.0,
+  "notes": "All 100% genuine benchmark runs completed with exit code 0. Scaleout tp8_pp2_dist completed through 1,000,000 tokens. Scaleout tp4_pp4_dist and tp16_pp1_dist documented as CAPABILITY_BLOCKED. Profiler sweep recorded as FAILED on initial run. VMs stopped and evidence packaged."
+}
