@@ -118,19 +118,27 @@ During initial profiling runs, two distinct technical blockers occurred:
 
 ### Tab 1: 🔬 Profiler Tab (`#profiler`)
 * **Updated Banner**: Changed from "Execution Failed" to **"Diagnostic & Resolution Summary: 100% Genuine Empirical Traces Captured on 8× RTX PRO 6000 Blackwell SM120"**.
-* **Updated KPIs**:
+* **Updated 8-Card Hardware KPI Deck**:
   * AllReduce Barrier Latency (TP8): **639.53 ms (62.2%)**
-  * Shared MoE & DeepGEMM: **206.35 ms (20.1%)**
+  * Shared MoE & DeepGEMM (SM120): **206.35 ms (20.1%)**
   * Sparse MLA Attention & Indexer: **73.35 ms (7.1%)**
   * MXFP8 GEMM & TileLang Norm: **78.59 ms (7.6%)**
-* **Updated Charts**:
-  * `chart_prof_kernel_categories`: Renders empirical GPU kernel composition comparing 8K decode vs 128K prefill.
-  * `chart_prof_pytorch_operators`: Horizontal bar chart of exact Self CUDA time in ms across top 14 operators.
-  * `chart_prof_cuda_api`: Host overhead breakdown (`cudaLaunchKernel`, `cuLaunchKernelEx`, `cudaStreamSynchronize`, `cudaMemcpyAsync`).
-  * `chart_prof_kernel_latency`: Log-scale microsecond invocation latency distribution.
+  * Blackwell TMA Encodings: **2,778,144 calls** (`cuTensorMapEncodeTiled`)
+  * Peak Activation Footprint: **34.6 GB (Prefill 128K)** / **23.8 GB (Decode 8K)**
+  * CUDA Host Launch & Sync Overhead: **221.19 ms / turn** (`cuLaunchKernelEx` + `cudaEventSynchronize`)
+  * Total Traced Kernels: **133 distinct CUDA kernels** (382,408 kernel launches analyzed)
+* **Updated 8-Chart Comprehensive Empirical Suite**:
+  1. `chart_prof_kernel_categories`: Empirical GPU kernel composition comparing 8K decode vs 128K prefill.
+  2. `chart_prof_pytorch_operators`: Horizontal bar chart of exact Self CUDA time in ms across top 14 operators.
+  3. `chart_prof_operator_memory`: Dynamic CUDA memory allocations (GB) across operators (Prefill 128K vs Decode 8K).
+  4. `chart_prof_kernel_instances`: Kernel launch frequency intensity vs cumulative GPU compute duration (dual-axis).
+  5. `chart_prof_cuda_api`: Host runtime & driver API overhead (`cuLaunchKernelEx`, `cudaEventSynchronize`, TMA encoding).
+  6. `chart_prof_kernel_latency`: Log-scale microsecond invocation latency distribution and tail spread (Min/Med/Avg/Max).
+  7. `chart_prof_phase_ratio`: NVTX serving phase timeline breakdown (Context Prefill 4.76s vs Decode Generation 111.97s).
+  8. `chart_prof_engine_shares`: Hardware specialization breakdown (DeepGEMM 18.7%, FlashInfer 7.8%, TileLang 7.3%, NCCL 63.0%).
 * **Updated Tables**:
-  * Time Attribution Ledger populated with genuine prefill vs decode breakdown.
-  * Top Traced GPU Kernels table populated with 10 real kernels from `vllm_profile.1_cuda_gpu_kern_sum.csv`.
+  * Time Attribution Ledger populated with genuine prefill vs decode breakdown and exact memory footprints.
+  * Top Traced GPU Kernels table populated with real empirical kernels from `vllm_profile.1_cuda_gpu_kern_sum.csv`.
 
 ### Tab 2: 🌐 Scale-Out & Distributed Topology (`#scaleout`)
 * **`tp8_pp2_dist` (Verified Winner)**: 133.64 s TTFT at 1M context tokens (1.42× faster than single-node TP8).
