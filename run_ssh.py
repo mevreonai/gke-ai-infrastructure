@@ -1,5 +1,6 @@
 import sys
 import subprocess
+import base64
 
 def main():
     if len(sys.argv) < 3:
@@ -7,13 +8,12 @@ def main():
         sys.exit(1)
     node = sys.argv[1]
     cmd = " ".join(sys.argv[2:])
-    escaped_cmd = cmd.replace('"', '\\"')
-    NODE_IPS = {
-        'kimi-node-0': '136.65.229.197',
-        'kimi-node-1': '136.64.217.143',
-    }
-    ip = NODE_IPS.get(node, node)
-    full_cmd = f'ssh -i C:\\Users\\ayu23\\.ssh\\google_compute_engine -o StrictHostKeyChecking=no -o UserKnownHostsFile=NUL ayu23@{ip} "{escaped_cmd}"'
+    
+    zone = "us-central1-b"
+    b64 = base64.b64encode(cmd.encode('utf-8')).decode('ascii')
+    remote_cmd = f"echo {b64} | base64 -d | bash"
+    full_cmd = f'gcloud compute ssh ayu23@{node} --zone={zone} --tunnel-through-iap --command="{remote_cmd}"'
+    
     try:
         res = subprocess.run(full_cmd, shell=True, capture_output=True, text=True, timeout=600)
         if res.stdout:
