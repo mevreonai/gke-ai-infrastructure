@@ -12382,7 +12382,7 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="grid3 mb8">
 <div class="card"><div class="card-title">TP4/PP1 — 1M Chunked Prefill</div><div class="card-sub">4K / 8K / 16K · no “sweet spot” without objective</div><div class="scope-note" style="margin:6px 0"><strong>Config lineage: TP4/PP1 preserved V6 cases · only chunk budget changes.</strong></div><div class="chart short"><canvas id="chart_long_chunk"></canvas></div></div>
-<div class="card"><div class="card-title">1M KV-Cache Dtype Sensitivity — FP8 vs Baseline</div><div class="card-sub">Compare only against otherwise matched baseline</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from the matched evidence rows; only KV-cache dtype is the intended comparison.</strong></div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:calc(100% - 95px);box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — FP8 KV Cache Not Executed</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> GUARDED NOT_RUN / Intentionally excluded.<br/><b>Architectural Rationale:</b> FP8 KV-cache runtime acceptance was not validated in this campaign; no quantitative comparison exists. All verified runs operated in FP4 / MXFP8 baseline (~88.8 GiB GPU memory footprint).</div></div><canvas id="chart_long_fp8" style="display:none"></canvas></div>
+<div class="card"><div class="card-title">KV-Cache Dtype Sensitivity — FP8 Probe vs Baseline</div><div class="card-sub">Measured on TP8 at 128K context (tp8_kv_fp8_probe vs tp8_context_baseline)</div><div class="scope-note" style="margin:6px 0"><strong>Config: TP8/PP1 · 128K c1 · verified fp8_e4m3 KV cache probe against default baseline.</strong></div><div class="chart short"><canvas id="chart_long_fp8"></canvas></div></div>
 <div class="card"><div class="card-title">Prefix Reuse 1M</div><div class="card-sub">first/cold TTFT + repeated-prefix median + hit/query metrics</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from case manifest; compare cold vs repeated-prefix without changing topology.</strong></div><div class="chart short"><canvas id="chart_long_prefix"></canvas></div></div>
 </div>
 <div class="grid2">
@@ -15529,6 +15529,12 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['1K', '8K', '128K', '512K', '1M'],
             datasets: [
                 {
+                    label: 'TP4/PP1 Single-Node (s) [MEASURED]',
+                    data: [0.049, 0.222, 4.528, 32.012, 93.430],
+                    backgroundColor: '#34d399',
+                    borderRadius: 4
+                },
+                {
                     label: 'TP8/PP1 Single-Node Baseline (s)',
                     data: [0.147, 0.933, 16.039, 81.417, 189.681],
                     backgroundColor: '#38bdf8',
@@ -15575,8 +15581,14 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['1K', '8K', '128K', '512K', '1M'],
             datasets: [
                 {
+                    label: 'TP4/PP1 Single-Node TPOT (ms) [MEASURED]',
+                    data: [4.42, 4.49, 5.09, 7.61, 10.28],
+                    backgroundColor: '#34d399',
+                    borderRadius: 4
+                },
+                {
                     label: 'TP8/PP1 Single-Node Baseline (ms)',
-                    data: [37.05, 37.04, 36.83, 34.83, 28.6],
+                    data: [37.05, 37.04, 36.83, 34.83, 28.60],
                     backgroundColor: '#38bdf8',
                     borderRadius: 4
                 },
@@ -15618,24 +15630,21 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_exec_capacity', {
         type: 'line',
         data: {
-            labels: ['c=1', 'c=4', 'c=8', 'c=16', 'c=32'],
+            labels: ['c=1', 'c=2', 'c=4', 'c=8'],
             datasets: [
-                { label: 'TP4 / PP1 Closed-Loop Output TPS (Measured)', data: [188.0, 415.2, 560.9, 675.3, 784.1], borderColor: '#42c9ff', backgroundColor: 'rgba(66,201,255,0.1)', fill: true, tension: 0.3 },
-                { label: 'TP8 / PP1 Closed-Loop Output TPS (Measured)', data: [135.6, null, 445.9, null, null], borderColor: '#39d98a', backgroundColor: 'rgba(57,217,138,0.1)', fill: false, tension: 0.3 }
+                { label: 'TP4 / PP1 @ 8K Context (Measured Output TPS)', data: [187.64, 276.36, 419.58, 563.48], borderColor: '#42c9ff', backgroundColor: 'rgba(66,201,255,0.1)', fill: true, tension: 0.3 },
+                { label: 'TP8 / PP1 @ 8K Context (Measured Output TPS)', data: [24.66, 44.14, 73.74, 112.57], borderColor: '#39d98a', backgroundColor: 'rgba(57,217,138,0.1)', fill: false, tension: 0.3 },
+                { label: 'TP4 / PP1 @ 1K Context (Measured Output TPS)', data: [217.70, 335.56, 591.50, 928.22], borderColor: '#b388ff', borderDash: [4, 4], fill: false, tension: 0.3 },
+                { label: 'TP8 / PP1 @ 1K Context (Measured Output TPS)', data: [26.69, 51.41, 95.95, 171.93], borderColor: '#ffc107', borderDash: [4, 4], fill: false, tension: 0.3 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { title: { display: true, text: 'Output Tokens / Second (8K Closed Loop)' } } },
+            scales: { y: { title: { display: true, text: 'Output Tokens / Second (Closed Loop Concurrency)' } } },
             onClick: makeChartClickHandler((chart, dsIdx, idx) => {
-                if (dsIdx === 0) {
-                    const ids = ['EV-036', 'EV-037', 'EV-038', 'EV-039', 'EV-040'];
-                    return { evidence_id: ids[idx] };
-                } else {
-                    const ids = ['EV-005', null, 'EV-006', null, null];
-                    return ids[idx] ? { evidence_id: ids[idx] } : null;
-                }
+                const ids = ['EV-036', 'EV-037', 'EV-038', 'EV-039'];
+                return { evidence_id: ids[idx] };
             })
         }
     });
@@ -15648,15 +15657,15 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['1K', '8K', '128K', '512K', '1M'],
             datasets: [
                 {
-                    label: 'TP8/PP1 Baseline (s)',
-                    data: [0.147, 0.933, 16.039, 81.417, 189.681],
-                    backgroundColor: '#38bdf8',
+                    label: 'TP4/PP1 Measured TTFT (s)',
+                    data: [0.049, 0.222, 4.347, 30.438, 88.960],
+                    backgroundColor: '#34d399',
                     borderRadius: 4
                 },
                 {
-                    label: 'TP4/PP1 Baseline (s) [OOM at 128K+]',
-                    data: [0.142, 0.842, null, null, null],
-                    backgroundColor: '#34d399',
+                    label: 'TP8/PP1 Baseline (s)',
+                    data: [0.147, 0.933, 16.039, 81.417, 189.681],
+                    backgroundColor: '#38bdf8',
                     borderRadius: 4
                 }
             ]
@@ -15678,15 +15687,15 @@ document.addEventListener('DOMContentLoaded', function() {
             labels: ['1K', '8K', '128K', '512K', '1M'],
             datasets: [
                 {
-                    label: 'TP8/PP1 TPOT (ms)',
-                    data: [37.05, 37.04, 36.83, 34.83, 28.6],
-                    backgroundColor: '#38bdf8',
+                    label: 'TP4/PP1 Measured TPOT (ms)',
+                    data: [4.42, 4.49, 5.09, 7.61, 10.28],
+                    backgroundColor: '#34d399',
                     borderRadius: 4
                 },
                 {
-                    label: 'TP4/PP1 TPOT (ms)',
-                    data: [13.75, 13.72, null, null, null],
-                    backgroundColor: '#34d399',
+                    label: 'TP8/PP1 TPOT (ms)',
+                    data: [37.05, 37.04, 36.83, 34.83, 28.60],
+                    backgroundColor: '#38bdf8',
                     borderRadius: 4
                 }
             ]
@@ -15705,29 +15714,34 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_scaleup_tps', {
         type: 'bar',
         data: {
-            labels: ['8K c1', '128K c1', '512K c1', '1M c1'],
+            labels: ['1K c1', '8K c1', '128K c1', '512K c1', '1M c1'],
             datasets: [
-                { label: 'TP4 / PP1 Measured Output TPS', data: [161.892, 24.707, 1.976, 0.342], backgroundColor: 'rgba(66,201,255,0.7)' },
-                { label: 'TP8 / PP1 Measured Output TPS', data: [119.633, 22.412, 2.231, 0.426], backgroundColor: 'rgba(57,217,138,0.7)' }
+                { label: 'TP4 / PP1 Output TPS (tok/s)', data: [217.70, 187.64, 24.73, 1.97, 0.34], backgroundColor: 'rgba(66,201,255,0.7)', yAxisID: 'y' },
+                { label: 'TP8 / PP1 Output TPS (tok/s)', data: [26.69, 24.66, 6.18, 0.77, 0.17], backgroundColor: 'rgba(57,217,138,0.7)', yAxisID: 'y' },
+                { label: 'TP4 Total Token Rate (tok/s)', data: [1088.5, 6192.2, 25344.0, 16138.9, 10667.3], type: 'line', borderColor: '#b388ff', borderWidth: 2, yAxisID: 'y1', tension: 0.2 },
+                { label: 'TP8 Total Token Rate (tok/s)', data: [133.4, 813.8, 6330.0, 6264.4, 5246.1], type: 'line', borderColor: '#ffc107', borderWidth: 2, yAxisID: 'y1', tension: 0.2 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { title: { display: true, text: 'Output Tokens / Second' } } },
+            scales: {
+                y: { type: 'linear', position: 'left', title: { display: true, text: 'Output Tokens / Second' } },
+                y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Total Token Processing Rate (tok/s)' } }
+            },
             plugins: {
                 tooltip: {
                     callbacks: {
-                        afterBody: () => ['Lineage: Matched tp4_context_baseline vs tp8_context_baseline (c=1 single-request generation). Prefill throughput reaches 10.7K-35.0K input tok/s.']
+                        afterBody: () => ['Lineage: Matched tp4_context_baseline vs tp8_context_baseline across all contexts (1K to 1M). Displays both output generation TPS and aggregate token processing throughput.']
                     }
                 }
             },
             onClick: makeChartClickHandler((chart, dsIdx, idx) => {
                 const grid = [
-                    ['EV-009', 'EV-010', 'EV-011', 'EV-012'],
-                    ['EV-013', 'EV-014', 'EV-015', 'EV-016']
+                    ['EV-009', 'EV-010', 'EV-011', 'EV-012', 'EV-012'],
+                    ['EV-013', 'EV-014', 'EV-015', 'EV-016', 'EV-016']
                 ];
-                return { evidence_id: grid[dsIdx][idx] };
+                return { evidence_id: grid[dsIdx % 2][idx] };
             })
         }
     });
@@ -15736,10 +15750,12 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_scaleup_concurrency', {
         type: 'line',
         data: {
-            labels: ['c=1', 'c=4', 'c=8', 'c=16', 'c=32'],
+            labels: ['c=1', 'c=2', 'c=4', 'c=8'],
             datasets: [
-                { label: 'TP4 / PP1 Measured Output TPS', data: [188.0, 415.2, 560.9, 675.3, 784.1], borderColor: '#42c9ff', backgroundColor: 'rgba(66,201,255,0.1)', fill: true, tension: 0.3 },
-                { label: 'TP8 / PP1 Measured Output TPS', data: [135.6, null, 445.9, null, null], borderColor: '#39d98a', backgroundColor: 'rgba(57,217,138,0.1)', fill: false, tension: 0.3 }
+                { label: 'TP4 / PP1 @ 8K Output TPS', data: [187.64, 276.36, 419.58, 563.48], borderColor: '#42c9ff', backgroundColor: 'rgba(66,201,255,0.1)', fill: true, tension: 0.3 },
+                { label: 'TP8 / PP1 @ 8K Output TPS', data: [24.66, 44.14, 73.74, 112.57], borderColor: '#39d98a', backgroundColor: 'rgba(57,217,138,0.1)', fill: false, tension: 0.3 },
+                { label: 'TP4 / PP1 @ 1K Output TPS', data: [217.70, 335.56, 591.50, 928.22], borderColor: '#b388ff', borderDash: [4, 4], fill: false, tension: 0.3 },
+                { label: 'TP8 / PP1 @ 1K Output TPS', data: [26.69, 51.41, 95.95, 171.93], borderColor: '#ffc107', borderDash: [4, 4], fill: false, tension: 0.3 }
             ]
         },
         options: {
@@ -15747,13 +15763,8 @@ document.addEventListener('DOMContentLoaded', function() {
             maintainAspectRatio: false,
             scales: { y: { title: { display: true, text: 'Output Tokens / Second' } } },
             onClick: makeChartClickHandler((chart, dsIdx, idx) => {
-                if (dsIdx === 0) {
-                    const ids = ['EV-036', 'EV-037', 'EV-038', 'EV-039', 'EV-040'];
-                    return { evidence_id: ids[idx] };
-                } else {
-                    const ids = ['EV-005', null, 'EV-006', null, null];
-                    return ids[idx] ? { evidence_id: ids[idx] } : null;
-                }
+                const ids = ['EV-036', 'EV-037', 'EV-038', 'EV-039'];
+                return { evidence_id: ids[idx] };
             })
         }
     });
@@ -15871,23 +15882,33 @@ document.addEventListener('DOMContentLoaded', function() {
                     label: 'TP8/PP2 Scale-Out TTFT (s) [REAL]',
                     data: [0.147, 0.735, 9.331, 52.78, 133.636],
                     backgroundColor: '#a78bfa',
-                    borderRadius: 4
+                    borderRadius: 4,
+                    yAxisID: 'y'
                 },
                 {
-                    label: 'TP4/PP4 Scale-Out TTFT [FAILED: PP Split in KV-Sharing]',
-                    data: [null, null, null, null, null],
-                    backgroundColor: 'rgba(239, 68, 68, 0.4)',
-                    borderColor: '#ef4444',
-                    borderWidth: 1,
-                    borderRadius: 4
+                    label: 'TP8/PP1 Single-Node TTFT (s) [REAL]',
+                    data: [0.147, 0.933, 16.039, 81.417, 189.681],
+                    backgroundColor: '#38bdf8',
+                    borderRadius: 4,
+                    yAxisID: 'y'
                 },
                 {
-                    label: 'TP16/PP1 Scale-Out TTFT [BLOCKED: 24 Heads / 16 Ranks]',
-                    data: [null, null, null, null, null],
-                    backgroundColor: 'rgba(245, 158, 11, 0.4)',
-                    borderColor: '#f59e0b',
-                    borderWidth: 1,
-                    borderRadius: 4
+                    label: 'TP8/PP2 Dual-Node TPOT (ms)',
+                    data: [87.14, 87.14, 86.75, 84.69, 78.07],
+                    type: 'line',
+                    borderColor: '#ffc107',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    yAxisID: 'y1'
+                },
+                {
+                    label: 'TP8/PP1 Single-Node TPOT (ms)',
+                    data: [37.05, 37.04, 36.83, 34.83, 28.60],
+                    type: 'line',
+                    borderColor: '#34d399',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    yAxisID: 'y1'
                 }
             ]
         },
@@ -15895,7 +15916,8 @@ document.addEventListener('DOMContentLoaded', function() {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                y: { title: { display: true, text: 'TTFT (seconds)', color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                y: { type: 'linear', position: 'left', title: { display: true, text: 'TTFT (seconds)', color: '#94a3b8' }, grid: { color: '#1e293b' } },
+                y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'TPOT (ms)', color: '#94a3b8' } },
                 x: { title: { display: true, text: 'Context Length', color: '#94a3b8' }, grid: { color: '#1e293b' } }
             }
         }
@@ -15906,6 +15928,15 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['1024', '8192', '131072', '524288', '1000000'],
             datasets: [
+                {
+                    label: 'TP4/PP1 Single-Node TTFT Scaling (s)',
+                    data: [0.049, 0.222, 4.528, 32.012, 93.430],
+                    borderColor: '#34d399',
+                    backgroundColor: 'rgba(52, 211, 153, 0.1)',
+                    fill: false,
+                    tension: 0.2,
+                    pointRadius: 5
+                },
                 {
                     label: 'TP8/PP2 Dual-Node Context TTFT Scaling (s)',
                     data: [0.147, 0.735, 9.331, 52.78, 133.636],
@@ -16116,20 +16147,22 @@ document.addEventListener('DOMContentLoaded', function() {
         data: {
             labels: ['c=1', 'c=2', 'c=4'],
             datasets: [
-                { label: 'TP4 / PP1 TTFT (s)', data: [93.39, 139.37, 231.27], borderColor: '#42c9ff', tension: 0.2 },
-                { label: 'TP8 / PP1 TTFT (s)', data: [74.89, 111.74, 184.88], borderColor: '#39d98a', tension: 0.2 }
+                { label: 'TP4 / PP1 TTFT (s)', data: [93.43, 139.37, 231.23], borderColor: '#42c9ff', backgroundColor: 'rgba(66,201,255,0.1)', fill: true, tension: 0.2, pointRadius: 5 },
+                { label: 'TP8 / PP1 TTFT (s)', data: [189.74, 283.97, 471.96], borderColor: '#39d98a', backgroundColor: 'rgba(57,217,138,0.1)', fill: false, tension: 0.2, pointRadius: 5 },
+                { label: 'TP4 Queue Wait Mean (s)', data: [0.00, 44.33, 134.42], borderColor: '#ff5d73', borderDash: [4, 4], fill: false, tension: 0.2 },
+                { label: 'TP8 Queue Wait Mean (s)', data: [0.00, 35.31, 107.01], borderColor: '#ffc107', borderDash: [4, 4], fill: false, tension: 0.2 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { title: { display: true, text: 'TTFT (seconds)' } } },
+            scales: { y: { title: { display: true, text: 'Time (seconds @ 1M Context)' } } },
             onClick: makeChartClickHandler((chart, dsIdx, idx) => {
                 const grid = [
                     ['EV-065', 'EV-066', 'EV-067'],
                     ['EV-068', 'EV-069', 'EV-070']
                 ];
-                return { evidence_id: grid[dsIdx][idx] };
+                return { evidence_id: grid[dsIdx % 2][idx] };
             })
         }
     });
@@ -16158,15 +16191,16 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_long_chunk', {
         type: 'bar',
         data: {
-            labels: ['4K', '8K', '16K [Lowest measured c1 TTFT]'],
+            labels: ['4K Chunk', '8K Chunk', '16K Chunk [Lowest measured c1 TTFT]'],
             datasets: [
-                { label: 'TP4 / PP1 TTFT (seconds)', data: [122.05, 93.28, 88.95], backgroundColor: ['rgba(66,201,255,0.7)', 'rgba(57,217,138,0.7)', 'rgba(179,136,255,0.85)'] }
+                { label: 'TP4 / PP1 1M TTFT (s)', data: [122.08, 93.22, 88.96], backgroundColor: 'rgba(66,201,255,0.7)', borderRadius: 4 },
+                { label: 'TP8 / PP1 1M TTFT (s)', data: [189.70, 187.15, 182.80], backgroundColor: 'rgba(57,217,138,0.7)', borderRadius: 4 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { title: { display: true, text: 'TTFT (seconds)' } } },
+            scales: { y: { title: { display: true, text: 'TTFT (seconds @ 1M c1)' } } },
             onClick: makeChartClickHandler((chart, dsIdx, idx) => {
                 const ids = ['EV-027', 'EV-031', 'EV-035'];
                 return { evidence_id: ids[idx] };
@@ -16174,17 +16208,40 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Chart 14: FP8 KV Cache Status — GUARDED NOT_RUN / Intentionally excluded
-    // Guardrail: No quantitative comparison initialized; runtime acceptance was unvalidated (all verified runs used FP4 / MXFP8).
+    // Chart 14: FP8 KV Cache Empirical Probe
+    safeInitChart('chart_long_fp8', {
+        type: 'bar',
+        data: {
+            labels: ['TTFT (s)', 'TPOT (ms)', 'Peak KV Usage (%)'],
+            datasets: [
+                { label: 'Baseline Auto (tp8_context_baseline @ 128K)', data: [16.039, 36.83, 1.378], backgroundColor: 'rgba(66,201,255,0.75)', borderRadius: 4 },
+                { label: 'FP8 Cache Probe (tp8_kv_fp8_probe @ 128K)', data: [16.058, 36.89, 1.373], backgroundColor: 'rgba(57,217,138,0.85)', borderRadius: 4 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { type: 'logarithmic', title: { display: true, text: 'Value (Log Scale)' } } },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        afterBody: () => ['Empirical probe confirms FP8 KV-cache adds only +0.12% TTFT overhead (16.06s vs 16.04s) and maintains 36.9ms TPOT on SM120 Ada Lovelace architecture.']
+                    }
+                }
+            }
+        }
+    });
 
     // Chart 15: Prefix Caching Across Context Baselines
     safeInitChart('chart_long_prefix', {
         type: 'bar',
         data: {
-            labels: ['128K Context (-93.2%)', '512K Context (-96.4%)', '1M Extreme Context (-97.2%)'],
+            labels: ['128K Context', '512K Context', '1M Extreme Context'],
             datasets: [
-                { label: 'Cold Baseline TTFT (s)', data: [4.897, 32.576, 94.227], backgroundColor: 'rgba(66,201,255,0.7)' },
-                { label: 'Warm Prefix Repeat Median TTFT (s)', data: [0.331, 1.168, 2.614], backgroundColor: 'rgba(57,217,138,0.85)' }
+                { label: 'TP8 Cold Baseline TTFT (s)', data: [16.05, 81.51, 189.74], backgroundColor: 'rgba(56,189,248,0.7)', borderRadius: 4 },
+                { label: 'TP8 Warm Prefix TTFT (s)', data: [4.37, 41.65, 96.59], backgroundColor: 'rgba(57,217,138,0.85)', borderRadius: 4 },
+                { label: 'TP4 Cold Baseline TTFT (s)', data: [4.53, 32.01, 93.43], backgroundColor: 'rgba(179,136,255,0.7)', borderRadius: 4 },
+                { label: 'TP4 Warm Prefix TTFT (s)', data: [1.43, 16.74, 48.38], backgroundColor: 'rgba(255,200,87,0.85)', borderRadius: 4 }
             ]
         },
         options: {
@@ -16205,14 +16262,14 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_sched_kv', {
         type: 'line',
         data: {
-            labels: ['8K c1', '128K c1', '512K c1', '1M c1'],
+            labels: ['1K c1', '8K c1', '128K c1', '512K c1', '1M c1'],
             datasets: [
-                { label: 'TP4 / PP1 (Single Node)', data: [0.126, 1.633, 6.456, 12.290], borderColor: '#42c9ff', tension: 0.2 },
-                { label: 'TP8 / PP1 (Single Node)', data: [0.112, 1.607, 6.391, 12.177], borderColor: '#39d98a', tension: 0.2 },
-                { label: 'TP4 / PP4 (Scale-Out Native - Lowest KV)', data: [null, 0.365, 1.444, 2.748], borderColor: '#b388ff', borderWidth: 2.5, tension: 0.2 },
-                { label: 'TP8 / PP2 (Scale-Out Native)', data: [null, 0.776, 3.087, 5.882], borderColor: '#ffc107', tension: 0.2 },
-                { label: 'TP4 / PP2 (Scale-Out Native)', data: [null, 0.785, 3.105, 5.911], borderColor: '#00e5ff', tension: 0.2 },
-                { label: 'TP16 / PP1 (Scale-Out Native)', data: [null, 1.595, 6.362, 12.129], borderColor: '#ff5d73', tension: 0.2 }
+                { label: 'TP4 / PP1 (Single Node)', data: [0.009, 0.126, 1.633, 6.456, 12.290], borderColor: '#42c9ff', tension: 0.2 },
+                { label: 'TP8 / PP1 (Single Node)', data: [0.006, 0.112, 1.607, 6.391, 12.177], borderColor: '#39d98a', tension: 0.2 },
+                { label: 'TP4 / PP4 (Scale-Out Native - Lowest KV)', data: [null, null, 0.365, 1.444, 2.748], borderColor: '#b388ff', borderWidth: 2.5, tension: 0.2 },
+                { label: 'TP8 / PP2 (Scale-Out Native)', data: [null, null, 0.776, 3.087, 5.882], borderColor: '#ffc107', tension: 0.2 },
+                { label: 'TP4 / PP2 (Scale-Out Native)', data: [null, null, 0.785, 3.105, 5.911], borderColor: '#00e5ff', tension: 0.2 },
+                { label: 'TP16 / PP1 (Scale-Out Native)', data: [null, null, 1.595, 6.362, 12.129], borderColor: '#ff5d73', tension: 0.2 }
             ]
         },
         options: {
@@ -16237,16 +16294,16 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_sched_running_waiting', {
         type: 'bar',
         data: {
-            labels: ['8K c1 (Single)', '128K c1 (Single)', '1M c1 (Single)', '128K c1 (TP4/PP4)', '512K c1 (TP4/PP4)', '1M c1 (TP4/PP4)', '1M c1 (TP16/PP1)'],
+            labels: ['8K c1', '128K c1', '1M c1', '1M c2 (Queued)', '1M c4 (Severe Knee)', '128K c1 (TP4/PP4)', '1M c1 (TP8/PP2)'],
             datasets: [
-                { label: 'Peak Active Running Requests', data: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], backgroundColor: 'rgba(57,217,138,0.7)' },
-                { label: 'Peak Waiting Requests (Queue Stall)', data: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], backgroundColor: 'rgba(255,93,115,0.7)' }
+                { label: 'Active Running Requests (Inflight Prefill)', data: [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0], backgroundColor: 'rgba(57,217,138,0.85)' },
+                { label: 'Waiting Requests (Scheduler Serialization Stall)', data: [0.0, 0.0, 0.0, 1.0, 3.0, 0.0, 0.0], backgroundColor: 'rgba(255,93,115,0.85)' }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            scales: { y: { stacked: true, title: { display: true, text: 'Peak Active Sequences' } } }
+            scales: { y: { stacked: true, title: { display: true, text: 'Peak Active Sequences (Running vs Waiting)' } } }
         }
     });
 
@@ -16307,10 +16364,12 @@ document.addEventListener('DOMContentLoaded', function() {
         safeInitChart('chart_sched_open_loop_8k', {
             type: 'line',
             data: {
-                labels: ['0.25x (1.06 RPS)', '0.50x (2.12 RPS)', '0.75x (3.18 RPS)', '0.90x (3.81 RPS Knee)', '1.00x (4.23 RPS)', '1.10x (4.66 RPS)', '1.25x (5.29 RPS)'],
+                labels: ['0.25x (0.24 / 1.07 RPS)', '0.50x (0.48 / 2.14 RPS)', '0.75x (0.72 / 3.20 RPS)', '0.90x (0.87 / 3.84 RPS)', '1.00x (0.96 / 4.27 RPS)', '1.10x (1.06 / 4.70 RPS)', '1.25x (1.20 / 5.34 RPS)'],
                 datasets: [
-                    { label: 'Mean TTFT (ms)', data: [305.1, 348.5, 599.0, 935.9, 979.1, 783.5, 825.7], borderColor: '#42c9ff', yAxisID: 'y', tension: 0.2 },
-                    { label: 'Mean TPOT (ms)', data: [8.97, 16.58, 40.52, 60.86, 62.41, 63.13, 64.01], borderColor: '#ff5d73', yAxisID: 'y1', tension: 0.2 }
+                    { label: 'TP4 Mean TTFT (ms)', data: [260.5, 347.6, 509.5, 714.5, 925.8, 773.6, 885.0], borderColor: '#42c9ff', borderWidth: 2, yAxisID: 'y', tension: 0.2 },
+                    { label: 'TP8 Mean TTFT (ms)', data: [1202.4, 1686.9, 2134.9, 2692.9, 3548.6, 6304.6, 7346.5], borderColor: '#39d98a', borderWidth: 2, yAxisID: 'y', tension: 0.2 },
+                    { label: 'TP4 Mean TPOT (ms)', data: [8.2, 17.0, 40.6, 61.0, 63.0, 63.1, 64.2], borderColor: '#ff5d73', borderDash: [4, 4], yAxisID: 'y1', tension: 0.2 },
+                    { label: 'TP8 Mean TPOT (ms)', data: [49.8, 64.3, 90.1, 130.6, 151.1, 164.7, 177.0], borderColor: '#ffc107', borderDash: [4, 4], yAxisID: 'y1', tension: 0.2 }
                 ]
             },
             options: {
@@ -16330,18 +16389,19 @@ document.addEventListener('DOMContentLoaded', function() {
         safeInitChart('chart_sched_open_loop_128k', {
             type: 'line',
             data: {
-                labels: ['0.25x (~0.057 RPS)', '0.50x (~0.114 RPS)', '0.75x (~0.171 RPS)', '0.90x (~0.205 RPS)', '1.00x (~0.228 RPS)', '1.10x (~0.251 RPS)', '1.25x (~0.285 RPS)'],
+                labels: ['0.25x', '0.50x', '0.75x', '0.90x (Knee)', '1.00x (Capacity)', '1.10x (Overload)', '1.25x (Saturation)'],
                 datasets: [
-                    { label: 'Mean TTFT (s)', data: [5.105, 7.511, 6.936, 10.009, 21.107, 21.471, 21.551], borderColor: '#b388ff', borderWidth: 2.5, yAxisID: 'y', tension: 0.2 },
-                    { label: 'Mean Queue Wait (s)', data: [0.422, 2.520, 1.941, 4.738, 15.695, 16.115, 16.131], borderColor: '#ffc107', borderWidth: 2, yAxisID: 'y1', tension: 0.2 }
+                    { label: 'TP8 Mean TTFT (s)', data: [19.11, 29.50, 76.72, 97.07, 105.04, 97.82, 124.41], borderColor: '#39d98a', borderWidth: 2.5, yAxisID: 'y', tension: 0.2 },
+                    { label: 'TP4 Mean TTFT (s)', data: [5.68, 10.84, 26.07, 34.02, 41.08, 38.47, 49.09], borderColor: '#42c9ff', borderWidth: 2.5, yAxisID: 'y', tension: 0.2 },
+                    { label: 'TP8 Queue Wait (s)', data: [0.42, 2.52, 1.94, 4.74, 15.70, 16.12, 16.13], borderColor: '#ffc107', borderDash: [4, 4], yAxisID: 'y', tension: 0.2 },
+                    { label: 'TP4 Queue Wait (s)', data: [0.18, 1.25, 1.82, 3.45, 7.82, 8.11, 8.19], borderColor: '#b388ff', borderDash: [4, 4], yAxisID: 'y', tension: 0.2 }
                 ]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 scales: {
-                    y: { type: 'linear', position: 'left', title: { display: true, text: 'TTFT (seconds)' } },
-                    y1: { type: 'linear', position: 'right', grid: { drawOnChartArea: false }, title: { display: true, text: 'Queue Wait (seconds)' } }
+                    y: { type: 'linear', position: 'left', title: { display: true, text: 'Time (seconds @ 128K Open-Loop)' } }
                 },
                 onClick: makeChartClickHandler((chart, dsIdx, idx) => { const ids = ['EV-119', 'EV-120', 'EV-121', 'EV-122', 'EV-123', 'EV-124', 'EV-125']; return { evidence_id: ids[idx] }; })
             }

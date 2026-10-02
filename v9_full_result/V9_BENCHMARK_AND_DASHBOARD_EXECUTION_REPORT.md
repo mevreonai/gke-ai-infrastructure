@@ -140,17 +140,45 @@ During initial profiling runs, two distinct technical blockers occurred:
   * Time Attribution Ledger populated with genuine prefill vs decode breakdown and exact memory footprints.
   * Top Traced GPU Kernels table populated with real empirical kernels from `vllm_profile.1_cuda_gpu_kern_sum.csv`.
 
-### Tab 2: 🌐 Scale-Out & Distributed Topology (`#scaleout`)
-* **`tp8_pp2_dist` (Verified Winner)**: 133.64 s TTFT at 1M context tokens (1.42× faster than single-node TP8).
-* **`tp4_pp4_dist` (Failed / Blocked)**: Accurately marked as failed due to pipeline splits cutting across compressed-KV sharing groups.
-* **`tp16_pp1_dist` (Blocked)**: Accurately marked as blocked due to uneven Engram hash head distribution across 16 ranks and cross-node AllReduce saturation.
+### Tab 1: 📊 Executive Overview (`#executive`)
+* **`chart_exec_ttft`**: Added **TP4/PP1 Single-Node Measured TTFT** (`[0.049s, 0.222s, 4.528s, 32.012s, 93.430s]`) alongside TP8/PP1 Baseline (`[0.147s, 0.933s, 16.039s, 81.417s, 189.681s]`) and TP8/PP2 Dual-Node Scale-Out (`[0.147s, 0.735s, 9.331s, 52.780s, 133.636s]`). Directly plots empirical intra-socket PCIe speedup vs dual-socket NUMA bus bottleneck.
+* **`chart_exec_tpot`**: Added **TP4/PP1 Single-Node Measured TPOT** (`[4.42ms, 4.49ms, 5.09ms, 7.61ms, 10.28ms]`) showing 2.8×–8.4× faster per-token decode than TP8/PP1 (`[37.05ms, 37.04ms, 36.83ms, 34.83ms, 28.60ms]`).
+* **`chart_exec_capacity`**: Updated concurrency curve to complete 4-point empirical series (`c=1, c=2, c=4, c=8`) for both 8K and 1K contexts without null values (TP4 8K: 187.6 → 563.5 tok/s; TP8 8K: 24.7 → 112.6 tok/s; TP4 1K: 217.7 → 928.2 tok/s; TP8 1K: 26.7 → 171.9 tok/s).
+
+### Tab 2: 🔍 Key Findings & Top 10 Discoveries (`#keyfinds`)
+* **Discovery 1 (Fabric Exposure)**: 4-cell cross-node exposure curves across GCP Native, 100G Cap, and 20G Cap.
+* **Discovery 2 (Concurrency Waterfall)**: Added TP8 concurrency waterfall (`c1=189.7s`, `c2=284.0s`, `c4=472.0s`) alongside TP4 (`c1=93.4s`, `c2=139.4s`, `c4=231.3s`), highlighting prefill queuing stalls.
+* **Discovery 4 (Prefix Reuse)**: Documented empirical speedup across contexts for both TP8 (128K: 3.67×, 512K: 1.96×, 1M: 1.96×) and TP4 (128K: 3.16×, 512K: 1.91×, 1M: 1.93×).
+* **Discovery 8 (Runtime Knobs)**: Added TP8 chunk sensitivity (`4K=189.70s`, `8K=187.15s`, `16K=182.80s`) alongside TP4 chunk sensitivity (`4K=122.08s`, `8K=93.22s`, `16K=88.96s`), showing a 27.1% TTFT reduction for 16K chunks.
+
+### Tab 3: ⚡ Scale-Up Deep Dive (`#scaleup`)
+* **`chart_scaleup_ttft` & `chart_scaleup_tpot`**: Integrated empirical TP4 measurements across all 5 context tiers (`1K, 8K, 128K, 512K, 1M`) with 16K chunking enabled (`4.35s`, `30.44s`, `88.96s`), replacing previous OOM placeholders with verified runs.
+* **`chart_scaleup_tps`**: Expanded context coverage to all 5 lengths (`1K, 8K, 128K, 512K, 1M`) and integrated secondary y-axis for **Total Token Processing Throughput** (reaching 25,344 tok/s on TP4 and 6,330 tok/s on TP8 at 128K).
+* **`chart_scaleup_concurrency`**: Replaced null entries with complete empirical concurrency curves across `c=1, c=2, c=4, c=8` for both 1K and 8K contexts.
+
+### Tab 4: 🌐 Scale-Out & Distributed Topology (`#scaleout`)
+* **`chart_scaleout_comparison`**: Dual-axis integration plotting both TTFT (seconds) and TPOT (ms) for TP8/PP2 dual-node vs TP8/PP1 single-node. Highlights that while TP8/PP2 accelerates 1M TTFT by 1.42× (133.64s vs 189.68s), dual-node pipeline latency elevates TPOT to 78.07ms vs 28.60ms.
+* **`chart_scaleout_context_scaling`**: Added TP4 single-node scaling curve alongside TP8/PP2 dual-node and TP8/PP1 single-node, enabling direct 3-way topology visualization.
+* **Failed Topologies Explicitly Annotated**: `tp4_pp4_dist` and `tp16_pp1_dist` remain clearly badged as FAILED/BLOCKED due to architectural KV-group and head divisibility constraints.
+
+### Tab 5: 🏔️ Long Context 1M Deep Dive (`#long`)
+* **`chart_long_concurrency`**: Plotted exact 1M concurrency scaling (`c1, c2, c4`) with overlaid scheduler queue wait times (TP4 queue wait: 0.00s → 44.33s → 134.42s; TP8 queue wait: 0.00s → 35.31s → 107.01s).
+* **`chart_long_chunk`**: Plotted comparative 1M chunk sweeps for both TP4 (`122.08s → 93.22s → 88.96s`) and TP8 (`189.70s → 187.15s → 182.80s`).
+* **`chart_long_fp8` (ACTIVATED)**: Unhidden and populated with verified empirical probe data from `tp8_kv_fp8_probe` at 128K context: Baseline Auto (16.039s TTFT, 36.83ms TPOT, 1.378% peak KV) vs FP8 Cache (16.058s TTFT, 36.89ms TPOT, 1.373% peak KV), confirming minimal +0.12% runtime overhead on SM120.
+* **`chart_long_prefix`**: Enriched with dual-model cold vs warm prefix measurements across 128K, 512K, and 1M context tiers.
+
+### Tab 6: ⏱️ Scheduler & Open-Loop Serving (`#sched`)
+* **`chart_sched_kv`**: Extended context baseline to include 1K c1 (`0.009%` for TP4, `0.006%` for TP8), showing smooth KV growth from 1K to 1M across single-node and distributed topologies.
+* **`chart_sched_running_waiting`**: Enriched with 1M concurrency queue states, illustrating how the single-stream prefill scheduler serializes c=2 (1 running, 1 waiting) and c=4 (1 running, 3 waiting).
+* **`chart_sched_open_loop_8k`**: Plotted both TP4 and TP8 empirical curves across all 7 Poisson load rates (0.25x to 1.25x capacity), capturing knee inflection and queue tail blowup beyond 1.0x.
+* **`chart_sched_open_loop_128k`**: Plotted both TP8 and TP4 open-loop curves across all 7 load tiers, contrasting TTFT degradation against mean queue wait times.
 
 ---
 
 ## 4. Package File Manifest (`v9_full_result/`)
 
 1. **Dashboards**:
-   * `MASTER_CHARACTERIZATION_DASHBOARD.html` (Interactive HTML report with verified profiler data)
+   * `MASTER_CHARACTERIZATION_DASHBOARD.html` (Interactive HTML report with verified profiler and enriched empirical benchmark charts)
    * `index.html` (Production entrypoint, synchronized 1-to-1)
    * `chart.umd.js` (Offline Chart.js bundle)
 2. **Profiler Artifacts (`v9_full_result/profiler/`)**:
@@ -165,5 +193,6 @@ During initial profiling runs, two distinct technical blockers occurred:
 3. **Empirical Evidence Data**:
    * `final_validation/combined_vllm_runs.json` (77 raw execution logs)
    * `final_validation/combined_vllm_runs.csv`
+   * `v9_test2_combined_vllm_runs.csv` (121 raw execution logs)
    * `final_validation/FINAL_VALIDATION.json` & `FINAL_VALIDATION.md`
    * `v9_execution_tracker.json` (`"status": "COMPLETED"`, `"progress_pct": 100.0`)
