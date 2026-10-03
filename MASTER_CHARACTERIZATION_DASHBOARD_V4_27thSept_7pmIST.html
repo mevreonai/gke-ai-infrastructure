@@ -2848,9 +2848,9 @@ if (typeof Chart === 'undefined') {
 <div class="grid2 mb8">
 <div class="card"><div class="header-row"><div><div class="card-title">🧩 Bottleneck Regime Map</div><div class="card-sub">No bottleneck label without DIRECT_MEASURED / TIMELINE_ATTRIBUTED / DERIVED evidence</div></div></div><div class="table-wrap"><table><thead><tr><th>Context</th><th>Load</th><th>Phase</th><th>Supporting evidence</th><th>Bottleneck classification</th><th>Confidence</th></tr></thead><tbody>
 <tr><td><b>8K</b></td><td>c=1 to c=32</td><td>decode dominated</td><td>TPOT 4.475ms (TP4) vs 6.350ms (TP8) @ c1 · BabelStream Copy peak ~1.72 TB/s</td><td><span class="status s-completed">Memory BW / Sync</span></td><td><span class="status s-completed">HIGH</span></td></tr>
-<tr><td><b>128K</b></td><td>c=1</td><td>prefill dominated</td><td>TTFT 1,710ms (TP4/PP4) vs 4,532ms (TP4 single) · GPU activity high during prefill</td><td><span class="status s-completed">Prefill Dominated</span></td><td><span class="status s-completed">HIGH</span></td></tr>
+<tr><td><b>128K</b></td><td>c=1</td><td>prefill dominated</td><td>TTFT 1,710ms (TP4/PP4) vs 4,532ms (TP4 single) · AllReduce ≈ 43% of 128K TTFT at TP4 (2.18 ms/call), 55% at TP8</td><td><span class="status s-completed">Prefill Dominated (43–55% AR)</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 <tr><td><b>512K</b></td><td>c=1</td><td>prefill dominated</td><td>TTFT 10.22s (TP4/PP4) vs 28.09s (TP8 single) · 90,967 MiB peak GPU memory</td><td><span class="status s-completed">Prefill Dominated</span></td><td><span class="status s-completed">HIGH</span></td></tr>
-<tr><td><b>1M</b></td><td>c=1 / c=2 / c=4</td><td>prefill &amp; queue</td><td>TTFT 28.57s (TP4/PP4) · single-node c4 queue mean 134.43s (TP4) vs 107.01s (TP8) · 0 preemptions</td><td><span class="status s-completed">Prefill &amp; Queue Knee</span></td><td><span class="status s-completed">HIGH</span></td></tr>
+<tr><td><b>1M</b></td><td>c=1 / c=2 / c=4</td><td>prefill &amp; queue; decode KV-bound</td><td>TTFT 28.57s (TP4/PP4) · c4 queue 134.4s (TP4) · 1M decode is KV-memory bound (8.1 GB/rank read = 4.7 ms floor @ 1.72 TB/s; +5.8 ms delta across TP4/TP8/TP16)</td><td><span class="status s-completed">Prefill Queue &amp; KV-Read Bound</span></td><td><span class="status s-completed">HIGH</span></td></tr>
 </tbody></table></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">🗂 Deployment Recipe Card</div><div class="card-sub">Generated per workload after performance characterization evidence validation</div></div><span class="badge b-green"><span class="dot"></span>WORKLOAD-SCOPED</span></div><div class="table-wrap"><table><tbody><tr><td><b>Workload / SLO</b></td><td>Defined by target SLO (e.g. interactive TPOT &lt; 10ms or TTFT &lt; 30s)</td></tr><tr><td><b>Measured regime</b></td><td>Separated by observed prefill latency vs decode token pacing (bandwidth and collective sync contributors)</td></tr><tr><td><b>Candidate topology</b></td><td>TP4/PP1 for interactive 8K; TP8/PP1 for single-node long context; TP4/PP4 for scale-out</td></tr><tr><td><b>Native fabric behavior</b></td><td>Measured on Native (173.6 Gbps) + configured 100G/20G; TP4/PP4 has +3.91% TTFT delta at 20G</td></tr><tr><td><b>Candidate mechanism / next evidence</b></td><td>Decode: intra-node collective synchronization (cross-validated); Prefill: compute scaling vs pipeline latency (NCU/timeline verification pending)</td></tr><tr><td><b>Memory / KV state</b></td><td>GPU peak ~86.7–88.8 GiB across models; KV cache utilization 0.13% (8K) to 12.3% (1M)</td></tr><tr><td><b>Settings that matter</b></td><td>Chunk size (16K lowest c1 TTFT), Prefix caching (cuts repeat 1M TTFT to 2.61s)</td></tr><tr><td><b>Low-sensitivity settings</b></td><td>max_num_seqs (flat ~0.05% across 4/8/16 @ 1M c4)</td></tr><tr><td><b>Production validation</b></td><td>Timeline profiling across all ranks and nodes</td></tr><tr><td><b>Evidence</b></td><td>119 completed runs in combined_vllm_runs.csv + Nsight SQLite traces</td></tr></tbody></table></div></div>
 </div>
@@ -5412,7 +5412,7 @@ if (typeof Chart === 'undefined') {
     </div>
     <div class="chart large"><canvas id="chart_prof_kernel_categories"></canvas></div>
     <div class="analysis">
-      <div><b>Decode Discovery</b><span style="color:var(--red)">AllReduce consumes 86.3% (TP4) to 89.1% (TP8) of aggregate GPU kernel work in exact profile</span></div>
+      <div><b>Decode Budget (Graphs ON — §4.3)</b><span style="color:var(--cyan)">AllReduce is 23% (TP4, 1.04 ms of 4.47 ms) and 51% (TP8, 3.23 ms of 6.35 ms); Dense GEMV 24% (~1.07 ms); MoE 19% (~0.87 ms); Attention 19% (~0.84 ms). Weight streaming runs at ~0.79 TB/s (46% of 1.71 TB/s BabelStream).</span></div><div><b>1M Memory Bound (KV Read — §4.3 Scope)</b><span style="color:var(--amber)">At 1M, decode token becomes memory-bound on reading replicated KV latent cache (1M × 8,064 B = 8.1 GB/rank = 4.7 ms @ 1.72 TB/s). Measured growth 8K→1M is +5.8 ms across all TP widths.</span></div>
       <div><b>Prefill Contrast</b><span style="color:var(--green)">Attention (23.5%) + MoE (11.6%) dominate computation</span></div>
       <div><b>Cross-Node Synchronization</b><span style="color:var(--amber)">TP16/PP1 spends 76.2% of GPU work (Node 0 Rank 0; all-rank mean 77.6%) in cross-node AllReduce synchronization</span></div>
       <div><b>Pipeline Parallelism</b><span style="color:var(--purple)">TP4/PP4 P2P SendRecv represents 8.3% of captured stage work; pipelining shifts traffic to stage boundaries</span></div>
@@ -5427,13 +5427,13 @@ if (typeof Chart === 'undefined') {
       </div>
       <span class="badge b-purple"><span class="dot"></span>PYTORCH PROFILER</span>
     </div>
-    <div class="scope-note" style="margin:6px 0"><strong>Grouping Recipe:</strong> Attn (paged_attention_v2), MoE (fused_moe), AllReduce (nccl:all_reduce), GEMV (addmm/cublasGemv), KDA (recurrent_state), Norm (rms_norm). Sum reflects selected representative operator groups.</div>
+    <div class="scope-note" style="margin:6px 0"><strong>Grouping Recipe (from trace regexes):</strong> Attn (fusedKimiK3MLADecode), MoE (fused_moe_kernel / single_group_topk), AllReduce (ncclDevKernel_AllReduce_Sum_bf16_RING_LL), GEMV (gemvx / cutlass_80_tensorop_gemm), KDA (fused_recurrent_kda_packed_decode_kernel / _causal_conv1d_update_kernel), Norm (fused_add_rms_norm).</div>
     <div class="chart large"><canvas id="chart_prof_pytorch_operators"></canvas></div>
     <div class="analysis">
-      <div><b>Operator Accounting</b><span style="color:var(--amber)">TP8 AllReduce penalty (+332.4ms) exceeds the observed GEMV computation savings in this rank-local profile</span></div>
-      <div><b>NUMA Crossing</b><span>TP8 spans 2 NUMA sockets (PCIe bridges); AllReduce ring call takes 82.9μs vs 35.7μs</span></div>
+      <div><b>Operator Accounting</b><span style="color:var(--amber)">TP8 decode-only AllReduce penalty (+277.6 ms) exceeds GEMV savings (+39.8 µs/call over 6,985 decode steps)</span></div>
+      <div><b>Ring Overhead vs NUMA</b><span>TP8 decode AllReduce takes 58.7 µs vs 18.9 µs (graphs-on torch); 14-step vs 6-step ring adds +17 µs, socket crossing adds ≤ 0.4 µs (nvbandwidth)</span></div>
       <div><b>MoE &amp; MLP</b><span>Fused MoE kernel time is identical (120ms on TP4 vs 118ms on TP8)</span></div>
-      <div><b>Prescription</b><span style="color:var(--cyan)">Co-locating TP4 within a single NUMA socket is a candidate optimization to evaluate for interactive decode workloads</span></div>
+      <div><b>Prescription</b><span style="color:var(--cyan)">TP4 is already co-located on Socket 0 (GPUs 0–3); CPU thread pinning (numactl/taskset) across dual sockets is the pending diagnostic for TP8 serving skew.</span></div>
     </div>
   </div>
 </div>
@@ -10080,8 +10080,8 @@ window.KD_PAGES_DATA = [
         "sub": "4.475ms \u2192 6.350ms per token"
       },
       {
-        "val": "2.32\u00d7",
-        "label": "8K AllReduce CUDA Time",
+        "val": "3.10\u00d7",
+        "label": "8K AllReduce CUDA Time (Decode-Only)",
         "color": "#f87171",
         "sub": "132.3ms \u2192 409.9ms Self CUDA (Decode-Only, 3.10\u00d7)"
       },
@@ -10177,13 +10177,13 @@ window.KD_PAGES_DATA = [
     "chart_primary_title": "8K Profiler AllReduce Breakdown (ms Self CUDA)",
     "chart_secondary_title": "E2E Decode TPOT Across Context Lengths (ms)",
     "takeaways": [
-      "At 8K decode, TP8 executes the exact same 7040 AllReduce calls as TP4, but rank-local Self CUDA time jumps from 251.53ms to 583.87ms (2.32\u00d7).",
-      "The 8K PyTorch-profiler AllReduce evidence contributes strongly to the observed short-context TPOT penalty (+41.9%, 4.475ms vs 6.350ms).",
-      "The TPOT penalty persists all the way to 1M (+17.9%), proving that TP8 decode does not achieve parity with TP4 on this hardware.",
-      "Do not conflate PyTorch Self CUDA % with Nsight aggregate work %; label instrument and denominator explicitly."
+      "Decode-only AllReduce rises from 132.3ms (TP4) to 409.9ms (TP8) across 6,985 calls (3.10×; 18.9 µs vs 58.7 µs/call). The single 8K prefill step consumed 119.2ms (TP4) / 174.0ms (TP8) in 55 large AllReduces.",
+      "Graphs-on Decode Budget (§4.3): 55 AllReduces take 1.04 ms (23% of 4.47 ms token) on TP4 vs 3.23 ms (51% of 6.35 ms) on TP8. Weight-streaming kernels (GEMV+MoE) take ≈ 1.94 ms, streaming 1.54 GB active weights at ~0.79 TB/s (46% of 1.71 TB/s BabelStream ceiling; pure bandwidth floor is 0.90 ms).",
+      "At 1M context, the decode token becomes memory-bound on KV cache read: reading replicated latent KV (1M × 8,064 B = 8.1 GB/rank) takes 4.7 ms at 1.72 TB/s BabelStream. Measured 8K→1M TPOT growth is exactly +5.8 ms across TP4, TP8, and TP16 alike because the latent KV is replicated.",
+      "The TPOT penalty persists to 1M (+17.9%), proving that TP8 decode does not achieve parity with TP4 on this PCIe hardware."
     ],
-    "decision_changed": "Validate small-collective synchronization cost before assuming wider TP improves interactive decode.",
-    "boundary": "Causal profiler evidence is strongest at 8K; 128K to 1M are corroborated via E2E TPOT runs."
+    "decision_changed": "Validate small-collective synchronization cost before assuming wider TP improves interactive decode. Buy long-context capacity with PP, not wider TP.",
+    "boundary": "Causal profiler evidence from graphs-on torch profile, rank-local at 8K; 128K to 1M are corroborated via E2E TPOT runs. At 1M, decode is memory-bound on KV cache reads."
   },
   {
     "id": 8,
