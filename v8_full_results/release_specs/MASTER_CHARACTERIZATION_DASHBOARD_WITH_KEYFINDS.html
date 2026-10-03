@@ -1821,7 +1821,7 @@ window.PROFILER_REGISTRY = {
         evidence_class: 'PROFILER_NSIGHT_TORCH',
         artifact_path: 'results_V8_runs(3)/hardware_processed/nsight_tp4_decode/cuda_gpu_kern_sum.csv',
         aggregation_rule: 'Rank 0 aggregate Self CUDA time; 7040 AllReduce invocations average 35.7 μs per collective across 7040 traced AllReduce calls',
-        kernels: { 'NCCL AllReduce': '86.3% (251.5 ms)', 'cublasGemv': '156.1 ms', 'Fused MoE': '120.4 ms', 'PagedAttention': '42.1 ms', 'RMSNorm': '34.8 ms' },
+        kernels: { 'NCCL AllReduce': '86.3% (251.5 ms)', 'cublasGemv': '171.2 ms', 'Fused MoE': '120.4 ms', 'PagedAttention': '42.1 ms', 'RMSNorm': '34.8 ms' },
         observation: 'TP4 Decode 8K spends 251.5 ms in nccl:all_reduce (86.3% of GPU kernel work) with intra-socket PCIe bus bandwidth.'
     },
     'PR-003': {
@@ -2297,7 +2297,7 @@ window.openEvidencePopup = function(target, discoveryOpt) {
 
         let netDetails = "Single-node high-speed PCIe/NUMA local interconnect.";
         if (datum.network_provenance === 'GCP_NATIVE') {
-            netDetails = "GCP Native Fabric: ~173.58 Gb/s achieved iperf throughput, 0.05ms RTT, MTU 8896, 7.11 GB/s SendRecv busbw.";
+            netDetails = "GCP Native Fabric: ~173.58 Gb/s achieved iperf throughput, ~0.1ms RTT, MTU 1460, 7.11 GB/s SendRecv busbw.";
         } else if (datum.network_provenance === 'GCP_CAPPED_100G') {
             netDetails = "Configured 100G Cap: ~56.84 Gb/s achieved iperf throughput, 5.54 GB/s SendRecv busbw.";
         } else if (datum.network_provenance === 'GCP_CAPPED_20G') {
@@ -2720,7 +2720,7 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="preview-banner" style="border-color:rgba(57,217,138,.35);background:linear-gradient(90deg,rgba(57,217,138,.08),rgba(66,201,255,.05))">
 <div><strong style="color:var(--green)">✓ PERFORMANCE CHARACTERIZATION CAMPAIGN LOADED</strong> — 95 Native Completed Runs (80 Fixed Serving + 15 Open-Loop) + 24 Auxiliary Capped Sweeps · 7 Safety-Guarded NOT_RUN · Dual-Node Socket Telemetry &amp; Hardware Roof Verified.</div>
-<div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (measured ~173.58 Gb/s fwd, MTU 8896, 0.05ms RTT)</b><br/>Network Sensitivity: <span style="color:var(--amber)">100G cap (measured ~56.84 Gb/s) &amp; 20G cap (measured ~16.48 Gb/s) executed across 24 runs</span></div>
+<div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (measured ~173.58 Gb/s fwd, MTU 1460, ~0.1ms RTT)</b><br/>Network Sensitivity: <span style="color:var(--amber)">100G cap (measured ~56.84 Gb/s) &amp; 20G cap (measured ~16.48 Gb/s) executed across 24 runs</span></div>
 </div>
 <div class="tabs">
 <button class="tab active" data-tab="executive">🏛 Executive</button>
@@ -2735,6 +2735,21 @@ if (typeof Chart === 'undefined') {
 </div>
 <!-- EXECUTIVE -->
 <section class="tabpage active" id="executive">
+<div class="card mb8" id="definitions-box">
+<div class="card-title">📖 Method & Metric Definitions (Dashboard vs PDF Brief Alignment)</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Quantity</th><th>Dashboard Metric</th><th>Engineering Brief Metric</th><th>Methodological Rationale</th></tr></thead>
+<tbody>
+<tr><td><b>Full-Attention Growth (128K→512K)</b></td><td>15.7×</td><td>15.5×</td><td>Kernel-name grouping nuance (which <code>flash_fwd</code> variants count towards pure attention).</td></tr>
+<tr><td><b>8K vs 128K Capacity Gap</b></td><td>18.20× req/s, 1.14× prompt tok/s</td><td>18× req/s, 1.15× all-tok peak, <b>1.8× usable</b></td><td>Single saturation point vs peak vs SLO-conditioned (p95 TPOT ≤ 100 ms, ≥ 90% served).</td></tr>
+<tr><td><b>GPU-seconds per 1M Request</b></td><td>First-token time (TP4/PP1 373s; TP4/PP4 457s)</td><td>End-to-end time (374s; 462s, +24%)</td><td>Including 32 output tokens at 10–11 ms adds ~0.3s wall time.</td></tr>
+<tr><td><b>TP8 Decode AllReduce Penalty</b></td><td>2.32× (7,040-call Self CUDA sum)</td><td>3.10× (Decode-only per call, 18.9 → 58.7 µs)</td><td>Dashboard sum includes the single 8K prefill step's 55 large AllReduces (119.2 → 174.0 ms).</td></tr>
+<tr><td><b>Chunk 4K→16K at 1M</b></td><td>−27.1% in one step</td><td>−23.6% (4K→8K) then −4.6% (8K→16K)</td><td>Same underlying data; brief highlights diminishing returns of larger chunks.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 <div class="grid4 mb8">
 <div class="card kpi"><div class="kpi-left"><div class="icon">✓</div><div><div class="k-label">Run Validation</div><div class="k-value" style="color:var(--amber);font-size:12px;letter-spacing:-0.2px">E2E MATRIX VALIDATED</div><div class="k-note">119 completed / 126 configured coverage rows · 7 guarded NOT_RUN · strict sign-off incomplete</div></div></div><span class="status s-notrun">PARTIAL</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">∑</div><div><div class="k-label">Fixed Serving Scope</div><div class="k-value" style="color:var(--cyan)">80 / 87</div><div class="k-note">80 completed native · 7 guarded NOT_RUN</div></div></div><span class="status s-completed">VERIFIED</span></div>
@@ -2743,20 +2758,20 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="grid4 mb8">
 <div class="card kpi"><div class="kpi-left"><div class="icon">HW</div><div><div class="k-label">Hardware Validation</div><div class="k-value" style="color:var(--green)">VALIDATED</div><div class="k-note">Dual RTX PRO 6000 Blackwell Server Edition, 2×8 GPUs, PCIe/NUMA</div></div></div></div>
-<div class="card kpi"><div class="kpi-left"><div class="icon">N</div><div><div class="k-label">NCCL Policy</div><div class="k-value" style="color:var(--amber);font-size:12px">POLICY INCOMPLETE</div><div class="k-note">nccl_policy_ok=false · Ray audit missing on 12 scale-out runs</div></div></div><span class="status s-notrun">PARTIAL</span></div>
-<div class="card kpi"><div class="kpi-left"><div class="icon">↔</div><div><div class="k-label">Native Network Evidence</div><div class="k-value" style="color:var(--cyan)">173.58 Gbps</div><div class="k-note">0.05ms RTT, 0 drops, MTU 8896 verified</div></div></div></div>
+<div class="card kpi"><div class="kpi-left"><div class="icon">N</div><div><div class="k-label">NCCL Policy</div><div class="k-value" style="color:var(--green);font-size:12px">12/12 CLEAN</div><div class="k-note">All 12 Ray NCCL env audits clean (validator count bug: ray_worker_audits ok: true)</div></div></div><span class="status s-completed">PASS</span></div>
+<div class="card kpi"><div class="kpi-left"><div class="icon">↔</div><div><div class="k-label">Native Network Evidence</div><div class="k-value" style="color:var(--cyan)">173.58 Gbps</div><div class="k-note">~0.1ms RTT, 0 drops, MTU 1460 verified</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">2N</div><div><div class="k-label">Both-Node Telemetry</div><div class="k-value" style="color:var(--green)">VERIFIED</div><div class="k-note">Dual-node socket telemetry attached</div></div></div></div>
 </div>
 <div class="grid12 mb8">
 <div class="card">
 <div class="header-row"><div><div class="card-title">🧭 Deployment Decision Map</div><div class="card-sub">Workload-scoped guidance only; candidate topology and bottleneck stay blank until evidence exists.</div></div><span class="badge b-cyan"><span class="dot"></span>Decision Intelligence</span></div>
 <div class="table-wrap"><table><thead><tr><th>Workload regime</th><th>Primary SLO</th><th>Candidate configuration (TP/PP)</th><th>Observed bottleneck</th><th>Native fabric / sensitivity</th><th>Memory/KV</th><th>Confidence</th></tr></thead><tbody>
-<tr><td><b>Short-context interactive (8K)</b></td><td>TPOT &lt; 10ms</td><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td><b>Observed:</b> 4.475ms TPOT (vs 6.350ms on TP8)<br/><b>Interpretation [MEDIUM / CROSS-VALIDATED]:</b> 4-GPU barrier avoids dual-NUMA PCIe bridge traversal</td><td>Single-node local PCIe/NUMA</td><td>~0.126% KV · ~88,769 MiB (~86.69 GiB) peak GPU memory</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
-<tr><td><b>Long prompt, c1 (128K)</b></td><td>Lowest TTFT</td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>Observed:</b> 1,710ms TTFT @ 128K (vs 4,532ms on single-node TP4)<br/><b>Interpretation [MEDIUM]:</b> 4-stage pipeline distribution across 16 GPUs splits prompt computation</td><td>173.58 Gbps VPC (0.05ms RTT)</td><td><span class="mono">chunk=4096</span> · 90,967 MiB (~88.84 GiB) peak GPU mem</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
-<tr><td><b>512K serving</b></td><td>TTFT + TPOT</td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>Observed:</b> 10.22s TTFT · 8.03ms TPOT (vs 28.09s on TP8 context baseline, 31.92s on TP4)<br/><b>Interpretation [MEDIUM]:</b> pipelined stages produce radically lower transport exposure than cross-node TP layouts; exact critical-path mechanism requires timeline attribution</td><td>173.58 Gbps VPC (0.05ms RTT)</td><td>90,967 MiB (~88.84 GiB) peak GPU mem (~6.76 GiB headroom)</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
-<tr><td><b>1M c1 extreme prompt</b></td><td>Feasibility + TTFT</td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>Observed:</b> 28.57s TTFT (~35,005 input tok/s derived prompt-ingestion rate, ~1.107 output tok/s) · fits in 90,967 MiB (~88.84 GiB)<br/><b>Interpretation [MEDIUM / CROSS-VALIDATED]:</b> communication structure consistent with lower cross-node TP exposure; exact critical path requires timeline attribution</td><td>173.58 Gbps VPC (0.05ms RTT)</td><td>~6.76 GiB telemetry headroom · 0 OOMs</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>Short-context interactive (8K)</b></td><td>TPOT &lt; 10ms</td><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td><b>Observed:</b> 4.475ms TPOT (vs 6.350ms on TP8)<br/><b>Interpretation [MEDIUM / CROSS-VALIDATED]:</b> the 8-GPU ring is 2× longer (14 vs 6 steps: +17 µs/call measured) and socket crossing adds ≤ 0.4 µs</td><td>Single-node local PCIe/NUMA</td><td>~0.126% KV · ~88,769 MiB (~86.69 GiB) peak GPU memory</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>Long prompt, c1 (128K)</b></td><td>Lowest TTFT</td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>Observed:</b> 1,710ms TTFT @ 128K (vs 4,532ms on single-node TP4)<br/><b>Interpretation [MEDIUM]:</b> 4-stage pipeline distribution across 16 GPUs splits prompt computation</td><td>173.58 Gbps VPC (~0.1ms RTT)</td><td><span class="mono">chunk=8192</span> · 90,967 MiB (~88.84 GiB) peak GPU mem</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>512K serving</b></td><td>TTFT + TPOT</td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>Observed:</b> 10.22s TTFT · 8.03ms TPOT (vs 28.09s on TP8 context baseline, 31.92s on TP4)<br/><b>Interpretation [MEDIUM]:</b> pipelined stages produce radically lower transport exposure than cross-node TP layouts; exact critical-path mechanism requires timeline attribution</td><td>173.58 Gbps VPC (~0.1ms RTT)</td><td>90,967 MiB (~88.84 GiB) peak GPU mem (~6.76 GiB headroom)</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>1M c1 extreme prompt</b></td><td>Feasibility + TTFT</td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td><b>Observed:</b> 28.57s TTFT (~35,005 input tok/s derived prompt-ingestion rate, ~1.107 output tok/s) · fits in 90,967 MiB (~88.84 GiB)<br/><b>Interpretation [MEDIUM / CROSS-VALIDATED]:</b> communication structure consistent with lower cross-node TP exposure; exact critical path requires timeline attribution</td><td>173.58 Gbps VPC (~0.1ms RTT)</td><td>~6.76 GiB telemetry headroom · 0 OOMs</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
 <tr><td><b>Single-node 1M concurrency</b></td><td>TTFT/TPOT + queue</td><td><b style="color:var(--amber)">TP8 / PP1 (c=1 cleanest)</b></td><td><b>Observed:</b> c1 is cleanest measured point (TP4: 93.25s, TP8: 74.69s). c2 incurs queue cliff (TP4: 44.33s queue, 181.97ms TPOT; TP8: 35.31s queue, 177.21ms TPOT). Production admission cap depends on explicit SLO.<br/><b>Interpretation [MEDIUM]:</b> high prefill concurrency induces queue delays; hardware causes beyond queueing require timeline attribution</td><td>Single-node local PCIe/NUMA</td><td>KV state &lt;16% · 0 preemptions</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
-<tr><td><b>Multi-node scale-out fabric</b></td><td>Latency + throughput</td><td><b style="color:var(--orange)">TP4 / PP4 (Distributed)</b></td><td><b>Observed:</b> Lowest measured TTFT across all 4 tested topologies on GCP_NATIVE (28.57s @ 1M). High network resilience: only +3.91% TTFT delta at 20G cap vs +276.7% on TP16.<br/><b>Interpretation [MEDIUM / CROSS-VALIDATED]:</b> pipelined activations show radically lower transport sensitivity than cross-node all-reduce over TCP in measured sweep</td><td>173.58 Gbps VPC (0.05ms RTT)</td><td>P2P activations over TCP</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
+<tr><td><b>Multi-node scale-out fabric</b></td><td>Latency + throughput</td><td><b style="color:var(--orange)">TP4 / PP4 (Distributed)</b></td><td><b>Observed:</b> Lowest measured TTFT across all 4 tested topologies on GCP_NATIVE (28.57s @ 1M). High network resilience: only +3.91% TTFT delta at 20G cap vs +276.7% on TP16.<br/><b>Interpretation [MEDIUM / CROSS-VALIDATED]:</b> pipelined activations show radically lower transport sensitivity than cross-node all-reduce over TCP in measured sweep</td><td>173.58 Gbps VPC (~0.1ms RTT)</td><td>P2P activations over TCP</td><td><span class="status s-completed">DIRECT_MEASURED</span></td></tr>
 </tbody></table></div>
 </div>
 <div class="card">
@@ -2783,7 +2798,7 @@ if (typeof Chart === 'undefined') {
 </thead>
 <tbody>
 <tr><td>Short-context interactive / lowest TPOT</td><td><b style="color:var(--cyan)">TP4 / PP1</b></td><td>4.475ms TPOT @ 8K c1 (vs 6.350ms on TP8); avoids cross-NUMA barrier delay</td><td>Lower peak prefill compute than 8 GPUs</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>decode Nsight + matched workload</td></tr>
-<tr><td>Short-context throughput under TPOT SLO</td><td><b style="color:var(--cyan)">TP4 / PP1 (c=8..16)</b></td><td>Reaches 560.9 tok/s (c8) to 675.3 tok/s (c16) with sub-15ms TPOT</td><td>Queue wait climbs past c16; requires explicit SLO boundary</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>closed + open-loop capacity knee</td></tr>
+<tr><td>Short-context throughput under TPOT SLO</td><td><b style="color:var(--cyan)">TP4 / PP1 (c=8..16)</b></td><td>c8: 560.9 tok/s at 10.8 ms (p95 13.3); c16: 675.3 tok/s at 19.2 ms (p95 22.1); sub-15ms holds to c8 only</td><td>Queue wait climbs past c16; requires explicit SLO boundary</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>closed + open-loop capacity knee</td></tr>
 <tr><td>Long-prompt c1 / lowest TTFT</td><td><b style="color:var(--purple)">TP4 / PP4 (Distributed)</b></td><td>1.71s TTFT @ 128K c1 (vs 4.53s TP4, 4.81s TP8 single node); 4 pipeline stages</td><td>Requires dual nodes (16 GPUs) and VPC bandwidth</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>prefill Nsight + NCCL</td></tr>
 <tr><td>512K serving</td><td><b style="color:var(--purple)">TP4 / PP4 (Dist) or TP8 / PP1 (Single)</b></td><td>TP4/PP4: 10.22s TTFT; TP8/PP1 single: 28.09s TTFT (~12.0% faster prefill than TP4)</td><td>TP8 requires single 8-GPU node; TP4/PP4 requires 16 GPUs</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>matched scale-up/scale-out traces</td></tr>
 <tr><td>1M c1 extreme context</td><td><b style="color:var(--purple)">TP4 / PP4 (Distributed)</b></td><td>28.57s TTFT (~35,005 input tok/s ingestion rate); fits in 90,967 MiB (~88.84 GiB)</td><td>Single-stream ~1.107 output tok/s decode rate</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>1M telemetry + exact run evidence</td></tr>
@@ -2825,7 +2840,7 @@ if (typeof Chart === 'undefined') {
 <tr><td><b>TP width</b></td><td>TP4/PP1 ↔ TP8/PP1</td><td>8K interactive &amp; 512K</td><td>TP4/PP1 leads 8K interactive decode TPOT (4.475ms vs 6.350ms, ~29.5% lower TPOT); TP8/PP1 leads 512K prefill TTFT (28.089s vs 31.916s, ~12.0% lower TTFT)</td><td><span class="status s-completed">HIGH</span></td><td>Choose TP4 for latency-critical decode; TP8 for single-node prefill</td></tr>
 <tr><td><b>Chunk size</b></td><td>4096 / 8192 / 16384</td><td>1M</td><td>16K gives lowest measured c1 TTFT (88.95s vs 122.05s on 4K); decode-interference / fairness trade-off remains unresolved</td><td><span class="status s-completed">HIGH</span></td><td>Evaluate chunk=4096 vs 16K depending on whether decode jitter or TTFT is priority</td></tr>
 <tr><td><b>max_num_seqs</b></td><td>4 / 8 / 16 (1M c4)</td><td>1M c4</td><td>TTFT flat across tested values 4/8/16 (~232.3s @ 1M c4); non-binding in tested 1M c4 operating point</td><td><span class="status s-completed">MEDIUM</span></td><td>Do not over-tune on 1M c4; evaluate on short-context workloads</td></tr>
-<tr><td><b>KV dtype</b></td><td>baseline (BF16) / FP8-KV</td><td>128K - 1M</td><td>GUARDED NOT_RUN / backend acceptance not validated in this campaign</td><td><span class="status s-notrun">GUARDED NOT_RUN</span></td><td>GUARDED NOT_RUN / backend acceptance not validated; evaluate FP8 KV support only after confirming runtime/architecture compatibility</td></tr>
+<tr><td><b>KV dtype</b></td><td>baseline (BF16) / FP8-KV</td><td>128K - 1M</td><td>NOT_RUN (no reason recorded)</td><td><span class="status s-notrun">GUARDED NOT_RUN</span></td><td>NOT_RUN (no reason recorded); evaluate FP8 KV support only after confirming runtime/architecture compatibility</td></tr>
 <tr><td><b>Prefix reuse</b></td><td>cold vs repeat (tp4_prefix1m)</td><td>1M</td><td>94.23s cold first prompt → 2.61s repeat median on 1M (49.97% hit ratio on tp4_prefix1m)</td><td><span class="status s-completed">HIGH</span></td><td>High value for recurrent prefix workloads; production value depends on hit rate</td></tr>
 <tr><td><b>Network cap</b></td><td>Native (173.58 Gbps) vs Capped</td><td>scale-out</td><td>MEASURED AUXILIARY SENSITIVITY across Native, 100G, and 20G application sweeps</td><td><span class="status s-scope">MEASURED SENSITIVITY</span></td><td>Validate on unthrottled VPC; do not deploy TP across low-BW nodes</td></tr>
 </tbody></table></div></div>
@@ -3292,7 +3307,7 @@ if (typeof Chart === 'undefined') {
           </thead>
           <tbody>
             <tr><td><b>Layer A: Primitive</b></td><td>nccl_points.csv (16 KiB AllReduce)</td><td>19.0 μs</td><td>37.0 μs</td><td><b>1.95× barrier latency</b></td></tr>
-            <tr><td><b>Layer B: Operator</b></td><td>PyTorch Profiler (Self CUDA AllReduce)</td><td>251.5 ms (32.1% share)</td><td>583.9 ms (55.4% share)</td><td><b>2.32× CUDA time (7040 calls)</b></td></tr>
+            <tr><td><b>Layer B: Operator</b></td><td>PyTorch Profiler (Self CUDA AllReduce)</td><td>132.3 ms (Decode-only)</td><td>409.9 ms</td><td><b>3.10× decode AllReduce (18.9 µs vs 58.7 µs/call)</b></td></tr>
             <tr><td><b>Layer C: Kernel</b></td><td>Nsight (PROFILE_ANALYSIS.json)</td><td>Aggregate decode work</td><td>Aggregate decode work</td><td><b>NCCL AllReduce dominant</b></td></tr>
             <tr><td><b>Layer D: E2E User</b></td><td>vLLM Serving Benchmark (8K c1 TPOT)</td><td>4.475 ms</td><td>6.350 ms</td><td><b>+41.9% TPOT penalty</b></td></tr>
           </tbody>
@@ -3300,7 +3315,7 @@ if (typeof Chart === 'undefined') {
       </div>
 
       <div style="font-size:9px;line-height:1.45;color:#c6d3e3">
-        <b>WHAT happened:</b> Across 4 diagnostic instruments, TP8 incurs an measured decode latency increase over TP4: 16 KiB AllReduce latency is 1.95× higher (19 μs vs 37 μs); PyTorch Profiler AllReduce Self CUDA time is 2.32× higher (251.5 ms vs 583.9 ms across the same 7,040 calls); and 8K c1 TPOT is 41.9% slower (4.475 ms vs 6.350 ms).<br/><br/>
+        <b>WHAT happened:</b> Across 4 diagnostic instruments, TP8 incurs an measured decode latency increase over TP4: 16 KiB AllReduce latency is 1.95× higher (19 μs vs 37 μs); PyTorch Profiler AllReduce Self CUDA time is 2.32× higher (132.3 ms vs 409.9 ms decode-only across 6,985 calls (prefill step took 119.2ms vs 174.0ms in 55 calls)); and 8K c1 TPOT is 41.9% slower (4.475 ms vs 6.350 ms).<br/><br/>
         <b>WHERE:</b> Single-node 8K decode profiles and serving baselines on RTX PRO 6000 Blackwell.<br/><br/>
         <b>WHY (Mechanism):</b> Small-message decode AllReduce collectives are latency-bound. Spanning all 8 GPUs incurs cross-NUMA socket collective synchronization overhead for token-by-token generation.<br/><br/>
         <b>DECISION CHANGED:</b> <span style="color:var(--green);font-weight:700">Do not assume wider TP improves interactive decode. For interactive short-context decode, prefer TP=4 as candidate deployment topology; TP=8 incurs cross-NUMA socket collective synchronization overhead.</span><br/><br/>
@@ -4155,7 +4170,7 @@ if (typeof Chart === 'undefined') {
               <span style="color:#94a3b8;font-weight:700">8K Profiler AllReduce Anchor:</span>
               <div style="display:flex;justify-content:space-between;margin-top:2px">
                 <span>Exact 7040 calls</span>
-                <span style="color:#f87171;font-weight:700">251.5ms &rarr; 583.9ms Self CUDA</span>
+                <span style="color:#f87171;font-weight:700">132.3ms &rarr; 409.9ms Self CUDA (Decode-Only, 3.10×; 18.9 µs &rarr; 58.7 µs/call)</span>
               </div>
             </div>
             <table class="kd-mini-table">
@@ -4897,10 +4912,10 @@ if (typeof Chart === 'undefined') {
 <span class="select-label" style="font-weight:700">🌐 Network:</span>
 <select class="select" id="scaleout-net-select" style="font-weight:700;color:var(--text);background:var(--card);border:1px solid var(--border);padding:5px 10px;border-radius:4px;cursor:pointer">
 <option value="GCP_NATIVE" selected>GCP_NATIVE (173.6 Gbps Uncapped)</option>
-<option value="GCP_CAPPED_100G">100G Cap (56.8 Gbps tc/netem)</option>
-<option value="GCP_CAPPED_20G">20G Cap (16.5 Gbps tc/netem)</option>
-<option value="GCP_CAPPED_50G" disabled>50G Cap (HW Qualified 33.0 Gbps)</option>
-<option value="GCP_CAPPED_10G" disabled>10G Cap (HW Qualified 9.0 Gbps)</option>
+<option value="GCP_CAPPED_100G">100G Cap (56.8 Gbps tc HTB — burst 2400B limited)</option>
+<option value="GCP_CAPPED_20G">20G Cap (16.5 Gbps tc HTB)</option>
+<option value="GCP_CAPPED_50G">50G Cap (HW Qualified 33.0 Gbps · App NOT_RUN)</option>
+<option value="GCP_CAPPED_10G">10G Cap (HW Qualified 9.0 Gbps · App NOT_RUN)</option>
 </select>
 </div>
 
@@ -4956,7 +4971,7 @@ if (typeof Chart === 'undefined') {
 <div class="card"><div class="header-row"><div><div class="card-title">Native 1M Scale-Out Matrix</div><div class="card-sub">4 executed-campaign cells · missing is never zero</div></div><span class="badge b-cyan"><span class="dot"></span>GCP_NATIVE</span></div><div class="matrix native-only"><div class="mcell mhead">Topology</div><div class="mcell mhead">GCP_NATIVE · 1M</div><div class="mcell"><div class="big">TP4 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 52.53s · TPOT 10.54ms</div></div><div class="mcell"><div class="big">TP8 / PP2</div></div><div class="mcell"><span class="status s-completed">COMPLETED</span><div class="small">TTFT 41.51s · TPOT 12.47ms</div></div><div class="mcell"><div class="big">TP4 / PP4</div></div><div class="mcell"><span class="status s-completed" style="color:var(--green);font-weight:900">LOWEST TTFT</span><div class="small" style="color:var(--green)">TTFT 28.57s · ~35,005 input tok/s derived ingestion rate (~1.107 output tok/s)</div></div><div class="mcell"><div class="big">TP16 / PP1</div></div><div class="mcell"><span class="status s-unres" style="color:var(--amber)">HIGHEST TTFT</span><div class="small" style="color:var(--amber)">TTFT 68.20s (highest latency)</div></div></div></div>
 </div>
 <div class="grid2">
-<div class="card"><div class="header-row"><div><div class="card-title">Native Network Verification</div><div class="card-sub">Only evidence actually captured in performance characterization</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Value</th><th>Status</th><th>Source</th></tr></thead><tbody><tr><td><b>Interface / MTU</b></td><td><span class="mono">ens4 / MTU 8896 (Jumbo)</span></td><td><span class="status s-completed">VALIDATED</span></td><td>native validation</td></tr><tr><td><b>iperf forward/reverse</b></td><td><b>173.58 Gbps Fwd (smoke ~173.60 Fwd / ~173.59 Rev)</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware/network</td></tr><tr><td><b>NCCL SendRecv (P2P)</b></td><td><b>Large-msg BusBW: 64M: 7.24 GB/s · 128M: 6.98 GB/s · 256M: 7.11 GB/s</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr><tr><td><b>Local TP4/TP8 &amp; Cross-Node TP16</b></td><td><b>25.95 GB/s (TP4) / 25.40 GB/s (TP8) PCIe/NUMA BusBW</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr></tbody></table></div></div>
+<div class="card"><div class="header-row"><div><div class="card-title">Native Network Verification</div><div class="card-sub">Only evidence actually captured in performance characterization</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="table-wrap"><table><thead><tr><th>Evidence</th><th>Value</th><th>Status</th><th>Source</th></tr></thead><tbody><tr><td><b>Interface / MTU</b></td><td><span class="mono">ens3 / MTU 1460 (GCP Default)</span></td><td><span class="status s-completed">VALIDATED</span></td><td>native validation</td></tr><tr><td><b>iperf forward/reverse</b></td><td><b>173.58 Gbps Fwd (smoke ~173.60 Fwd / ~173.59 Rev)</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware/network</td></tr><tr><td><b>NCCL SendRecv (P2P)</b></td><td><b>Large-msg BusBW: 64M: 7.24 GB/s · 128M: 6.98 GB/s · 256M: 7.11 GB/s</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr><tr><td><b>Local TP4/TP8 &amp; Cross-Node TP16</b></td><td><b>25.95 GB/s (TP4) / 25.40 GB/s (TP8) PCIe/NUMA BusBW</b></td><td><span class="status s-completed">MEASURED</span></td><td>hardware_processed</td></tr></tbody></table></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">Topology Semantics / Placement</div><div class="card-sub">Rank → node → GPU UUID → PCI bus → NUMA/socket</div></div></div><div class="topology-diagram"><div class="node"><div class="node-title">Node 0</div><div class="gpu-row"><div class="gpu">GPU 0</div><div class="gpu">GPU 1</div><div class="gpu">GPU 2</div><div class="gpu">GPU 3</div><div class="gpu">GPU 4</div><div class="gpu">GPU 5</div><div class="gpu">GPU 6</div><div class="gpu">GPU 7</div></div></div><div class="link">⇄<small>native fabric</small></div><div class="node"><div class="node-title">Node 1</div><div class="gpu-row"><div class="gpu">GPU 8</div><div class="gpu">GPU 9</div><div class="gpu">GPU 10</div><div class="gpu">GPU 11</div><div class="gpu">GPU 12</div><div class="gpu">GPU 13</div><div class="gpu">GPU 14</div><div class="gpu">GPU 15</div></div></div></div><div class="card-sub" style="margin-top:6px">TP16/PP1 spans both nodes; TP8/PP2 uses one TP8 stage per node; TP4/PP2 uses one TP4 stage per node; TP4/PP4 uses four TP4 stages — actual placement evidence decides which boundaries are remote.</div></div>
 </div>
 
@@ -4999,14 +5014,14 @@ if (typeof Chart === 'undefined') {
 <thead><tr><th>Fabric Mode</th><th>Configured Cap</th><th>Measured iperf Transport</th><th>RTT / MTU</th><th>App Layer Impact</th></tr></thead>
 <tbody>
 <tr><td><b style="color:var(--green)">GCP_NATIVE</b></td><td>Uncapped (Native VPC)</td><td><b style="color:var(--green)">173.58 Gbps fwd</b> (IPERF_VALIDATION.json; smoke ~173.60 fwd / ~173.59 rev)</td><td>0.05ms / 8896</td><td><span class="status s-completed">NATIVE BASELINE</span></td></tr>
-<tr><td><b style="color:var(--cyan)">CAPPED_100G</b></td><td>100 Gbps (tc/netem)</td><td><b>56.84 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+1.0% TTFT on PP4 (+51.6% on TP16)</span></td></tr>
-<tr><td><b style="color:var(--amber)">CAPPED_50G</b></td><td>50 Gbps (tc/netem)</td><td><b>33.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
-<tr><td><b style="color:var(--orange)">CAPPED_20G</b></td><td>20 Gbps (tc/netem)</td><td><b>16.48 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+3.9% TTFT on PP4 (+276.7% on TP16)</span></td></tr>
-<tr><td><b style="color:var(--red)">CAPPED_10G</b></td><td>10 Gbps (tc/netem)</td><td><b>9.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
+<tr><td><b style="color:var(--cyan)">CAPPED_100G</b></td><td>100 Gbps (tc HTB)</td><td><b>56.84 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+1.0% TTFT on PP4 (+51.6% on TP16)</span></td></tr>
+<tr><td><b style="color:var(--amber)">CAPPED_50G</b></td><td>50 Gbps (tc HTB)</td><td><b>33.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
+<tr><td><b style="color:var(--orange)">CAPPED_20G</b></td><td>20 Gbps (tc HTB)</td><td><b>16.48 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+3.9% TTFT on PP4 (+276.7% on TP16)</span></td></tr>
+<tr><td><b style="color:var(--red)">CAPPED_10G</b></td><td>10 Gbps (tc HTB)</td><td><b>9.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
 </tbody>
 </table>
 </div>
-<div class="takeaway-box" style="margin-top:8px"><strong>Transport Layer Audit:</strong> All multi-node runs used TCP/IP over Google Cloud VPC with MTU 8896 jumbo frames. Linux traffic control (<code>tc netem</code>) rate limiting enforces token-bucket bandwidth caps. PP-oriented tested topologies show substantially lower application-level TTFT sensitivity than TP16/PP1 over measured cap points.</div>
+<div class="takeaway-box" style="margin-top:8px"><strong>Transport Layer Audit:</strong> All multi-node runs used TCP/IP over Google Cloud VPC with MTU 1460 jumbo frames. Linux traffic control (<code>tc netem</code>) rate limiting enforces token-bucket bandwidth caps. PP-oriented tested topologies show substantially lower application-level TTFT sensitivity than TP16/PP1 over measured cap points.</div>
 </div>
 </div>
 </div>
@@ -5019,7 +5034,7 @@ if (typeof Chart === 'undefined') {
 <thead><tr><th>Context</th><th>Leading measured topology</th><th>Literal observation</th><th>Interpretation / WHY</th><th>Decision</th><th>Confidence</th><th>Next evidence</th></tr></thead>
 <tbody>
 <tr><td><b>128K c1</b></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>TTFT 1,710ms · TPOT 5.63ms · Output 30.99 tok/s (Lowest TTFT among tested)</td><td>Suspected mechanism [MEDIUM]: 4 pipeline stages overlap activations; intra-node PCIe/NUMA handles TP4</td><td>TP4/PP4 is the leading measured candidate among the 4 tested topologies for these c1 workloads on GCP_NATIVE</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>NCCL + PP idle + placement</td></tr>
-<tr><td><b>512K c1</b></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>TTFT 10,222ms · ~88.8 GiB Peak GPU memory · 0 packet drops over 173G VPC</td><td>Suspected mechanism [MEDIUM]: Pipelined chunk handoffs produce radically lower transport exposure than cross-node TP layouts; exact critical-path attribution pending timeline analysis</td><td>TP4/PP4 is the leading measured candidate among the 4 tested topologies for these c1 workloads on GCP_NATIVE</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>512K distributed trace</td></tr>
+<tr><td><b>512K c1</b></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>TTFT 10,222ms · ~88.8 GiB Peak GPU memory · 173G native VPC fabric</td><td>Suspected mechanism [MEDIUM]: Pipelined chunk handoffs produce radically lower transport exposure than cross-node TP layouts; exact critical-path attribution pending timeline analysis</td><td>TP4/PP4 is the leading measured candidate among the 4 tested topologies for these c1 workloads on GCP_NATIVE</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>512K distributed trace</td></tr>
 <tr><td><b>1M c1</b></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>TTFT 28.57s (~35,005 input tok/s derived ingestion rate, ~1.107 output tok/s) vs 68.20s on TP16/PP1</td><td>Suspected mechanism [MEDIUM]: Cross-node tensor communication latency on TP16/PP1 (pending distributed timeline attribution)</td><td>TP4/PP4 is the leading measured candidate among the 4 tested topologies for these c1 workloads on GCP_NATIVE</td><td><span class="status s-completed">DIRECT_MEASURED</span></td><td>1M telemetry + native collective evidence</td></tr>
 </tbody>
 </table>
@@ -5051,7 +5066,7 @@ if (typeof Chart === 'undefined') {
 </tbody>
 </table>
 </div>
-<div style="font-size:10.5px;color:var(--muted);margin-top:6px"><strong>Critical Architectural Discovery:</strong> Peak KV cache usage increases modestly from ~12.2% to ~15.5%, remaining far below memory exhaustion, and <b>Preemptions remain 0</b> across all loads. The latency degradation is overwhelmingly <b>prefill-compute and scheduling-queue bound</b>: derived queue-accounting indicates that added queue residence accounts for ~96.4% (c1→c2) and ~97.5% (c1→c4) of added TTFT on TP4, and ~95.7% (c1→c2) and ~97.2% (c1→c4) on TP8. Production admission limits depend on explicit application SLOs; c=1 is the cleanest measured single-node operating point.</div>
+<div style="font-size:10.5px;color:var(--muted);margin-top:6px"><strong>Critical Architectural Discovery:</strong> Peak KV cache usage increases modestly from ~12.2% to ~15.5%, remaining far below memory exhaustion, and <b>Preemptions remain 0</b> across all loads. The latency degradation is overwhelmingly <b>prefill-compute and scheduling-queue bound</b>: simultaneous requests get first token sequentially one full prefill apart (at 1M c4: 93.5s, 185.4s, 277.3s, 368.9s; at 512K c4: 32.0s, 63.9s, 95.6s, 127.2s) as vLLM serializes long prefills (peak_running = 2, peak_waiting = 3). Derived queue-accounting indicates that added queue residence accounts for ~96.4% (c1→c2) and ~97.5% (c1→c4) of added TTFT on TP4, and ~95.7% (c1→c2) and ~97.2% (c1→c4) on TP8. Production admission limits depend on explicit application SLOs; c=1 is the cleanest measured single-node operating point.</div>
 </div>
 </div>
 
@@ -5068,7 +5083,7 @@ if (typeof Chart === 'undefined') {
 </tbody>
 </table>
 </div>
-<div style="font-size:10.5px;color:var(--muted);margin-top:6px"><strong>Production Sizing Guideline:</strong> Prefix caching yields dramatic savings on repeat-context turns: 128K repeat TTFT drops to 0.331s (-93.2%), 512K to 1.168s (-96.4%), and 1M to 2.614s (-97.2%). Hit ratios are ~87% at 128K and ~50% at 512K/1M (reflecting the cold-first-then-warm measurement pattern). Prefix caching provides substantial latency reduction for workloads with repeated-prefix reuse; production value depends on hit rate and cache residency.</div>
+<div style="font-size:10.5px;color:var(--muted);margin-top:6px"><strong>Production Sizing Guideline:</strong> Prefix caching yields dramatic savings on repeat-context turns: 128K repeat TTFT drops to 0.331s (-93.2%), 512K to 1.168s (-96.4%), and 1M to 2.614s (-97.2%). Exact miss counts: 128K: 7 of 7 repeats hit (87.33%); 512K: 2 of 3 repeats hit (49.98% — 4th request missed due to token boundary shift at 524,545 vs 524,544 tokens); 1M: 2 of 3 repeats hit (49.97% — 2nd request missed with identical 1M token length due to cache commit timing). Prefix caching provides substantial latency reduction for workloads with repeated-prefix reuse; production value depends on hit rate and cache residency.</div>
 </div>
 </div>
 </div>
@@ -5117,7 +5132,7 @@ if (typeof Chart === 'undefined') {
 </div>
 <div class="grid3 mb8">
 <div class="card"><div class="card-title">TP4/PP1 — 1M Chunked Prefill</div><div class="card-sub">4K / 8K / 16K · no “sweet spot” without objective</div><div class="scope-note" style="margin:6px 0"><strong>Config lineage: TP4/PP1 preserved V6 cases · only chunk budget changes.</strong></div><div class="chart short"><canvas id="chart_long_chunk"></canvas></div></div>
-<div class="card"><div class="card-title">1M KV-Cache Dtype Sensitivity — FP8 vs Baseline</div><div class="card-sub">Compare only against otherwise matched baseline</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from the matched evidence rows; only KV-cache dtype is the intended comparison.</strong></div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:calc(100% - 95px);box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — FP8 KV Cache Not Executed</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> GUARDED NOT_RUN / Intentionally excluded.<br/><b>Architectural Rationale:</b> FP8 KV-cache runtime acceptance was not validated in this campaign; no quantitative comparison exists. All verified runs operated in BF16 baseline (~88.8 GiB GPU memory footprint).</div></div><canvas id="chart_long_fp8" style="display:none"></canvas></div>
+<div class="card"><div class="card-title">1M KV-Cache Dtype Sensitivity — FP8 vs Baseline</div><div class="card-sub">Compare only against otherwise matched baseline</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from the matched evidence rows; only KV-cache dtype is the intended comparison.</strong></div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:calc(100% - 95px);box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — FP8 KV Cache Not Executed</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> NOT_RUN (no gate reason recorded).<br/><b>Architectural Rationale:</b> FP8 KV-cache was not executed; coverage.csv records has_gate False and no gate_reason; no quantitative comparison exists. All verified runs operated in BF16 baseline (~88.8 GiB GPU memory footprint).</div></div><canvas id="chart_long_fp8" style="display:none"></canvas></div>
 <div class="card"><div class="card-title">Prefix Reuse 1M</div><div class="card-sub">first/cold TTFT + repeated-prefix median + hit/query metrics</div><div class="scope-note" style="margin:6px 0"><strong>Config: exact TP/PP must bind from case manifest; compare cold vs repeated-prefix without changing topology.</strong></div><div class="chart short"><canvas id="chart_long_prefix"></canvas></div></div>
 </div>
 <div class="grid2">
@@ -5150,6 +5165,50 @@ if (typeof Chart === 'undefined') {
 </section>
 <!-- SCHEDULER -->
 <section class="tabpage" id="sched">
+<div class="card mb8" id="wall-time-budget-panel">
+<div class="card-title">⏱️ End-to-End Wall-Time Budget (Where the Time Goes — §4.17)</div>
+<div class="card-sub">Decomposition of First-Token Time (TTFT) and Decode Token Time (TPOT) across layouts and concurrency regimes. † indicates modelled/derived decomposition from combined telemetry and torch profiles.</div>
+<div class="table-wrap">
+<table>
+<thead><tr><th>Operating Point</th><th>Total TTFT</th><th>Queue Wait</th><th>Prefill Kernels</th><th>Collectives</th><th>Pipeline Waits</th><th>vLLM Overhead</th></tr></thead>
+<tbody>
+<tr><td><b>TP4/PP1 · 8K</b></td><td>222.2 ms</td><td>0%</td><td>39%</td><td>54%</td><td>—</td><td>6% (14 ms)</td></tr>
+<tr><td><b>TP8/PP1 · 8K</b></td><td>263.3 ms</td><td>0%</td><td>25%</td><td>70%</td><td>—</td><td>5% (13 ms)</td></tr>
+<tr><td><b>TP4/PP1 · 128K</b> †</td><td>4.53 s</td><td>0%</td><td>54%</td><td>43%</td><td>—</td><td>3%</td></tr>
+<tr><td><b>TP8/PP1 · 128K</b> †</td><td>4.81 s</td><td>0%</td><td>42%</td><td>55%</td><td>—</td><td>3%</td></tr>
+<tr><td><b>TP4/PP4 · 128K</b> †</td><td>5.23 s</td><td>0%</td><td>15%</td><td>13%</td><td>69% (P2P idle)</td><td>3%</td></tr>
+<tr><td><b>TP16/PP1 · 128K</b> †</td><td>14.80 s</td><td>0%</td><td>23%</td><td>75% (TCP AR)</td><td>—</td><td>2%</td></tr>
+<tr><td><b>TP4/PP1 · 1M</b> †</td><td>93.25 s</td><td>0%</td><td>83%</td><td>15%</td><td>—</td><td>2%</td></tr>
+<tr><td><b>TP8/PP1 · 1M</b> †</td><td>74.89 s</td><td>0%</td><td>74%</td><td>24%</td><td>—</td><td>2%</td></tr>
+<tr><td><b>TP4/PP4 · 1M</b> †</td><td>28.57 s</td><td>0%</td><td>21%</td><td>12%</td><td>61% (P2P idle)</td><td>5%</td></tr>
+<tr><td><b>TP16/PP1 · 1M</b> †</td><td>68.20 s</td><td>0%</td><td>44%</td><td>54% (TCP AR)</td><td>—</td><td>2%</td></tr>
+<tr><td><b>TP4/PP1 · 128K · c4</b> †</td><td>10.31 s</td><td>50% (Queue)</td><td>19%</td><td>24%</td><td>—</td><td>3%</td></tr>
+<tr><td><b>TP4/PP1 · 1M · c4</b> †</td><td>231.27 s</td><td>58% (Queue)</td><td>6%</td><td>33%</td><td>—</td><td>2%</td></tr>
+</tbody>
+</table>
+</div>
+<div class="table-wrap mt8">
+<table>
+<thead><tr><th>Operating Point</th><th>Per Token (TPOT)</th><th>Collectives (AR)</th><th>Pipeline Hops</th><th>Memory Floor (Weights+KV)</th><th>Kernels Above Floor</th><th>Waiting Behind Prefills</th></tr></thead>
+<tbody>
+<tr><td><b>TP4/PP1 · 8K</b></td><td>4.5 ms</td><td>24%</td><td>—</td><td>21%</td><td>55%</td><td>—</td></tr>
+<tr><td><b>TP8/PP1 · 8K</b></td><td>6.4 ms</td><td>52%</td><td>—</td><td>8%</td><td>41%</td><td>—</td></tr>
+<tr><td><b>TP4/PP1 · 128K</b> †</td><td>5.1 ms</td><td>21%</td><td>—</td><td>30%</td><td>49%</td><td>—</td></tr>
+<tr><td><b>TP8/PP1 · 128K</b> †</td><td>7.1 ms</td><td>46%</td><td>—</td><td>15%</td><td>39%</td><td>—</td></tr>
+<tr><td><b>TP4/PP4 · 128K</b> †</td><td>5.6 ms</td><td>19%</td><td>9%</td><td>27%</td><td>45%</td><td>—</td></tr>
+<tr><td><b>TP16/PP1 · 128K</b> †</td><td>14.9 ms</td><td>77% (Cross-node AR)</td><td>—</td><td>6%</td><td>18%</td><td>—</td></tr>
+<tr><td><b>TP4/PP1 · 1M</b> †</td><td>10.3 ms</td><td>10%</td><td>—</td><td>54% (KV Read Floor)</td><td>35%</td><td>—</td></tr>
+<tr><td><b>TP8/PP1 · 1M</b> †</td><td>12.1 ms</td><td>27%</td><td>—</td><td>43% (KV Read Floor)</td><td>30%</td><td>—</td></tr>
+<tr><td><b>TP4/PP4 · 1M</b> †</td><td>10.6 ms</td><td>10%</td><td>4%</td><td>53% (KV Read Floor)</td><td>34%</td><td>—</td></tr>
+<tr><td><b>TP16/PP1 · 1M</b> †</td><td>20.1 ms</td><td>57% (Cross-node AR)</td><td>—</td><td>25%</td><td>18%</td><td>—</td></tr>
+<tr><td><b>TP4/PP1 · 8K · c8</b> †</td><td>10.8 ms</td><td>12%</td><td>—</td><td>9%</td><td>51%</td><td>28% (Prefill Stall)</td></tr>
+<tr><td><b>TP4/PP1 · 8K · c32</b> †</td><td>34.5 ms</td><td>5%</td><td>—</td><td>3%</td><td>38%</td><td>54% (Prefill Stall)</td></tr>
+<tr><td><b>TP4/PP1 · 128K · c4</b> †</td><td>67.0 ms</td><td>2%</td><td>—</td><td>2%</td><td>10%</td><td>86% (Prefill Stall)</td></tr>
+<tr><td><b>TP4/PP1 · 1M · c4</b> †</td><td>267.4 ms</td><td>—</td><td>—</td><td>2%</td><td>1%</td><td>96% (Prefill Stall)</td></tr>
+</tbody>
+</table>
+</div>
+</div>
 <div class="section-title"><span>Scheduler &amp; KV — Capacity, Queueing, Runtime State</span><small>Client concurrency ≠ arrival RPS ≠ running sequences ≠ max_num_seqs</small></div><div class="card mb8" id="scheduler-config-identity">
 <div class="card-title">🏷 Scheduler / KV Configuration Identity</div>
 <div class="card-sub">Scheduler effects are configuration-specific. Each series must include TP/PP before context, concurrency, or scheduler modifier.</div>
@@ -5178,7 +5237,7 @@ if (typeof Chart === 'undefined') {
 <div class="grid3 mb8">
 <div class="card"><div class="card-title">Preemptions</div><div class="card-sub">Exact TP/PP + context + load required for every point</div><div class="chart short"><canvas id="chart_sched_preemptions"></canvas></div></div>
 <div class="card"><div class="card-title">max_num_seqs Sensitivity</div><div class="card-sub">Performance Characterization 1M extension: TP4/PP1 · 1M c4 · max_num_seqs 4/8/16; preserved 512K series, if shown, stays separately labeled</div><div class="chart short"><canvas id="chart_sched_max_seqs"></canvas></div></div>
-<div class="card"><div class="card-title">Offload Bytes / Time</div><div class="card-sub">Exact TP/PP must bind from the offload case manifest</div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:100%;box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — Host CPU Offload Excluded</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> NOT_RUN / Excluded from execution scope.<br/><b>Architectural Rationale:</b> Host memory offload was intentionally disabled as all tested models and KV states operated entirely within onboard GPU memory without requiring host tiering.</div></div></div>
+<div class="card"><div class="card-title">Offload Bytes / Time</div><div class="card-sub">Exact TP/PP must bind from the offload case manifest</div><div style="padding:10px;background:rgba(255,200,87,0.04);border:1px solid rgba(255,200,87,0.25);border-radius:6px;height:100%;box-sizing:border-box"><div style="font-weight:700;color:var(--amber);margin-bottom:4px;font-size:11px">GUARDED NOT_RUN — Host CPU Offload Excluded</div><div style="font-size:11px;color:var(--muted);line-height:1.35"><b>Status:</b> NOT_RUN / Excluded from execution scope.<br/><b>Architectural Rationale:</b> NOT_RUN (probe defined in case_manifest with 32 GiB offload target; benchmarks list empty, no gate reason recorded).</div></div></div>
 </div>
 
 <div class="card mb8" id="scheduler-scaleout-matrix">
@@ -5256,6 +5315,9 @@ if (typeof Chart === 'undefined') {
 </section>
 <!-- PROFILER -->
 <section class="tabpage" id="profiler">
+<div style="background:rgba(239,68,68,0.12);border:1px solid #ef4444;border-radius:6px;padding:12px;margin-bottom:14px;color:#fca5a5;font-size:12px;line-height:1.5">
+<b style="color:#f87171">⚠️ PROFILER PROTOCOL DISCLOSURE:</b> All Nsight Systems profiles were captured with <code>--enforce-eager</code> (decode step 30.5 ms vs 4.47 ms in serving). Serving runs with CUDA Graphs ON. Use Nsight profiles for kernel inventory/diagnostics, not for serving time-shares. Use Torch profiles for graphs-on decode step budget (18.9 µs / 58.7 µs AllReduce).
+</div>
 <div class="section-title"><span>Profiler — Critical Path, Kernel Activity &amp; Multi-Node Distributed Traces</span><small>Empirical evidence from Nsight Systems SQLite exports (112,640 kernels) and PyTorch Profiler traces</small></div>
 
 <!-- PROFILER CONFIG IDENTIFICATION -->
@@ -5263,7 +5325,7 @@ if (typeof Chart === 'undefined') {
   <div class="header-row">
     <div>
       <div class="card-title">🏷 Profiler Empirical Evidence Identity &amp; Provenance</div>
-      <div class="card-sub">Traced on Dual-Node NVIDIA RTX PRO 6000 Blackwell Server Edition (16× 96GB GPUs, AMD EPYC 9654, MTU 8896 Jumbo VPC)</div>
+      <div class="card-sub">Traced on Dual-Node NVIDIA RTX PRO 6000 Blackwell Server Edition (16× 96GB GPUs, Dual-Socket AMD EPYC (2× 96 cores, SMT), MTU 1460 Jumbo VPC)</div>
     </div>
     <span class="badge b-green"><span class="dot"></span>AUDITED ARTIFACTS</span>
   </div>
@@ -5274,7 +5336,7 @@ if (typeof Chart === 'undefined') {
         <tr><td><b>Single-Node Nsight Systems</b></td><td>TP4 / PP1 &amp; TP8 / PP1</td><td>8K Decode (c=1, c=8) &amp; 128K Prefill (c=1)</td><td><span class="mono">cuda_gpu_kern_sum.csv</span>, <span class="mono">cuda_api_sum.csv</span>, <span class="mono">nvtx_pushpop_sum.csv</span></td><td><span class="status s-completed">6 CAPTURED (100%)</span></td></tr>
         <tr><td><b>PyTorch Operator Profiler</b></td><td>TP4 / PP1 &amp; TP8 / PP1</td><td>8K Decode Interactive Turn</td><td><span class="mono">torch/profiler_out_0..3.txt</span> (Self CUDA/CPU time &amp; operator call counts)</td><td><span class="status s-completed">2 CAPTURED (100%)</span></td></tr>
         <tr><td><b>Multi-Node Distributed Nsight</b></td><td>TP4/PP4, TP8/PP2, TP4/PP2, TP16/PP1</td><td>128K Prefill, 8K Decode (c=1, c=8), 512K Prefill</td><td><span class="mono">NSYS_ANALYSIS.json</span>, <span class="mono">node0/node1 worker nsys-rep &amp; sqlite</span></td><td><span class="status s-completed">14 / 22 COMPLETE</span><div class="small" style="font-size:7.5px;color:var(--muted)">11 Native + 3 configured-100G complete; 8 expected points incomplete/missing</div></td></tr>
-        <tr><td><b>Bandwidth-Capped Profiles</b></td><td>Distributed Capped Sweeps</td><td>Deferred in favor of empirical E2E + iperf hardware telemetry</td><td><span class="mono">hardware_processed/summary.json</span></td><td><span class="status s-notrun">HW QUALIFIED / DEFERRED</span></td></tr>
+        <tr><td><b>Bandwidth-Capped Profiles</b></td><td>Distributed Capped Sweeps</td><td>3 Prefill sweeps captured at 100G; decode points deferred in favor of empirical E2E + iperf hardware telemetry</td><td><span class="mono">hardware_processed/summary.json</span></td><td><span class="status s-completed">3 CAPTURED / DECODE DEFERRED</span></td></tr>
       </tbody>
     </table>
   </div>
@@ -5301,8 +5363,8 @@ if (typeof Chart === 'undefined') {
       <div class="icon">AR</div>
       <div>
         <div class="k-label">AllReduce Barrier Latency</div>
-        <div class="k-value" style="color:var(--cyan)">369.5 μs → 5,739 μs</div>
-        <div class="k-note">TP4 PCIe: 369.5μs | TP8 NUMA: 446.5μs | TP16 TCP: 5.74ms</div>
+        <div class="k-value" style="color:var(--cyan)">18.9 µs → 58.7 µs (Decode)</div>
+        <div class="k-note">Graphs ON Decode: TP4 18.9µs · TP8 58.7µs (torch) | Prefill (37.7MB): TP4 1.6–2.0ms · TP8 2.0ms · TP16 3.9ms</div>
       </div>
     </div>
   </div>
@@ -5321,8 +5383,8 @@ if (typeof Chart === 'undefined') {
       <div class="icon">GV</div>
       <div>
         <div class="k-label">Decode GEMV Projections</div>
-        <div class="k-value" style="color:var(--purple)">156.1 ms → 89.2 ms</div>
-        <div class="k-note">-42.9% latency reduction on 8 GPUs for decode GEMV</div>
+        <div class="k-value" style="color:var(--purple)">171.2 ms → 126.5 ms</div>
+        <div class="k-note">-26.1% latency reduction on 8 GPUs for decode GEMV (all gemvx rows)</div>
       </div>
     </div>
   </div>
@@ -5391,7 +5453,7 @@ if (typeof Chart === 'undefined') {
       <div><b>Sync Bound</b><span>32.8% of CPU API time (3.64s) spent waiting on cudaEventSynchronize</span></div>
       <div><b>Launch Frequency</b><span>888,504 kernel launches taking 3.47s (3.9 μs avg CPU launch latency)</span></div>
       <div><b>Async Memory</b><span>cudaMemcpyAsync consumes 710 ms across 90,224 calls</span></div>
-      <div><b>Optimization</b><span style="color:var(--green)">CUDA Graph capture is a candidate follow-up optimization to test</span></div>
+      <div><b>Optimization</b><span style="color:var(--green)">Serving already operates with CUDA Graphs ON (4.47 ms decode step vs 30.5 ms eager profile)</span></div>
     </div>
   </div>
 
@@ -5488,7 +5550,7 @@ if (typeof Chart === 'undefined') {
           <td><b style="color:var(--red)">86.3%</b></td>
           <td>41.62s</td>
           <td><span class="mono">ncclDevKernel_AllReduce_bf16_RING</span></td>
-          <td>Dominant aggregate GPU kernel-work share in decode profile (112,640 traced ring AllReduce calls); TP8 incurs +20.8% cross-NUMA socket traversal overhead</td>
+          <td>Dominant aggregate GPU kernel-work share in decode profile (112,640 traced ring AllReduce calls); TP8 incurs +39.8 µs per decode AllReduce (14-step vs 6-step ring + host serving skew)</td>
         </tr>
         <tr>
           <td><b>Host CPU Launch &amp; Event Sync</b></td>
@@ -5741,16 +5803,16 @@ if (typeof Chart === 'undefined') {
       <tbody>
         <!-- Native Complete (11) -->
         <tr><td><span class="mono">tp4_pp4_prefill_128k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>SendRecv P2P activation handoff is 8.3% of stage work, decoupling pipeline stages from cross-node tensor-parallel collective synchronization</td></tr>
-        <tr><td><span class="mono">tp4_pp4_decode_8k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>NUMA-local TP4 handles layerwise collectives; remote VPC only passes inter-stage tensors</td></tr>
-        <tr><td><span class="mono">tp4_pp4_prefill_512k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>512K Heavy Prefill</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Peak memory remains flat at 88.84 GiB VRAM; zero TCP drops across native VPC fabric</td></tr>
+        <tr><td><span class="mono">tp4_pp4_decode_8k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Eager-mode capture; per-worker nsys export incomplete (2/16 usable ranks). Decode analysis referenced from graphs-on torch profiles.</td></tr>
+        <tr><td><span class="mono">tp4_pp4_prefill_512k</span></td><td><b style="color:var(--purple)">TP4 / PP4</b></td><td>GCP_NATIVE</td><td>512K Heavy Prefill</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Flat memory footprint at 88.84 GiB VRAM; 16/16 worker exports complete across both nodes.</td></tr>
         <tr><td><span class="mono">tp8_pp2_prefill_128k</span></td><td><b style="color:var(--amber)">TP8 / PP2</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Intra-node 8-GPU AllReduce completes in 2.02ms; single inter-node P2P stage handoff</td></tr>
-        <tr><td><span class="mono">tp8_pp2_decode_8k</span></td><td><b style="color:var(--amber)">TP8 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Cross-NUMA 8-GPU ring barrier adds 20.8% latency over TP4, but zero cross-node TP traffic</td></tr>
+        <tr><td><span class="mono">tp8_pp2_decode_8k</span></td><td><b style="color:var(--amber)">TP8 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Eager-mode capture; per-worker nsys export failed (0/16 usable ranks). Decode analysis referenced from graphs-on torch profiles.</td></tr>
         <tr><td><span class="mono">tp4_pp2_prefill_128k</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Balanced pipeline stages; higher KV memory allocation per rank than PP4</td></tr>
-        <tr><td><span class="mono">tp4_pp2_decode_8k</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Fast NUMA-local decode steps (5.51ms TPOT); solid alternative if fewer stages preferred</td></tr>
-        <tr><td><span class="mono">tp4_pp2_decode_8k_c8</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=8 Batched)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Stable queuing behavior with 0 preemptions and zero TCP packet retransmissions</td></tr>
-        <tr><td><span class="mono">tp16_pp1_prefill_128k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td><b>Severe TCP Bottleneck:</b> AllReduce ring barrier surges to 5.74ms (72.4% of all GPU time)</td></tr>
-        <tr><td><span class="mono">tp16_pp1_decode_8k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Decode TPOT degrades to 14.94ms due to high cross-node collective synchronization exposure</td></tr>
-        <tr><td><span class="mono">tp16_pp1_prefill_512k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>512K Heavy Prefill</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>TTFT climbs to 29.62s (Native) and explodes to 128.28s under 20G cap (+333% latency penalty)</td></tr>
+        <tr><td><span class="mono">tp4_pp2_decode_8k</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Eager-mode capture; per-worker nsys export incomplete (2/8 usable ranks). Decode analysis referenced from graphs-on torch profiles.</td></tr>
+        <tr><td><span class="mono">tp4_pp2_decode_8k_c8</span></td><td><b style="color:var(--cyan)">TP4 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=8 Batched)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Eager-mode capture; per-worker nsys export failed (0/4 usable ranks). Stable queue in serving (0 preemptions).</td></tr>
+        <tr><td><span class="mono">tp16_pp1_prefill_128k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>128K Prefill (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td><b>Severe TCP Bottleneck:</b> AllReduce ring barrier surges to 3.91ms (77.6% of GPU work across 12 usable ranks).</td></tr>
+        <tr><td><span class="mono">tp16_pp1_decode_8k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>8K Decode (c=1)</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Eager-mode capture; per-worker nsys export failed (0/9 usable ranks). Decode AllReduce estimated at 210-290 µs/call.</td></tr>
+        <tr><td><span class="mono">tp16_pp1_prefill_512k</span></td><td><b style="color:var(--red)">TP16 / PP1</b></td><td>GCP_NATIVE</td><td>512K Heavy Prefill</td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-completed">COMPLETE</span></td><td>Eager-mode capture; per-worker nsys export incomplete (1/12 usable ranks). TTFT climbs to 29.62s (Native) and explodes to 128.28s under 20G cap (+333%).</td></tr>
         
         <!-- Native Incomplete (3) -->
         <tr style="background:rgba(255,200,87,0.04)"><td><span class="mono">tp8_pp2_decode_8k_c8</span></td><td><b style="color:var(--amber)">TP8 / PP2</b></td><td>GCP_NATIVE</td><td>8K Decode (c=8)</td><td><span class="status s-unres">0 / 8 (Missing)</span></td><td><span class="status s-completed">8 / 8</span></td><td><span class="status s-unres">INCOMPLETE</span></td><td>Node 0 nsys report missing; Node 1 report valid. Excluded from strict full coverage.</td></tr>
@@ -5794,7 +5856,7 @@ if (typeof Chart === 'undefined') {
         </tr>
         <tr>
           <td><b style="color:var(--green)">TP8 Prefill beats TP4 (-12% @ 512K, -20% @ 1M)</b></td>
-          <td>At 512K, TTFT drops from 31.92s to 28.09s (-12.0%) and at 1M from 93.25s to 74.89s (-19.9%). Note: At 128K, TP8 is slightly slower than TP4 (5.59s vs 5.37s). TP8 reduces measured FlashAttention kernel duration in captured profile (6.24ms to 4.26ms).</td>
+          <td>At 512K, TTFT drops from 31.92s to 28.09s (-12.0%) and at 1M from 93.25s to 74.89s (-19.9%). Note: At 128K, TP8 is slightly slower than TP4 in serving (4.81s vs 4.53s). TP8 reduces measured FlashAttention kernel duration in captured profile (6.24ms to 4.26ms).</td>
           <td><b>Single-Node Batch / Document Ingestion:</b> For long-context prefill workloads (512K+), evaluate TP8 where prompt processing latency dominates.</td>
           <td><span class="mono">tp8_prefill/cuda_gpu_kern_sum.csv</span></td>
         </tr>
@@ -5813,7 +5875,7 @@ if (typeof Chart === 'undefined') {
         <tr>
           <td><b style="color:var(--red)">Host Launch Gap (3.47s in cudaLaunchKernel)</b></td>
           <td>CPU driver launch overhead averages 3.9 μs per kernel; across 888,504 kernel launches, host scheduling overhead accumulates to 31.2% of CPU time.</td>
-          <td><b>Runtime Optimization:</b> CUDA Graph capture is a candidate follow-up optimization to evaluate for decode turns (<span class="mono">enforce_eager=false</span>).</td>
+          <td><b>Runtime Optimization:</b> Serving already operates with CUDA Graphs ON (4.47 ms decode step vs 30.5 ms in eager profiler).</td>
           <td><span class="mono">tp4_decode/cuda_api_sum.csv</span></td>
         </tr>
       </tbody>
@@ -7007,7 +7069,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">2.65s</b></td>
 <td class="right mono">5.51ms</td>
@@ -7022,7 +7084,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">17.95s</b></td>
 <td class="right mono">7.86ms</td>
@@ -7037,7 +7099,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">52.53s</b></td>
 <td class="right mono">10.54ms</td>
@@ -7052,7 +7114,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">2.79s</b></td>
 <td class="right mono">7.54ms</td>
@@ -7067,7 +7129,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">15.58s</b></td>
 <td class="right mono">9.88ms</td>
@@ -7082,7 +7144,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">41.51s</b></td>
 <td class="right mono">12.47ms</td>
@@ -7097,7 +7159,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">1.71s</b></td>
 <td class="right mono">5.63ms</td>
@@ -7112,7 +7174,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">10.22s</b></td>
 <td class="right mono">8.03ms</td>
@@ -7127,7 +7189,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">28.57s</b></td>
 <td class="right mono">10.64ms</td>
@@ -7142,7 +7204,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=3: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=3: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">6.42s</b></td>
 <td class="right mono">14.94ms</td>
@@ -7157,7 +7219,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">29.62s</b></td>
 <td class="right mono">17.41ms</td>
@@ -7172,7 +7234,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (0.05ms RTT)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">GCP_NATIVE</span><br/><span style="font-size:6.8px;color:var(--muted)">173.6 Gbps (~0.1ms RTT)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">68.20s</b></td>
 <td class="right mono">20.08ms</td>
@@ -7187,7 +7249,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">2.66s</b></td>
 <td class="right mono">5.53ms</td>
@@ -7202,7 +7264,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">17.98s</b></td>
 <td class="right mono">7.90ms</td>
@@ -7217,7 +7279,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">52.60s</b></td>
 <td class="right mono">10.57ms</td>
@@ -7232,7 +7294,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">2.83s</b></td>
 <td class="right mono">7.58ms</td>
@@ -7247,7 +7309,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">15.55s</b></td>
 <td class="right mono">9.93ms</td>
@@ -7262,7 +7324,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">41.46s</b></td>
 <td class="right mono">12.51ms</td>
@@ -7277,7 +7339,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">1.76s</b></td>
 <td class="right mono">5.67ms</td>
@@ -7292,7 +7354,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">10.39s</b></td>
 <td class="right mono">8.09ms</td>
@@ -7307,7 +7369,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">28.87s</b></td>
 <td class="right mono">10.68ms</td>
@@ -7322,7 +7384,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=3: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=3: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">9.74s</b></td>
 <td class="right mono">15.62ms</td>
@@ -7337,7 +7399,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">43.09s</b></td>
 <td class="right mono">17.86ms</td>
@@ -7352,7 +7414,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">100G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">56.8 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">92.99s</b></td>
 <td class="right mono">20.58ms</td>
@@ -7367,7 +7429,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">2.86s</b></td>
 <td class="right mono">5.52ms</td>
@@ -7382,7 +7444,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">18.37s</b></td>
 <td class="right mono">7.94ms</td>
@@ -7397,7 +7459,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">53.13s</b></td>
 <td class="right mono">10.55ms</td>
@@ -7412,7 +7474,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">2.81s</b></td>
 <td class="right mono">7.59ms</td>
@@ -7427,7 +7489,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">15.55s</b></td>
 <td class="right mono">9.92ms</td>
@@ -7442,7 +7504,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP8/PP2</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">41.47s</b></td>
 <td class="right mono">12.51ms</td>
@@ -7457,7 +7519,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=4: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=4: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">1.96s</b></td>
 <td class="right mono">5.65ms</td>
@@ -7472,7 +7534,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=2: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=2: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">11.13s</b></td>
 <td class="right mono">8.10ms</td>
@@ -7487,7 +7549,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP4/PP4</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">29.68s</b></td>
 <td class="right mono">10.71ms</td>
@@ -7502,7 +7564,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">131K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=3: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=3: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">31.05s</b></td>
 <td class="right mono">15.37ms</td>
@@ -7517,7 +7579,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">524K</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">128.28s</b></td>
 <td class="right mono">17.72ms</td>
@@ -7532,7 +7594,7 @@ if (typeof Chart === 'undefined') {
 <td><b style="color:var(--purple)">TP16/PP1</b></td>
 <td><span class="chip" style="padding:1px 4px;font-size:7px">1M</span> <span style="font-size:7.5px">c=1</span></td>
 <td class="mono" style="font-size:7px;color:var(--dim)">b=8192<br/>s=8<br/>BF16·pfx:OFF</td>
-<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc/netem)</span></td>
+<td><span class="badge b-cyan" style="font-size:7px">20G Cap</span><br/><span style="font-size:6.8px;color:var(--muted)">16.5 Gbps (tc HTB)</span></td>
 <td><span class="badge b-amber" style="font-size:6.8px" title="N=1: p95 uncertified (requires N≥20)">p95 NOT VALID</span> <span class="badge b-amber" style="font-size:6.8px" title="N=1: p99 uncertified (requires N≥100)">p99 NOT VALID</span></td>
 <td class="right mono"><b style="color:var(--cyan)">256.89s</b></td>
 <td class="right mono">20.57ms</td>
@@ -9433,7 +9495,7 @@ window.KD_PAGES_DATA = [
       ],
       "network": [
         {
-          "name": "Single-Node NVLink/PCIe Base",
+          "name": "single node, PCIe (no NVLink)",
           "iperf": "Local Host Bus"
         }
       ]
@@ -10021,7 +10083,7 @@ window.KD_PAGES_DATA = [
         "val": "2.32\u00d7",
         "label": "8K AllReduce CUDA Time",
         "color": "#f87171",
-        "sub": "251.5ms \u2192 583.9ms Self CUDA"
+        "sub": "132.3ms \u2192 409.9ms Self CUDA (Decode-Only, 3.10\u00d7)"
       },
       {
         "val": "+17.9%",
@@ -10068,7 +10130,7 @@ window.KD_PAGES_DATA = [
       "network": [
         {
           "name": "Single-Node Host Bus",
-          "iperf": "Local PCIe/NVLink"
+          "iperf": "PCIe (no NVLink)"
         }
       ]
     },
@@ -10487,7 +10549,7 @@ window.KD_PAGES_DATA = [
       "Reported KV percentage falls sharply with pipeline parallelism: TP4/PP1 12.29% \u2192 TP4/PP2 5.91% \u2192 TP4/PP4 2.75%.",
       "Physical device memory remains high across all topologies: 88.83 GiB peak telemetry on a raw-reported ~95.59 GiB device.",
       "Raw reported capacity \u2212 peak telemetry leaves 6.76 to 8.88 GiB headroom; do not label memory as saturated or exhausted.",
-      "Avoid linear arithmetic KV aggregation (e.g. 2\u00d75.91%=11.82%); those arithmetic reconstructions imply an allocator law not proven by this data."
+      "Avoid linear arithmetic KV aggregation (e.g. 2\u00d75.91%=11.82%); Empirical KV pool size in tokens (requested_input_tokens / peak_kv_usage): TP4/PP1: 8.14M, TP8/PP1: 8.21M, TP16/PP1: 8.24M, TP4/PP2: 16.9M, TP8/PP2: 17.0M, TP4/PP4: 36.4M tokens. MLA latent KV cache (8,064 B/token) is replicated across all TP ranks; TP width adds no token capacity, while PP depth directly multiplies KV pool."
     ],
     "decision_changed": "Use KV% for cache pressure and physical device-memory telemetry for OOM/headroom analysis; never substitute one for the other.",
     "boundary": "Physical memory telemetry represents peak device allocation recorded during benchmark runs on 95.59 GiB devices."
@@ -10662,7 +10724,7 @@ window.renderFindingHtmlClient = function(p, prefix) {
                 '<div class="kd-chain-card">' +
                   '<div class="kd-chain-step-num">Stage 2: PyTorch Profiler @ 8K</div>' +
                   '<div class="kd-chain-step-title">nccl:all_reduce Self CUDA Time</div>' +
-                  '<div class="kd-chain-step-body">Rises from <b>251.529 ms</b> (TP4) to <b>583.866 ms</b> (TP8) with exact same <b>7,040 AllReduce calls</b> (~2.32&times; overhead).</div>' +
+                  '<div class="kd-chain-step-body">Decode AllReduce rises from <b>132.3 ms</b> (TP4) to <b>409.9 ms</b> (TP8) (~3.10&times;; 18.9 vs 58.7 µs/call). Single 8K prefill step consumed 119.2ms (TP4) / 174.0ms (TP8); overhead).</div>' +
                 '</div>' +
                 '<div class="kd-chain-arrow">&rarr;</div>' +
                 '<div class="kd-chain-card">' +
