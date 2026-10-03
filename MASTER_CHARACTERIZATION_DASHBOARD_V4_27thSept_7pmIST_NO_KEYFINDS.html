@@ -4943,8 +4943,6 @@ if (typeof Chart === 'undefined') {
 <option value="GCP_NATIVE" selected>GCP_NATIVE (173.6 Gbps Uncapped)</option>
 <option value="GCP_CAPPED_100G">100G Cap (56.8 Gbps tc HTB — burst 2400B limited)</option>
 <option value="GCP_CAPPED_20G">20G Cap (16.5 Gbps tc HTB)</option>
-<option value="GCP_CAPPED_50G">50G Cap (HW Qualified 33.0 Gbps · App NOT_RUN)</option>
-<option value="GCP_CAPPED_10G">10G Cap (HW Qualified 9.0 Gbps · App NOT_RUN)</option>
 </select>
 </div>
 
@@ -5043,17 +5041,17 @@ if (typeof Chart === 'undefined') {
 <div class="header-row"><div><div class="card-title">📡 Network Architecture: Configured vs Measured Transport</div><div class="card-sub">Dual-node GCP VPC measured throughput, latency, MTU &amp; application layer impact</div></div><span class="badge b-cyan"><span class="dot"></span>HARDWARE VERIFIED</span></div>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Fabric Mode</th><th>Configured Cap</th><th>Measured iperf Transport</th><th>RTT / MTU</th><th>App Layer Impact</th></tr></thead>
+<thead><tr><th>Fabric Mode</th><th>Configured Cap</th><th>Measured iperf Transport</th><th>Interface / MTU</th><th>App Layer Impact</th></tr></thead>
 <tbody>
-<tr><td><b style="color:var(--green)">GCP_NATIVE</b></td><td>Uncapped (Native VPC)</td><td><b style="color:var(--green)">173.58 Gbps fwd</b> (IPERF_VALIDATION.json; smoke ~173.60 fwd / ~173.59 rev)</td><td>0.05ms / 8896</td><td><span class="status s-completed">NATIVE BASELINE</span></td></tr>
-<tr><td><b style="color:var(--cyan)">CAPPED_100G</b></td><td>100 Gbps (tc HTB)</td><td><b>56.84 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+1.0% TTFT on PP4 (+51.6% on TP16)</span></td></tr>
-<tr><td><b style="color:var(--amber)">CAPPED_50G</b></td><td>50 Gbps (tc HTB)</td><td><b>33.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
-<tr><td><b style="color:var(--orange)">CAPPED_20G</b></td><td>20 Gbps (tc HTB)</td><td><b>16.48 Gb/s</b> measured</td><td>0.05ms / 8896</td><td><span class="status s-completed">+3.9% TTFT on PP4 (+276.7% on TP16)</span></td></tr>
-<tr><td><b style="color:var(--red)">CAPPED_10G</b></td><td>10 Gbps (tc HTB)</td><td><b>9.00 Gb/s</b> (HW qual)</td><td>0.05ms / 8896</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
+<tr><td><b style="color:var(--green)">GCP_NATIVE</b></td><td>Uncapped (Native VPC)</td><td><b style="color:var(--green)">173.58 Gbps fwd</b> (IPERF_VALIDATION.json; smoke ~173.60 fwd / ~173.59 rev)</td><td>ens3 / MTU 1460</td><td><span class="status s-completed">NATIVE BASELINE</span></td></tr>
+<tr><td><b style="color:var(--cyan)">CAPPED_100G</b></td><td>100 Gbps (tc HTB)</td><td><b>56.84 Gb/s</b> measured</td><td>ens3 / MTU 1460</td><td><span class="status s-completed">+1.0% TTFT on PP4 (+51.6% on TP16)</span></td></tr>
+<tr><td><b style="color:var(--amber)">CAPPED_50G</b></td><td>50 Gbps (tc HTB)</td><td><b>33.00 Gb/s</b> (HW qual)</td><td>ens3 / MTU 1460</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
+<tr><td><b style="color:var(--orange)">CAPPED_20G</b></td><td>20 Gbps (tc HTB)</td><td><b>16.48 Gb/s</b> measured</td><td>ens3 / MTU 1460</td><td><span class="status s-completed">+3.9% TTFT on PP4 (+276.7% on TP16)</span></td></tr>
+<tr><td><b style="color:var(--red)">CAPPED_10G</b></td><td>10 Gbps (tc HTB)</td><td><b>9.00 Gb/s</b> (HW qual)</td><td>ens3 / MTU 1460</td><td><span class="status s-notrun">HW QUALIFIED / RUNS DEFERRED</span></td></tr>
 </tbody>
 </table>
 </div>
-<div class="takeaway-box" style="margin-top:8px"><strong>Transport Layer Audit:</strong> All multi-node runs used TCP/IP over Google Cloud VPC with MTU 1460 jumbo frames. Linux traffic control (<code>tc netem</code>) rate limiting enforces token-bucket bandwidth caps. PP-oriented tested topologies show substantially lower application-level TTFT sensitivity than TP16/PP1 over measured cap points.</div>
+<div class="takeaway-box" style="margin-top:8px"><strong>Transport Layer Audit:</strong> All multi-node runs used TCP/IP over Google Cloud VPC with standard MTU 1460 frames on ens3. Linux traffic control (<code>tc HTB</code>) rate limiting enforces token-bucket bandwidth caps. PP-oriented tested topologies show substantially lower application-level TTFT sensitivity than TP16/PP1 over measured cap points.</div>
 </div>
 </div>
 </div>
@@ -5540,7 +5538,7 @@ if (typeof Chart === 'undefined') {
   <div class="header-row">
     <div>
       <div class="card-title">🏷 Profiler Empirical Evidence Identity &amp; Provenance</div>
-      <div class="card-sub">Traced on Dual-Node NVIDIA RTX PRO 6000 Blackwell Server Edition (16× 96GB GPUs, Dual-Socket AMD EPYC (2× 96 cores, SMT), MTU 1460 Jumbo VPC)</div>
+      <div class="card-sub">Traced on Dual-Node NVIDIA RTX PRO 6000 Blackwell Server Edition (16× 96GB GPUs, 2× 96 cores SMT from CPU affinity, MTU 1460 GCP VPC)</div>
     </div>
     <span class="badge b-green"><span class="dot"></span>AUDITED ARTIFACTS</span>
   </div>
@@ -8828,7 +8826,9 @@ document.addEventListener('DOMContentLoaded', function() {
           "512K": { ttft: 128.28, tpot: 17.72, req_tps: 0.008, out_tps: 0.25, queue: 0.021, kv: 6.36, preemptions: 0 },
           "1M": { ttft: 256.89, tpot: 20.57, req_tps: 0.004, out_tps: 0.12, queue: 0.022, kv: 12.13, preemptions: 0 }
         }
-      }
+      },
+      "GCP_CAPPED_50G": null,
+      "GCP_CAPPED_10G": null
     };
 
     const metricMeta = {
@@ -9390,10 +9390,10 @@ document.addEventListener('DOMContentLoaded', function() {
     safeInitChart('chart_prof_pytorch_operators', {
         type: 'bar',
         data: {
-            labels: ['nccl:all_reduce (Intra-Node Collective)', 'aten::addmm / cublasGemv', 'vllm::fused_moe', 'vllm::paged_attention_v2', 'aten::rms_norm', 'kda::recurrent_state', 'Sum of Selected Operator Groups'],
+            labels: ['ncclDevKernel_AllReduce (Decode-Only)', 'GEMV (gemvx full sum)', 'vllm::fused_moe', 'Attention (fusedKimiK3MLA)', 'Norm (fused_add_rms_norm)', 'KDA Recurrent State', 'Sum of Selected Groups'],
             datasets: [
-                { label: 'TP4 / PP1 Self CUDA Time (ms) [623.1ms]', data: [251.5, 156.1, 120.4, 42.1, 34.8, 18.2, 623.1], backgroundColor: 'rgba(66,201,255,0.85)' },
-                { label: 'TP8 / PP1 Self CUDA Time (ms) [875.8ms]', data: [583.9, 89.2, 118.2, 38.6, 29.5, 16.4, 875.8], backgroundColor: 'rgba(255,93,115,0.85)' }
+                { label: 'TP4 / PP1 Decode-Only Self CUDA (ms) [519.0ms · 132.3ms AR]', data: [132.3, 171.2, 120.4, 42.1, 34.8, 18.2, 519.0], backgroundColor: 'rgba(66,201,255,0.85)' },
+                { label: 'TP8 / PP1 Decode-Only Self CUDA (ms) [739.1ms · 409.9ms AR]', data: [409.9, 126.5, 118.2, 38.6, 29.5, 16.4, 739.1], backgroundColor: 'rgba(255,93,115,0.85)' }
             ]
         },
         options: {
