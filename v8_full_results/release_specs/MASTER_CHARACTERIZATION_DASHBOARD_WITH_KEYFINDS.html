@@ -2751,12 +2751,14 @@ if (typeof Chart === 'undefined') {
 </div>
 </div>
 <div class="grid4 mb8">
+<div class="card kpi" style="border-left:3px solid var(--blue)"><div class="kpi-left"><div class="icon">⏱️</div><div><div class="k-label">Wall-Time Budget (§4.17)</div><div class="k-value" style="color:var(--blue);font-size:12px;letter-spacing:-0.2px">8K: 54% COMM · 1M: 83% COMP</div><div class="k-note">1M decode is 54% KV read · Load is 50–96% queue/stalls · <a href="#wall-time-budget-panel" onclick="switchTab('sched')" style="color:var(--blue);text-decoration:underline">View 24-point audit</a></div></div></div><span class="status s-completed">RESOLVED</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">✓</div><div><div class="k-label">Run Validation</div><div class="k-value" style="color:var(--amber);font-size:12px;letter-spacing:-0.2px">E2E MATRIX VALIDATED</div><div class="k-note">119 completed / 126 configured coverage rows · 7 guarded NOT_RUN · strict sign-off incomplete</div></div></div><span class="status s-notrun">PARTIAL</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">∑</div><div><div class="k-label">Fixed Serving Scope</div><div class="k-value" style="color:var(--cyan)">80 / 87</div><div class="k-note">80 completed native · 7 guarded NOT_RUN</div></div></div><span class="status s-completed">VERIFIED</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">1M</div><div><div class="k-label">Native Scale-Out Scope</div><div class="k-value" style="color:var(--purple)">12 / 12 RUNS</div><div class="k-note">4 topologies × 3 contexts on native fabric</div></div></div><span class="status s-completed">VERIFIED</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">⌁</div><div><div class="k-label">Distributed Profile Coverage</div><div class="k-value" style="color:var(--amber)">14 / 22 COMPLETE</div><div class="k-note">11 Native + 3 configured-100G complete · 8 expected points incomplete/missing</div></div></div><span class="status s-notrun">14/22</span></div>
 </div>
 <div class="grid4 mb8">
+<div class="card kpi" style="border-left:3px solid var(--blue)"><div class="kpi-left"><div class="icon">⏱️</div><div><div class="k-label">Wall-Time Budget (§4.17)</div><div class="k-value" style="color:var(--blue);font-size:12px;letter-spacing:-0.2px">8K: 54% COMM · 1M: 83% COMP</div><div class="k-note">1M decode is 54% KV read · Load is 50–96% queue/stalls · <a href="#wall-time-budget-panel" onclick="switchTab('sched')" style="color:var(--blue);text-decoration:underline">View 24-point audit</a></div></div></div><span class="status s-completed">RESOLVED</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">HW</div><div><div class="k-label">Hardware Validation</div><div class="k-value" style="color:var(--green)">VALIDATED</div><div class="k-note">Dual RTX PRO 6000 Blackwell Server Edition, 2×8 GPUs, PCIe/NUMA</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">N</div><div><div class="k-label">NCCL Policy</div><div class="k-value" style="color:var(--green);font-size:12px">12/12 CLEAN</div><div class="k-note">All 12 Ray NCCL env audits clean (validator count bug: ray_worker_audits ok: true)</div></div></div><span class="status s-completed">PASS</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">↔</div><div><div class="k-label">Native Network Evidence</div><div class="k-value" style="color:var(--cyan)">173.58 Gbps</div><div class="k-note">173.58 Gbps fwd / 173.59 rev (iperf3, 16 streams) · MTU 1460</div></div></div></div>
@@ -5234,6 +5236,7 @@ if (typeof Chart === 'undefined') {
 <span class="badge" style="border-color:var(--border)">Distributed 1M: TP4/PP2 · TP8/PP2 · TP4/PP4 · TP16/PP1</span>
 </div>
 <div class="grid4 mb8">
+<div class="card kpi" style="border-left:3px solid var(--blue)"><div class="kpi-left"><div class="icon">⏱️</div><div><div class="k-label">Wall-Time Budget (§4.17)</div><div class="k-value" style="color:var(--blue);font-size:12px;letter-spacing:-0.2px">8K: 54% COMM · 1M: 83% COMP</div><div class="k-note">1M decode is 54% KV read · Load is 50–96% queue/stalls · <a href="#wall-time-budget-panel" onclick="switchTab('sched')" style="color:var(--blue);text-decoration:underline">View 24-point audit</a></div></div></div><span class="status s-completed">RESOLVED</span></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">①</div><div><div class="k-label">Can it fit?</div><div class="k-value" style="color:var(--green)">All Measured c1 Fit</div><div class="k-note">All measured c1 topologies fit; exact memory is topology-specific (86.7–88.8 GiB)</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">②</div><div><div class="k-label">Can it finish?</div><div class="k-value" style="color:var(--green)">100% FINISH</div><div class="k-note">0 timeouts · 0 preemptions across all runs</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">③</div><div><div class="k-label">Is latency usable? (TP4/PP4 Scale-Out)</div><div class="k-value" style="color:var(--cyan)">28.57s TTFT</div><div class="k-note">~35,005 input tok/s derived rate (prompt tokens ÷ TTFT)</div></div></div></div>
@@ -5570,6 +5573,7 @@ if (typeof Chart === 'undefined') {
 
 <!-- KEY EMPIRICAL PROFILER KPIS -->
 <div class="grid4 mb8">
+<div class="card kpi" style="border-left:3px solid var(--blue)"><div class="kpi-left"><div class="icon">⏱️</div><div><div class="k-label">Wall-Time Budget (§4.17)</div><div class="k-value" style="color:var(--blue);font-size:12px;letter-spacing:-0.2px">8K: 54% COMM · 1M: 83% COMP</div><div class="k-note">1M decode is 54% KV read · Load is 50–96% queue/stalls · <a href="#wall-time-budget-panel" onclick="switchTab('sched')" style="color:var(--blue);text-decoration:underline">View 24-point audit</a></div></div></div><span class="status s-completed">RESOLVED</span></div>
   <div class="card kpi">
     <div class="kpi-left">
       <div class="icon">AR</div>
