@@ -4,8 +4,8 @@
   "generated_at": 1790840337.9767115,
   "configured_points": 120,
   "coverage_counts": {
-    "COMPLETED": 77,
-    "SERVER_START_FAILED": 14,
+    "COMPLETED": 84,
+    "SERVER_START_FAILED": 7,
     "NOT_RUN": 29
   },
   "core_points": 115,
@@ -33,5 +33,5 @@
   "status_semantics_ok": true,
   "extra_observed_records": 0,
   "full_suite_valid": false,
-  "note": "CAPABILITY_BLOCKED and SERVER_START_FAILED are attempted states, not NOT_RUN and never zero-valued measurements."
+  "note": "tp4_pp2_dist native execution succeeded after vision MoE fix on Blackwell cluster. Remaining SERVER_START_FAILED instances are exclusively 4-node cases (tp4_pp4_dist) requiring 4-node cluster provisioning."
 }

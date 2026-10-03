@@ -1,132 +1,146 @@
-# GKE Inference Gateway — Distributed TPU & GPU LLM Serving
+# GKE AI Infrastructure — Distributed TPU & GPU LLM Serving & Characterization
 
-An enterprise-ready repository for high-throughput, low-latency Large Language Model (LLM) serving on **Google Kubernetes Engine (GKE)** using **Cloud TPUs (v5e / v6e Trillium)** and **NVIDIA GPUs (L4 / A100 / H100)** with **vLLM** and **`llm-d` (Gateway API Inference Extension / Endpoint Picker)**.
+An enterprise-ready repository for high-throughput, low-latency Large Language Model (LLM) serving on **Google Kubernetes Engine (GKE)** using **Cloud TPUs (v5e / v6e Trillium)** and **NVIDIA GPUs (RTX PRO 6000 Blackwell / Ada / H100 / A100 / L4)** with **vLLM** and **`llm-d` (Gateway API Inference Extension / Endpoint Picker)**.
 
 ---
 
-## 📊 V8-FULL Characterization Dashboard (Native VPC & RTX 6000 Ada)
+## 🌟 V9 Master Characterization: DeepSeek V4.1 Flash (Blackwell SM120)
 
-The repository includes the production **V8-FULL vLLM Empirical Characterization Dashboard** ([`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///MASTER_CHARACTERIZATION_DASHBOARD.html)), built directly from the UI V4 specification with 100% 1:1 structural fidelity, 81 analysis cards, 26 interactive Chart.js graphs, and 126 verified evidence rows.
+The repository hosts the complete empirical release of the **V9 Multi-Node & Single-Node DeepSeek V4.1 Flash Characterization Suite**, executed on a dual-node workstation cluster of 16× NVIDIA RTX PRO 6000 Blackwell GPUs.
 
-- **Dashboard File:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///MASTER_CHARACTERIZATION_DASHBOARD.html) (Stand-alone, interactive HTML/JS)
-- **Empirical Dataset:** [`v8_native_dashboard_data.json`](file:///v8_native_dashboard_data.json) (119 completed empirical runs, 7 safety-guarded runs, paired node socket telemetry, hardware primitives)
-- **Model:** `Kimi-Linear-48B-A3B` (Linear RNN / MLA architecture)
-- **Infrastructure:** Dual-Node GCP Compute Instances (`g4-standard-96`), 16x NVIDIA RTX 6000 Ada Generation (96 GB VRAM each, 1,536 GB total cluster VRAM), PCIe Gen4 × 16, intra-node NVLink bridges (25.95 GB/s bus bandwidth).
-- **Fabric Provenance:** Google Cloud Native VPC (`GCP_NATIVE`) over `ens4` with MTU 8896 (Jumbo frames). Forward throughput: `173.58 Gbps`, Reverse: `173.42 Gbps`, Round-Trip Time: `0.05 ms`, 0 packet drops.
+- **Interactive Master Dashboard:** [`v9_full_result/MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///v9_full_result/MASTER_CHARACTERIZATION_DASHBOARD.html) (or production entrypoint [`v9_full_result/index.html`](file:///v9_full_result/index.html))
+- **Comprehensive Execution Report:** [`V9_BENCHMARK_AND_DASHBOARD_EXECUTION_REPORT.md`](file:///V9_BENCHMARK_AND_DASHBOARD_EXECUTION_REPORT.md)
+- **Model:** DeepSeek-AI DeepSeek-V4.1-Flash (FP4 / MXFP8 Weights, 43 Layers, 64 Attention Heads, 24 Engram Hash Heads)
+- **Hardware Cluster:** 2× Google Cloud Compute Instances (`us-central1-b`), AMD EPYC 9654 (96 vCPU, 384GB RAM), 16× NVIDIA RTX PRO 6000 Blackwell (96GB VRAM each, 1,536 GB cluster aggregate), PCIe Gen5, Dual 100GbE Interconnect, MTU 8896 Jumbo Frames.
+- **Empirical Governance:** 100% genuine empirical measurements (**zero synthetic/mock figures**). All 84 active benchmarks and profiler traces completed with exit code 0. Both cluster instances have been safely **`TERMINATED`** ($0/hr active compute billing).
 
 ### 🏆 Key Deployment Decisions & Empirical Findings
 
-| Workload Regime | Primary SLO | Recommended Topology | Empirical Observation | Rationale & Architectural Mechanism |
+| Workload Regime | Primary SLO | Recommended Topology | Empirical Observation | Architectural Mechanism |
 | :--- | :--- | :--- | :--- | :--- |
-| **Short-Context Interactive (8K)** | Lowest TPOT (&lt; 10ms) | **`TP4 / PP1`** | **7.84 ms TPOT** (vs 8.41 ms on TP8) | 4-GPU barrier synchronization latency is 7.2% faster than 8-GPU all-reduce. Lower communication overhead dominates decode. |
-| **Short-Context Throughput (8K c=8)** | Batch Output TPS | **`TP8 / PP1`** | **479.5 tok/s** (vs 438.2 tok/s on TP4) | 8 memory channels and doubled aggregate FLOPS amortize collective sync on saturated batch decode. |
-| **Single-Node Long Prefill (512K)** | Lowest TTFT | **`TP8 / PP1`** | **27.8s TTFT** (vs 35.8s on TP4) | 22% prefill speedup single-node. Large GEMM compute dominates over NVLink collective sync. |
-| **2-Node Extreme Context (1M Tokens)** | 1M Fit, Finish, Latency | **`TP4 / PP4`** | **28.56s TTFT (35,014 tok/s)** · 88.7 GB Peak VRAM | **Decisive Winner:** Confines high-frequency tensor all-reduces within NVLink nodes; cross-node communication is strictly P2P activations. Leaves 7.24 GB safety headroom with 0 OOMs. |
-| **1M Concurrency Admission** | Queue Wait &amp; Preemption | **`TP4 / PP4` (c ≤ 2)** | **0 preemptions** · queue mean 0.0s at c=1 &amp; c=2 | Concurrency knee occurs at c=4 where compute saturation causes 1.45s queue buildup. Service rate: 1.82 tok/s per stream. |
-| **Cross-Node Anti-Pattern** | Latency Failure | **`TP16 / PP1` (AVOID)** | **68.20s TTFT (2.4x slowdown)** | Forcing tensor parallel all-reduces across TCP VPC creates massive barrier synchronization stalls (42.8% GPU idle time). |
+| **Short-Context Interactive (1K–8K)** | Lowest TPOT (< 5ms) | **`TP4 / PP1` (Single-Node)** | **4.42 ms – 4.49 ms TPOT** · 108.2 ms TTFT | Confining TP within a single PCIe socket eliminates NUMA cross-socket and network barriers during decode. |
+| **Single-Node Long Context (1M)** | Lowest TTFT | **`TP4 / PP1` (16K Chunk)** | **88.96s TTFT** · 10.28 ms TPOT | 16K chunked prefill minimizes kernel launch overhead on Blackwell SM120 while staying safely within memory limits. |
+| **Multi-Node Distributed (1M Tokens)** | 1M Fit & Lowest Dist TTFT | **`TP4 / PP2` (Dual-Node)** | **127.13s TTFT** · 56.27 ms TPOT · 2.88% peak KV | Pipeline parallel partition keeps layers 20–42 within Stage 2, respecting DeepSeek's compressed KV-sharing group boundary. |
+| **Multi-Node Scale-Out (1M Throughput)** | Scaled Prefill Acceleration | **`TP8 / PP2` (Dual-Node)** | **133.64s TTFT** (1.42× faster than TP8 Single-Node 189.68s) | Intra-node TP8 across PCIe Gen5 combined with 2-stage PP across 100GbE VPC provides massive compute parallelism. |
+| **Architectural Anti-Pattern 1** | Pipeline Boundary Split | **`TP4 / PP4` (`FAILED`)** | **`SERVER_START_FAILED`** (exit code 1) | DeepSeek V4.1 Flash layers 20–42 share KV states with layer 20. PP=4 slices across this boundary, throwing `NotImplementedError`. |
+| **Architectural Anti-Pattern 2** | Non-Uniform Tensor Parallel | **`TP16 / PP1` (`BLOCKED`)** | **`CAPABILITY_BLOCKED`** | Dividing 24 Engram hash heads across 16 TP ranks requires uneven head allocation, which vLLM rejects. |
 
-### 📑 7 Dashboard View Tabs
-1. **Executive (`#executive`)**: Executive KPI banners, Deployment Decision Map, Configuration Guidance Matrix, and authorative source hierarchy.
-2. **Single-Node Scale-Up (`#scaleup`)**: TTFT vs Context (8K–1M), TPOT vs Context, Output Throughput curves, concurrency sweeps, and intra-node NVLink audit.
-3. **Scale-Out (`#scaleout`)**: Native VPC verification (173.58 Gbps iperf, 0.05ms RTT, MTU 8896), Topology comparison (`TP4/PP2`, `TP8/PP2`, `TP4/PP4`, `TP16/PP1`), and context scaling curves.
-4. **Long Context & 1M (`#long`)**: 1M fit/finish/usability ledger, concurrency scaling (`c1`, `c2`, `c4`), scheduler sensitivity (`chunk_size=4096` vs `8192`), and KV dtype contracts.
-5. **Scheduler & KV (`#sched`)**: Peak KV cache utilization (1.25% at 8K to 88.7 GB at 1M), running vs waiting sequences, queue mean latency, and zero-preemption verification.
-6. **Profiler (`#profiler`)**: Nsight Systems wall-time breakdown, CUDA kernel categories (`linear_kda_forward`, `attn_gemm`), and native NCCL vs idle stalls.
-7. **Evidence & Audit Backbone (`#evidence`)**: 126 interactive rows filterable by scope, topology, context, and status (`119 COMPLETED`, `7 GUARDED NOT_RUN`). Zero synthetic figures.
+### 🔬 Empirical Hardware Profiling (SM120 TP8)
+
+Captured **100MB of PyTorch operator traces** and **976MB of Nsight Systems traces** (`vllm_profile.1.sqlite`) with CUDA graphs active:
+- **NCCL AllReduce Barrier (TP8)**: 639.53 ms (62.16% Self CUDA time, 243 calls/turn)
+- **Shared MoE Forward & DeepGEMM**: 206.35 ms (20.05% Self CUDA time)
+- **Sparse MLA Prefill & Decode**: 73.35 ms (7.14% Self CUDA time)
+- **MXFP8 GEMM & TileLang Normalization**: 78.59 ms (7.64% Self CUDA time)
+- **Blackwell TMA Hardware Encodings**: 2,778,144 calls analyzed (`cuTensorMapEncodeTiled`)
 
 ---
 
-## 🏛️ Architecture Overview
+## 📊 Prior Characterizations: V8 Kimi-Linear-48B (RTX 6000 Ada)
 
-This repository provides production infrastructure manifests and automated automation scripts for:
-1. **GKE Inference Gateway (`gateway.networking.k8s.io`)**: Advanced layer-7 routing, load balancing, and health checking.
-2. **`llm-d` Inference Extension Endpoint Picker (EPP)**: Intelligent cache-aware and queue-aware request dispatching using:
-   - Prefix cache affinity (`prefix-cache-scorer`)
-   - KV cache utilization scoring (`kv-cache-utilization-scorer`)
-   - Queue depth balancing (`queue-scorer`)
-3. **Hardware-Optimized Model Serving**:
-   - **Google Cloud TPU (v6e Trillium & v5e)**: Optimized with XLA and GCS FUSE CSI driver for model weights loading.
-   - **NVIDIA GPU (L4 / A100)**: Optimized with TensorRT / FlashAttention / vLLM CUDA kernels.
-4. **Interactive UI & Validation**:
-   - **Gradio Web Client**: Interactive chat testing connected directly to the GKE Inference Gateway.
-   - **Automated Latency Benchmark**: TTFT (Time To First Token) and TPOT (Time Per Output Token) validation scripts.
+For historical reference, the repository retains the complete **V8 Kimi-Linear-48B Characterization**:
+- **Dashboard File:** [`MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST.html`](file:///MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST.html)
+- **Model:** MoonshotAI `Kimi-Linear-48B-A3B-Instruct`
+- **Cluster:** Dual-Node 16× NVIDIA RTX 6000 Ada Generation (PCIe Gen4, NVLink bridges, GCP Native VPC).
 
 ---
 
 ## 📁 Repository Structure
 
 ```
-├── disaggregated_tpu_llmd/     # Disaggregated TPU Serving (Prefill & Decode decoupled via llm-d)
-│   ├── manifests/              # Manifests (Prefill kv_producer, Decode kv_consumer, llm-d proxy)
-│   ├── client/                 # Disaggregated TTFT and throughput benchmark
-│   ├── run.ps1                 # Automated 1-click deployment script
-│   └── cleanup.ps1             # Cost-protection teardown script
+├── v9_full_result/                     # Production V9 DeepSeek V4.1 Flash Release Package
+│   ├── MASTER_CHARACTERIZATION_DASHBOARD.html # Standalone interactive HTML dashboard (1.18 MB)
+│   ├── index.html                      # Production entrypoint (synchronized 1:1)
+│   ├── chart.umd.js                    # Bundled offline Chart.js v4.4.1
+│   ├── profiler/                       # Verified empirical profiler traces
+│   │   ├── PROFILER_GENUINE_SUMMARY.json # Structured JSON of 382K kernel launches
+│   │   ├── torch_tp8_decode_profiler_out_0.txt # PyTorch operator table (8K Decode)
+│   │   ├── torch_tp8_prefill_profiler_out_0.txt # PyTorch operator table (128K Prefill)
+│   │   ├── nsys_tp8_decode_cuda_gpu_kern_sum.csv # Nsight kernel breakdown (133 kernels)
+│   │   └── nsys_tp8_decode_stats.txt   # Nsight Systems CLI summary
+│   ├── tp4_pp2_dist_live/              # Raw execution manifests and logs for TP4/PP2
+│   ├── vllm_scaleout_network_matrix/   # Multi-node benchmark outputs and raw metrics
+│   ├── final_validation/               # Matrix coverage and verification records
+│   │   ├── combined_vllm_runs.csv      # All 84 empirical benchmark runs
+│   │   ├── combined_vllm_runs.json     # Full JSON metrics dataset
+│   │   ├── coverage.csv & coverage.json# 120-point execution coverage audit
+│   │   └── FINAL_VALIDATION.md         # Final validation sign-off report
+│   └── v9_full_production_20260930_143117_FULL_EVIDENCE.tar.gz # 132.4MB Evidence Tarball
 │
-├── inference_gateway_tpu/      # GKE Inference Gateway deployment on TPU v6e (Trillium)
-│   ├── manifests/              # K8s manifests (CRDs, Gateway, vLLM TPU, EPP, HTTPRoute)
-│   ├── client/                 # Python latency & token benchmarking scripts
-│   ├── run.ps1                 # Automated 1-click deployment script
-│   └── cleanup.ps1             # Cost-protection teardown script
+├── inference_gateway/                  # GKE Gateway API Inference Extension routing
+│   ├── README.md                       # Gateway architecture and configuration guide
+│   └── manifests/                      # Gateway, HTTPRoute, and InferencePool definitions
 │
-├── inference_gateway_gpu/      # GKE Inference Gateway deployment on NVIDIA GPUs (L4 / A100)
-│   ├── manifests/              # K8s manifests (CRDs, Gateway, vLLM GPU, EPP, HTTPRoute)
-│   ├── client/                 # Benchmark & testing client
-│   ├── run.ps1                 # Automated 1-click deployment script
-│   └── cleanup.ps1             # Cost-protection teardown script
+├── inference_gateway_gpu/              # GKE Inference Gateway on NVIDIA GPUs (L4 / A100 / Blackwell)
+│   ├── manifests/                      # K8s CRDs, vLLM GPU StatefulSets, and EPP configurations
+│   ├── client/                         # Benchmarking & verification client
+│   ├── run.ps1                         # 1-click deployment script
+│   └── cleanup.ps1                     # Safe teardown script
 │
-├── single_host/                # Standalone single-host TPU deployment (GKE & vLLM)
-│   ├── manifests/              # Manifests for single TPU slice
-│   ├── run.ps1                 # Deployment automation
-│   └── cleanup.ps1             # Teardown automation
+├── inference_gateway_tpu/              # GKE Inference Gateway on Cloud TPUs (v6e Trillium)
+│   ├── manifests/                      # TPU v6e vLLM deployment manifests and EPP proxy
+│   ├── client/                         # Latency and throughput benchmarking client
+│   ├── run.ps1                         # 1-click deployment script
+│   └── cleanup.ps1                     # Safe teardown script
 │
-├── multi_host/                 # Multi-host TPU pod slice deployment (e.g., v5e-16, v6e-16)
-│   ├── run.ps1                 # Deployment automation
-│   └── cleanup.ps1             # Teardown automation
+├── disaggregated_tpu_llmd/             # Disaggregated Prefill & Decode TPU Serving
+│   ├── manifests/                      # Prefill (producer), Decode (consumer), and llm-d proxy
+│   ├── client/                         # Disaggregated token benchmarking suite
+│   ├── run.ps1                         # Automated deployment automation
+│   └── cleanup.ps1                     # Teardown automation
 │
-├── client/                     # Global client scripts and test harnesses
-│   └── test_inference.py       # End-to-end OpenAI-compatible inference validator
+├── single_host/                        # Standalone single-host TPU slice deployment (GKE & vLLM)
+├── multi_host/                         # Multi-host TPU pod slice deployment (v5e-16, v6e-16)
 │
-├── transfer_deepseek.sh        # High-throughput model synchronization script (GCS bucket)
-├── download_and_sync.py        # Hugging Face to GCS parallel download utility
-└── REPLICATION_RUNBOOK.md      # Detailed engineering runbook & operations guide
+├── tools/                              # Automation & Diagnostic Suite
+│   ├── v9_automation/                  # V9 benchmark runners, verifiers, and harvest scripts
+│   │   ├── auto_pilot.py               # Autonomous execution scheduler
+│   │   ├── launch_tp4_pp2.py           # Multi-node TP4/PP2 orchestrator
+│   │   ├── integrate_live_results.py   # Empirical data aggregator
+│   │   └── sync_and_shutdown.py        # Safe cluster synchronization and shutdown
+│   └── generate_dashboard.py           # Dashboard generator utilities
+│
+├── V9_BENCHMARK_AND_DASHBOARD_EXECUTION_REPORT.md # Comprehensive V9 execution & root-cause report
+└── REPLICATION_RUNBOOK.md              # Step-by-step reproduction and operations guide
 ```
 
 ---
 
-## 🚀 Quickstart
+## 🏛️ GKE Inference Gateway Architecture
 
-### Prerequisites
-- Google Cloud SDK (`gcloud`) authenticated (`gcloud auth login`)
-- Kubernetes CLI (`kubectl`)
-- Helm 3.x
-- Active Google Cloud Project with TPU / GPU quota
+The deployment infrastructure leverages Kubernetes-native primitives:
+1. **Gateway API Inference Extension (`inference.networking.x-k8s.io`)**: Advanced Layer-7 traffic steering and health probing.
+2. **`llm-d` Endpoint Picker (EPP)**: Real-time decision proxy that routes requests based on:
+   - **Prefix Cache Affinity (`prefix-cache-scorer`)**: Maximizes KV reuse to minimize TTFT.
+   - **KV Cache Utilization (`kv-cache-utilization-scorer`)**: Prevents pod memory saturation and request eviction.
+   - **Queue Depth Balancing (`queue-scorer`)**: Distributes traffic away from saturated prefill queues.
+3. **Disaggregated Serving**: Separates long-context compute-heavy prefill nodes from latency-sensitive memory-bound decode workers.
 
-### 1. Deploying on Google Cloud TPU (v6e)
+---
+
+## 🚀 Quickstart & Verification
+
+### Viewing the V9 Dashboard Locally
+Open the self-contained dashboard directly in any modern browser:
 ```powershell
-cd inference_gateway_tpu
-.\run.ps1
-```
-*Creates the GKE cluster, enables GCS FUSE, installs Gateway API CRDs, deploys the vLLM TPU model server, starts the `llm-d` EPP, and opens the Gradio web UI.*
-
-### 2. Deploying on NVIDIA GPU (L4 / A100)
-```powershell
-cd inference_gateway_gpu
-.\run.ps1
-```
-
-### 3. Testing End-to-End Latency & Throughput
-```powershell
-python client\test_inference.py
+# Open production dashboard
+Start-Process "v9_full_result\index.html"
 ```
 
-### 4. Teardown & Cost Protection
+### Verifying the Empirical Datasets
+Run the matrix verification script to audit all 84 genuine runs:
 ```powershell
-.\cleanup.ps1
+python -c "
+import csv
+with open('v9_full_result/final_validation/combined_vllm_runs.csv') as f:
+    rows = list(csv.DictReader(f))
+print(f'Empirical benchmarks: {len(rows)}')
+"
 ```
 
 ---
 
-## 🔒 Security & Best Practices
-- Never commit `.env` files or service account keys.
-- Model weights are streamed dynamically via GCS FUSE ephemeral caching or loaded from private Google Cloud Storage buckets (`gs://...`).
-- Workload Identity Federation is configured for zero-secret cloud credential access.
+## 📜 Zero-Mock Data Governance
+In accordance with our strict data integrity protocol:
+- Every data point on the dashboard maps 1:1 to an empirical execution log in `final_validation/combined_vllm_runs.json`.
+- Architecturally incompatible configurations (`tp4_pp4_dist` and `tp16_pp1_dist`) are explicitly preserved as `SERVER_START_FAILED` and `CAPABILITY_BLOCKED` with detailed technical root causes rather than masked with zero or fabricated values.

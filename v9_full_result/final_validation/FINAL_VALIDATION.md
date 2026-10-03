@@ -9,9 +9,9 @@
 
 ## Coverage status counts
 
-- COMPLETED: 77
+- COMPLETED: 84
 - NOT_RUN: 29
-- SERVER_START_FAILED: 14
+- SERVER_START_FAILED: 7
 
 ## Status semantics
 

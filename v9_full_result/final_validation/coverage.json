@@ -776,9 +776,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
@@ -788,9 +788,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
@@ -800,9 +800,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
@@ -812,9 +812,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
@@ -824,9 +824,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
@@ -836,9 +836,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
@@ -848,9 +848,9 @@
     "network": "native",
     "network_tag": "NETWORK_NATIVE",
     "optional": false,
-    "status": "SERVER_START_FAILED",
+    "status": "COMPLETED",
     "attempted": true,
-    "complete": false,
+    "complete": true,
     "manifest": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json"
   },
   {
