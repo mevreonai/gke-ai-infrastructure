@@ -1,0 +1,299 @@
+{
+  "schema_version": 3,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "evidence_class": "MEASURED-48B",
+  "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2,
+    "observability_profile": "full",
+    "metrics_interval_s": 0.5
+  },
+  "cases": [
+    {
+      "name": "tp4_1m_concurrency_extension",
+      "groups": [
+        "v8_full",
+        "long_context",
+        "concurrency",
+        "one_million"
+      ],
+      "purpose": "Matched 1M TP4 closed-loop c1->c2->c4 progression; safety-gated to distinguish service degradation from memory exhaustion.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "1m_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0,
+          "gate": {
+            "after": "1m_c2",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp8_1m_concurrency_extension",
+      "groups": [
+        "v8_full",
+        "long_context",
+        "concurrency",
+        "one_million",
+        "tp_compare"
+      ],
+      "purpose": "Matched 1M TP8 closed-loop c1->c2->c4 progression for direct comparison with TP4; safety-gated.",
+      "tp": 8,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0,
+          "gate": {
+            "after": "1m_c1",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0,
+          "gate": {
+            "after": "1m_c2",
+            "max_peak_kv_usage": 0.85,
+            "max_preemptions": 0
+          }
+        }
+      ]
+    },
+    {
+      "name": "tp4_1m_maxseq4",
+      "groups": [
+        "v8_full",
+        "one_million",
+        "scheduler_limits"
+      ],
+      "purpose": "1M c4 scheduler sensitivity with max_num_seqs=4; compare only with identical workload/config.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 4,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_1m_maxseq8",
+      "groups": [
+        "v8_full",
+        "one_million",
+        "scheduler_limits"
+      ],
+      "purpose": "1M c4 scheduler sensitivity with max_num_seqs=8; compare only with identical workload/config.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_1m_maxseq16",
+      "groups": [
+        "v8_full",
+        "one_million",
+        "scheduler_limits"
+      ],
+      "purpose": "1M c4 scheduler sensitivity with max_num_seqs=16; compare only with identical workload/config.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_fp8_kv_1m",
+      "groups": [
+        "v8_full",
+        "one_million",
+        "kv_dtype"
+      ],
+      "purpose": "1M c1 KV-cache dtype sensitivity. Runs only if the installed vLLM/backend accepts fp8 KV for this model.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "kv_cache_dtype": "fp8",
+      "benchmarks": [
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    },
+    {
+      "name": "tp4_prefix1m",
+      "groups": [
+        "v8_full",
+        "one_million",
+        "prefix_cache"
+      ],
+      "purpose": "1M deterministic prefix-reuse experiment. First request is cold; repeats quantify real cache-hit TTFT rather than projecting from 128K/512K.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": true,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "prefix1m",
+          "dataset": "prefix_repetition",
+          "prefix": 999744,
+          "suffix": 256,
+          "output": 32,
+          "num_prefixes": 1,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    }
+  ],
+  "v8_full_note": "Additional 1M coverage kept separate from the byte-stable V6 base case file."
+}

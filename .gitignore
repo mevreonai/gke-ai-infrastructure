@@ -65,3 +65,5 @@ v4_mockup_extracted/
 scratch/
 user_prompt.txt
 WhatsApp Image*
+
+*.bak*
