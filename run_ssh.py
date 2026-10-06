@@ -12,7 +12,7 @@ def main():
     zone = "us-central1-b"
     b64 = base64.b64encode(cmd.encode('utf-8')).decode('ascii')
     remote_cmd = f"echo {b64} | base64 -d | bash"
-    full_cmd = f'gcloud compute ssh ayu23@{node} --zone={zone} --tunnel-through-iap --command="{remote_cmd}"'
+    full_cmd = f'gcloud compute ssh ayu23@{node} --zone={zone} --command="{remote_cmd}"'
     
     try:
         res = subprocess.run(full_cmd, shell=True, capture_output=True, text=True, timeout=600)

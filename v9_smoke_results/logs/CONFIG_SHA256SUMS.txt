@@ -1,3 +1,0 @@
-3c07683f96a5a0a09b54b1d7ac84dddbc7403c8a72cfc9e2b326a49c6da2a21b  configs/models/kimi_linear_48b.json
-b525380a65e0c5bdbdcda441c45c2cf9c12ad638aecd49c55d1f80e8698bd32d  configs/clusters/kimi_2x8.json
-65578e8a35ed9a91e1efb9a9bad3e8d016c0c2cb5156a7a800ea838eb0d822e8  configs/suite_default.json

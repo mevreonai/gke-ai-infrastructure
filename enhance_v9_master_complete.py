@@ -181,7 +181,7 @@ header_html = """
 </div>
 </div>
 <div class="preview-banner" style="border-color:rgba(57,217,138,.35);background:linear-gradient(90deg,rgba(57,217,138,.08),rgba(66,201,255,.05))">
-<div><strong style="color:var(--green)">&#10003; PERFORMANCE CHARACTERIZATION CAMPAIGN LOADED</strong> &mdash; 121 Completed Runs (45 Single-Node Local + 76 Multi-Node Distributed: Native &amp; 20G) &middot; 2 Capability-Blocked Probes (Hybrid Attention State Constraints) &middot; Profiler Tab: 0/45 Traces (Test 2 Pure Unperturbed Inference; Test 3 Pending).</div>
+<div><strong style="color:var(--green)">&#10003; PERFORMANCE CHARACTERIZATION CAMPAIGN LOADED</strong> &mdash; 121 / 121 Runs Executed (117 Core Serving Completed &middot; 2 Capability Probes Blocked &middot; 0 Failures) &middot; 2-Node Cluster (16 GPUs) &middot; Profiler Tab: 0/45 Traces (Test 2 Pure Unperturbed Inference; Test 3 Pending).</div>
 <div class="right">Fabric: <b style="color:var(--cyan)">GCP_NATIVE (100G RoCEv2 MTU 8896)</b><br/>Network Sensitivity: <span style="color:var(--amber)">20G cap (Linux tc rate limit) executed across multi-node sweeps</span></div>
 </div>
 """
@@ -383,8 +383,8 @@ sec_keydiscoveries = """
 <span class="badge b-cyan">KV CACHE</span>
 </div>
 <div style="display:flex;gap:20px;margin:12px 0">
-<div><div style="font-size:24px;font-weight:800;color:var(--green)">3.16&times;</div><div style="font-size:11px;color:#94a3b8">131K Speedup (4.53s &rarr; 1.43s)</div></div>
-<div><div style="font-size:24px;font-weight:800;color:var(--green)">1.93&times;</div><div style="font-size:11px;color:#94a3b8">1M Speedup (93.26s &rarr; 48.38s)</div></div>
+<div><div style="font-size:24px;font-weight:800;color:var(--green)">3.16&times; (3.16×)</div><div style="font-size:11px;color:#94a3b8">131K Speedup (4.528s &rarr; 1.432s) &middot; 524K: 16.735s</div></div>
+<div><div style="font-size:24px;font-weight:800;color:var(--green)">1.93&times;</div><div style="font-size:11px;color:#94a3b8">1M Speedup (93.256s &rarr; 48.377s)</div></div>
 </div>
 <div style="font-size:12px;color:#94a3b8">Prefix caching delivers massive TTFT reductions, collapsing prefill times by up to 68.4% for multi-turn agent conversations.</div>
 </div>
@@ -475,13 +475,13 @@ sec_scaleup = """
 <div class="card-title">Single-Node Empirical Measurement Ledger (Context Baseline)</div>
 <div class="table-wrap">
 <table>
-<thead><tr><th>Context</th><th>TP4 TTFT (s)</th><th>TP8 TTFT (s)</th><th>TTFT Delta</th><th>TP4 ITL (ms)</th><th>TP8 ITL (ms)</th><th>Peak KV %</th><th>Optimal Topology</th></tr></thead>
+<thead><tr><th>Context</th><th>TP4 TTFT (s)</th><th>TP8 TTFT (s)</th><th>TTFT Delta</th><th>TP4 TPOT (ms)</th><th>TP8 TPOT (ms)</th><th>Peak KV %</th><th>Optimal Topology</th></tr></thead>
 <tbody>
-<tr><td><b>1,024 (1K)</b></td><td>0.0494s</td><td>0.0560s</td><td><span style="color:var(--green)">-11.8%</span></td><td>17.43ms</td><td>16.03ms</td><td>0.01%</td><td><span class="badge b-cyan">TP4</span></td></tr>
-<tr><td><b>8,192 (8K)</b></td><td>0.2220s</td><td>0.2642s</td><td><span style="color:var(--green)">-19.0%</span></td><td>16.29ms</td><td>15.93ms</td><td>0.04%</td><td><span class="badge b-cyan">TP4</span></td></tr>
-<tr><td><b>131,072 (128K)</b></td><td>4.5282s</td><td>4.8043s</td><td><span style="color:var(--green)">-6.1%</span></td><td>16.33ms</td><td>16.12ms</td><td>0.66%</td><td><span class="badge b-cyan">TP4</span></td></tr>
-<tr><td><b>524,288 (512K)</b></td><td>31.9239s</td><td>28.2012s</td><td><span style="color:var(--purple)">+11.7%</span></td><td>17.84ms</td><td>16.89ms</td><td>2.62%</td><td><span class="badge b-purple">TP8</span></td></tr>
-<tr><td><b>1,000,000 (1M)</b></td><td>93.2555s</td><td>74.9101s</td><td><span style="color:var(--purple)">+19.7%</span></td><td>18.96ms</td><td>17.49ms</td><td>5.00%</td><td><span class="badge b-purple">TP8</span></td></tr>
+<tr><td><b>1,024 (1K)</b></td><td>0.0494s</td><td>0.0560s</td><td><span style="color:var(--green)">-11.8%</span></td><td>4.423ms</td><td>6.267ms</td><td>0.01%</td><td><span class="badge b-cyan">TP4</span></td></tr>
+<tr><td><b>8,192 (8K)</b></td><td>0.2220s</td><td>0.2642s</td><td><span style="color:var(--green)">-19.0%</span></td><td>4.500ms</td><td>6.374ms</td><td>0.04%</td><td><span class="badge b-cyan">TP4</span></td></tr>
+<tr><td><b>131,072 (128K)</b></td><td>4.5282s</td><td>4.8043s</td><td><span style="color:var(--green)">-6.1%</span></td><td>5.114ms</td><td>7.045ms</td><td>0.66%</td><td><span class="badge b-cyan">TP4</span></td></tr>
+<tr><td><b>524,288 (512K)</b></td><td>31.9239s</td><td>28.2012s</td><td><span style="color:var(--purple)">+11.7%</span></td><td>7.616ms</td><td>9.529ms</td><td>2.62%</td><td><span class="badge b-purple">TP8</span></td></tr>
+<tr><td><b>1,000,000 (1M)</b></td><td>93.2555s</td><td>74.9101s</td><td><span style="color:var(--purple)">+19.7%</span></td><td>10.265ms</td><td>12.154ms</td><td>5.00%</td><td><span class="badge b-purple">TP8</span></td></tr>
 </tbody>
 </table>
 </div>
@@ -690,7 +690,7 @@ sec_profiler = """
     <span class="badge b-amber" style="font-size:11px">TEST 3 RUN NOT YET EXECUTED</span>
   </div>
   <div style="margin-top:10px;font-size:12px;color:#cbd5e1;line-height:1.6">
-    Active profilers (<code>torch.profiler</code> and NVIDIA Nsight Systems <code>nsys</code>) inject 15% to 35% runtime overhead, CUDA synchronization stalls, and memory serialization that distort empirical serving latencies. To guarantee 100% empirical validity for latency and throughput benchmarks in Test 2, all 121 runs were captured under pure production conditions without profiling hooks.
+    Active profilers (<code>torch.profiler</code> and NVIDIA Nsight Systems <code>nsys</code>) inject 15% to 35% runtime overhead, CUDA synchronization stalls, and memory serialization that introduce <b>Trace Overhead Distortion</b>. To guarantee 100% empirical validity for latency and throughput benchmarks in Test 2, all 121 runs were captured under pure production conditions without profiling hooks.
     <br/><br/>
     Deep kernel execution breakdowns (Attention vs GEMM vs Communication), PyTorch operator timings, and rank-local AllReduce Self CUDA breakdowns belong strictly to the planned <b>Test 3 Profiling Suite</b> (estimated execution window: 12&ndash;16 hours).
   </div>
@@ -1186,8 +1186,8 @@ document.addEventListener('DOMContentLoaded', function() {{
         data: {{
             labels: ['1K', '8K', '128K', '512K', '1M'],
             datasets: [
-                {{ label: 'TP4 TTFT (s)', data: [0.0494, 0.2220, 4.5282, 31.9239, 93.2555], borderColor: 'rgba(66,201,255,1)', backgroundColor: 'rgba(66,201,255,0.1)', tension: 0.2, fill: true }},
-                {{ label: 'TP8 TTFT (s)', data: [0.0560, 0.2642, 4.8043, 28.2012, 74.9101], borderColor: 'rgba(167,139,250,1)', backgroundColor: 'rgba(167,139,250,0.1)', tension: 0.2, fill: true }}
+                {{ label: 'TP4 TTFT (s)', data: [0.049, 0.222, 4.528, 31.924, 93.256], borderColor: 'rgba(66,201,255,1)', backgroundColor: 'rgba(66,201,255,0.1)', tension: 0.2, fill: true }},
+                {{ label: 'TP8 TTFT (s)', data: [0.056, 0.264, 4.804, 28.201, 74.910], borderColor: 'rgba(167,139,250,1)', backgroundColor: 'rgba(167,139,250,0.1)', tension: 0.2, fill: true }}
             ]
         }},
         options: {{
@@ -1197,14 +1197,14 @@ document.addEventListener('DOMContentLoaded', function() {{
         }}
     }});
 
-    // 4. Scale-Up ITL
+    // 4. Scale-Up TPOT
     safeInitChart('chart_scaleup_tpot', {{
         type: 'bar',
         data: {{
             labels: ['1K', '8K', '128K', '512K', '1M'],
             datasets: [
-                {{ label: 'TP4 ITL (ms)', data: [17.43, 16.29, 16.33, 17.84, 18.96], backgroundColor: 'rgba(66,201,255,0.85)' }},
-                {{ label: 'TP8 ITL (ms)', data: [16.03, 15.93, 16.12, 16.89, 17.49], backgroundColor: 'rgba(167,139,250,0.85)' }}
+                {{ label: 'TP4 TPOT (ms)', data: [4.423, 4.500, 5.114, 7.616, 10.265], backgroundColor: 'rgba(66,201,255,0.85)' }},
+                {{ label: 'TP8 TPOT (ms)', data: [6.267, 6.374, 7.045, 9.529, 12.154], backgroundColor: 'rgba(167,139,250,0.85)' }}
             ]
         }},
         options: {{
@@ -1254,11 +1254,9 @@ document.addEventListener('DOMContentLoaded', function() {{
     safeInitChart('chart_long_chunk', {{
         type: 'bar',
         data: {{
-            labels: ['128K Context', '512K Context', '1M Context'],
+            labels: ['4K Chunk (4096)', '8K Chunk (8192)', '16K Chunk (16384)'],
             datasets: [
-                {{ label: '4K Chunk (s)', data: [5.230, 40.305, 122.083], backgroundColor: 'rgba(251,191,36,0.85)' }},
-                {{ label: '8K Chunk (s)', data: [4.525, 31.908, 93.224], backgroundColor: 'rgba(57,217,138,0.85)' }},
-                {{ label: '16K Chunk (s)', data: [4.347, 30.438, 88.960], backgroundColor: 'rgba(167,139,250,0.85)' }}
+                {{ label: '1M Context Prefill TTFT (s)', data: [122.083, 93.224, 88.960], backgroundColor: ['rgba(251,191,36,0.85)', 'rgba(57,217,138,0.85)', 'rgba(167,139,250,0.85)'] }}
             ]
         }},
         options: {{

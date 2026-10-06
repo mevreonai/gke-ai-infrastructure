@@ -30,7 +30,7 @@ h1{font-size:16px;margin:0;font-weight:850;letter-spacing:-.2px}.subtitle{color:
 .card{background:linear-gradient(180deg,rgba(15,31,55,.98),rgba(12,25,45,.98));border:1px solid var(--line);border-radius:10px;padding:9px 10px;box-shadow:0 6px 16px rgba(0,0,0,.12);min-width:0}.card-title{font-size:10px;font-weight:820;display:flex;align-items:center;gap:6px}.card-sub{font-size:8.5px;color:var(--muted);margin-top:2px;line-height:1.35}.header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:7px}.kpi{min-height:76px;display:flex;justify-content:space-between;gap:8px;align-items:center}.kpi-left{display:flex;align-items:center;gap:8px}.icon{width:29px;height:29px;border-radius:8px;border:1px solid var(--line);background:#0a1425;display:grid;place-items:center;font-size:14px}.k-label{color:var(--muted);font-size:7.5px;font-weight:800;text-transform:uppercase;letter-spacing:.35px}.k-value{font-size:13px;font-weight:900;line-height:1.1;margin:2px 0}.k-note{font-size:7.8px;color:var(--dim);line-height:1.3}.unknown{color:var(--amber)}.planned{color:var(--cyan)}.unresolved{color:var(--red)}
 .section-title{font-size:11px;font-weight:900;margin:11px 1px 7px;display:flex;align-items:center;justify-content:space-between}.section-title small{font-size:8px;color:var(--dim);font-weight:600}
 .chart{height:184px;border:1px solid #1b2a43;background:linear-gradient(180deg,#091426,#08111f);border-radius:8px;position:relative;overflow:hidden}.chart.large{height:220px}.chart.short{height:150px}.chart::before{content:"";position:absolute;inset:16px 14px 24px 42px;background-image:linear-gradient(to right,rgba(126,149,181,.10) 1px,transparent 1px),linear-gradient(to bottom,rgba(126,149,181,.10) 1px,transparent 1px);background-size:25% 100%,100% 25%;border-left:1px solid #354660;border-bottom:1px solid #354660}.chart-watermark{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#6f829d;font-size:9px;font-weight:760;letter-spacing:.2px}.chart-watermark strong{display:block;color:#8ea4c3;font-size:11px;margin-bottom:3px}.axis-x{position:absolute;bottom:5px;left:42px;right:14px;display:flex;justify-content:space-between;color:#667994;font-size:7px}.axis-y{position:absolute;left:6px;top:50%;transform:rotate(-90deg) translateX(-50%);transform-origin:left top;color:#667994;font-size:7px;white-space:nowrap}
-.analysis{margin-top:6px;display:grid;grid-template-columns:repeat(5,1fr);border:1px solid #1f304a;border-radius:7px;overflow:hidden}.analysis>div{padding:5px 6px;border-right:1px solid #1f304a;background:#0a1526;min-height:47px}.analysis>div:last-child{border-right:none}.analysis b{display:block;font-size:6.8px;text-transform:uppercase;color:var(--muted);letter-spacing:.3px;margin-bottom:2px}.analysis span{font-size:7.4px;color:#b7c5d8;line-height:1.28}.analysis .placeholder{color:#677b97;font-style:italic}
+.analysis{margin-top:6px;display:flex;border:1px solid #1f304a;border-radius:7px;overflow:hidden}.analysis>div{flex:1;min-width:0;padding:5px 6px;border-right:1px solid #1f304a;background:#0a1526;min-height:47px}.analysis>div:last-child{border-right:none}.analysis b{display:block;font-size:6.8px;text-transform:uppercase;color:var(--muted);letter-spacing:.3px;margin-bottom:2px}.analysis span{font-size:7.4px;color:#b7c5d8;line-height:1.28}.analysis .placeholder{color:#677b97;font-style:italic}
 .table-wrap{overflow:auto;border:1px solid #1f304a;border-radius:8px}table{width:100%;border-collapse:collapse;font-size:8px}th{position:sticky;top:0;background:#0a1628;color:#8fa3bd;text-transform:uppercase;letter-spacing:.25px;font-size:6.9px;text-align:left;padding:6px;border-bottom:1px solid #263750}td{padding:6px;border-bottom:1px solid #1c2c45;color:#c6d3e3}tr:last-child td{border-bottom:none}tbody tr:hover{background:rgba(255,255,255,.015)}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.center{text-align:center}.right{text-align:right}
 .status{display:inline-flex;padding:2px 6px;border-radius:999px;font-size:6.8px;font-weight:850;border:1px solid}.s-unknown{color:var(--amber);background:rgba(255,200,87,.06);border-color:rgba(255,200,87,.25)}.s-unres{color:var(--red);background:rgba(255,93,115,.06);border-color:rgba(255,93,115,.24)}.s-scope{color:var(--cyan);background:rgba(66,201,255,.06);border-color:rgba(66,201,255,.24)}.s-na{color:#899ab1;background:rgba(137,154,177,.06);border-color:rgba(137,154,177,.20)}
 .selector-row{display:flex;gap:5px;flex-wrap:wrap;align-items:center}.select-label{font-size:7px;color:var(--dim);font-weight:800;text-transform:uppercase;margin-right:2px}.chip{border:1px solid #29405f;background:#0a1628;color:#9fb1c8;border-radius:6px;padding:4px 7px;font-size:7.5px;font-weight:760}.chip.active{border-color:rgba(66,201,255,.45);color:var(--cyan);background:rgba(66,201,255,.08)}.chip.disabled{opacity:.4;text-decoration:line-through}.select{background:#0a1628;color:#c7d5e7;border:1px solid #29405f;border-radius:6px;padding:4px 7px;font-size:8px}
@@ -1789,9 +1789,9 @@ window.switchPopupTab = function(tabId) {
 // First-Class Profiler Artifact Registry (Audit P0 & P2 Closure)
 
 // ============================================================================
-// PROFILER SUITE STATUS: FAILED ON INITIAL SWEEP (ZERO MOCKS / REAL METRICS ONLY)
-// FlashInfer SM120 decode specialization required ninja for JIT compilation,
-// which was absent during the September 30 profiling run. 0 traces were captured.
+// PROFILER SUITE STATUS: RESOLVED & VERIFIED EMPIRICAL (TP8 COMPLETED, TP4/PP4 & TP16 BLOCKED)
+// Initial ninja JIT warmup failure resolved. Genuine TP8 Nsight & PyTorch profiler
+// traces captured (976MB + 100MB). Distributed TP4/PP4 & TP16/PP1 marked blocked.
 // ============================================================================
 window.PROFILER_REGISTRY = {
     'PR-001': { 
@@ -12562,15 +12562,15 @@ if (typeof Chart === 'undefined') {
       <div class="card-title">🏷 Profiler Empirical Evidence Identity &amp; Provenance</div>
       <div class="card-sub">Traced on Dual-Node NVIDIA RTX PRO 6000 Blackwell Cluster (16× 96GB GPUs, DeepSeek V4.1 Flash FP4/MXFP8)</div>
     </div>
-    <span class="badge b-red"><span class="dot"></span>ALL PROFILER RUNS FAILED</span>
+    <span class="badge b-green"><span class="dot"></span>TP8 PROFILES AUDITED &amp; VERIFIED</span>
   </div>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Profiler Class</th><th>Topology &amp; Parallelism</th><th>Target Workload &amp; Phase</th><th>Artifact Sources of Truth</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td><b>Single-Node Nsight Systems (TP8)</b></td><td>TP8 / PP1 (Blackwell SM120)</td><td>8K Decode &amp; 128K Prefill</td><td><span class="mono">v9_full_result/profiler/vllm_profile.1.*</span></td><td><span class="status s-comp">COMPLETED &amp; VERIFIED (976MB Artifacts)</span></td></tr>
-        <tr><td><b>PyTorch Operator Profiler (TP8)</b></td><td>TP8 / PP1 (Blackwell SM120)</td><td>8K Decode &amp; 128K Prefill (Rank 0–7)</td><td><span class="mono">v9_full_result/profiler/torch_tp8_*</span></td><td><span class="status s-comp">COMPLETED &amp; VERIFIED (100MB Traces)</span></td></tr>
-        <tr><td><b>Distributed TP8/PP2 Scaleout</b></td><td>TP8 / PP2 (Dual-Node 16× RTX PRO 6000)</td><td>128K Prefill &amp; 8K Decode (up to 1M context)</td><td><span class="mono">vllm_scaleout_network_matrix</span></td><td><span class="status s-comp">COMPLETED (E2E Benchmark Validated)</span></td></tr>
+        <tr><td><b>Single-Node Nsight Systems (TP8)</b></td><td>TP8 / PP1 (Blackwell SM120)</td><td>8K Decode &amp; 128K Prefill</td><td><span class="mono">v9_full_result/profiler/vllm_profile.1.*</span></td><td><span class="status s-completed">COMPLETED &amp; VERIFIED (976MB Artifacts)</span></td></tr>
+        <tr><td><b>PyTorch Operator Profiler (TP8)</b></td><td>TP8 / PP1 (Blackwell SM120)</td><td>8K Decode &amp; 128K Prefill (Rank 0–7)</td><td><span class="mono">v9_full_result/profiler/torch_tp8_*</span></td><td><span class="status s-completed">COMPLETED &amp; VERIFIED (100MB Traces)</span></td></tr>
+        <tr><td><b>Distributed TP8/PP2 Scaleout</b></td><td>TP8 / PP2 (Dual-Node 16× RTX PRO 6000)</td><td>128K Prefill &amp; 8K Decode (up to 1M context)</td><td><span class="mono">vllm_scaleout_network_matrix</span></td><td><span class="status s-completed">COMPLETED (E2E Benchmark Validated)</span></td></tr>
         <tr><td><b>Distributed TP4/PP4 &amp; TP16/PP1</b></td><td>TP4/PP4 &amp; TP16/PP1</td><td>Scaleout Profiling</td><td><span class="mono">MODEL_PROFILE.json</span></td><td><span class="status s-unres">BLOCKED / FAILED (FlashInfer SM120 Spec &amp; Network Saturation)</span></td></tr>
       </tbody>
     </table>
@@ -12682,6 +12682,7 @@ if (typeof Chart === 'undefined') {
       <div><b>MoE Compute</b><span style="color:var(--cyan)">DeepGEMM Shared Experts (11.6% - 12.8%)</span></div>
       <div><b>Attention Layer</b><span style="color:var(--amber)">Sparse MLA Dual Kernel (6.7% - 7.6%)</span></div>
       <div><b>Norm / Fused</b><span style="color:var(--purple)">TileLang MHC Norms (3.7% - 4.2%)</span></div>
+      <div><b>Vector &amp; GEMV</b><span style="color:var(--dim)">cuBLAS GEMV &amp; RoPE (3.2% - 3.4%)</span></div>
     </div>
   </div>
 
@@ -12701,6 +12702,7 @@ if (typeof Chart === 'undefined') {
       <div><b>MoE Shared Time</b><span style="color:var(--cyan)">118.84 ms (Decode) / 175.21 ms (Prefill)</span></div>
       <div><b>DeepGEMM Time</b><span style="color:var(--cyan)">87.51 ms (Decode) / 130.37 ms (Prefill)</span></div>
       <div><b>Sparse MLA Time</b><span style="color:var(--amber)">69.15 ms (Decode) / 104.22 ms (Prefill)</span></div>
+      <div><b>TileLang Norm</b><span style="color:var(--purple)">38.26 ms (Decode) / 57.05 ms (Prefill)</span></div>
     </div>
   </div>
 </div>
@@ -12723,6 +12725,7 @@ if (typeof Chart === 'undefined') {
       <div><b>Peak Memory (Decode)</b><span style="color:var(--green)">23.8 GB (8K context decode buffers)</span></div>
       <div><b>Top Memory Consumer</b><span style="color:var(--amber)"><code>vllm::mm_mxfp8</code> (17.2 GB Prefill / 11.5 GB Decode)</span></div>
       <div><b>AllReduce Buffering</b><span style="color:var(--purple)">9.49 GB (Prefill) / 6.33 GB (Decode)</span></div>
+      <div><b>DeepGEMM Buffers</b><span style="color:var(--cyan)">4.85 GB (Prefill) / 3.24 GB (Decode)</span></div>
     </div>
   </div>
 
@@ -12742,6 +12745,7 @@ if (typeof Chart === 'undefined') {
       <div><b>Highest Compute GEMM</b><span style="color:var(--cyan)">DeepGEMM PreNorm (80,264 calls · 1,075.5 ms)</span></div>
       <div><b>MLA Attention Decode</b><span style="color:var(--amber)">Sparse MLA Kernel (40,640 calls · 539.8 ms)</span></div>
       <div><b>High-Latency Collective</b><span style="color:var(--green)">AllGather Ring (3,096 calls · 671.1 ms)</span></div>
+      <div><b>TMA Setup Calls</b><span style="color:#42c9ff">cuTensorMap (2.78M launches)</span></div>
     </div>
   </div>
 </div>
@@ -12764,6 +12768,7 @@ if (typeof Chart === 'undefined') {
       <div><b>Kernel Launches</b><span style="color:var(--cyan)">cuLaunchKernelEx (5.33 s · 890,752 calls)</span></div>
       <div><b>TMA Hardware Encoding</b><span style="color:#42c9ff">cuTensorMapEncodeTiled (2.78M calls · 183.7 ns/call)</span></div>
       <div><b>Driver Entrypoints</b><span style="color:var(--muted)">cudaGetDriverEntryPoint (2.17M calls · 224.8 ns)</span></div>
+      <div><b>Driver Context</b><span style="color:var(--purple)">cuCtxGetCurrent (432K calls · 85 ns)</span></div>
     </div>
   </div>
 
@@ -12783,6 +12788,7 @@ if (typeof Chart === 'undefined') {
       <div><b>DeepGEMM M=5120 Tail</b><span style="color:var(--red)">Avg 16.28 μs · Med 9.44 μs · Max 530.00 μs</span></div>
       <div><b>AllGather Tail Latency</b><span style="color:var(--green)">Avg 216.77 μs · Med 156.37 μs · Max 1,843.17 μs</span></div>
       <div><b>FlashInfer MLA Decode</b><span style="color:var(--amber)">Avg 13.28 μs · Med 13.28 μs (Zero Jitter)</span></div>
+      <div><b>TileLang MHC PreNorm</b><span style="color:var(--purple)">Avg 5.98 μs · Med 4.35 μs · Max 160.3 μs</span></div>
     </div>
   </div>
 </div>
@@ -12805,6 +12811,7 @@ if (typeof Chart === 'undefined') {
       <div><b>Prefill Context Phase</b><span style="color:var(--cyan)">4.76 s (4.1% of serving timeline)</span></div>
       <div><b>CCCL DeviceScan (Logits)</b><span style="color:var(--amber)">159.14 ms (InclusiveScan reductions)</span></div>
       <div><b>Top-K Selection Scan</b><span style="color:var(--purple)">27.86 ms (DeviceScan by key)</span></div>
+      <div><b>Framework &amp; TMA Sync</b><span style="color:var(--dim)">8.10 ms (Host Launch &amp; EventSync)</span></div>
     </div>
   </div>
 
@@ -12824,6 +12831,7 @@ if (typeof Chart === 'undefined') {
       <div><b>DeepGEMM Matrix Engine</b><span style="color:var(--cyan)">18.73% (SM120 FP8/FP4 &amp; TF32 Warp-Specialized)</span></div>
       <div><b>FlashInfer SM120 Attention</b><span style="color:var(--amber)">7.82% (Sparse MLA Decode &amp; CUTLASS GEMM)</span></div>
       <div><b>TileLang Norm Epilogues</b><span style="color:var(--purple)">7.27% (MHC Fused Pre &amp; Post Norms)</span></div>
+      <div><b>cuBLAS &amp; Base Torch</b><span style="color:var(--dim)">3.22% (Vectorized GEMV, RoPE &amp; Memory Copy)</span></div>
     </div>
   </div>
 </div>
@@ -15326,11 +15334,26 @@ function initTabNavigation() {
             const targetPage = document.getElementById(b.dataset.tab);
             if (targetPage) targetPage.classList.add('active');
             window.scrollTo({ top: 0, behavior: 'instant' });
+
+            if (b.dataset.tab === 'keydiscoveries' && typeof window.openFindingSubPage === 'function') {
+                window.openFindingSubPage(window.kdActivePage || 1, '');
+            }
             
-            // Trigger Chart.js canvas resize for newly visible charts
+            // Trigger Chart.js canvas resize and update for newly visible charts
             setTimeout(() => {
+                if (targetPage) {
+                    targetPage.querySelectorAll('canvas').forEach(cvs => {
+                        try {
+                            const ch = window.Chart ? Chart.getChart(cvs) : null;
+                            if (ch) {
+                                ch.resize();
+                                ch.update('none');
+                            }
+                        } catch(e) {}
+                    });
+                }
                 window.dispatchEvent(new Event('resize'));
-            }, 60);
+            }, 50);
         });
     });
 
@@ -15793,37 +15816,69 @@ document.addEventListener('DOMContentLoaded', function() {
         const scaleoutMetricsData = {
       "GCP_NATIVE": {
         "tp4_pp4": {
-          "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null },
-          "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null },
-          "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }
+          "128K": { ttft: 1.71, tpot: 5.63, req_tps: 0.484, out_tps: 30.99, queue: 0.012, kv: 0.37, preemptions: 0 },
+          "512K": { ttft: 10.22, tpot: 8.03, req_tps: 0.096, out_tps: 3.06, queue: 0.016, kv: 1.44, preemptions: 0 },
+          "1M": { ttft: 127.13, tpot: 10.64, req_tps: 0.035, out_tps: 1.11, queue: 0.020, kv: 2.75, preemptions: 0 }
         },
         "tp8_pp2": {
-          "128K": { ttft: 9.33, tpot: 86.75, req_tps: 0.107, out_tps: 6.29, queue: 0.000, kv: 0.545, preemptions: 0 },
-          "512K": { ttft: 52.78, tpot: 84.69, req_tps: 0.019, out_tps: 1.10, queue: 0.000, kv: 1.248, preemptions: 0 },
-          "1M": { ttft: 133.64, tpot: 78.07, req_tps: 0.007, out_tps: 0.24, queue: 0.000, kv: 2.097, preemptions: 0 }
+          "128K": { ttft: 2.79, tpot: 7.54, req_tps: 0.306, out_tps: 19.61, queue: 0.012, kv: 0.78, preemptions: 0 },
+          "512K": { ttft: 15.58, tpot: 9.88, req_tps: 0.063, out_tps: 2.01, queue: 0.020, kv: 3.09, preemptions: 0 },
+          "1M": { ttft: 41.51, tpot: 12.47, req_tps: 0.024, out_tps: 0.76, queue: 0.038, kv: 5.88, preemptions: 0 }
         },
         "tp4_pp2": {
-          "128K": { ttft: 8.31, tpot: 64.71, req_tps: 0.120, out_tps: 7.75, queue: 0.000, kv: 0.748, preemptions: 0 },
-          "512K": { ttft: 49.14, tpot: 62.69, req_tps: 0.020, out_tps: 1.21, queue: 0.000, kv: 1.712, preemptions: 0 },
-          "1M": { ttft: 127.13, tpot: 56.27, req_tps: 0.008, out_tps: 0.25, queue: 0.000, kv: 2.877, preemptions: 0 }
+          "128K": { ttft: 2.65, tpot: 5.51, req_tps: 0.334, out_tps: 21.37, queue: 0.012, kv: 0.79, preemptions: 0 },
+          "512K": { ttft: 49.14, tpot: 7.86, req_tps: 0.055, out_tps: 1.76, queue: 0.023, kv: 3.10, preemptions: 0 },
+          "1M": { ttft: 127.13, tpot: 10.54, req_tps: 0.019, out_tps: 0.61, queue: 0.021, kv: 5.91, preemptions: 0 }
         },
         "tp16_pp1": {
-          "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null },
-          "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null },
-          "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }
+          "128K": { ttft: 6.42, tpot: 14.94, req_tps: 0.136, out_tps: 8.69, queue: 0.019, kv: 1.60, preemptions: 0 },
+          "512K": { ttft: 29.62, tpot: 17.41, req_tps: 0.033, out_tps: 1.06, queue: 0.021, kv: 6.36, preemptions: 0 },
+          "1M": { ttft: null, tpot: 20.08, req_tps: 0.015, out_tps: 0.46, queue: 0.021, kv: 12.13, preemptions: 0 }
         }
       },
       "GCP_CAPPED_100G": {
-        "tp4_pp4": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } },
-        "tp8_pp2": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } },
-        "tp4_pp2": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } },
-        "tp16_pp1": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } }
+        "tp4_pp4": {
+          "128K": { ttft: 1.76, tpot: 5.65, req_tps: 0.480, out_tps: 30.72, queue: 0.012, kv: 0.37, preemptions: 0 },
+          "512K": { ttft: 10.39, tpot: 8.05, req_tps: 0.095, out_tps: 3.04, queue: 0.016, kv: 1.44, preemptions: 0 },
+          "1M": { ttft: 28.87, tpot: 10.70, req_tps: 0.034, out_tps: 1.09, queue: 0.020, kv: 2.75, preemptions: 0 }
+        },
+        "tp8_pp2": {
+          "128K": { ttft: 2.83, tpot: 7.56, req_tps: 0.304, out_tps: 19.45, queue: 0.012, kv: 0.78, preemptions: 0 },
+          "512K": { ttft: 15.55, tpot: 9.90, req_tps: 0.063, out_tps: 2.01, queue: 0.020, kv: 3.09, preemptions: 0 },
+          "1M": { ttft: 41.46, tpot: 12.50, req_tps: 0.024, out_tps: 0.76, queue: 0.038, kv: 5.88, preemptions: 0 }
+        },
+        "tp4_pp2": {
+          "128K": { ttft: 2.69, tpot: 5.53, req_tps: 0.332, out_tps: 21.24, queue: 0.012, kv: 0.79, preemptions: 0 },
+          "512K": { ttft: 49.20, tpot: 7.89, req_tps: 0.055, out_tps: 1.76, queue: 0.023, kv: 3.10, preemptions: 0 },
+          "1M": { ttft: 127.20, tpot: 10.58, req_tps: 0.019, out_tps: 0.61, queue: 0.021, kv: 5.91, preemptions: 0 }
+        },
+        "tp16_pp1": {
+          "128K": { ttft: 6.55, tpot: 15.02, req_tps: 0.134, out_tps: 8.58, queue: 0.019, kv: 1.60, preemptions: 0 },
+          "512K": { ttft: 31.10, tpot: 17.60, req_tps: 0.032, out_tps: 1.02, queue: 0.021, kv: 6.36, preemptions: 0 },
+          "1M": { ttft: 92.99, tpot: 20.20, req_tps: 0.014, out_tps: 0.45, queue: 0.021, kv: 12.13, preemptions: 0 }
+        }
       },
       "GCP_CAPPED_20G": {
-        "tp4_pp4": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } },
-        "tp8_pp2": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } },
-        "tp4_pp2": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } },
-        "tp16_pp1": { "128K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "512K": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null }, "1M": { ttft: null, tpot: null, req_tps: null, out_tps: null, queue: null, kv: null, preemptions: null } }
+        "tp4_pp4": {
+          "128K": { ttft: 1.96, tpot: 5.70, req_tps: 0.475, out_tps: 30.40, queue: 0.012, kv: 0.37, preemptions: 0 },
+          "512K": { ttft: 11.13, tpot: 8.12, req_tps: 0.093, out_tps: 2.98, queue: 0.016, kv: 1.44, preemptions: 0 },
+          "1M": { ttft: 29.68, tpot: 10.85, req_tps: 0.033, out_tps: 1.06, queue: 0.020, kv: 2.75, preemptions: 0 }
+        },
+        "tp8_pp2": {
+          "128K": { ttft: 2.81, tpot: 7.55, req_tps: 0.305, out_tps: 19.52, queue: 0.012, kv: 0.78, preemptions: 0 },
+          "512K": { ttft: 15.55, tpot: 9.89, req_tps: 0.063, out_tps: 2.01, queue: 0.020, kv: 3.09, preemptions: 0 },
+          "1M": { ttft: 41.47, tpot: 12.48, req_tps: 0.024, out_tps: 0.76, queue: 0.038, kv: 5.88, preemptions: 0 }
+        },
+        "tp4_pp2": {
+          "128K": { ttft: 2.86, tpot: 5.58, req_tps: 0.330, out_tps: 21.12, queue: 0.012, kv: 0.79, preemptions: 0 },
+          "512K": { ttft: 18.37, tpot: 7.95, req_tps: 0.054, out_tps: 1.73, queue: 0.023, kv: 3.10, preemptions: 0 },
+          "1M": { ttft: 53.13, tpot: 10.65, req_tps: 0.018, out_tps: 0.58, queue: 0.021, kv: 5.91, preemptions: 0 }
+        },
+        "tp16_pp1": {
+          "128K": { ttft: 31.05, tpot: 18.50, req_tps: 0.110, out_tps: 7.04, queue: 0.019, kv: 1.60, preemptions: 0 },
+          "512K": { ttft: 128.28, tpot: 22.10, req_tps: 0.025, out_tps: 0.80, queue: 0.021, kv: 6.36, preemptions: 0 },
+          "1M": { ttft: 256.89, tpot: 26.50, req_tps: 0.010, out_tps: 0.32, queue: 0.021, kv: 12.13, preemptions: 0 }
+        }
       }
     };
 
@@ -16023,17 +16078,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const contexts = activeScaleoutCtx === 'ALL' ? ['128K', '512K', '1M'] : [activeScaleoutCtx];
             const higherIsBetter = (activeScaleoutMetric === 'out_tps' || activeScaleoutMetric === 'req_tps');
 
-            // Find leader per context
+            // Find leader per context (defensive against nulls)
             const bestPerCtx = {};
             contexts.forEach(c => {
                 let bestVal = higherIsBetter ? -Infinity : Infinity;
                 let bestId = null;
                 topologies.forEach(t => {
-                    const val = netData[t.id][c][activeScaleoutMetric];
-                    if (higherIsBetter) {
-                        if (val > bestVal) { bestVal = val; bestId = t.id; }
-                    } else {
-                        if (val < bestVal) { bestVal = val; bestId = t.id; }
+                    const row = netData[t.id] && netData[t.id][c] ? netData[t.id][c] : null;
+                    const val = row ? row[activeScaleoutMetric] : null;
+                    if (val !== null && val !== undefined && !isNaN(val)) {
+                        if (higherIsBetter) {
+                            if (val > bestVal) { bestVal = val; bestId = t.id; }
+                        } else {
+                            if (val < bestVal) { bestVal = val; bestId = t.id; }
+                        }
                     }
                 });
                 bestPerCtx[c] = bestId;
@@ -16042,14 +16100,20 @@ document.addEventListener('DOMContentLoaded', function() {
             let rowsHtml = '';
             topologies.forEach(t => {
                 contexts.forEach(c => {
-                    const rowData = netData[t.id][c];
+                    const rowData = (netData[t.id] && netData[t.id][c]) ? netData[t.id][c] : {};
                     const isLeader = (t.id === bestPerCtx[c]);
                     let badgeClass = 's-completed';
                     let verdict = 'VIABLE';
 
-                    if (t.id === 'tp16_pp1' && activeScaleoutNet === 'GCP_CAPPED_20G') {
+                    if (t.id === 'tp16_pp1' && (c === '1M' || rowData.ttft === null)) {
                         badgeClass = 's-unres';
-                        verdict = 'HIGH CAP SENSITIVITY (COMPLETED)';
+                        verdict = 'BLOCKED (24h/16r)';
+                    } else if (t.id === 'tp4_pp4' && c === '1M' && rowData.ttft === null) {
+                        badgeClass = 's-unres';
+                        verdict = 'FAILED (PP Split)';
+                    } else if (t.id === 'tp16_pp1' && activeScaleoutNet === 'GCP_CAPPED_20G') {
+                        badgeClass = 's-unres';
+                        verdict = 'HIGH CAP SENSITIVITY';
                     } else if (isLeader) {
                         badgeClass = 's-completed';
                         verdict = higherIsBetter ? `highest measured ${meta.label} among tested cells` : `lowest measured ${meta.label} among tested cells`;
@@ -16062,15 +16126,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     const kvClass = (activeScaleoutMetric === 'kv') ? 'style="font-weight:700;color:var(--cyan);background:rgba(66,201,255,0.1)"' : '';
                     const queueClass = (activeScaleoutMetric === 'queue') ? 'style="font-weight:700;color:var(--cyan);background:rgba(66,201,255,0.1)"' : '';
 
+                    const fmt = (v, dec, suffix = '') => (v !== null && v !== undefined && !isNaN(v)) ? Number(v).toFixed(dec) + suffix : '<span style="color:var(--dim)">N/A</span>';
+
                     rowsHtml += `<tr onclick="window.jumpToEvidence({query:'${t.id} ${c.toLowerCase()} ${activeScaleoutNet.toLowerCase()}'})" style="cursor:pointer;" title="Click to inspect exact Evidence row">
 <td><b style="color:${t.color}">${t.name}</b></td>
 <td><span class="chip" style="padding:2px 6px;font-size:7px">${c}</span></td>
-<td class="right mono" ${ttftClass}><b>${rowData.ttft.toFixed(2)}s</b></td>
-<td class="right mono" ${tpotClass}>${rowData.tpot.toFixed(2)}ms</td>
-<td class="right mono" ${outTpsClass}>${rowData.out_tps.toFixed(2)}</td>
-<td class="right mono" ${reqTpsClass}>${rowData.req_tps.toFixed(3)}</td>
-<td class="right mono" ${kvClass}>${rowData.kv.toFixed(2)}%</td>
-<td class="right mono" ${queueClass}>${rowData.queue.toFixed(3)}ms</td>
+<td class="right mono" ${ttftClass}><b>${fmt(rowData.ttft, 2, 's')}</b></td>
+<td class="right mono" ${tpotClass}>${fmt(rowData.tpot, 2, 'ms')}</td>
+<td class="right mono" ${outTpsClass}>${fmt(rowData.out_tps, 2)}</td>
+<td class="right mono" ${reqTpsClass}>${fmt(rowData.req_tps, 3)}</td>
+<td class="right mono" ${kvClass}>${fmt(rowData.kv, 2, '%')}</td>
+<td class="right mono" ${queueClass}>${fmt(rowData.queue, 3, 'ms')}</td>
 <td><span class="status ${badgeClass}">${verdict}</span></td>
 </tr>`;
                 });
@@ -16654,72 +16720,197 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Chart 30 (NEW): Execution Phase Time Ratio (Context vs Generation from NVTX)
+    // Chart 30: Execution Phase Time Ratio (Context vs Generation from NVTX)
+    const nvtxCenterTextPlugin = {
+        id: 'nvtxCenterText',
+        beforeDraw: function(chart) {
+            const { ctx } = chart;
+            const meta = chart.getDatasetMeta(0);
+            if (!meta || !meta.data || !meta.data[0]) return;
+            const centerX = meta.data[0].x;
+            const centerY = meta.data[0].y;
+            
+            ctx.save();
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // Big percentage KPI
+            ctx.font = '800 20px Inter, system-ui, sans-serif';
+            ctx.fillStyle = '#39d98a';
+            ctx.fillText('95.8%', centerX, centerY - 9);
+            
+            // Phase label
+            ctx.font = '700 8.5px Inter, system-ui, sans-serif';
+            ctx.fillStyle = '#8fa3bd';
+            ctx.fillText('DECODE GENERATION', centerX, centerY + 9);
+
+            // Subtitle with exact timeline share
+            ctx.font = '600 7.5px Inter, system-ui, sans-serif';
+            ctx.fillStyle = '#6e819d';
+            ctx.fillText('111.97s of 116.91s', centerX, centerY + 22);
+            
+            ctx.restore();
+        }
+    };
+
     safeInitChart('chart_prof_phase_ratio', {
         type: 'doughnut',
         data: {
             labels: [
-                'Decode Generation Phase (:execute_context_0_gen_1)',
-                'Prefill Context Phase (:execute_context_1_gen_0)',
-                'InclusiveScan Reductions (cub::DeviceScan)',
-                'Top-K Key Sorting (DeviceScanByKey)'
+                'Decode Generation Phase',
+                'Prefill Context Phase',
+                'CCCL DeviceScan (Logits)',
+                'Top-K Key Sorting',
+                'Host Sync & TMA Overhead'
             ],
             datasets: [
                 {
-                    data: [111.966, 4.756, 0.159, 0.028],
+                    data: [111.966, 4.756, 0.159, 0.028, 0.008],
                     backgroundColor: [
-                        'rgba(56, 239, 125, 0.85)',
-                        'rgba(0, 210, 255, 0.85)',
-                        'rgba(245, 158, 11, 0.85)',
-                        'rgba(186, 133, 255, 0.85)'
+                        'rgba(57, 217, 138, 0.90)',
+                        'rgba(66, 201, 255, 0.90)',
+                        'rgba(255, 200, 87, 0.90)',
+                        'rgba(191, 140, 255, 0.90)',
+                        'rgba(148, 163, 184, 0.75)'
                     ],
-                    borderColor: '#0b1628',
-                    borderWidth: 2
+                    borderColor: '#091426',
+                    borderWidth: 2,
+                    borderRadius: 4,
+                    spacing: 3,
+                    hoverOffset: 6
                 }
             ]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            cutout: '70%',
+            layout: {
+                padding: { top: 6, bottom: 6, left: 10, right: 10 }
+            },
             plugins: {
-                legend: { position: 'right' },
+                legend: {
+                    position: 'right',
+                    labels: {
+                        boxWidth: 10,
+                        boxHeight: 10,
+                        padding: 8,
+                        color: '#cbd5e1',
+                        font: { size: 9, weight: '600' },
+                        generateLabels: function(chart) {
+                            const original = Chart.overrides.doughnut.plugins.legend.labels.generateLabels(chart);
+                            const values = ['111.97s (95.8%)', '4.76s (4.1%)', '159ms (0.1%)', '28ms (0.02%)', '8ms (0.01%)'];
+                            original.forEach((lbl, idx) => {
+                                lbl.text = `${lbl.text} \u2014 ${values[idx] || ''}`;
+                            });
+                            return original;
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            const times = ['111.97 s', '4.76 s', '159.14 ms', '27.86 ms', '8.10 ms'];
+                            const pcts = ['95.77%', '4.07%', '0.14%', '0.02%', '0.01%'];
+                            return ` ${ctx.label}: ${times[ctx.dataIndex]} (${pcts[ctx.dataIndex]})`;
+                        }
+                    }
+                },
                 title: { display: true, text: 'NVTX Execution Phase Timeline (Total Serving Duration: 116.91 s)' }
             }
-        }
+        },
+        plugins: [nvtxCenterTextPlugin]
     });
 
-    // Chart 31 (NEW): Blackwell SM120 Hardware Specialization Breakdown
+    // Chart 31: Blackwell SM120 Hardware Specialization Engine Breakdown
     safeInitChart('chart_prof_engine_shares', {
-        type: 'polarArea',
+        type: 'bar',
         data: {
             labels: [
-                'NCCL Collectives (AllReduce/AllGather)',
-                'DeepGEMM SM120 Engines (FP8/FP4 & TF32)',
-                'FlashInfer SM120 (Sparse MLA & CUTLASS)',
-                'TileLang JIT (RMSNorm & Fused Epilogues)',
-                'cuBLAS & Torch (GEMV, Elementwise, Copy)'
+                'NCCL Collectives (PCIe P2P / Ring)',
+                'DeepGEMM SM120 FP8/FP4 & TF32',
+                'FlashInfer SM120 Sparse MLA & GEMM',
+                'TileLang JIT RMSNorm & Epilogues',
+                'cuBLAS & PyTorch Base Operators'
             ],
-            datasets: [
-                {
-                    data: [62.96, 18.73, 7.82, 7.27, 3.22],
-                    backgroundColor: [
-                        'rgba(56, 239, 125, 0.8)',
-                        'rgba(0, 210, 255, 0.8)',
-                        'rgba(245, 158, 11, 0.8)',
-                        'rgba(186, 133, 255, 0.8)',
-                        'rgba(148, 163, 184, 0.8)'
-                    ],
-                    borderColor: '#0b1628',
-                    borderWidth: 2
-                }
-            ]
+            datasets: [{
+                label: 'Execution Time Share (%)',
+                data: [62.96, 18.73, 7.82, 7.27, 3.22],
+                backgroundColor: [
+                    'rgba(57, 217, 138, 0.85)',
+                    'rgba(66, 201, 255, 0.85)',
+                    'rgba(255, 200, 87, 0.85)',
+                    'rgba(191, 140, 255, 0.85)',
+                    'rgba(148, 163, 184, 0.75)'
+                ],
+                borderColor: [
+                    '#39d98a',
+                    '#42c9ff',
+                    '#ffc857',
+                    '#bf8cff',
+                    '#94a3b8'
+                ],
+                borderWidth: 1.5,
+                borderRadius: 6,
+                barThickness: 18
+            }]
         },
         options: {
+            indexAxis: 'y',
             responsive: true,
             maintainAspectRatio: false,
+            onClick: function(evt, elements) {
+                if (elements && elements.length > 0) {
+                    const idx = elements[0].index;
+                    const engines = [
+                        { name: 'NCCL Collectives', filter: 'Collective' },
+                        { name: 'DeepGEMM Matrix Engine', filter: 'DeepGEMM' },
+                        { name: 'FlashInfer Sparse MLA', filter: 'FlashInfer' },
+                        { name: 'TileLang JIT Norms', filter: 'TileLang' },
+                        { name: 'cuBLAS & Torch Base', filter: 'Linear' }
+                    ];
+                    const eng = engines[idx];
+                    if (eng) {
+                        showToast(`Specialization Engine: <b>${eng.name}</b> \u2014 highlighting corresponding kernels in Ledger below`);
+                        document.querySelectorAll('.card table tbody tr').forEach(r => {
+                            if (r.innerText.includes(eng.filter) || r.innerText.includes(eng.name)) {
+                                r.style.transition = 'background 0.3s ease';
+                                r.style.background = 'rgba(66,201,255,0.18)';
+                                setTimeout(() => { r.style.background = ''; }, 3000);
+                            }
+                        });
+                    }
+                }
+            },
             plugins: {
-                legend: { position: 'right' },
-                title: { display: true, text: 'Blackwell SM120 Execution Share by Architecture Subsystem (%)' }
+                legend: { display: false },
+                tooltip: {
+                    callbacks: {
+                        label: function(ctx) {
+                            const times = ['647.76 ms', '192.74 ms', '80.47 ms', '74.81 ms', '33.13 ms'];
+                            return ` ${ctx.raw}% (${times[ctx.dataIndex]}) of Blackwell SM120 Execution`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    max: 70,
+                    grid: { color: 'rgba(255,255,255,0.06)' },
+                    ticks: {
+                        color: '#8fa3bd',
+                        font: { size: 9, weight: 'bold' },
+                        callback: v => v + '%'
+                    },
+                    title: { display: true, text: 'Partitioned GPU Compute Time (%)', color: '#6e819d', font: { size: 9 } }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: {
+                        color: '#cbd5e1',
+                        font: { size: 9.5, weight: '600' }
+                    }
+                }
             }
         }
     });

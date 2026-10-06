@@ -1,4 +1,5 @@
 # V8 Key Discoveries V6 — Comment Closure Plan
+
 ## Final implementation actions before technical sign-off
 
 **Target HTML:** `MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST.html`  
@@ -31,7 +32,7 @@ Do **not** mark Key Discoveries `FINAL / VALIDATED` until all P0 items and all r
 These review comments are considered closed in the 27 Sept 7pm HTML and must remain closed.
 
 | Item | Required state |
-|---|---|
+| --- | --- |
 | Stable finding numbering | `1 Fabric, 2 Concurrency, 3 Long Context, 4 Prefix, 5 Admission, 6 Parallelism, 7 TP Decode, 8 Runtime, 9 Busy GPU, 10 KV/VRAM` |
 | Concurrency 1M numbers | canonical real-run values |
 | TP8/PP2 GPU-s | ~664.24, not ~767 |
@@ -85,7 +86,7 @@ These must not remain in the Key Discoveries detailed Fabric chart.
 ## Canonical 20G TTFT values
 
 | Topology | 128K | 512K | 1M |
-|---|---:|---:|---:|
+| --- | ---: | ---: | ---: |
 | TP4/PP2 | 2.859s | 18.372s | 53.127s |
 | TP8/PP2 | 2.810s | 15.546s | 41.472s |
 | TP4/PP4 | 1.961s | 11.134s | 29.684s |
@@ -472,7 +473,7 @@ Do not claim the campaign proved a dedicated pool is always better.
 Validated 1M resource plane:
 
 | Topology | TTFT | GPUs | GPU-s/request proxy |
-|---|---:|---:|---:|
+| --- | ---: | ---: | ---: |
 | TP4/PP1 | 93.248s | 4 | 372.99 |
 | TP4/PP2 | 52.526s | 8 | 420.21 |
 | TP4/PP4 | 28.568s | 16 | 457.09 |
@@ -503,7 +504,7 @@ PP is the winner
 Validated E2E TPOT:
 
 | Context | TP4/PP1 | TP8/PP1 | TP8 penalty |
-|---|---:|---:|---:|
+| --- | ---: | ---: | ---: |
 | 8K | 4.475ms | 6.350ms | +41.9% |
 | 128K | 5.106ms | 7.098ms | +39.0% |
 | 512K | 7.565ms | 9.455ms | +25.0% |
@@ -529,7 +530,7 @@ the same profiler fraction holds at 1M
 Validated measured comparison:
 
 | Context | TP4/PP4 util | TP4/PP4 TTFT | TP16/PP1 util | TP16/PP1 TTFT |
-|---|---:|---:|---:|---:|
+| --- | ---: | ---: | ---: | ---: |
 | 128K | 35.2% | 1.710s | 63.2% | 6.420s |
 | 512K | 55.3% | 10.222s | 67.8% | 29.624s |
 | 1M | 62.8% | 28.568s | 80.6% | 68.197s |
@@ -565,7 +566,7 @@ Do not infer exact spin-wait/barrier percentage.
 Validated 1M telemetry:
 
 | Topology | Peak KV | Peak GPU memory telemetry |
-|---|---:|---:|
+| --- | ---: | ---: |
 | TP4/PP1 | 12.29% | 88.39 GiB |
 | TP4/PP2 | 5.91% | 88.69 GiB |
 | TP4/PP4 | 2.75% | 88.83 GiB |
@@ -738,7 +739,7 @@ Release should fail if any test fails.
 # 12. Team closure matrix
 
 | Priority | Comment | Required action | Closure evidence |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | P0 | Fabric stale detailed chart | generate chart from canonical Fabric object | screenshot + parity test |
 | P0 | Duplicate numeric sources | create `KD_DISCOVERIES_V6` | code diff + no duplicate arrays |
 | P0 | Forensics routes to finding modal | route exact evidence to evidence popup | click-through recording / test |

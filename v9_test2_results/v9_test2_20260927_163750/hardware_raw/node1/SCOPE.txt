@@ -1,2 +1,0 @@
-NCCL size sweeps are hardware primitives. Model-informed exact sizes are DERIVED_REFERENCE hypotheses, not claims of actual runtime collective messages.
-CUTLASS shapes are FP16 reference roofs only. Quantized model efficiency must come from actual vLLM Nsight/PyTorch kernel evidence.
