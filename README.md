@@ -40,14 +40,15 @@ Captured **100MB of PyTorch operator traces** and **976MB of Nsight Systems trac
 
 The repository hosts the complete, audited **V8 Characterization Suite** for MoonshotAI `Kimi-Linear-48B-A3B-Instruct` across single-node and dual-node 16× NVIDIA RTX PRO 6000 Blackwell GPUs.
 
-- **Comprehensive V8 Suite & Dashboard Guide:** [`README_V8_SUITE_AND_DASHBOARD_GUIDE.md`](file:///README_V8_SUITE_AND_DASHBOARD_GUIDE.md) *(detailed breakdown of the 3 V8 folders, runner scripts, empirical outputs, and frontend mappings)*
+- **Comprehensive V8 Suite & Dashboard Guide:** [`README_V8_SUITE_AND_DASHBOARD_GUIDE.md`](file:///README_V8_SUITE_AND_DASHBOARD_GUIDE.md) *(detailed breakdown of the consolidated V8 directory, runner scripts, empirical outputs, and frontend mappings)*
 - **Interactive Master Dashboard:** [`v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html) (mirror: [`v8_full_results/dashboards/v4_dashboard/index.html`](file:///v8_full_results/dashboards/v4_dashboard/index.html))
 - **Model:** MoonshotAI `Kimi-Linear-48B-A3B-Instruct` (BF16, 27 Active Layers, Hidden Size 2304)
 - **Cluster:** Dual-Node 16× NVIDIA RTX PRO 6000 Blackwell GPUs (PCIe Gen5, NUMA dual-socket, 173.6 Gbps VPC interconnect).
-- **V8 Directory Structure:**
-  - `v8_full_results/`: Authoritative master dataset (126 canonical runs) and interactive 10-tab dashboard.
-  - `v8_additional_runs_suite/`: Executable benchmark runner suite and test definitions (Stage 1 & Stage 2).
-  - `v8_additional_runs_local/`: Downloaded empirical cluster metrics, traces, and execution status logs (`rc: 0`).
+- **Consolidated V8 Architecture (`v8_full_results/`):**
+  - `v8_full_results/dashboards/`: Interactive 10-tab dashboard and canonical JSON database.
+  - `v8_full_results/suite/`: Executable benchmark runner suite and test definitions (Stage 1 & Stage 2).
+  - `v8_full_results/raw_runs/`: Downloaded empirical cluster metrics, traces, and execution status logs (`rc: 0`).
+  - `v8_full_results/combined_vllm_runs.csv`: Authoritative master dataset (126 canonical runs).
 
 ## 📁 Repository Structure
 

@@ -173,85 +173,91 @@ The V8 benchmark suite targets the deployment of **Kimi-Linear-48B**, a hybrid s
 """)
 
     # Section 2
-    sections.append("""## 2. Why Three V8 Folders Exist: Architectural Separation & Data Provenance
+    sections.append("""## 2. Directory Architecture: The Single Unified `v8_full_results` Root
 
-During the multi-week benchmarking campaign, the project workspace evolved from isolated diagnostic scripts into a full enterprise deliverable. Having three distinct `v8` folders is **an intentional, production-grade separation of concerns**, preventing massive raw trace files from polluting stakeholder-facing reports.
+To eliminate confusion across engineering and executive stakeholders, the entire V8 ecosystem is consolidated under **a single top-level directory: `v8_full_results/`**. Subsystems are logically compartmentalized within this single folder, maintaining an unbroken provenance chain from test definitions to raw empirical logs and interactive visualizations.
 
 ```
 +-------------------------------------------------------------------------------------------------------------+
-|                                  THE THREE-TIER DIRECTORY LIFECYCLE                                         |
+|                               CONSOLIDATED SINGLE V8 DIRECTORY ARCHITECTURE                                 |
 |                                                                                                             |
-|  TIER 1: EXECUTION SUITE                   TIER 2: MEASUREMENT VAULT            TIER 3: PRESENTATION        |
-|  v8_additional_runs_suite/                 v8_additional_runs_local/            v8_full_results/            |
-|  -------------------------                 -------------------------            ----------------           |
-|  - 00_run_master...sh                      - master_step_status.jsonl           - MASTER_CHARACTERIZATION...|
-|  - 01_run_stage1...sh                      - step1_fp8_kv_cache/ (stdout/err)   - DASHBOARD_CANONICAL_DATA..|
-|  - 02_run_stage2...sh                      - step2_cpu_offload/ (JSON/CSV)      - combined_vllm_runs.csv    |
-|  - stage1_cases.json                       - step12_multi_node/ (traces)        - release_specs/            |
-|  - rtx_g4_smoke_v5/                        - step15_torch/ (kineto traces)      - time_budget/ PNG & CSV    |
-|                                                                                                             |
-|  [ROLE: Approved Code Package]      -->    [ROLE: Empirical Raw Evidence]   --> [ROLE: Production Deliverable]|
-|  What gets packaged & zipped               What gets pulled from VMs            What executive stakeholders |
-|  for management authorization              at 3:00 AM after sweeps finish       open in their web browsers  |
+|  v8_full_results/                                                                                           |
+|  ├── suite/                         <-- [TIER 1: EXECUTION SUITE]                                           |
+|  │   ├── 00_run_master...sh              Management-approved test scripts & case matrices                   |
+|  │   ├── 01_run_stage1...sh              (formerly 'v8_additional_runs_suite')                              |
+|  │   ├── stage1_cases.json                                                                                  |
+|  │   ├── rtx_g4_smoke_v5/                                                                                   |
+|  │   └── rtx_g4_smoke_v8_hw/                                                                                |
+|  │                                                                                                          |
+|  ├── raw_runs/                      <-- [TIER 2: EMPIRICAL MEASUREMENT VAULT]                               |
+|  │   ├── master_step_status.jsonl        Immutable downloaded cluster measurements,                         |
+|  │   ├── stage1/ (steps 1–8 logs)        raw stdout/stderr dumps, Nsight CSV tables,                        |
+|  │   └── stage2/ (steps 9–15 logs)       and PyTorch Kineto traces (formerly 'v8_additional_runs_local')    |
+|  │                                                                                                          |
+|  ├── dashboards/                    <-- [TIER 3: PRESENTATION DELIVERABLE]                                  |
+|  │   └── v4_dashboard/                   The standalone interactive HTML dashboard,                         |
+|  │       ├── MASTER_...DASHBOARD.html    canonical JSON database, and inline time-budget visualizers        |
+|  │       └── DASHBOARD_CANONICAL_DATA.json                                                                  |
+|  │                                                                                                          |
+|  ├── combined_vllm_runs.csv         <-- Canonical baseline 126-run benchmark matrix                         |
+|  ├── release_specs/                 <-- Frozen stakeholder distributions & verification builds              |
+|  └── results/                       <-- Processed hardware benchmarks and validation coverage               |
 +-------------------------------------------------------------------------------------------------------------+
 ```
 
-### 2.1 The Operational Problem: Code vs. Raw Data vs. Stakeholder Presentation
+### 2.1 The Operational Problem Solved: Single Root with Strict Lifecycle Roles
 
-If an enterprise project mixes run scripts, gigabytes of profiling traces, and the frontend HTML in a single directory:
-1. **Git Bloat:** Binary profiling files (`.nsys-rep`, `.pt.trace.json`) and raw execution logs exceed dozens of gigabytes, causing Git clones to fail or time out.
-2. **Audit Failures:** Executive stakeholders cannot easily distinguish between code authorized by management and experimental outputs generated on the cloud nodes.
-3. **Accidental Overwrites:** Automated scripts writing directly into presentation directories risk corrupting validated baseline dashboards.
+Previously, having three top-level folders (`v8_additional_runs_suite`, `v8_additional_runs_local`, `v8_full_results`) caused organizational confusion. Consolidating into a single `v8_full_results/` root solves this completely:
+1. **Zero Clutter at Root:** Only one `v8_full_results/` folder exists at the workspace root.
+2. **Clear Lifecycle Isolation:** Test scripts (`suite/`), downloaded raw evidence (`raw_runs/`), and presentation assets (`dashboards/`) are clearly organized within their own dedicated subdirectories.
+3. **Audit Integrity Preserved:** Executive stakeholders can open `v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html` directly, knowing all underlying data traces to `v8_full_results/raw_runs/` and `v8_full_results/suite/`.
 
-To solve this, the repository implements a strict three-tier lifecycle.
+### 2.2 `v8_full_results/suite/` (Execution Package & Test Harness)
 
-### 2.2 `v8_additional_runs_suite/` (Execution Package & Test Harness)
-
-- **Definition:** The standalone code and configuration bundle submitted to leadership for test approval (`v8_additional_runs_stage1_stage2.zip`).
+- **Definition:** The standalone code and configuration bundle approved for running Stage 1 and Stage 2 sweeps.
 - **Contents:**
   - Shell execution drivers (`00_run_master_additional_runs.sh`, `01_run_stage1_quick_wins.sh`, `02_run_stage2_failed_and_scaleout.sh`).
   - Test matrix manifests (`stage1_cases.json`, `stage2_cases_single_node.json`, `stage2_cases_multi_node_load.json`).
   - Core validation and metric collection libraries (`rtx_g4_smoke_v5/` and `rtx_g4_smoke_v8_hw/`).
-  - Formal executive proposal document (`README_FOR_BOSS_APPROVAL.md`).
+  - Executive proposal document (`README_FOR_BOSS_APPROVAL.md`).
 - **Characteristics:** Zero bulky binary data, zero output traces, 100% deterministic shell and Python scripts.
 
-### 2.3 `v8_additional_runs_local/` (Empirical Cluster Measurement Vault)
+### 2.3 `v8_full_results/raw_runs/` (Empirical Cluster Measurement Vault)
 
-- **Definition:** The raw empirical data warehouse downloaded from the Google Cloud VMs upon sweep completion.
+- **Definition:** The immutable raw empirical data warehouse downloaded from the Google Cloud VMs upon sweep completion.
 - **Contents:**
   - `master_step_status.jsonl`: The master execution journal recording start time, end time, and return code (`rc`) for every test.
   - `stage1/` and `stage2/`: Dedicated subdirectories for all 15 discrete benchmark steps.
   - Raw stdout/stderr terminal dumps, Ray session logs, and TCP socket diagnostic logs.
   - High-resolution Nsight Systems event tables (`cuda_gpu_trace.csv`, `nvtx_pushpop_sum.csv`, `nccl_op_sum.csv`).
   - PyTorch Kineto timeline traces and per-request latency JSON records.
-- **Characteristics:** Immutable raw evidence. This data is never manually edited; it forms the cryptographic basis of all claims made in the dashboard.
+- **Characteristics:** Immutable raw evidence forming the cryptographic basis of all claims made in the dashboard.
 
-### 2.4 `v8_full_results/` (Canonical Baseline, Distribution Specs & HTML Dashboard)
+### 2.4 `v8_full_results/dashboards/` & Canonical Baseline Deliverables
 
-- **Definition:** The definitive, self-contained distribution tier containing the baseline 126-run benchmark suite and the interactive web dashboard.
+- **Definition:** The definitive, self-contained distribution tier containing the interactive web dashboard.
 - **Contents:**
-  - `dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`: The 3.7 MB master web application featuring zero external dependencies, embedded Chart.js logic, and interactive SVG/Base64 visualizers.
-  - `dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json`: The aggregated structured database backing all dynamic controls and cross-filtering.
+  - `v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`: The 3.7 MB master web application featuring zero external dependencies, embedded Chart.js logic, and interactive SVG/Base64 visualizers.
+  - `v4_dashboard/DASHBOARD_CANONICAL_DATA.json`: The aggregated structured database backing all dynamic controls and cross-filtering.
   - `combined_vllm_runs.csv`: The complete tabular dataset of all 126 canonical single-node and multi-node runs.
   - `release_specs/`: Frozen stakeholder presentation builds and verification copies.
-  - `dashboards/v4_dashboard/time_budget/`: The four canonical wall-time budget PNG charts and underlying CSV breakdown files.
-- **Characteristics:** Highly optimized for consumption, audited against 72 verification invariants, and free of broken links or console errors.
+  - `v4_dashboard/time_budget/`: The four canonical wall-time budget PNG charts and underlying CSV breakdown files.
 
 ### 2.5 Lifecycle Data Flow & Integrity Checksum Architecture
 
-The lifecycle operates strictly left-to-right:
+The lifecycle operates strictly within the single `v8_full_results/` hierarchy:
 ```
-  [v8_additional_runs_suite]
+  [v8_full_results/suite/]
              │
       (Cloud Run Execution)
              ▼
-  [v8_additional_runs_local]
+  [v8_full_results/raw_runs/]
              │
       (Aggregation & Verification Tooling: tools/run_v1_4_verification.py)
              ▼
-  [v8_full_results] (Dashboard & Stakeholder Artifacts)
+  [v8_full_results/dashboards/] (Dashboard & Stakeholder Artifacts)
 ```
-Every script in the suite is hashed and recorded in `v8_additional_runs_local/SUITE_SOURCE_SHA256SUMS.txt`. If a script changes during execution, the audit hash mismatches, flagging the run as untrusted.
+Every script in the suite is hashed and recorded in `v8_full_results/raw_runs/SUITE_SOURCE_SHA256SUMS.txt`. If a script changes during execution, the audit hash mismatches, flagging the run as untrusted.
 
 ---
 """)
@@ -259,44 +265,44 @@ Every script in the suite is hashed and recorded in `v8_additional_runs_local/SU
     # Section 3
     sections.append("""## 3. Exhaustive Old vs. New File Inventory
 
-This section details every file across the V8 ecosystem, delineating baseline artifacts from newly generated execution harnesses, raw data folders, and verification tooling.
+This section details every file across the consolidated V8 ecosystem, delineating baseline artifacts from newly generated execution harnesses, raw data folders, and verification tooling.
 
 ```
 +-------------------------------------------------------------------------------------------------------------+
 |                                    FILE SYSTEM ARTIFACT CLASSIFICATION                                      |
 |                                                                                                             |
-|  OLD / CANONICAL BASELINE ASSETS                 NEW EXPANSION & REMEDIATION ASSETS                         |
-|  -------------------------------                 ----------------------------------                         |
-|  - v8_full_results/combined_vllm_runs.csv        - v8_additional_runs_suite/00_run_master...sh                |
-|  - v8_full_results/.../MASTER_...DASHBOARD.html  - v8_additional_runs_suite/01_run_stage1...sh                |
-|  - v8_full_results/.../DASHBOARD_...DATA.json    - v8_additional_runs_suite/02_run_stage2...sh                |
-|  - v8_full_results/RUNS_INDEX.json               - v8_additional_runs_suite/stage1_cases.json                 |
-|  - v8_full_results/release_specs/                - v8_additional_runs_suite/stage2_cases_*.json               |
-|                                                  - v8_additional_runs_local/master_step_status.jsonl          |
-|                                                  - v8_additional_runs_local/stage1/ (7 test folders)          |
-|                                                  - v8_additional_runs_local/stage2/ (6 test folders)          |
+|  CANONICAL BASELINE & PRODUCTION ASSETS          EXECUTION SUITE & EMPIRICAL RUNS (CONSOLIDATED)            |
+|  --------------------------------------          -----------------------------------------------            |
+|  - v8_full_results/combined_vllm_runs.csv        - v8_full_results/suite/00_run_master...sh                 |
+|  - v8_full_results/.../MASTER_...DASHBOARD.html  - v8_full_results/suite/01_run_stage1...sh                 |
+|  - v8_full_results/.../DASHBOARD_...DATA.json    - v8_full_results/suite/02_run_stage2...sh                 |
+|  - v8_full_results/RUNS_INDEX.json               - v8_full_results/suite/stage1_cases.json                  |
+|  - v8_full_results/release_specs/                - v8_full_results/suite/stage2_cases_*.json                |
+|                                                  - v8_full_results/raw_runs/master_step_status.jsonl        |
+|                                                  - v8_full_results/raw_runs/stage1/ (7 test folders)        |
+|                                                  - v8_full_results/raw_runs/stage2/ (6 test folders)        |
 |                                                  - tools/run_v1_4_verification.py (72 invariant engine)       |
 |                                                  - build_time_budget_artifacts.py (SVG/PNG renderer)          |
 |                                                  - README_V8_SUITE_AND_DASHBOARD_GUIDE.md (Master Guide)     |
 +-------------------------------------------------------------------------------------------------------------+
 ```
 
-### 3.1 Suite Scripts & Harness Definitions (`v8_additional_runs_suite/`)
+### 3.1 Suite Scripts & Harness Definitions (`v8_full_results/suite/`)
 
 | File Name | Size (Bytes) | Role / Classification | Detailed Description |
 | :--- | :--- | :--- | :--- |
-| `00_run_master_additional_runs.sh` | 5,703 | **New Master Driver** | Orchestrates Stage 1 and Stage 2 runs; handles preflight environment validation, directory initialization, and post-run status logging. |
-| `01_run_stage1_quick_wins.sh` | 10,743 | **New Stage 1 Engine** | Executes Steps 1–8: chunk budget A/B, batched PyTorch profiles, socket tuning, NUMA core pinning, short prompt sweeps, and KV pool audits. |
-| `02_run_stage2_failed_and_scaleout.sh` | 7,371 | **New Stage 2 Engine** | Executes Steps 9–15: FP8 KV rerun, host memory offload reuse, 1M token concurrency sweeps, PP2 15/12 layer rebalance, and TP16 prefill profiling. |
-| `stage1_cases.json` | 4,663 | **New Test Matrix** | JSON definitions for Stage 1 runs specifying tensor parallelism levels, batch sizes, context lengths, and chunk sizes. |
-| `stage2_cases_single_node.json` | 2,660 | **New Test Matrix** | JSON definitions for single-node extreme context cases (1M token sequence evaluations under $c=1, 2, 4$). |
-| `stage2_cases_multi_node_load.json` | 6,140 | **New Test Matrix** | Multi-node distributed matrix definitions specifying dual-host Ray placement, TP4/PP2 and TP4/PP4 pipelines, and TCP configurations. |
-| `PILOT_STAGE1_ANALYSIS_RESULTS.json` | 61,843 | **New Analysis Cache** | Intermediate serialized results from the pilot Stage 1 sweep on `kimi-node-0`. |
-| `README_FOR_BOSS_APPROVAL.md` | 7,443 | **New Governance Doc** | The executive test proposal and risk assessment submitted to leadership prior to VM provisioning. |
+| `00_run_master_additional_runs.sh` | 5,703 | **Master Driver** | Orchestrates Stage 1 and Stage 2 runs; handles preflight environment validation, directory initialization, and post-run status logging. |
+| `01_run_stage1_quick_wins.sh` | 10,743 | **Stage 1 Engine** | Executes Steps 1–8: chunk budget A/B, batched PyTorch profiles, socket tuning, NUMA core pinning, short prompt sweeps, and KV pool audits. |
+| `02_run_stage2_failed_and_scaleout.sh` | 7,371 | **Stage 2 Engine** | Executes Steps 9–15: FP8 KV rerun, host memory offload reuse, 1M token concurrency sweeps, PP2 15/12 layer rebalance, and TP16 prefill profiling. |
+| `stage1_cases.json` | 4,663 | **Test Matrix** | JSON definitions for Stage 1 runs specifying tensor parallelism levels, batch sizes, context lengths, and chunk sizes. |
+| `stage2_cases_single_node.json` | 2,660 | **Test Matrix** | JSON definitions for single-node extreme context cases (1M token sequence evaluations under $c=1, 2, 4$). |
+| `stage2_cases_multi_node_load.json` | 6,140 | **Test Matrix** | Multi-node distributed matrix definitions specifying dual-host Ray placement, TP4/PP2 and TP4/PP4 pipelines, and TCP configurations. |
+| `PILOT_STAGE1_ANALYSIS_RESULTS.json` | 61,843 | **Analysis Cache** | Intermediate serialized results from the pilot Stage 1 sweep on `kimi-node-0`. |
+| `README_FOR_BOSS_APPROVAL.md` | 7,443 | **Governance Doc** | The executive test proposal and risk assessment submitted to leadership prior to VM provisioning. |
 
 ### 3.2 Auxiliary Smoke & Validation Libraries (`rtx_g4_smoke_v5/` & `rtx_g4_smoke_v8_hw/`)
 
-Located inside `v8_additional_runs_suite/`, these libraries provide modular helper scripts:
+Located inside `v8_full_results/suite/`, these libraries provide modular helper scripts:
 
 - `rtx_g4_smoke_v5/00_init_gcp_config.sh` (2,934 B): Ingests GCP project, zone, VPC, and VM host metadata.
 - `rtx_g4_smoke_v5/00_smoke_common.sh` (2,773 B): Common logging, trap handlers, error exit codes, and terminal formatting.
@@ -328,7 +334,7 @@ Located inside `v8_additional_runs_suite/`, these libraries provide modular help
 - `rtx_g4_smoke_v8_hw/05_analyze_model.py` (9,962 B): Analyzes Kimi-Linear-48B parameter counts, layer distributions, and KV sizing.
 - `rtx_g4_smoke_v8_hw/07_validate_results.py` (5,710 B): Regression checker ensuring hardware metrics meet minimum service thresholds.
 
-### 3.3 Raw Empirical Result Manifests & Step Folders (`v8_additional_runs_local/`)
+### 3.3 Raw Empirical Result Manifests & Step Folders (`v8_full_results/raw_runs/`)
 
 - `master_step_status.jsonl`: Master execution log tracking top-level stage execution timestamps and exit codes.
 - `SUITE_SOURCE_SHA256SUMS.txt`: Cryptographic SHA256 hashes of all scripts executed on the cluster.
@@ -342,6 +348,12 @@ Located inside `v8_additional_runs_suite/`, these libraries provide modular help
 - `stage1/07_kv_pool_and_trace_audit/`: KV block pool sizing and trace trim logs.
 - `stage2/step_status.jsonl`: Discrete step log for Stage 2 scale-out runs.
 - `stage2/01_fp8_kv_rerun/`: Traceback logs, assertion dumps, and stderr capturing the SM100 requirement failure.
+- `stage2/02_cpu_offload_reuse/`: Empirical logs measuring DDR5 swapping penalties during 600K context revisits.
+- `stage2/03_multi_node_load/`: Multi-node concurrency benchmarks ($c=1, 2, 4$) across 128K, 512K, and 1M tokens.
+- `stage2/04_pp2_split_evaluation/`: Direct comparative benchmark logs for PP2 15/12 split vs 14/13 split.
+- `stage2/05_capped_profiles/`: Nsight Systems profile traces capped at 32K context.
+- `stage2/06_tp16_512k_prefill/`: Cross-node TP16 512K context prefill latency outputs.
+
 - `stage2/02_cpu_offload_reuse/`: Empirical logs measuring DDR5 swapping penalties during 600K context revisits.
 - `stage2/03_multi_node_load/`: Multi-node concurrency benchmarks ($c=1, 2, 4$) across 128K, 512K, and 1M tokens.
 - `stage2/04_pp2_split_evaluation/`: Direct comparative benchmark logs for PP2 15/12 split vs 14/13 split.
@@ -1037,92 +1049,10 @@ To prevent ongoing cloud compute charges, both instances must be powered down im
 ## 11. Appendix: Complete Directory & File Manifest
 
 ```
-v8_additional_runs_suite/
-├── 00_run_master_additional_runs.sh
-├── 01_run_stage1_quick_wins.sh
-├── 02_run_stage2_failed_and_scaleout.sh
-├── PILOT_STAGE1_ANALYSIS_RESULTS.json
-├── README_FOR_BOSS_APPROVAL.md
-├── rtx_g4_smoke_v5/
-│   ├── 00_init_gcp_config.sh
-│   ├── 00_smoke_common.sh
-│   ├── 07_preflight_v5.py
-│   ├── 08_validate_kimi_linear.py
-│   ├── 09_metrics_sampler.py
-│   ├── 10_vllm_surrogate_cases.json
-│   ├── 10b_vllm_multi_node_cases.json
-│   ├── 10d_v8_1m_extended_cases.json
-│   ├── 11_run_vllm_surrogate.py
-│   ├── 12_run_vllm_multi_node.py
-│   ├── 12_run_vllm_multi_node.sh
-│   ├── 13_generate_load_cases.py
-│   ├── 14_run_vllm_nsys_profile.sh
-│   ├── 14b_run_vllm_torch_profile.sh
-│   ├── 14c_run_vllm_torch_profile_batched.sh
-│   ├── 15_summarize_vllm.py
-│   ├── 16_analyze_vllm_profiles.py
-│   ├── 17_build_serving_analysis.py
-│   ├── 18_multi_node_profile_matrix.json
-│   ├── 18_run_vllm_multi_node_profile_case.py
-│   ├── 18_run_vllm_multi_node_profiles.sh
-│   ├── 19_postprocess_nsys.py
-│   ├── 20_nccl_policy.sh
-│   ├── 20_ray_nccl_env_audit.py
-│   ├── 20_run_single_node_v6_aligned.sh
-│   ├── 20_run_vllm_network_matrix.sh
-│   ├── 21_run_vllm_capped_profiles.sh
-│   ├── 22_v8_readiness.py
-│   ├── 23_run_nccl_socket_tuning.sh
-│   ├── 24_audit_kv_and_trim_traces.py
-│   ├── kimi_linear_provenance.json
-│   └── v5_runner_lib.py
-├── rtx_g4_smoke_v8_hw/
-│   ├── 00_smoke_common.sh
-│   ├── 01_prepare_node.sh
-│   ├── 02_run_node_local.sh
-│   ├── 03_run_network_sweep.sh
-│   ├── 04_summarize_results.py
-│   ├── 05_analyze_model.py
-│   ├── 06_package_results.sh
-│   ├── 07_validate_results.py
-│   ├── LEGACY_V4_REFERENCE.md
-│   └── MANIFEST.txt
-├── stage1_cases.json
-├── stage2_cases_multi_node_load.json
-└── stage2_cases_single_node.json
-
-v8_additional_runs_local/
-├── .done/
-├── SUITE_SOURCE_SHA256SUMS.txt
-├── env/
-├── logs/
-├── master_step_status.jsonl
-├── stage1/
-│   ├── .done/
-│   ├── 01_chunk_budget_ab/
-│   ├── 02_torch_profiles_batched/
-│   ├── 03_nccl_tuning/
-│   ├── 04_tp8_pinning/
-│   ├── 05_short_prompts/
-│   ├── 06_chunk_and_knee_repeats/
-│   ├── 07_kv_pool_and_trace_audit/
-│   ├── logs/
-│   └── step_status.jsonl
-└── stage2/
-    ├── .done/
-    ├── 01_fp8_kv_rerun/
-    ├── 02_cpu_offload_reuse/
-    ├── 03_multi_node_load/
-    ├── 04_pp2_split_evaluation/
-    ├── 05_capped_profiles/
-    ├── 06_tp16_512k_prefill/
-    ├── logs/
-    └── step_status.jsonl
-
 v8_full_results/
-├── README.md
-├── RUNS_INDEX.json
 ├── combined_vllm_runs.csv
+├── RUNS_INDEX.json
+├── README.md
 ├── dashboards/
 │   └── v4_dashboard/
 │       ├── DASHBOARD_CANONICAL_DATA.json
@@ -1139,10 +1069,90 @@ v8_full_results/
 │           ├── wall_time_budget_first_token.png
 │           ├── wall_time_budget_first_token_under_load.csv
 │           └── wall_time_budget_first_token_under_load.png
-└── release_specs/
-    ├── MASTER_CHARACTERIZATION_DASHBOARD.html
-    ├── chart.umd.js
-    └── index.html
+├── suite/
+│   ├── 00_run_master_additional_runs.sh
+│   ├── 01_run_stage1_quick_wins.sh
+│   ├── 02_run_stage2_failed_and_scaleout.sh
+│   ├── PILOT_STAGE1_ANALYSIS_RESULTS.json
+│   ├── README_FOR_BOSS_APPROVAL.md
+│   ├── stage1_cases.json
+│   ├── stage2_cases_multi_node_load.json
+│   ├── stage2_cases_single_node.json
+│   ├── rtx_g4_smoke_v5/
+│   │   ├── 00_init_gcp_config.sh
+│   │   ├── 00_smoke_common.sh
+│   │   ├── 07_preflight_v5.py
+│   │   ├── 08_validate_kimi_linear.py
+│   │   ├── 09_metrics_sampler.py
+│   │   ├── 10_vllm_surrogate_cases.json
+│   │   ├── 10b_vllm_multi_node_cases.json
+│   │   ├── 10d_v8_1m_extended_cases.json
+│   │   ├── 11_run_vllm_surrogate.py
+│   │   ├── 12_run_vllm_multi_node.py
+│   │   ├── 12_run_vllm_multi_node.sh
+│   │   ├── 13_generate_load_cases.py
+│   │   ├── 14_run_vllm_nsys_profile.sh
+│   │   ├── 14b_run_vllm_torch_profile.sh
+│   │   ├── 14c_run_vllm_torch_profile_batched.sh
+│   │   ├── 15_summarize_vllm.py
+│   │   ├── 16_analyze_vllm_profiles.py
+│   │   ├── 17_build_serving_analysis.py
+│   │   ├── 18_multi_node_profile_matrix.json
+│   │   ├── 18_run_vllm_multi_node_profile_case.py
+│   │   ├── 18_run_vllm_multi_node_profiles.sh
+│   │   ├── 19_postprocess_nsys.py
+│   │   ├── 20_nccl_policy.sh
+│   │   ├── 20_ray_nccl_env_audit.py
+│   │   ├── 20_run_single_node_v6_aligned.sh
+│   │   ├── 20_run_vllm_network_matrix.sh
+│   │   ├── 21_run_vllm_capped_profiles.sh
+│   │   ├── 22_v8_readiness.py
+│   │   ├── 23_run_nccl_socket_tuning.sh
+│   │   ├── 24_audit_kv_and_trim_traces.py
+│   │   ├── kimi_linear_provenance.json
+│   │   └── v5_runner_lib.py
+│   └── rtx_g4_smoke_v8_hw/
+│       ├── 00_smoke_common.sh
+│       ├── 01_prepare_node.sh
+│       ├── 02_run_node_local.sh
+│       ├── 03_run_network_sweep.sh
+│       ├── 04_summarize_results.py
+│       ├── 05_analyze_model.py
+│       ├── 06_package_results.sh
+│       ├── 07_validate_results.py
+│       ├── LEGACY_V4_REFERENCE.md
+│       └── MANIFEST.txt
+├── raw_runs/
+│   ├── .done/
+│   ├── master_step_status.jsonl
+│   ├── SUITE_SOURCE_SHA256SUMS.txt
+│   ├── env/
+│   ├── logs/
+│   ├── stage1/
+│   │   ├── 01_chunk_budget_ab/
+│   │   ├── 02_torch_profiles_batched/
+│   │   ├── 03_nccl_tuning/
+│   │   ├── 04_tp8_pinning/
+│   │   ├── 05_short_prompts/
+│   │   ├── 06_chunk_and_knee_repeats/
+│   │   ├── 07_kv_pool_and_trace_audit/
+│   │   ├── logs/
+│   │   └── step_status.jsonl
+│   └── stage2/
+│       ├── 01_fp8_kv_rerun/
+│       ├── 02_cpu_offload_reuse/
+│       ├── 03_multi_node_load/
+│       ├── 04_pp2_split_evaluation/
+│       ├── 05_capped_profiles/
+│       ├── 06_tp16_512k_prefill/
+│       ├── logs/
+│       └── step_status.jsonl
+├── release_specs/
+│   ├── MASTER_CHARACTERIZATION_DASHBOARD.html
+│   ├── chart.umd.js
+│   └── index.html
+└── results/
+    └── real_data/
 ```
 
 ---
