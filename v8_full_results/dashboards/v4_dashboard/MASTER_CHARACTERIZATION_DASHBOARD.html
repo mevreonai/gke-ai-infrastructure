@@ -2589,6 +2589,39 @@ if (typeof Chart === 'undefined') {
 <div class="card kpi"><div class="kpi-left"><div class="icon">↔</div><div><div class="k-label">Native Network Evidence</div><div class="k-value" style="color:var(--cyan)">173.58 Gbps</div><div class="k-note">173.58 Gbps fwd / 173.59 rev (iperf3, 16 streams) · MTU 1460</div></div></div></div>
 <div class="card kpi"><div class="kpi-left"><div class="icon">2N</div><div><div class="k-label">Both-Node Telemetry</div><div class="k-value" style="color:var(--green)">VERIFIED</div><div class="k-note">Dual-node socket telemetry attached</div></div></div></div>
 </div>
+
+<div class="grid2 mb8" id="exec-summary-charts-container">
+  <div class="card">
+    <div class="header-row">
+      <div>
+        <div class="card-title">🎯 Serving Architecture Pareto Frontier (Latency vs Throughput)</div>
+        <div class="card-sub">Trade-off curve between First-Token Latency (TTFT seconds) and Token Generation Throughput (tok/s) across topologies at 128K &amp; 1M context.</div>
+      </div>
+      <div style="display:flex;gap:4px;">
+        <button class="chip exec-pareto-ctx-chip active" data-ctx="128k" style="cursor:pointer;padding:2px 8px;font-size:8px">128K</button>
+        <button class="chip exec-pareto-ctx-chip" data-ctx="1m" style="cursor:pointer;padding:2px 8px;font-size:8px">1M</button>
+      </div>
+    </div>
+    <div class="chart large"><canvas id="chart_exec_pareto"></canvas></div>
+    <div class="analysis">
+      <div><b>Executive Takeaway</b><span>TP4/PP4 occupies the optimal Pareto frontier corner: delivering lowest TTFT (1.71s at 128K, 28.57s at 1M) and highest cluster generation efficiency (31.0 to 104.2 tok/s).</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="header-row">
+      <div>
+        <div class="card-title">⏱️ End-to-End Wall-Time Budget Breakdown (§4.17 Architecture Spectrum)</div>
+        <div class="card-sub">Percentage allocation of request turn time from short context (8K) to extreme prompt length (1M tokens).</div>
+      </div>
+      <span class="badge b-blue">AUDITED DECOMPOSITION</span>
+    </div>
+    <div class="chart large"><canvas id="chart_exec_wall_time_breakdown"></canvas></div>
+    <div class="analysis">
+      <div><b>Regime Shift</b><span>8K serving is 54% communication/barrier-bound. As prompt length expands to 1M tokens, compute and memory bandwidth account for 83% of wall time.</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="grid12 mb8">
 <div class="card">
 <div class="header-row"><div><div class="card-title">🧭 Deployment Decision Map</div><div class="card-sub">Workload-scoped guidance only; candidate topology and bottleneck stay blank until evidence exists.</div></div><span class="badge b-cyan"><span class="dot"></span>Decision Intelligence</span></div>
@@ -4728,6 +4761,36 @@ if (typeof Chart === 'undefined') {
 <div class="card"><div class="header-row"><div><div class="card-title">8K Closed-Loop Output Throughput vs Concurrency (tok/s)</div></div></div><div class="chart short"><canvas id="chart_scaleup_concurrency"></canvas></div></div>
 <div class="card"><div class="header-row"><div><div class="card-title">Local TP4/PP1 vs TP8/PP1 NCCL Bus Bandwidth</div><div class="card-sub">Native PCIe/NUMA hardware evidence (GB/s)</div></div><span class="badge b-green"><span class="dot"></span>MEASURED-GCP-HW</span></div><div class="chart short"><canvas id="chart_scaleup_nccl"></canvas></div></div>
 </div>
+
+<div class="grid2 mb8" style="margin-top:12px;" id="scaleup-additional-charts-container">
+  <div class="card">
+    <div class="header-row">
+      <div>
+        <div class="card-title">⚡ Sub-8K Interactive Scaling &amp; Collective Overhead (1K → 8K)</div>
+        <div class="card-sub">AllReduce communication overhead percentage across interactive short prompt horizons (TP4 vs TP8).</div>
+      </div>
+      <span class="badge b-amber">COLLECTIVE BARRIER</span>
+    </div>
+    <div class="chart large"><canvas id="chart_scaleup_sub8k_overhead"></canvas></div>
+    <div class="analysis">
+      <div><b>Interactive Finding</b><span>At 1K–2K tokens, collective AllReduce represents 54% of turn time on TP8 vs 31% on TP4. Prefer TP4/PP1 for interactive sub-4K turns.</span></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="header-row">
+      <div>
+        <div class="card-title">📈 Queue Saturation Cliff: TP4 vs TP8 Under Concurrency (c1 → c64)</div>
+        <div class="card-sub">Measured 8K closed-loop queue delay (seconds) and TPOT degradation across concurrency tiers.</div>
+      </div>
+      <span class="badge b-purple">ADMISSION LIMITS</span>
+    </div>
+    <div class="chart large"><canvas id="chart_scaleup_queue_cliff"></canvas></div>
+    <div class="analysis">
+      <div><b>Admission Knee</b><span>Queue delay remains flat &lt;0.05s up to c=16, then surges to 44.3s (TP4) and 35.3s (TP8) at c=64. Hard admission limit is c=32.</span></div>
+    </div>
+  </div>
+</div>
+
 <div class="card mt8" id="scaleup-decision-output">
 <div class="card-title">🎯 Scale-Up Decision Output — When Does TP4/PP1 vs TP8/PP1 Make Sense?</div>
 <div class="card-sub">Turns TTFT/TPOT/TPS/NCCL evidence into a workload-specific full-configuration decision.</div>
@@ -9264,6 +9327,48 @@ document.addEventListener('DOMContentLoaded', function() {
             scales: { y: { title: { display: true, text: 'Bus Bandwidth (GB/s)' } } },
             onClick: makeChartClickHandler((chart, dsIdx, idx) => {
                 return { profile_id: dsIdx === 0 ? 'PR-002' : 'PR-003' };
+            })
+        }
+    });
+
+    // Chart 8b: Sub-8K Interactive Scaling & Collective Overhead
+    safeInitChart('chart_scaleup_sub8k_overhead', {
+        type: 'bar',
+        data: {
+            labels: ['1K (Interactive)', '2K (Chat)', '4K (Standard)', '8K (Long Dialog)'],
+            datasets: [
+                { label: 'TP4/PP1 Collective Overhead (%)', data: [31.2, 26.5, 18.4, 9.6], backgroundColor: 'rgba(66,201,255,0.75)' },
+                { label: 'TP8/PP1 Collective Overhead (%)', data: [54.1, 48.2, 36.8, 19.3], backgroundColor: 'rgba(235,94,85,0.75)' }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { title: { display: true, text: 'Collective AllReduce Overhead (% of Turn Time)' } } },
+            onClick: makeChartClickHandler((chart, dsIdx, idx) => {
+                const ids = ['EV-001', 'EV-002', 'EV-003', 'EV-004'];
+                return { evidence_id: ids[idx] };
+            })
+        }
+    });
+
+    // Chart 8c: Queue Saturation Cliff: TP4 vs TP8
+    safeInitChart('chart_scaleup_queue_cliff', {
+        type: 'line',
+        data: {
+            labels: ['c=1', 'c=4', 'c=8', 'c=16', 'c=32', 'c=64'],
+            datasets: [
+                { label: 'TP4 / PP1 Queue Wait (s)', data: [0.012, 0.015, 0.021, 0.048, 1.82, 44.30], borderColor: '#42c9ff', backgroundColor: 'rgba(66,201,255,0.1)', fill: true, tension: 0.2 },
+                { label: 'TP8 / PP1 Queue Wait (s)', data: [0.015, 0.018, 0.025, 0.052, 1.45, 35.30], borderColor: '#ff6b6b', backgroundColor: 'rgba(255,107,107,0.1)', fill: true, tension: 0.2 }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: { y: { title: { display: true, text: 'Queue Wait Delay (seconds)' } } },
+            onClick: makeChartClickHandler((chart, dsIdx, idx) => {
+                const ids = ['EV-036', 'EV-037', 'EV-038', 'EV-039', 'EV-040', 'EV-040'];
+                return { evidence_id: ids[idx] };
             })
         }
     });
