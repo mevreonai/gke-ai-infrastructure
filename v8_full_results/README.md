@@ -1,71 +1,74 @@
-# V8-FULL Characterization Campaign Results & Dashboards Tree
+# V8 Master Characterization Campaign — Kimi-Linear-48B
 
-This directory contains the unified and complete empirical dataset, raw benchmark telemetry, hardware validation traces, production dashboards, and release specifications for the **vLLM V8 Characterization Campaign** on Dual RTX 6000 Ada Server Edition nodes connected over Google Cloud VPC.
+This directory contains the **consolidated, complete, and audited empirical dataset**, execution tools, raw cluster measurements, and interactive dashboards for the **vLLM V8 Characterization Campaign** (`Kimi-Linear-48B` on dual RTX PRO 6000 Ada/Blackwell servers).
+
+---
+
+## ⚡ 1-Minute Quickstart: How to Run the Benchmark
+
+Anyone can re-run this benchmark suite in two simple steps:
+
+### Step 1: Set Your Node IPs
+Open [`suite/RUN_CONFIG.env`](file:///v8_full_results/suite/RUN_CONFIG.env) and set your two private cloud IPs:
+
+```bash
+export NODE0_IP="10.240.0.10"   # <-- Replace with Node 0 Private IP
+export NODE1_IP="10.240.0.11"   # <-- Replace with Node 1 Private IP
+```
+
+### Step 2: Launch the Benchmark
+Execute the beginner-friendly runner script:
+
+```bash
+cd suite
+bash run_quickstart.sh
+```
+
+*(Or pass the IPs directly on the command line: `bash run_quickstart.sh 10.240.0.10 10.240.0.11`)*
 
 ---
 
 ## 🗂 Unified Directory Layout
 
-The campaign results, logs, specifications, and dashboards are organized into a clean, intuitive structure:
+Everything related to V8 is contained cleanly in this directory:
 
-| Root Folder | Subdirectory | Content Summary |
-| :--- | :--- | :--- |
-| **`dashboards/`** | `v4_dashboard/` | **V4 Characterization Dashboard**: Interactive UI with latency/throughput, scheduling, and profiler views (`index.html`) |
-| | `v5_dashboard/` | **V5 Decision-Intelligence Dashboard**: Complete operator decision funnel, 60-second briefs, interactive command inspector for all 126 runs (`index.html`) |
-| **`results/`** | **`real_data/`** | **Empirical Benchmark & Hardware Data**: 100% of tested runs, case manifests, verification summaries (`coverage.json`, `combined_vllm_runs.json`, `FINAL_VALIDATION.json`), hardware benchmarks, and profiler traces |
-| | | ├── `final_validation/`: Aggregated publication gates, coverage matrix, and combined runs |
-| | | ├── `vllm_single_node_v6_matrix/`: 58 runs across TP4/TP8, chunk sweeps, decode focus |
-| | | ├── `vllm_single_node_v8_1m_extensions/`: 10 runs (1M concurrency c1-c4, prefix caching, max_num_seqs) |
-| | | ├── `vllm_scaleout_network_matrix/`: 36 scale-out runs across TP4/PP2, TP8/PP2, TP4/PP4, TP16/PP1 |
-| | | ├── `vllm_open_loop/`: 15 Poisson arrival rate sweeps for queue latency knee analysis |
-| | | ├── `hardware_processed/`: BabelStream (1,716 GB/s), NVBandwidth, iperf (173.58 Gbps), NCCL bus tests |
-| | | └── `profiles_multi_node_native/`: Nsight Systems & PyTorch profiler traces across both nodes |
-| | **`logs/`** | **System & Telemetry Logs**: Runner stdout/stderr logs, node 0 and node 1 preflight verifications, readiness logs, step status, and environment configurations |
-| | | ├── `run_logs/`: Suite execution output logs |
-| | | ├── `preflight_node0/` & `preflight_node1/`: Environment and driver sanity checks |
-| | | ├── `readiness_node0/` & `readiness_node1/`: Hardware initialization and fabric verification |
-| | | ├── `step_status.jsonl`: Step-by-step suite execution state machine |
-| | | └── `RUN_CONFIG.env`: Active environment variable specifications |
-| **`release_specs/`** | | **Release Documentation & Suite**: Specifications, validation criteria, prompt guides, and suite execution scripts |
-| | | ├── `V8_FULL_DASHBOARD_DECISION_INTELLIGENCE_SPEC.md` |
-| | | ├── `V8_FULL_README.md` |
-| | | ├── `V8_FULL_RELEASE_VALIDATION.md` |
-| | | ├── `V8_FULL_TEAM_DASHBOARD_MIGRATION_PROMPT.md` |
-| | | ├── `V8_FULL_vLLM_RTXPRO6000_Characterization.zip` |
-| | | └── `suite_scripts/`: Production runner scripts (`00_run_v8_full.sh`, `21_static_validate_suite.py`, etc.) |
-| **`RUNS_INDEX.json`** | | **Machine-Readable Runs Index**: Complete structured index of all 126 test points with metrics and relative file paths |
-
----
-
-## 📊 Campaign Summary & Run Counts
-
-* **Total Configured Scope:** 126 Cases
-  * **95 Native/Local Completed Runs:**
-    * 58 Single-Node V6 Base Runs (`SINGLE_NODE_LOCAL`)
-    * 10 Single-Node V8 1M Extensions (`SINGLE_NODE_LOCAL`)
-    * 12 Native Scale-Out Runs (`GCP_NATIVE`: 4 topologies × 3 contexts: 128K, 512K, 1M)
-    * 15 Open-Loop Poisson Sweeps (`SINGLE_NODE_LOCAL`)
-  * **24 Auxiliary Capped Sweeps:**
-    * 12 `GCP_CAPPED_100G` Scale-Out Runs
-    * 12 `GCP_CAPPED_20G` Scale-Out Runs
-  * **7 Safety-Guarded NOT_RUN Cases:**
-    * 4 FP8 KV cache runs (Guarded: KDA linear model requires BF16 KV cache backend)
-    * 3 Host CPU offload runs (Guarded: Prevents PCIe thrashing / host memory OOM)
+```
+v8_full_results/
+├── dashboards/                  <-- INTERACTIVE PRESENTATION DASHBOARDS
+│   └── v4_dashboard/
+│       ├── MASTER_CHARACTERIZATION_DASHBOARD.html # Standalone master dashboard (3.7 MB)
+│       ├── DASHBOARD_CANONICAL_DATA.json          # Structured dataset powering the UI
+│       ├── index.html                             # Web server production mirror
+│       └── time_budget/                           # High-resolution time-budget PNGs & CSVs
+│
+├── suite/                       <-- EXECUTABLE BENCHMARK SUITE & RUNNERS
+│   ├── RUN_CONFIG.env           # Edit this file to change IPs!
+│   ├── run_quickstart.sh        # Beginner 1-click execution script
+│   ├── 00_run_master_additional_runs.sh # Master test supervisor
+│   ├── 01_run_stage1_quick_wins.sh      # Stage 1 runner (Steps 1–8)
+│   ├── 02_run_stage2_failed_and_scaleout.sh # Stage 2 runner (Steps 9–15)
+│   ├── stage1_cases.json        # Test case matrices
+│   ├── stage2_cases_*.json      # Scale-out matrices
+│   └── README.md                # Detailed guide for the suite folder
+│
+├── raw_runs/                    <-- AUTHENTIC DOWNLOADED CLUSTER EVIDENCE
+│   ├── master_step_status.jsonl # Complete execution timeline and exit codes (rc: 0)
+│   ├── stage1/                  # Raw logs, CSVs, and JSONs for Steps 1–8
+│   ├── stage2/                  # Raw logs, traces, and CSVs for Steps 9–15
+│   └── README.md                # Detailed guide for the raw evidence vault
+│
+├── combined_vllm_runs.csv       <-- Canonical baseline 126-run tabular dataset
+├── release_specs/               <-- Frozen release snapshots and verification artifacts
+└── results/                     <-- Hardware benchmark outputs and coverage audits
+```
 
 ---
 
-## 🌐 Fabric & Hardware Ground Truth
+## 🧭 Sub-Folder Guides
 
-* **Hardware:** Dual Supermicro Server Nodes, 2×8 NVIDIA RTX 6000 Ada (96GB VRAM per GPU).
-* **Interconnect:** PCIe Gen5 over dual-socket AMD EPYC (NUMA).
-* **Fabric:** Google Cloud Native VPC, `ens4`, MTU 8896 (Jumbo Frames), measured forward bandwidth: **173.58 Gbps**, reverse: **173.42 Gbps**, RTT: **0.05 ms**, packet drops: **0**.
-* **Memory Roof Reference:** BabelStream Copy measures **1,716 GB/s** effective bandwidth with L2 cache amplification (published theoretical DRAM spec is 1,597 GB/s).
+For deep-dive documentation on each specific folder, refer to its dedicated README:
 
----
-
-## 🖥 Production Dashboards
-
-* **V5 Decision-Intelligence Dashboard (Latest):**
-  * [`dashboards/v5_dashboard/index.html`](file:///./dashboards/v5_dashboard/index.html)
-* **V4 Characterization Dashboard:**
-  * [`dashboards/v4_dashboard/index.html`](file:///./dashboards/v4_dashboard/index.html)
+- 📘 [**Suite & Runner Documentation**](file:///v8_full_results/suite/README.md): Instructions on flags, environment variables, and preflight checks.
+- 📙 [**Raw Runs & Measurement Evidence**](file:///v8_full_results/raw_runs/README.md): Detailed breakdown of each step folder and how to verify exit codes.
+- 📕 [**Interactive Dashboard Guide**](file:///v8_full_results/dashboards/v4_dashboard/README.md): How to open the dashboard locally, explore tabs, and verify data.
+- 📗 [**Master Architecture & Mathematical Guide**](file:///README_V8_SUITE_AND_DASHBOARD_GUIDE.md): Complete 1,589-line reference guide covering tensor math, script-by-script inventory, and the 72-rule verification suite.
