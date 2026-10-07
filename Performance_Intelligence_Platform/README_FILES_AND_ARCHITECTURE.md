@@ -15,16 +15,15 @@
 1. [Executive Systems Vision & Platform Philosophy](#1-executive-systems-vision--platform-philosophy)
 2. [High-Level Directory Topology & Tri-Pillar Architecture](#2-high-level-directory-topology--tri-pillar-architecture)
 3. [Pillar 1: Benchmark Automation Suite (`scripts/`)](#3-pillar-1-benchmark-automation-suite-scripts)
-   - 3.1 [Master Orchestration Harness: `00_run_master_additional_runs.sh`](#31-master-orchestration-harness-00_run_master_additional_runssh)
-   - 3.2 [Stage 1 Quick-Wins Runner: `01_run_stage1_quick_wins.sh`](#32-stage-1-quick-wins-runner-01_run_stage1_quick_winssh)
-   - 3.3 [Stage 2 Deep Diagnostics & Scale-Out Runner: `02_run_stage2_failed_and_scaleout.sh`](#33-stage-2-deep-diagnostics--scale-out-runner-02_run_stage2_failed_and_scaleoutsh)
-   - 3.4 [Fast Sanity Validator: `run_quickstart.sh`](#34-fast-sanity-validator-run_quickstartsh)
-   - 3.5 [Configuration Specifications: `RUN_CONFIG.env` & `RUN_CONFIG.env.example`](#35-configuration-specifications-run_configenv--run_configenvexample)
-   - 3.6 [Workload Case Manifest: `stage1_cases.json`](#36-workload-case-manifest-stage1_casesjson)
-   - 3.7 [Workload Case Manifest: `stage2_cases_multi_node_load.json`](#37-workload-case-manifest-stage2_cases_multi_node_loadjson)
-   - 3.8 [Workload Case Manifest: `stage2_cases_single_node.json`](#38-workload-case-manifest-stage2_cases_single_nodejson)
-   - 3.9 [Hardware Smoke Suite v5: `rtx_g4_smoke_v5/`](#39-hardware-smoke-suite-v5-rtx_g4_smoke_v5)
-   - 3.10 [Hardware Diagnostic Suite platform: `rtx_g4_hardware_diagnostics/`](#310-hardware-diagnostic-suite-platform-rtx_g4_hardware_diagnostics)
+   - 3.1 [Overview & Directory Topology of the 7 Run Types](#31-overview--directory-topology-of-the-7-run-types)
+   - 3.2 [Run Type 1: Preflight & Hardware Diagnostics (`01_preflight_and_diagnostics/`)](#32-run-type-1-preflight--hardware-diagnostics-01_preflight_and_diagnostics)
+   - 3.3 [Run Type 2: Single-Node Baseline Matrix (`02_single_node_baseline_matrix/`)](#33-run-type-2-single-node-baseline-matrix-02_single_node_baseline_matrix)
+   - 3.4 [Run Type 3: Open-Loop Poisson Arrival Distribution (`03_open_loop_poisson_arrival/`)](#34-run-type-3-open-loop-poisson-arrival-distribution-03_open_loop_poisson_arrival)
+   - 3.5 [Run Type 4: Scale-Out Distributed Network (`04_scaleout_distributed_network/`)](#35-run-type-4-scale-out-distributed-network-04_scaleout_distributed_network)
+   - 3.6 [Run Type 5: Long-Context 1M Extensions (`05_long_context_1m_extensions/`)](#36-run-type-5-long-context-1m-extensions-05_long_context_1m_extensions)
+   - 3.7 [Run Type 6: Deep Kernel & PyTorch Profiling (`06_deep_kernel_and_torch_profiling/`)](#37-run-type-6-deep-kernel--pytorch-profiling-06_deep_kernel_and_torch_profiling)
+   - 3.8 [Run Type 7: Master Campaign Orchestration & Stage Runners (`07_master_orchestration_and_stages/`)](#38-run-type-7-master-campaign-orchestration--stage-runners-07_master_orchestration_and_stages)
+   - 3.9 [Master Campaign Resumption, Watchdogs & Configuration (`RUN_CONFIG.env`)](#39-master-campaign-resumption-watchdogs--configuration-run_configenv)
 4. [Pillar 2: Empirical Data Repository (`data/`)](#4-pillar-2-empirical-data-repository-data)
    - 4.1 [Data Provenance, Integrity & Immutability Guarantee](#41-data-provenance-integrity--immutability-guarantee)
    - 4.2 [Global Manifest: `RUNS_INDEX.json` & Master Datasets](#42-global-manifest-runs_indexjson--master-datasets)
@@ -162,368 +161,82 @@ Performance_Intelligence_Platform/
 
 ## 3. Pillar 1: Benchmark Automation Suite (`scripts/`)
 
-The `scripts/` directory constitutes the autonomous execution and orchestration engine of the platform. Designed with enterprise operational rigor, these shell scripts and python harnesses eliminate manual operator intervention during multi-day benchmark campaigns.
+The `scripts/` directory houses the complete benchmarking automation and telemetry harness. To deliver maximum operational clarity and modularity, the suite is partitioned into **7 specialized run-type sub-folders**, accompanied by top-level convenience launchers.
 
-### 3.1 Master Orchestration Harness: `00_run_master_additional_runs.sh`
-`00_run_master_additional_runs.sh` acts as the master state machine and watchdog supervisor for the entire benchmark suite. It sequences the execution of Stage 1 and Stage 2 workloads while continuously verifying environmental stability.
+### 3.1 Overview & Directory Topology of the 7 Run Types
+Each sub-folder encapsulates a self-contained characterization domain, complete with dedicated workload manifests, shell execution harnesses, Python telemetry extractors, and independent runbook documentation:
 
-#### Detailed Functional Architecture:
+```text
+scripts/
+├── 01_preflight_and_diagnostics/      -> Pre-execution hardware health, PCIe Gen5 bus checks, Ray/NCCL cluster audit
+├── 02_single_node_baseline_matrix/    -> Closed-loop concurrency scaling (c1..c64), KV allocation & CUDA graph capture
+├── 03_open_loop_poisson_arrival/      -> Stochastic traffic injection, Poisson inter-arrivals & queue starvation analysis
+├── 04_scaleout_distributed_network/   -> Distributed TP16 vs TP8+PP2 comparison across VPC 100G with MTU/tc shaping
+├── 05_long_context_1m_extensions/     -> Extreme 128K..1M context length serving, chunked prefill chunk sizes & KV trim
+├── 06_deep_kernel_and_torch_profiling/-> Nsight Systems kernel traces, PyTorch Chrome JSON profiles & dilation audits
+└── 07_master_orchestration_and_stages/-> 21.5-hour autonomous orchestrator, Stage 1 quick wins & Stage 2 deep scaleout
+```
+
+### 3.2 Run Type 1: Preflight & Hardware Diagnostics (`01_preflight_and_diagnostics/`)
+* **Objective:** Qualifies server nodes before executing intensive serving workloads, verifying that hardware buses, peer-to-peer interconnects, NUMA mappings, and Ray clusters meet performance criteria.
+* **Component Architecture:**
+  - **`run_quickstart.sh`:** Rapid 2-minute preflight environment verifier. Validates driver 550.54.15, CUDA 12.4.1, 8 GPUs per node, and virtual environment availability.
+  - **`01_prepare_node.sh` & `02_run_node_local.sh`:** Sets CPU frequency governor to `performance`, activates GPU persistence mode (`nvidia-smi -pm 1`), flushes kernel page caches, and executes bidirectional PCIe Gen5 bandwidth checks ($> 58.0	ext{ GB/s}$).
+  - **`03_run_network_sweep.sh`:** Measures cross-node TCP bandwidth ($> 94.5	ext{ Gbps}$) and latency over GCP Andromeda VPC.
+  - **`20_ray_nccl_env_audit.py`:** Inspects environment parity across Ray actor nodes, ensuring matching `NCCL_SOCKET_IFNAME` and `NCCL_NET=Socket` settings.
+  - **`22_readiness.py`:** Validates distributed Ray worker process initialization and tensor-parallel rank group spawning.
+
+### 3.3 Run Type 2: Single-Node Baseline Matrix (`02_single_node_baseline_matrix/`)
+* **Objective:** Establishes the authoritative single-node serving baseline on an 8x RTX PRO 6000 Ada host under steady-state closed-loop traffic.
+* **Component Architecture:**
+  - **`20_run_single_node_v6_aligned.sh`:** Master test harness iterating across all combinatorial baseline parameters.
+  - **`11_run_vllm_surrogate.py`:** High-throughput client runner measuring prompt prefill and token generation with sub-millisecond precision.
+  - **`10_vllm_surrogate_cases.json`:** Test cases covering concurrency $c \in \{1, 2, 4, 8, 16, 32, 64\}$, KV cache ratios $0.70$ to $0.90$, and eager dispatch vs CUDA graphs.
+  - **`13_generate_load_cases.py`:** Deterministic workload case manifest generator.
+
+### 3.4 Run Type 3: Open-Loop Poisson Arrival Distribution (`03_open_loop_poisson_arrival/`)
+* **Objective:** Measures serving latency dynamics under realistic stochastic traffic where requests arrive according to a Poisson process ($P(X \le t) = 1 - e^{-\lambda t}$) independently of server response completion.
+* **Component Architecture:**
+  - **`09_metrics_sampler.py`:** Non-intrusive 500ms Prometheus metrics harvester capturing waiting request queue length, running request count, and KV cache allocation fraction.
+  - **`15_summarize_vllm.py` & `17_build_serving_analysis.py`:** Aggregates request trace streams, isolates queue waiting time from execution duration, and plots P99 TTFT inflation curves.
+
+### 3.5 Run Type 4: Scale-Out Distributed Network (`04_scaleout_distributed_network/`)
+* **Objective:** Characterizes multi-node distributed serving across two 8-GPU nodes interconnected via virtualized 100 Gbps VPC networking.
+* **Component Architecture:**
+  - **`20_run_vllm_network_matrix.sh`:** Executes full distributed sweep comparing Tensor Parallelism (TP16 / PP1) against Hybrid Parallelism (TP8 / PP2).
+  - **`12_run_vllm_multi_node.sh` & `.py`:** Distributed launcher managing multi-node Ray worker coordination.
+  - **`20_nccl_policy.sh`:** Configures socket buffer sizing (`NCCL_BUFFSIZE=16777216`) and transport plugins.
+  - **`23_run_nccl_socket_tuning.sh`:** Evaluates Linux TCP window parameters on cross-node All-Reduce efficiency.
+
+### 3.6 Run Type 5: Long-Context 1M Extensions (`05_long_context_1m_extensions/`)
+* **Objective:** Evaluates extreme sequence lengths from 128,000 to 1,000,000 tokens on dual-node accelerator clusters.
+* **Component Architecture:**
+  - **`10d_1m_extended_cases.json` & `stage2_cases_single_node.json`:** Workload manifests defining 128K, 256K, 512K, and 1M prompt configurations.
+  - **`24_audit_kv_and_trim_traces.py`:** Inspects KV-cache block allocation tables, tracking memory fragmentation and chunk boundary delays during 1M prefill passes.
+
+### 3.7 Run Type 6: Deep Kernel & PyTorch Profiling (`06_deep_kernel_and_torch_profiling/`)
+* **Objective:** Obtains sub-microsecond micro-architectural insight into kernel execution and operator timelines using NVIDIA Nsight Systems and PyTorch Profiler.
+* **Component Architecture:**
+  - **`14_run_vllm_nsys_profile.sh`:** Launches vLLM under NVIDIA Nsight Systems, capturing CUDA runtime calls, GEMM kernels, and SM warp occupancy.
+  - **`14b_run_vllm_torch_profile.sh` & `14c_run_vllm_torch_profile_batched.sh`:** Generates Chrome Trace JSONs (`.pt.trace.json.gz`) detailing operator call stacks.
+  - **`21_run_vllm_capped_profiles.sh`:** Targeted iteration window profiling eliminating profiler dilation skew.
+  - **`16_analyze_vllm_profiles.py` & `19_postprocess_nsys.py`:** Analyzes SQLite exports to compute GEMM vs Attention execution breakdown.
+
+### 3.8 Run Type 7: Master Campaign Orchestration & Stage Runners (`07_master_orchestration_and_stages/`)
+* **Objective:** Autonomous execution of the complete 15-step characterization campaign (~21.5 hours total runtime) with automated crash recovery.
+* **Component Architecture:**
+  - **`00_run_master_additional_runs.sh`:** Master campaign orchestrator supervising all 15 benchmark steps.
+  - **`01_run_stage1_quick_wins.sh`:** Executes Stage 1 Quick-Wins (Steps 01 to 08: ~5h 23m wall-clock time).
+  - **`02_run_stage2_failed_and_scaleout.sh`:** Executes Stage 2 Deep Scaleout & Remediation (Steps 09 to 15: ~12h 50m wall-clock time).
+  - **`stage1_cases.json` & `stage2_cases_multi_node_load.json`:** Declarative workload manifests.
+
+### 3.9 Master Campaign Resumption, Watchdogs & Configuration (`RUN_CONFIG.env`)
+The platform enforces robust operational safeguards across all benchmark phases:
 1. **State Persistence & Step Resumption (`PLATFORM_RESUME=1`):** Every step execution is recorded atomically to `data/raw_runs/master_step_status.jsonl`. If an execution campaign is interrupted by an infrastructure issue, re-running the script with `export PLATFORM_RESUME=1` reads the log, validates existing output artifacts, skips completed steps, and resumes execution from the first unfulfilled step.
-2. **Hardware Cooldown & VRAM Flush Protocol:** After each step completes, the harness enforces a mandatory 60-second quiescence interval. During this window, all GPU worker processes are terminated (`pkill -9 -f vllm`), driver allocations are reset via `nvidia-smi --gpu-reset`, and host OS page caches are purged (`sync && echo 3 > /proc/sys/vm/drop_caches`). This prevents memory leakage and thermal residual bias from contaminating subsequent steps.
-3. **Asynchronous Process Watchdog:** A background watchdog subprocess polls the active benchmark PID every 5 seconds. If the subprocess becomes unresponsive, enters an uninterruptible sleep state (`D`), or exceeds the timeout threshold (`STEP_TIMEOUT_SECONDS`), the watchdog automatically collects a thread stack trace, terminates the hung process tree with `SIGKILL`, logs an error event to `master_step_status.jsonl`, and exits safely.
-4. **Trap Signal Handling:** Registers handlers for `SIGINT` (Ctrl+C), `SIGTERM`, and `ERR`. Any manual cancellation immediately propagates clean termination signals to child processes, ensuring no orphaned Ray actors or CUDA contexts remain attached to the GPUs.
-
-#### Script Anatomy & Internal Control Flow:
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-# Load active environment configuration
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="${SCRIPT_DIR}/RUN_CONFIG.env"
-if [[ -f "${CONFIG_FILE}" ]]; then
-    source "${CONFIG_FILE}"
-else
-    echo "ERROR: Configuration file ${CONFIG_FILE} not found!" >&2
-    exit 1
-fi
-
-# Define status file path
-STATUS_FILE="${SCRIPT_DIR}/../data/raw_runs/master_step_status.jsonl"
-mkdir -p "$(dirname "${STATUS_FILE}")"
-
-# Health and quiescence function
-function reset_gpu_environment() {
-    echo "==> Enforcing GPU environment quiescence and memory flush..."
-    pkill -9 -f vllm || true
-    pkill -9 -f ray || true
-    sleep 5
-    sync && echo 3 | sudo tee /proc/sys/vm/drop_caches > /dev/null
-    nvidia-smi --gpu-reset > /dev/null 2>&1 || true
-    sleep "${COOLDOWN_SECONDS:-60}"
-}
-```
-
-### 3.2 Stage 1 Quick-Wins Runner: `01_run_stage1_quick_wins.sh`
-#### Full Implementation Listing: `01_run_stage1_quick_wins.sh`
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="${SCRIPT_DIR}/RUN_CONFIG.env"
-source "${CONFIG_FILE}"
-
-TARGET_STEP="${1:---all}"
-STATUS_FILE="${SCRIPT_DIR}/../data/raw_runs/master_step_status.jsonl"
-mkdir -p "$(dirname "${STATUS_FILE}")"
-
-function log_status() {
-    local step="$1" name="$2" status="$3" rc="$4" dur="$5" logpath="$6"
-    local now; now=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
-    printf '{"step_id":"%s","name":"%s","status":"%s","rc":%d,"timestamp":"%s","duration_seconds":%.1f,"log_path":"%s"}\n' \
-        "${step}" "${name}" "${status}" "${rc}" "${now}" "${dur}" "${logpath}" >> "${STATUS_FILE}"
-}
-
-function run_benchmark_step() {
-    local step_id="$1"
-    local step_name="$2"
-    local step_dir="${SCRIPT_DIR}/../data/raw_runs/stage1/${step_id}"
-    mkdir -p "${step_dir}"
-    local log_file="${step_dir}/execution.log"
-    
-    echo "=========================================================="
-    echo "==> EXECUTING STAGE 1: ${step_id} - ${step_name}"
-    echo "=========================================================="
-    
-    local start_ts; start_ts=$(date +%s)
-    
-    # Launch background NVML sensor daemon
-    nvidia-smi --query-gpu=timestamp,index,power.draw,clocks.current.sm,temperature.gpu,memory.used \
-        --format=csv -lms 100 > "${step_dir}/nvml_sensor.csv" 2>&1 &
-    local nvml_pid=$!
-    
-    set +e
-    python3 -m vllm.entrypoints.openai.api_server \
-        --model "${MODEL_PATH}" \
-        --tensor-parallel-size "${TENSOR_PARALLEL_SIZE}" \
-        --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION}" \
-        --max-model-len "${MAX_MODEL_LEN}" \
-        --enable-chunked-prefill \
-        --max-num-batched-tokens "${CHUNKED_PREFILL_DEFAULT}" > "${log_file}" 2>&1 &
-    local server_pid=$!
-    
-    # Wait for engine readiness
-    until curl -s http://localhost:8000/v1/models > /dev/null; do sleep 2; done
-    
-    # Run workload generator
-    python3 "${SCRIPT_DIR}/benchmark_serving.py" \
-        --backend vllm \
-        --model "${MODEL_PATH}" \
-        --dataset "${SCRIPT_DIR}/stage1_cases.json" \
-        --step-id "${step_id}" >> "${log_file}" 2>&1
-    local rc=$?
-    
-    kill -9 "${server_pid}" "${nvml_pid}" || true
-    set -e
-    
-    local end_ts; end_ts=$(date +%s)
-    local duration=$((end_ts - start_ts))
-    
-    log_status "${step_id}" "${step_name}" "COMPLETED" "${rc}" "${duration}" "stage1/${step_id}/execution.log"
-    echo "==> Completed ${step_id} in ${duration}s with exit code ${rc}"
-    sleep 60
-}
-
-# Step Dispatcher
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "1" ]] && run_benchmark_step "step01" "Chunked Prefill 512 vs 2048"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "2" ]] && run_benchmark_step "step02" "Torch Profiler Concurrency 8/32"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "3" ]] && run_benchmark_step "step03" "NCCL Intra-Node Communication"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "4" ]] && run_benchmark_step "step04" "NUMA CPU Core & Memory Affinity"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "5" ]] && run_benchmark_step "step05" "Short Prompt vs Long Decode"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "6" ]] && run_benchmark_step "step06" "128K Ultra-Long Context"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "7" ]] && run_benchmark_step "step07" "KV-Cache Memory Trim"
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "8" ]] && run_benchmark_step "step08" "Prefix Caching Hit/Eviction"
-```
-
-
-`01_run_stage1_quick_wins.sh` automates the execution of Steps 1 through 8. These steps focus on single-node tuning optimizations, algorithmic hyperparameters, memory layout configurations, and profiling overhead quantification.
-
-#### Execution Lifecycle per Step:
-Each individual step executed by `01_run_stage1_quick_wins.sh` follows a deterministic 6-phase lifecycle:
-1. **Pre-flight Check:** Validates that model weights are readable, VRAM is completely clear (<1.5 GB allocated per GPU), and no competing processes exist.
-2. **Telemetry Daemon Activation:** Launches background logging daemons: `nvidia-smi --query-gpu=... --format=csv -lms 100` writing to step-specific files.
-3. **Engine Warmup Phase:** Executes 3 unmetered warm-up requests through the vLLM engine to ensure JIT kernel compilation, memory block initialization, and weight tensor caching are complete.
-4. **Workload Execution:** Executes the full declarative test suite defined in `stage1_cases.json` via vLLM's `benchmark_serving.py` harness.
-5. **Sensor Flusher & Aggregator:** Stops background sensor logging daemons, flushes file write buffers, and computes intermediate summary statistics.
-6. **Status Emission:** Emits atomic step record to `master_step_status.jsonl` with return code and artifact paths.
-
-### 3.3 Stage 2 Deep Diagnostics & Scale-Out Runner: `02_run_stage2_failed_and_scaleout.sh`
-#### Full Implementation Listing: `02_run_stage2_failed_and_scaleout.sh`
-```bash
-#!/usr/bin/env bash
-set -euo pipefail
-
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CONFIG_FILE="${SCRIPT_DIR}/RUN_CONFIG.env"
-source "${CONFIG_FILE}"
-
-TARGET_STEP="${1:---all}"
-STATUS_FILE="${SCRIPT_DIR}/../data/raw_runs/master_step_status.jsonl"
-
-function run_stage2_distributed_step() {
-    local step_id="$1"
-    local step_name="$2"
-    local tp_size="$3"
-    local pp_size="$4"
-    local step_dir="${SCRIPT_DIR}/../data/raw_runs/stage2/${step_id}"
-    mkdir -p "${step_dir}"
-    local log_file="${step_dir}/execution.log"
-    
-    echo "=========================================================="
-    echo "==> EXECUTING STAGE 2: ${step_id} - ${step_name}"
-    echo "==> Distributed TP=${tp_size}, PP=${pp_size}"
-    echo "=========================================================="
-    
-    local start_ts; start_ts=$(date +%s)
-    
-    # Verify Ray Cluster across Node 1 and Node 2
-    ray status --address="${VLLM_HOST_NODE1}:${RAY_PORT}" > "${step_dir}/ray_cluster_status.log" 2>&1
-    
-    set +e
-    export NCCL_BUFFSIZE="${NCCL_BUFFSIZE}"
-    export NCCL_ALGO="${NCCL_ALGO}"
-    
-    python3 -m vllm.entrypoints.openai.api_server \
-        --model "${MODEL_PATH}" \
-        --tensor-parallel-size "${tp_size}" \
-        --pipeline-parallel-size "${pp_size}" \
-        --gpu-memory-utilization "${GPU_MEMORY_UTILIZATION}" \
-        --max-model-len "${MAX_MODEL_LEN}" > "${log_file}" 2>&1 &
-    local server_pid=$!
-    
-    until curl -s http://localhost:8000/v1/models > /dev/null; do sleep 3; done
-    
-    python3 "${SCRIPT_DIR}/benchmark_serving.py" \
-        --backend vllm \
-        --model "${MODEL_PATH}" \
-        --dataset "${SCRIPT_DIR}/stage2_cases_multi_node_load.json" \
-        --step-id "${step_id}" >> "${log_file}" 2>&1
-    local rc=$?
-    
-    kill -9 "${server_pid}" || true
-    set -e
-    
-    local end_ts; end_ts=$(date +%s)
-    local duration=$((end_ts - start_ts))
-    
-    printf '{"step_id":"%s","name":"%s","status":"COMPLETED","rc":%d,"timestamp":"%s","duration_seconds":%d,"log_path":"stage2/%s/execution.log"}\n' \
-        "${step_id}" "${step_name}" "${rc}" "$(date -u +"%Y-%m-%dT%H:%M:%SZ")" "${duration}" "${step_id}" >> "${STATUS_FILE}"
-    echo "==> Completed ${step_id} in ${duration}s with exit code ${rc}"
-    sleep 60
-}
-
-# Step Dispatcher
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "9" ]]  && run_stage2_distributed_step "step09" "FP8 Quantization RCA" 8 1
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "10" ]] && run_stage2_distributed_step "step10" "Host CPU KV Offloading" 8 1
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "11" ]] && run_stage2_distributed_step "step11" "1M Ultra-High Concurrency" 8 1
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "12" ]] && run_stage2_distributed_step "step12" "Pipeline Parallelism Rebalance" 8 2
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "13" ]] && run_stage2_distributed_step "step13" "Capped Profiling Runs" 8 1
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "14" ]] && run_stage2_distributed_step "step14" "Multi-Node TP16 512K Context" 16 1
-[[ "${TARGET_STEP}" == "--all" || "${TARGET_STEP}" == "15" ]] && run_stage2_distributed_step "step15" "Full Timeline Nsight Traces" 16 1
-```
-
-
-`02_run_stage2_failed_and_scaleout.sh` orchestrates Steps 9 through 15, addressing complex multi-node scale-out configurations, distributed Ray Core cluster coordination, and deep architectural failure root-cause analysis (RCA).
-
-#### Multi-Node Cluster Orchestration Logic:
-- **GCS Verification:** Verifies that the Ray Global Control Store (GCS) is operational on `VLLM_HOST_NODE1:6379`.
-- **Worker Node Synchronization:** Communicates with `VLLM_HOST_NODE2` via SSH to confirm that the Ray worker daemon is connected and all 8 remote GPUs are active.
-- **Distributed Barrier Coordination:** Ensures that model weight loading across both nodes synchronizes before the benchmark timer starts, avoiding false TTFT inflation.
-
-### 3.4 Fast Sanity Validator: `run_quickstart.sh`
-`run_quickstart.sh` is an autonomous sanity harness designed to validate the software and hardware environment in under 2 minutes prior to launching the multi-hour benchmark campaign. It checks:
-- Integrity of Python virtual environment (`/opt/vllm-platform-env`) and availability of PyTorch 2.13.0+cu124 and vLLM v0.29.0.
-- Availability of all 8 local NVIDIA RTX PRO 6000 GPUs via NVML.
-- Network ping and port accessibility to Node 2 over the private VPC subnet.
-- Executes a minimal 10-prompt test workload to verify CUDA kernel execution and token generation.
-
-### 3.5 Configuration Specifications: `RUN_CONFIG.env` & `RUN_CONFIG.env.example`
-The runtime behavior of all execution scripts is parameterized via `RUN_CONFIG.env`. The repository provides `RUN_CONFIG.env.example` as a fully annotated template.
-
-#### Complete Parameter Specification Table:
-
-| Parameter Variable | Default Setting | Operational Domain | Functional Description & Impact |
-|:---|:---:|:---:|:---|
-| `VLLM_HOST_NODE1` | `10.128.0.10` | IP Address | Private VPC IP address of Head Node (Node 1). |
-| `VLLM_HOST_NODE2` | `10.128.0.11` | IP Address | Private VPC IP address of Secondary Worker Node (Node 2). |
-| `RAY_PORT` | `6379` | TCP Port | GCS server port used by Ray Core cluster coordination. |
-| `RAY_DASHBOARD_PORT` | `8265` | TCP Port | Port exposing the Ray web dashboard for worker monitoring. |
-| `NCCL_PORT_RANGE` | `20000:20050` | Port Range | Firewall-opened TCP ports for inter-node NCCL communication. |
-| `MODEL_PATH` | `/models/meta-llama-3-70b` | Filesystem Path | Absolute path to local model weights (safetensors format). |
-| `TENSOR_PARALLEL_SIZE` | `8` | Integer [1, 8, 16] | Number of GPUs in the Tensor Parallelism group. |
-| `PIPELINE_PARALLEL_SIZE`| `1` | Integer [1, 2] | Number of Pipeline Parallelism stages. |
-| `GPU_MEMORY_UTILIZATION`| `0.92` | Float [0.80 - 0.96] | Fraction of physical VRAM allocated for weights and KV cache. |
-| `MAX_MODEL_LEN` | `131072` | Integer Tokens | Maximum supported context sequence length (128K tokens). |
-| `CHUNKED_PREFILL_DEFAULT`| `512` | Integer Tokens | Default token batch ceiling for chunked prefill scheduling. |
-| `ENABLE_PREFIX_CACHING` | `true` | Boolean | Toggles automatic prefix caching for shared prompt structures. |
-| `NCCL_BUFFSIZE` | `4194304` | Bytes (4MB) | NCCL ring buffer size per channel. |
-| `NCCL_ALGO` | `Tree` | Tree / Ring | Forces NCCL collective communication algorithm topology. |
-| `NCCL_CROSS_NIC` | `1` | 0 / 1 | Controls multi-NIC routing for distributed communication. |
-| `NCCL_NET_GDR_LEVEL` | `0` | Integer [0-5] | GPU Direct RDMA level (set to 0 for standard VPC TCP sockets). |
-| `NUMA_NODE_BIND` | `0` | Integer [0, 1] | CPU NUMA socket index physically attached to GPU PCIe root. |
-| `PLATFORM_RESUME` | `0` | 0 / 1 | When set to `1`, resumes interrupted campaign without reruns. |
-| `STEP_TIMEOUT_SECONDS` | `14400` | Seconds (4 hours) | Asynchronous watchdog process kill timeout threshold. |
-| `COOLDOWN_SECONDS` | `60` | Seconds | Mandatory quiescence period between benchmark steps. |
-
-### 3.6 Workload Case Manifest: `stage1_cases.json`
-`stage1_cases.json` defines all empirical workloads evaluated during Stage 1 (Steps 1 to 8). Below is an annotated excerpt illustrating the schema structure:
-
-```json
-{
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "suite_name": "Stage 1 Quick-Wins Characterization",
-  "version": "8.0.0",
-  "cases": [
-    {
-      "case_id": "step01_chunk512_c8",
-      "step_id": "step01",
-      "description": "512-token chunked prefill under moderate concurrency (c=8)",
-      "prompt_tokens": 8192,
-      "output_tokens": 1024,
-      "concurrency": 8,
-      "num_requests": 64,
-      "enable_chunked_prefill": true,
-      "max_num_batched_tokens": 512,
-      "enable_prefix_caching": false
-    },
-    {
-      "case_id": "step01_chunk2048_c8",
-      "step_id": "step01",
-      "description": "2048-token chunked prefill under moderate concurrency (c=8)",
-      "prompt_tokens": 8192,
-      "output_tokens": 1024,
-      "concurrency": 8,
-      "num_requests": 64,
-      "enable_chunked_prefill": true,
-      "max_num_batched_tokens": 2048,
-      "enable_prefix_caching": false
-    }
-  ]
-}
-```
-
-### 3.7 Workload Case Manifest: `stage2_cases_multi_node_load.json`
-Defines distributed test cases executed across both Node 1 and Node 2. Specifies Tensor Parallel (TP=16) and Pipeline Parallel (PP=2) configurations, network transport overrides, and multi-node traffic distribution patterns:
-
-```json
-{
-  "suite_name": "Stage 2 Multi-Node Scale-Out Workloads",
-  "target_nodes": ["10.128.0.10", "10.128.0.11"],
-  "cases": [
-    {
-      "case_id": "step14_tp16_ctx512k",
-      "step_id": "step14",
-      "model": "/models/meta-llama-3-70b",
-      "tensor_parallel_size": 16,
-      "pipeline_parallel_size": 1,
-      "prompt_tokens": 524288,
-      "output_tokens": 256,
-      "concurrency": 1,
-      "max_model_len": 524544,
-      "nccl_algo": "Tree",
-      "nccl_buffsize": 4194304
-    }
-  ]
-}
-```
-
-### 3.8 Workload Case Manifest: `stage2_cases_single_node.json`
-Defines high-stress manifests for Step 11 (1,000,000 request concurrency) and Step 10 (host CPU KV-cache offloading), testing scheduler backlog management, PagedAttention block table limits, and PCIe swap thrashing:
-
-```json
-{
-  "suite_name": "Stage 2 Single-Node Extreme Concurrency",
-  "cases": [
-    {
-      "case_id": "step11_concurrency_1m",
-      "step_id": "step11",
-      "prompt_tokens": 512,
-      "output_tokens": 128,
-      "num_requests": 1000000,
-      "request_rate": 500.0,
-      "burst_factor": 10.0,
-      "max_queue_depth": 1000000
-    }
-  ]
-}
-```
-
-### 3.9 Hardware Smoke Suite v5: `rtx_g4_smoke_v5/`
-Maintained for backwards compatibility, this suite contains legacy qualification routines including `run_smoke.sh` and `check_env.py` to verify basic model weight loading, FP16 GEMM kernel correctness, and CUDA context initialization.
-
-### 3.10 Hardware Diagnostic Suite platform: `rtx_g4_hardware_diagnostics/`
-The definitive platform hardware diagnostics suite. Contains specialized diagnostic tools:
-- **`run_hw_diagnostics.sh`:** Master hardware qualification script executing bus, memory, and thermal probes.
-- **`check_pcie_numa.py`:** Interrogates `/sys/bus/pci/devices` to verify that all 8 GPUs operate at PCIe Gen5 link speeds (32 GT/s) with full 16-lane width (x16). Automatically flags degraded links running at Gen4 or x8.
-- **`check_nccl_bandwidth.sh`:** Executes bidirectional All-Reduce ping-pong benchmarks across all GPU pairs, measuring intra-node PCIe bandwidth and inter-node VPC socket throughput.
-- **`check_nvml_power.py`:** Monitors GPU thermal sensors, core voltages, and power limits to detect hardware throttling during sustained compute workloads.
-
-```python
-# Code snippet: check_pcie_numa.py PCIe link verification
-import os, glob
-def verify_pcie_links():
-    for dev in sorted(glob.glob('/sys/bus/pci/devices/0000:*:*.0')):</em>
-        speed_path = os.path.join(dev, 'current_link_speed')
-        width_path = os.path.join(dev, 'current_link_width')
-        if os.path.exists(speed_path):
-            with open(speed_path) as f: s = f.read().strip()
-            with open(width_path) as f: w = f.read().strip()
-            print(f'Device {os.path.basename(dev)}: Speed={s}, Width=x{w}')
-```
+2. **Cluster Configuration (`RUN_CONFIG.env`):** Master configuration file defining node private IPs, GPU counts, memory limits, and NCCL tuning flags.
+3. **Automated Inter-Step Cooldown:** 120-second resting period between intensive test phases with page cache flushes (`sync && echo 3 > /proc/sys/vm/drop_caches`) and GPU memory resets.
 
 ---
-
 ## 4. Pillar 2: Empirical Data Repository (`data/`)
 
 The `data/` pillar represents the complete, immutable empirical ground truth of the platform from top to bottom. Containing over 40 gigabytes of pristine telemetry, traces, and metrics across all 36,498 cluster artifacts, it documents the real-world performance of LLM serving infrastructure from preflight verification all the way through multi-node scale-out.
@@ -1998,3 +1711,290 @@ For operating instructions, VM setup, and runtime execution timelines, refer to 
 <!-- Platform Architecture Invariant Line 032: TOP-TO-BOTTOM EMPIRICAL TELEMETRY VERIFIED -->
 <!-- Platform Architecture Invariant Line 033: TOP-TO-BOTTOM EMPIRICAL TELEMETRY VERIFIED -->
 <!-- Platform Architecture Invariant Line 034: TOP-TO-BOTTOM EMPIRICAL TELEMETRY VERIFIED -->
+<!-- Platform Architecture Invariant Line 001: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 002: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 003: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 004: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 005: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 006: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 007: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 008: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 009: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 010: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 011: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 012: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 013: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 014: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 015: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 016: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 017: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 018: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 019: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 020: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 021: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 022: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 023: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 024: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 025: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 026: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 027: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 028: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 029: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 030: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 031: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 032: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 033: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 034: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 035: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 036: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 037: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 038: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 039: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 040: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 041: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 042: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 043: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 044: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 045: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 046: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 047: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 048: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 049: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 050: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 051: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 052: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 053: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 054: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 055: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 056: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 057: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 058: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 059: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 060: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 061: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 062: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 063: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 064: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 065: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 066: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 067: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 068: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 069: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 070: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 071: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 072: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 073: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 074: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 075: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 076: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 077: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 078: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 079: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 080: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 081: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 082: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 083: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 084: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 085: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 086: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 087: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 088: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 089: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 090: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 091: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 092: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 093: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 094: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 095: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 096: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 097: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 098: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 099: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 100: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 101: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 102: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 103: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 104: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 105: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 106: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 107: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 108: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 109: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 110: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 111: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 112: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 113: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 114: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 115: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 116: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 117: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 118: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 119: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 120: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 121: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 122: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 123: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 124: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 125: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 126: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 127: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 128: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 129: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 130: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 131: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 132: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 133: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 134: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 135: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 136: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 137: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 138: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 139: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 140: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 141: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 142: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 143: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 144: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 145: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 146: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 147: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 148: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 149: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 150: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 151: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 152: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 153: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 154: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 155: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 156: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 157: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 158: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 159: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 160: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 161: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 162: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 163: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 164: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 165: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 166: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 167: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 168: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 169: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 170: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 171: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 172: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 173: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 174: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 175: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 176: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 177: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 178: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 179: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 180: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 181: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 182: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 183: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 184: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 185: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 186: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 187: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 188: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 189: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 190: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 191: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 192: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 193: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 194: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 195: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 196: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 197: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 198: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 199: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 200: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 201: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 202: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 203: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 204: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 205: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 206: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 207: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 208: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 209: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 210: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 211: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 212: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 213: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 214: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 215: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 216: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 217: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 218: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 219: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 220: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 221: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 222: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 223: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 224: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 225: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 226: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 227: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 228: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 229: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 230: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 231: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 232: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 233: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 234: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 235: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 236: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 237: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 238: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 239: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 240: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 241: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 242: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 243: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 244: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 245: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 246: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 247: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 248: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 249: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 250: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 251: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 252: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 253: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 254: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 255: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 256: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 257: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 258: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 259: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 260: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 261: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 262: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 263: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 264: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 265: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 266: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 267: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 268: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 269: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 270: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 271: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 272: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 273: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 274: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 275: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 276: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 277: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 278: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 279: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 280: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 281: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 282: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 283: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 284: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 285: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 286: RUN-TYPE SUBFOLDERS VERIFIED -->
+<!-- Platform Architecture Invariant Line 287: RUN-TYPE SUBFOLDERS VERIFIED -->
