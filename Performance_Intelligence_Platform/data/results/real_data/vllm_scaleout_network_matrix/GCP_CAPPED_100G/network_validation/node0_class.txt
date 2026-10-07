@@ -1,0 +1,6 @@
+class htb 1:10 root prio 0 rate 100Gbit ceil 100Gbit burst 2400b cburst 2400b
+ Sent 6771 bytes 25 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+ lended: 24 borrowed: 0 giants: 0
+ tokens: 2 ctokens: 2
+

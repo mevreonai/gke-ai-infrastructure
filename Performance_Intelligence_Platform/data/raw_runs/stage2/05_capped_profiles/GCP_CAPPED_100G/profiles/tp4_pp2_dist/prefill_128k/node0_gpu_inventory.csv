@@ -1,0 +1,9 @@
+index, uuid, name, memory.total [MiB], pci.bus_id
+0, GPU-0ed422e8-2598-4d4b-88a3-7f4f693e3342, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:05:00.0
+1, GPU-0ad60e27-1f1d-c3e5-3c88-49e7928cdfb0, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:06:00.0
+2, GPU-adab9d85-c3f9-65d1-3be2-0351c61481d9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:0A:00.0
+3, GPU-e623d9ff-99f9-16cb-cf2d-79858027da17, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:0B:00.0
+4, GPU-80c72d54-2a4a-59c9-3dcf-a23459cfd4ac, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:84:00.0
+5, GPU-3817c2fe-cb05-3f10-2c04-2e5a3aeaee70, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:85:00.0
+6, GPU-e99a430e-22ef-2748-0d57-743961b1206d, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:89:00.0
+7, GPU-6294d2f7-7dd4-a245-3d04-dc505deb3ff7, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887 MiB, 00000000:8A:00.0

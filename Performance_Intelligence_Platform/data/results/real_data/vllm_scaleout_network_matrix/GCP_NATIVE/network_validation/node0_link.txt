@@ -1,0 +1,8 @@
+2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1460 qdisc mq state UP mode DEFAULT group default qlen 1000
+    link/ether 42:01:0a:80:00:27 brd ff:ff:ff:ff:ff:ff
+    RX:     bytes    packets errors dropped  missed   mcast           
+    1902518838594 1327733958      0       0       0       0 
+    TX:     bytes    packets errors dropped carrier collsns           
+    1812102111534   67479004      0       0       0       0 
+    altname enp0s3
+    altname enx42010a800027

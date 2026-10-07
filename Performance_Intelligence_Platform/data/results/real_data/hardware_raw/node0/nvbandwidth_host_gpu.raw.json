@@ -1,0 +1,67 @@
+{
+	"nvbandwidth" : 
+	{
+		"CUDA Driver API Version" : 13000,
+		"CUDA Runtime Version" : 13000,
+		"Driver Version" : "580.173.02",
+		"GPU Device list" : 
+		[
+			"0: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:05:00): (kimi-node-0)",
+			"1: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:06:00): (kimi-node-0)",
+			"2: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:0a:00): (kimi-node-0)",
+			"3: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:0b:00): (kimi-node-0)",
+			"4: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:84:00): (kimi-node-0)",
+			"5: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:85:00): (kimi-node-0)",
+			"6: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:89:00): (kimi-node-0)",
+			"7: NVIDIA RTX PRO 6000 Blackwell Server Edition (00000000:8a:00): (kimi-node-0)"
+		],
+		"Version Major" : 0,
+		"Version Minor" : 10,
+		"Version Patch" : 0,
+		"bounceBufferConfComputeEnabled" : false,
+		"git_version" : "v0.10",
+		"testcases" : 
+		[
+			{
+				"bandwidth_description" : "memcpy CE CPU(row) -> GPU(column) bandwidth (GB/s)",
+				"bandwidth_matrix" : 
+				[
+					[
+						"56.8872",
+						"56.8866",
+						"56.8864",
+						"56.8847",
+						"56.8582",
+						"56.8546",
+						"56.8751",
+						"56.8712"
+					]
+				],
+				"name" : "host_to_device_memcpy_ce",
+				"status" : "Passed",
+				"sum" : 455.00398984150002
+			},
+			{
+				"bandwidth_description" : "memcpy CE CPU(row) <- GPU(column) bandwidth (GB/s)",
+				"bandwidth_matrix" : 
+				[
+					[
+						"56.5509",
+						"56.551",
+						"56.5522",
+						"56.5522",
+						"56.5388",
+						"56.5362",
+						"56.5479",
+						"56.5445"
+					]
+				],
+				"name" : "device_to_host_memcpy_ce",
+				"status" : "Passed",
+				"sum" : 452.37358470250012
+			}
+		],
+		"version" : "v0.10.0"
+	}
+}
+

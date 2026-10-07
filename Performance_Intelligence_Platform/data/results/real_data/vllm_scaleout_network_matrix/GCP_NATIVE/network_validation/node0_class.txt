@@ -1,0 +1,48 @@
+class mq :1 root 
+ Sent 1924376158 bytes 1355038 pkt (dropped 0, overlimits 0 requeues 5) 
+ backlog 0b 0p requeues 5
+class mq :2 root 
+ Sent 1545587 bytes 21255 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :3 root 
+ Sent 1234751701 bytes 865270 pkt (dropped 0, overlimits 0 requeues 1) 
+ backlog 0b 0p requeues 1
+class mq :4 root 
+ Sent 60079 bytes 286 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :5 root 
+ Sent 749765 bytes 9044 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :6 root 
+ Sent 997931544 bytes 702506 pkt (dropped 0, overlimits 0 requeues 3) 
+ backlog 0b 0p requeues 3
+class mq :7 root 
+ Sent 1487519 bytes 20757 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :8 root 
+ Sent 2034030686 bytes 1392171 pkt (dropped 0, overlimits 0 requeues 8) 
+ backlog 0b 0p requeues 8
+class mq :9 root 
+ Sent 1073391 bytes 3885 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :a root 
+ Sent 593879 bytes 2418 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :b root 
+ Sent 380552 bytes 1287 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :c root 
+ Sent 476557 bytes 1982 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :d root 
+ Sent 385870 bytes 1579 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :e root 
+ Sent 272010 bytes 1044 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :f root 
+ Sent 317820 bytes 1098 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class mq :10 root 
+ Sent 450630 bytes 3649 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0

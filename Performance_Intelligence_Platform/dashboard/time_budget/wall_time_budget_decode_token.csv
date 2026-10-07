@@ -1,0 +1,25 @@
+operating_point,split_source,decode_tpot_ms,collectives_ar_pct,pipeline_hops_pct,memory_floor_pct,kernels_above_floor_pct,waiting_behind_prefills_pct
+TP4/PP1 · 8K,measured,4.5,24,0,21,55,0
+TP8/PP1 · 8K,measured,6.4,52,0,8,41,0
+TP4/PP1 · 128K,modelled,5.1,21,0,30,49,0
+TP8/PP1 · 128K,modelled,7.1,46,0,15,39,0
+TP4/PP2 · 128K,modelled,5.5,19,7,27,46,0
+TP8/PP2 · 128K,modelled,7.5,44,6,14,36,0
+TP4/PP4 · 128K,modelled,5.6,19,9,27,45,0
+TP16/PP1 · 128K,modelled,14.9,77,0,6,18,0
+TP4/PP1 · 512K,modelled,7.6,14,0,44,41,0
+TP8/PP1 · 512K,modelled,9.5,35,0,31,34,0
+TP4/PP2 · 512K,modelled,7.9,14,4,43,40,0
+TP8/PP2 · 512K,modelled,9.9,33,4,29,33,0
+TP4/PP4 · 512K,modelled,8.0,14,6,43,37,0
+TP16/PP1 · 512K,modelled,17.5,65,0,13,22,0
+TP4/PP1 · 1M,modelled,10.2,10,0,54,36,0
+TP8/PP1 · 1M,modelled,12.1,27,0,43,30,0
+TP4/PP2 · 1M,modelled,10.5,10,3,53,34,0
+TP8/PP2 · 1M,modelled,12.5,26,3,41,30,0
+TP4/PP4 · 1M,modelled,10.7,10,5,52,33,0
+TP16/PP1 · 1M,modelled,20.1,57,0,23,20,0
+TP4/PP1 · 8K · open loop 1.0x,measured,23.1,5,0,4,11,80
+TP4/PP1 · 8K · c32,measured,34.5,3,0,3,7,87
+TP4/PP1 · 128K · c4,measured,141.3,1,0,1,2,96
+TP4/PP1 · 1M · c4,modelled,267.4,1,0,2,2,95

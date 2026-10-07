@@ -1,0 +1,20 @@
+Warning: Permanently added '10.128.0.40' (ED25519) to the list of known hosts.
+10.128.0.39 via 10.128.0.1 dev ens3 src 10.128.0.40 uid 1000 
+    cache 
+2: ens3: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1460 qdisc htb state UP mode DEFAULT group default qlen 1000
+    link/ether 42:01:0a:80:00:28 brd ff:ff:ff:ff:ff:ff
+    RX:     bytes    packets errors dropped  missed   mcast           
+    4274629720980 2974534769      0       0       0       0 
+    TX:     bytes    packets errors dropped carrier collsns           
+    3942740053849  141454814      0       0       0       0 
+    altname enp0s3
+    altname enx42010a800028
+qdisc htb 1: root refcnt 17 r2q 10 default 0x10 direct_packets_stat 0 direct_qlen 1000
+ Sent 6823 bytes 21 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+class htb 1:10 root prio 0 rate 20Gbit ceil 20Gbit burst 1760b cburst 1760b
+ Sent 7101 bytes 22 pkt (dropped 0, overlimits 0 requeues 0) 
+ backlog 0b 0p requeues 0
+ lended: 21 borrowed: 0 giants: 0
+ tokens: 9 ctokens: 9
+

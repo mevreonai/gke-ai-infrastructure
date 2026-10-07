@@ -1,0 +1,1807 @@
+{
+  "server_kv_pool": {
+    "gpu_kv_cache_size_tokens": 8141673,
+    "tokens_per_request_baseline": 1048576,
+    "max_concurrency_1m": 7.76
+  },
+  "scanned_closedloop_runs": {
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_qualification\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 5,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.780714337000973,
+        "p90": 4.80516004600031,
+        "p95": 4.80516004600031,
+        "p99": 4.80516004600031
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.780714337000973,
+        "p90": 4.782502875999853,
+        "p95": 4.782502875999853,
+        "p99": 4.782502875999853
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007037209999907645,
+        "p90": 0.007139940000342904,
+        "p95": 0.007176479999543517,
+        "p99": 0.007568670000182465
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007054220001009526,
+        "p90": 0.007151539999540546,
+        "p95": 0.007185428999946453,
+        "p99": 0.007632439999724738
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_qualification\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 28.08919759499986,
+        "p90": 28.08919759499986,
+        "p95": 28.08919759499986,
+        "p99": 28.08919759499986
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 28.070450794999488,
+        "p90": 28.070450794999488,
+        "p95": 28.070450794999488,
+        "p99": 28.070450794999488
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.009464209999350714,
+        "p90": 0.009542050000163727,
+        "p95": 0.009560589000102482,
+        "p99": 0.011091039999882923
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.009461149998969631,
+        "p90": 0.009531260000585462,
+        "p95": 0.009573769999406068,
+        "p99": 0.011157070000990643
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_qualification\\8k_c1\\8k_c1.json": {
+      "benchmark_name": "8k_c1",
+      "total_requests": 12,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 11,
+      "trimmed_drain_requests": 11,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.2633357670001715,
+        "p90": 0.2645822180002142,
+        "p95": 0.26466411799992784,
+        "p99": 0.26466411799992784
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.26319192800110613,
+        "p90": 0.2645505479995336,
+        "p95": 0.2645822180002142,
+        "p99": 0.2645822180002142
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.00637080999877071,
+        "p90": 0.006427849999454338,
+        "p95": 0.006460488999437075,
+        "p99": 0.007015170000158832
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.006370769999193726,
+        "p90": 0.006428090000554221,
+        "p95": 0.006460470000092755,
+        "p99": 0.006998400000156835
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_qualification\\8k_c8\\8k_c8.json": {
+      "benchmark_name": "8k_c8",
+      "total_requests": 32,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 24,
+      "trimmed_drain_requests": 24,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.0091931110000587,
+        "p90": 1.5338032960007695,
+        "p95": 2.0339328110003407,
+        "p99": 2.0543436110001494
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 1.0046169010001904,
+        "p90": 1.2429970089997369,
+        "p95": 1.243902068999887,
+        "p99": 1.2445354880001105
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010175299999900744,
+        "p90": 0.010561869999946794,
+        "p95": 0.010730730000432231,
+        "p99": 0.24830899799962936
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.01014134999968519,
+        "p90": 0.01057163999939803,
+        "p95": 0.01076234900028794,
+        "p99": 0.24873673799993412
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_context_baseline\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 5,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.801410856000075,
+        "p90": 4.849692825000602,
+        "p95": 4.849692825000602,
+        "p99": 4.849692825000602
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.801410856000075,
+        "p90": 4.832567334999112,
+        "p95": 4.832567334999112,
+        "p99": 4.832567334999112
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007105450000381097,
+        "p90": 0.00718380999933288,
+        "p95": 0.007216509999125265,
+        "p99": 0.007543420000729384
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007120169999325299,
+        "p90": 0.00719194999874162,
+        "p95": 0.00721927999984473,
+        "p99": 0.007543420000729384
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_context_baseline\\1m_c1\\1m_c1.json": {
+      "benchmark_name": "1m_c1",
+      "total_requests": 1,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 74.68751421699926,
+        "p90": 74.68751421699926,
+        "p95": 74.68751421699926,
+        "p99": 74.68751421699926
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 74.68751421699926,
+        "p90": 74.68751421699926,
+        "p95": 74.68751421699926,
+        "p99": 74.68751421699926
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.012064360000294982,
+        "p90": 0.012139919999754056,
+        "p95": 0.01219888999912655,
+        "p99": 0.014232379999157274
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.012064360000294982,
+        "p90": 0.012139919999754056,
+        "p95": 0.01219888999912655,
+        "p99": 0.014232379999157274
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_context_baseline\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 3,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 2,
+      "trimmed_drain_requests": 2,
+      "raw_ttft_percentiles_s": {
+        "p50": 28.08386327899825,
+        "p90": 28.1012849990002,
+        "p95": 28.1012849990002,
+        "p99": 28.1012849990002
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 28.08386327899825,
+        "p90": 28.08386327899825,
+        "p95": 28.08386327899825,
+        "p99": 28.08386327899825
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.009451920001083636,
+        "p90": 0.009517508999124402,
+        "p95": 0.009551670000291779,
+        "p99": 0.010749369999757619
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.009457000000111293,
+        "p90": 0.009509969999271561,
+        "p95": 0.00955595999948855,
+        "p99": 0.010749369999757619
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp8_context_baseline\\8k_c1\\8k_c1.json": {
+      "benchmark_name": "8k_c1",
+      "total_requests": 10,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 9,
+      "trimmed_drain_requests": 9,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.26318137800080876,
+        "p90": 0.26606841800094116,
+        "p95": 0.26606841800094116,
+        "p99": 0.26606841800094116
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.2630362680010876,
+        "p90": 0.26449392799986526,
+        "p95": 0.26449392799986526,
+        "p99": 0.26449392799986526
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.006350730000121985,
+        "p90": 0.006414339999537333,
+        "p95": 0.006442119998609996,
+        "p99": 0.0065731100003176834
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00635193000016443,
+        "p90": 0.006413969998902758,
+        "p95": 0.00644196899884264,
+        "p99": 0.006535919999805628
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_qualification\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 5,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.530351798000993,
+        "p90": 4.535947768999904,
+        "p95": 4.535947768999904,
+        "p99": 4.535947768999904
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.530351798000993,
+        "p90": 4.532907848999457,
+        "p95": 4.532907848999457,
+        "p99": 4.532907848999457
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005097810000734171,
+        "p90": 0.0051460200011206325,
+        "p95": 0.00517489000048954,
+        "p99": 0.0056822599999577506
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0050992700016649906,
+        "p90": 0.005148059999555699,
+        "p95": 0.005180140000447864,
+        "p99": 0.0056822599999577506
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_qualification\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 31.934470620000866,
+        "p90": 31.934470620000866,
+        "p95": 31.934470620000866,
+        "p99": 31.934470620000866
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 31.934470620000866,
+        "p90": 31.934470620000866,
+        "p95": 31.934470620000866,
+        "p99": 31.934470620000866
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007581920001030085,
+        "p90": 0.0076394099996832665,
+        "p95": 0.007659830000193324,
+        "p99": 0.00876068999968993
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007580360001156805,
+        "p90": 0.007641300000614137,
+        "p95": 0.007679259999349597,
+        "p99": 0.008741169000131777
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_qualification\\8k_c1\\8k_c1.json": {
+      "benchmark_name": "8k_c1",
+      "total_requests": 12,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 11,
+      "trimmed_drain_requests": 11,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.22357322800053225,
+        "p90": 0.22463542800142022,
+        "p95": 0.2261796080001659,
+        "p99": 0.2261796080001659
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.22330793800028914,
+        "p90": 0.22463542800142022,
+        "p95": 0.2261796080001659,
+        "p99": 0.2261796080001659
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004487059999519261,
+        "p90": 0.004537200000413577,
+        "p95": 0.0045709890000580344,
+        "p99": 0.004692770000474411
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004487029998927028,
+        "p90": 0.004537950000667479,
+        "p95": 0.0045717699995293515,
+        "p99": 0.00469328000144742
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_qualification\\8k_c8\\8k_c8.json": {
+      "benchmark_name": "8k_c8",
+      "total_requests": 32,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 24,
+      "trimmed_drain_requests": 24,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.0396894110017456,
+        "p90": 1.315897247999601,
+        "p95": 1.7367271040002379,
+        "p99": 1.7551817439998558
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.8580585929994413,
+        "p90": 1.0587795699993876,
+        "p95": 1.2465311489995656,
+        "p99": 1.24878563799939
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007961679000800359,
+        "p90": 0.008234508999521495,
+        "p95": 0.00834218999989389,
+        "p99": 0.2082363779991283
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00799044999985199,
+        "p90": 0.008251149998613982,
+        "p95": 0.00837443000091298,
+        "p99": 0.2084643779999169
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_prefix512k\\prefix512k\\prefix512k.json": {
+      "benchmark_name": "prefix512k",
+      "total_requests": 4,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_ttft_percentiles_s": {
+        "p50": 32.55522220800049,
+        "p90": 32.57621671800007,
+        "p95": 32.57621671800007,
+        "p99": 32.57621671800007
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 1.1679116259983857,
+        "p90": 32.55522220800049,
+        "p95": 32.55522220800049,
+        "p99": 32.55522220800049
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007622979999723611,
+        "p90": 0.007701739999902202,
+        "p95": 0.007740068998828065,
+        "p99": 0.010330830002203584
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007623469999089139,
+        "p90": 0.007705320000241045,
+        "p95": 0.0077353400010906626,
+        "p99": 0.010330830002203584
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_prefix128k\\prefix128k\\prefix128k.json": {
+      "benchmark_name": "prefix128k",
+      "total_requests": 8,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 7,
+      "trimmed_drain_requests": 7,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.33178604600107064,
+        "p90": 4.896505089000129,
+        "p95": 4.896505089000129,
+        "p99": 4.896505089000129
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.33073836599942297,
+        "p90": 0.3363999060020433,
+        "p95": 0.3363999060020433,
+        "p99": 0.3363999060020433
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005321470001945272,
+        "p90": 0.005400169997301418,
+        "p95": 0.005451879998872755,
+        "p99": 0.005980909998470452
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.005321470001945272,
+        "p90": 0.005402549999416806,
+        "p95": 0.00545723999675829,
+        "p99": 0.006045120000635507
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\128k_prefill\\128k_prefill.json": {
+      "benchmark_name": "128k_prefill",
+      "total_requests": 5,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.531948268000633,
+        "p90": 4.551647348000188,
+        "p95": 4.551647348000188,
+        "p99": 4.551647348000188
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.531948268000633,
+        "p90": 4.5450558370012,
+        "p95": 4.5450558370012,
+        "p99": 4.5450558370012
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004994339999029762,
+        "p90": 0.005705300000045099,
+        "p95": 0.005900310001379694,
+        "p99": 0.005900310001379694
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004994339999029762,
+        "p90": 0.005705300000045099,
+        "p95": 0.005900310001379694,
+        "p99": 0.005900310001379694
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\1m_prefill\\1m_prefill.json": {
+      "benchmark_name": "1m_prefill",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 93.27960146399892,
+        "p90": 93.27960146399892,
+        "p95": 93.27960146399892,
+        "p99": 93.27960146399892
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 93.26887106399954,
+        "p90": 93.26887106399954,
+        "p95": 93.26887106399954,
+        "p99": 93.26887106399954
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010172108999540797,
+        "p90": 0.013140789998942637,
+        "p95": 0.013140789998942637,
+        "p99": 0.013140789998942637
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.010127030000148807,
+        "p90": 0.013140789998942637,
+        "p95": 0.013140789998942637,
+        "p99": 0.013140789998942637
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\512k_prefill\\512k_prefill.json": {
+      "benchmark_name": "512k_prefill",
+      "total_requests": 3,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 2,
+      "trimmed_drain_requests": 2,
+      "raw_ttft_percentiles_s": {
+        "p50": 31.95642901300016,
+        "p90": 31.960077822999665,
+        "p95": 31.960077822999665,
+        "p99": 31.960077822999665
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 31.95642901300016,
+        "p90": 31.95642901300016,
+        "p95": 31.95642901300016,
+        "p99": 31.95642901300016
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007518770000388031,
+        "p90": 0.009384110000610235,
+        "p95": 0.009384110000610235,
+        "p99": 0.009384110000610235
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007518770000388031,
+        "p90": 0.009295269999711309,
+        "p95": 0.009295269999711309,
+        "p99": 0.009295269999711309
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_prefill_focus\\8k_prefill\\8k_prefill.json": {
+      "benchmark_name": "8k_prefill",
+      "total_requests": 8,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 7,
+      "trimmed_drain_requests": 7,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.22248772800048755,
+        "p90": 0.22593122800026322,
+        "p95": 0.22593122800026322,
+        "p99": 0.22593122800026322
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.22237987800144765,
+        "p90": 0.22499529800006712,
+        "p95": 0.22499529800006712,
+        "p99": 0.22499529800006712
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004435429998920881,
+        "p90": 0.004617929998858017,
+        "p95": 0.00464780000038445,
+        "p99": 0.006764130001101876
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0044318700001895195,
+        "p90": 0.004617929998858017,
+        "p95": 0.00464780000038445,
+        "p99": 0.006764130001101876
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_observer_minimal\\128k_c4\\128k_c4.json": {
+      "benchmark_name": "128k_c4",
+      "total_requests": 12,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 8,
+      "trimmed_drain_requests": 8,
+      "raw_ttft_percentiles_s": {
+        "p50": 12.206660849999025,
+        "p90": 13.633248101999925,
+        "p95": 17.90483517899702,
+        "p99": 17.90483517899702
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 12.206660849999025,
+        "p90": 12.596798753998883,
+        "p95": 12.596798753998883,
+        "p99": 12.596798753998883
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.009438680001039756,
+        "p90": 0.27749559699805104,
+        "p95": 0.31282646600084263,
+        "p99": 0.33755496599769685
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.009486679999099579,
+        "p90": 0.2787273270005244,
+        "p95": 0.31377030599833233,
+        "p99": 0.33755496599769685
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_observer_minimal\\8k_c8\\8k_c8.json": {
+      "benchmark_name": "8k_c8",
+      "total_requests": 32,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 24,
+      "trimmed_drain_requests": 24,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.8714146599995729,
+        "p90": 1.2924548240007425,
+        "p95": 1.715086259002419,
+        "p99": 1.7329511489988363
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.8523281390007469,
+        "p90": 1.2550821739969251,
+        "p95": 1.261689924998791,
+        "p99": 1.2642356240030495
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0079760599983274,
+        "p90": 0.008249580001574941,
+        "p95": 0.008368868999241386,
+        "p99": 0.2090026769983524
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00799787000141805,
+        "p90": 0.008231129999330733,
+        "p95": 0.00835803999871132,
+        "p99": 0.21069592700223438
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_observer_full\\128k_c4\\128k_c4.json": {
+      "benchmark_name": "128k_c4",
+      "total_requests": 12,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 8,
+      "trimmed_drain_requests": 8,
+      "raw_ttft_percentiles_s": {
+        "p50": 13.114666843001032,
+        "p90": 13.637278887999855,
+        "p95": 17.899620240998047,
+        "p99": 17.899620240998047
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 13.114666843001032,
+        "p90": 13.263491881996742,
+        "p95": 13.263491881996742,
+        "p99": 13.263491881996742
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.009505230002105236,
+        "p90": 0.2775137969983916,
+        "p95": 0.31311987699882593,
+        "p99": 0.33882836699922336
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.009500219999608817,
+        "p90": 0.2784431870022672,
+        "p95": 0.31386824600122054,
+        "p99": 0.3389826759994321
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_observer_full\\8k_c8\\8k_c8.json": {
+      "benchmark_name": "8k_c8",
+      "total_requests": 32,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 24,
+      "trimmed_drain_requests": 24,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.8534453100000974,
+        "p90": 1.2948194339987822,
+        "p95": 1.715781129001698,
+        "p99": 1.7346016690025863
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.8477394510009617,
+        "p90": 1.060790397998062,
+        "p95": 1.2478551259991946,
+        "p99": 1.2497062459988229
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007928570001240587,
+        "p90": 0.00822235000305227,
+        "p95": 0.008482409997668583,
+        "p99": 0.20835625800100388
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007938769998872885,
+        "p90": 0.008244829998147907,
+        "p95": 0.008505179997882806,
+        "p99": 0.20915243799754535
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_decode_focus\\8k_decode_c1\\8k_decode_c1.json": {
+      "benchmark_name": "8k_decode_c1",
+      "total_requests": 8,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 7,
+      "trimmed_drain_requests": 7,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.22325572800036753,
+        "p90": 0.2254976379990694,
+        "p95": 0.2254976379990694,
+        "p99": 0.2254976379990694
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.22313479799959168,
+        "p90": 0.2242928480009141,
+        "p95": 0.2242928480009141,
+        "p99": 0.2242928480009141
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0044877700001961784,
+        "p90": 0.004536399999778951,
+        "p95": 0.004566089999570977,
+        "p99": 0.004829749999771593
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004487700000026962,
+        "p90": 0.0045365900004981086,
+        "p95": 0.004568749998725252,
+        "p99": 0.0048773199996503536
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_decode_focus\\8k_decode_c16\\8k_decode_c16.json": {
+      "benchmark_name": "8k_decode_c16",
+      "total_requests": 48,
+      "concurrency": 16,
+      "trimmed_first_token_requests": 32,
+      "trimmed_drain_requests": 32,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.0417297499989218,
+        "p90": 2.7382045939993986,
+        "p95": 3.157001469999159,
+        "p99": 3.39232926799923
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.8377389319994109,
+        "p90": 1.045245730998431,
+        "p95": 1.04545840100036,
+        "p99": 1.0457849809990876
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.011351229999490897,
+        "p90": 0.011932259998502559,
+        "p95": 0.012119439999878523,
+        "p99": 0.20908189799956745
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.011207140001715743,
+        "p90": 0.011792469998908928,
+        "p95": 0.012040059998980723,
+        "p99": 0.20913013800054614
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_decode_focus\\8k_decode_c8\\8k_decode_c8.json": {
+      "benchmark_name": "8k_decode_c8",
+      "total_requests": 24,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 16,
+      "trimmed_drain_requests": 16,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.8700031919997855,
+        "p90": 1.4978243260011368,
+        "p95": 1.7067254440007673,
+        "p99": 1.7254019240008347
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.8501090530007787,
+        "p90": 1.0392811699985032,
+        "p95": 1.0393769199999952,
+        "p99": 1.0393769199999952
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007791669999278383,
+        "p90": 0.008179419999578386,
+        "p95": 0.008273110001027817,
+        "p99": 0.010450998999658623
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00777224000012211,
+        "p90": 0.008088590000625118,
+        "p95": 0.008229609999034437,
+        "p99": 0.016408540001066285
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_context_baseline\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 5,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.529153368999687,
+        "p90": 4.551231359000667,
+        "p95": 4.551231359000667,
+        "p99": 4.551231359000667
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.529153368999687,
+        "p90": 4.533471389000624,
+        "p95": 4.533471389000624,
+        "p99": 4.533471389000624
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005094428999655065,
+        "p90": 0.005210389999774634,
+        "p95": 0.005235920001723571,
+        "p99": 0.005574429998887354
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.005102209999677143,
+        "p90": 0.005221790001087356,
+        "p95": 0.005244919999313424,
+        "p99": 0.005574429998887354
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_context_baseline\\1m_c1\\1m_c1.json": {
+      "benchmark_name": "1m_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 93.2576382469997,
+        "p90": 93.2576382469997,
+        "p95": 93.2576382469997,
+        "p99": 93.2576382469997
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 93.23807869399934,
+        "p90": 93.23807869399934,
+        "p95": 93.23807869399934,
+        "p99": 93.23807869399934
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010190730001340853,
+        "p90": 0.010310400000889786,
+        "p95": 0.010456518999490072,
+        "p99": 0.013295030001245323
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.01018692999969062,
+        "p90": 0.010383580000052461,
+        "p95": 0.010853450001377496,
+        "p99": 0.013295030001245323
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_context_baseline\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 3,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 2,
+      "trimmed_drain_requests": 2,
+      "raw_ttft_percentiles_s": {
+        "p50": 31.916795249999268,
+        "p90": 31.918413379999038,
+        "p95": 31.918413379999038,
+        "p99": 31.918413379999038
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 31.918413379999038,
+        "p90": 31.918413379999038,
+        "p95": 31.918413379999038,
+        "p99": 31.918413379999038
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0075592400007735705,
+        "p90": 0.007633999999598018,
+        "p95": 0.0076553100007004105,
+        "p99": 0.009068429999388172
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007563390001450898,
+        "p90": 0.007633999999598018,
+        "p95": 0.007657899999685469,
+        "p99": 0.009068429999388172
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_context_baseline\\8k_c1\\8k_c1.json": {
+      "benchmark_name": "8k_c1",
+      "total_requests": 10,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 9,
+      "trimmed_drain_requests": 9,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.2220887080002285,
+        "p90": 0.2262961180003913,
+        "p95": 0.2262961180003913,
+        "p99": 0.2262961180003913
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.22206783900037408,
+        "p90": 0.2229401879994839,
+        "p95": 0.2229401879994839,
+        "p99": 0.2229401879994839
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004475280000406201,
+        "p90": 0.004521190001469222,
+        "p95": 0.004548469998553628,
+        "p99": 0.004650999999284977
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00447517000066,
+        "p90": 0.004521190001469222,
+        "p95": 0.004552070000499953,
+        "p99": 0.004635569999663858
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\c1\\c1.json": {
+      "benchmark_name": "c1",
+      "total_requests": 12,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 11,
+      "trimmed_drain_requests": 11,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.22233147700171685,
+        "p90": 0.22318912799892132,
+        "p95": 0.22411584799920092,
+        "p99": 0.22411584799920092
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.22215200799837476,
+        "p90": 0.2231132679989969,
+        "p95": 0.22318912799892132,
+        "p99": 0.22318912799892132
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004465620000701165,
+        "p90": 0.004506590001255972,
+        "p95": 0.004537939999863738,
+        "p99": 0.004925569999613799
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004465800000616582,
+        "p90": 0.0045066999991831835,
+        "p95": 0.004538569999567699,
+        "p99": 0.004911830001219641
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\c16\\c16.json": {
+      "benchmark_name": "c16",
+      "total_requests": 64,
+      "concurrency": 16,
+      "trimmed_first_token_requests": 48,
+      "trimmed_drain_requests": 48,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.043454210001073,
+        "p90": 2.3230195790019934,
+        "p95": 2.948458202998154,
+        "p99": 3.393188478999946
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.872818512001686,
+        "p90": 1.0447660600002564,
+        "p95": 1.0455530210019788,
+        "p99": 1.0474734710005578
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010961190000671195,
+        "p90": 0.011655730002530618,
+        "p95": 0.012855488999775844,
+        "p99": 0.20925533799891127
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.010909999000432435,
+        "p90": 0.011658280000119703,
+        "p95": 0.025944670000171755,
+        "p99": 0.20925956800056156
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\c32\\c32.json": {
+      "benchmark_name": "c32",
+      "total_requests": 128,
+      "concurrency": 32,
+      "trimmed_first_token_requests": 96,
+      "trimmed_drain_requests": 96,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.0521458410003106,
+        "p90": 4.405433789001108,
+        "p95": 5.665708366999752,
+        "p99": 6.718871617998957
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 1.0506254600004468,
+        "p90": 1.055009280997183,
+        "p95": 1.055636829998548,
+        "p99": 1.0567306900011317
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.015838669998629484,
+        "p90": 0.024712570000701817,
+        "p95": 0.2105630289988767,
+        "p99": 0.2114035779995902
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.015871038998739095,
+        "p90": 0.20846280900150305,
+        "p95": 0.21069530800014036,
+        "p99": 0.21150418799879844
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\c4\\c4.json": {
+      "benchmark_name": "c4",
+      "total_requests": 24,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 20,
+      "trimmed_drain_requests": 20,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.6354497249994893,
+        "p90": 0.8414602019984159,
+        "p95": 0.8669529219987453,
+        "p99": 0.8834981820000394
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.633047743998759,
+        "p90": 0.8385362029985117,
+        "p95": 0.8414602019984159,
+        "p99": 0.8414602019984159
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0063338099971588235,
+        "p90": 0.00658236000163015,
+        "p95": 0.006657179998001084,
+        "p99": 0.008661930001835572
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.006362539999827277,
+        "p90": 0.0065899200017156545,
+        "p95": 0.0066713699998217635,
+        "p99": 0.008781630000157747
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_8k\\c8\\c8.json": {
+      "benchmark_name": "c8",
+      "total_requests": 32,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 24,
+      "trimmed_drain_requests": 24,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.8486446720016829,
+        "p90": 1.2750378790005925,
+        "p95": 1.692474735002179,
+        "p99": 1.7105104250003933
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.8395849720000115,
+        "p90": 1.0565435499993328,
+        "p95": 1.244359407999582,
+        "p99": 1.2464698680014408
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007737248997727875,
+        "p90": 0.008229620001657167,
+        "p95": 0.008378980000998126,
+        "p99": 0.20751348799967673
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007816739998816047,
+        "p90": 0.008284229999844683,
+        "p95": 0.008393890002480475,
+        "p99": 0.20758471799854306
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_512k\\c1\\c1.json": {
+      "benchmark_name": "c1",
+      "total_requests": 3,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 2,
+      "trimmed_drain_requests": 2,
+      "raw_ttft_percentiles_s": {
+        "p50": 31.924752027000068,
+        "p90": 32.1441550549971,
+        "p95": 32.1441550549971,
+        "p99": 32.1441550549971
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 31.924752027000068,
+        "p90": 31.924752027000068,
+        "p95": 31.924752027000068,
+        "p99": 31.924752027000068
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007556270000350196,
+        "p90": 0.007611749999341555,
+        "p95": 0.007648300001164898,
+        "p99": 0.009079169001779519
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.007557299999461975,
+        "p90": 0.007623630001035053,
+        "p95": 0.007683019997784868,
+        "p99": 0.00891077999767731
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_512k\\c2\\c2.json": {
+      "benchmark_name": "c2",
+      "total_requests": 4,
+      "concurrency": 2,
+      "trimmed_first_token_requests": 2,
+      "trimmed_drain_requests": 2,
+      "raw_ttft_percentiles_s": {
+        "p50": 32.71905177900044,
+        "p90": 63.66688802600038,
+        "p95": 63.66688802600038,
+        "p99": 63.66688802600038
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 32.71905177900044,
+        "p90": 32.71905177900044,
+        "p95": 32.71905177900044,
+        "p99": 32.71905177900044
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.39645538599870633,
+        "p90": 0.6944579129994963,
+        "p95": 0.7307286329996714,
+        "p99": 0.7723101729970949
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.4870587160003197,
+        "p90": 0.7126071330021659,
+        "p95": 0.7397436030005338,
+        "p99": 0.7723101729970949
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_512k\\c4\\c4.json": {
+      "benchmark_name": "c4",
+      "total_requests": 8,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 95.4487223770011,
+        "p90": 127.21834710800249,
+        "p95": 127.21834710800249,
+        "p99": 127.21834710800249
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 95.4487223770011,
+        "p90": 96.22651507599949,
+        "p95": 96.22651507599949,
+        "p99": 96.22651507599949
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.4512606259995664,
+        "p90": 0.7121794799968484,
+        "p95": 0.7480803600010404,
+        "p99": 0.7741092889991705
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.4957120670005679,
+        "p90": 0.7218561930021679,
+        "p95": 0.7484170729985635,
+        "p99": 0.7735443090023182
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_1m\\c1\\c1.json": {
+      "benchmark_name": "c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 93.47301564000009,
+        "p90": 93.47301564000009,
+        "p95": 93.47301564000009,
+        "p99": 93.47301564000009
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 93.23992521699984,
+        "p90": 93.23992521699984,
+        "p95": 93.23992521699984,
+        "p99": 93.23992521699984
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010189279997575795,
+        "p90": 0.010241588999633677,
+        "p95": 0.010254149998218054,
+        "p99": 0.012223180001456058
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.010180159999436,
+        "p90": 0.010241588999633677,
+        "p95": 0.010599770001135767,
+        "p99": 0.012223180001456058
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_1m\\c2\\c2.json": {
+      "benchmark_name": "c2",
+      "total_requests": 3,
+      "concurrency": 2,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 172.6576432639995,
+        "p90": 185.43122926200158,
+        "p95": 185.43122926200158,
+        "p99": 185.43122926200158
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 172.6576432639995,
+        "p90": 172.6576432639995,
+        "p95": 172.6576432639995,
+        "p99": 172.6576432639995
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.28108567200251855,
+        "p90": 0.45226368799922056,
+        "p95": 0.47079557700271835,
+        "p99": 0.49870903600094607
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.3532441610004753,
+        "p90": 0.46185341800082824,
+        "p95": 0.47977178699875367,
+        "p99": 0.4975971159983601
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\c1\\c1.json": {
+      "benchmark_name": "c1",
+      "total_requests": 6,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 5,
+      "trimmed_drain_requests": 5,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.530735686003027,
+        "p90": 4.555034026001522,
+        "p95": 4.555034026001522,
+        "p99": 4.555034026001522
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.526349656000093,
+        "p90": 4.531070556000486,
+        "p95": 4.531070556000486,
+        "p99": 4.531070556000486
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005113790000905283,
+        "p90": 0.005239819998678286,
+        "p95": 0.005282340000121621,
+        "p99": 0.005667589997756295
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.005119638997712173,
+        "p90": 0.005245440002909163,
+        "p95": 0.005292520003422396,
+        "p99": 0.0056605099998705555
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\c16\\c16.json": {
+      "benchmark_name": "c16",
+      "total_requests": 32,
+      "concurrency": 16,
+      "trimmed_first_token_requests": 16,
+      "trimmed_drain_requests": 16,
+      "raw_ttft_percentiles_s": {
+        "p50": 36.12760921500012,
+        "p90": 58.5626400259971,
+        "p95": 67.53635524799756,
+        "p99": 72.02344275400174
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 36.12760921500012,
+        "p90": 36.21940910500052,
+        "p95": 36.58006446099898,
+        "p99": 36.58006446099898
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.26707522699871333,
+        "p90": 0.3358792569997604,
+        "p95": 0.3415469169995049,
+        "p99": 0.34482632700019167
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.27952551699854666,
+        "p90": 0.33848243699685554,
+        "p95": 0.3420074459972966,
+        "p99": 0.3464084469997033
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\c4\\c4.json": {
+      "benchmark_name": "c4",
+      "total_requests": 12,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 8,
+      "trimmed_drain_requests": 8,
+      "raw_ttft_percentiles_s": {
+        "p50": 12.443857308000588,
+        "p90": 13.607053736002854,
+        "p95": 17.87198894500034,
+        "p99": 17.87198894500034
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 12.443857308000588,
+        "p90": 12.829574893999961,
+        "p95": 12.829574893999961,
+        "p99": 12.829574893999961
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.00939907000065432,
+        "p90": 0.2772634869979811,
+        "p95": 0.3129685870007961,
+        "p99": 0.33822147600221797
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.009407449997524964,
+        "p90": 0.2785945579998952,
+        "p95": 0.31380920699666603,
+        "p99": 0.337825555998279
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_closedloop_128k\\c8\\c8.json": {
+      "benchmark_name": "c8",
+      "total_requests": 24,
+      "concurrency": 8,
+      "trimmed_first_token_requests": 16,
+      "trimmed_drain_requests": 16,
+      "raw_ttft_percentiles_s": {
+        "p50": 9.412836477000383,
+        "p90": 27.010629106000124,
+        "p95": 31.493672212000092,
+        "p99": 35.81843480899988
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 9.23773894900296,
+        "p90": 9.577727086001687,
+        "p95": 9.580808136000996,
+        "p99": 9.580808136000996
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.24521731799904956,
+        "p90": 0.3262492959984229,
+        "p95": 0.3382670670034713,
+        "p99": 0.34499759699974675
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.2622149669987266,
+        "p90": 0.3267583859997103,
+        "p95": 0.3390527359988482,
+        "p99": 0.3452629369967326
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk8k\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 4,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.533828457002528,
+        "p90": 4.542656948000513,
+        "p95": 4.542656948000513,
+        "p99": 4.542656948000513
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.532635358002153,
+        "p90": 4.533828457002528,
+        "p95": 4.533828457002528,
+        "p99": 4.533828457002528
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005105669999466045,
+        "p90": 0.005204770001000725,
+        "p95": 0.0052712799988512415,
+        "p99": 0.005819940000947099
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00511606000145548,
+        "p90": 0.005225059998338111,
+        "p95": 0.0052712799988512415,
+        "p99": 0.005819940000947099
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk8k\\128k_c4\\128k_c4.json": {
+      "benchmark_name": "128k_c4",
+      "total_requests": 12,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 8,
+      "trimmed_drain_requests": 8,
+      "raw_ttft_percentiles_s": {
+        "p50": 13.110683628001425,
+        "p90": 14.674025902997528,
+        "p95": 17.904327882999496,
+        "p99": 17.904327882999496
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 13.110683628001425,
+        "p90": 14.674025902997528,
+        "p95": 14.674025902997528,
+        "p99": 14.674025902997528
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.01216552000187221,
+        "p90": 0.31298926699673757,
+        "p95": 0.3326224069969612,
+        "p99": 0.34154146700166166
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.017502009999589063,
+        "p90": 0.31387517700204626,
+        "p95": 0.33262455699878046,
+        "p99": 0.34154146700166166
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk8k\\1m_c1\\1m_c1.json": {
+      "benchmark_name": "1m_c1",
+      "total_requests": 1,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 93.276595714,
+        "p90": 93.276595714,
+        "p95": 93.276595714,
+        "p99": 93.276595714
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 93.276595714,
+        "p90": 93.276595714,
+        "p95": 93.276595714,
+        "p99": 93.276595714
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.01021126900013769,
+        "p90": 0.010437429999001324,
+        "p95": 0.013026050000917166,
+        "p99": 0.013026050000917166
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.01021126900013769,
+        "p90": 0.010437429999001324,
+        "p95": 0.013026050000917166,
+        "p99": 0.013026050000917166
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk8k\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 31.93748479200076,
+        "p90": 31.93748479200076,
+        "p95": 31.93748479200076,
+        "p99": 31.93748479200076
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 31.93456518599851,
+        "p90": 31.93456518599851,
+        "p95": 31.93456518599851,
+        "p99": 31.93456518599851
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007585389997984748,
+        "p90": 0.007757060000585625,
+        "p95": 0.007898359999671811,
+        "p99": 0.011368600000423612
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00758530999883078,
+        "p90": 0.007674119002331281,
+        "p95": 0.008233910000853939,
+        "p99": 0.00877353000032599
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk4k\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 4,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_ttft_percentiles_s": {
+        "p50": 5.225141472001269,
+        "p90": 5.250561521999771,
+        "p95": 5.250561521999771,
+        "p99": 5.250561521999771
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 5.2198357910001505,
+        "p90": 5.225141472001269,
+        "p95": 5.225141472001269,
+        "p99": 5.225141472001269
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005098919998999918,
+        "p90": 0.005248030000075232,
+        "p95": 0.005288880000080098,
+        "p99": 0.005726049999793759
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.005117589998917538,
+        "p90": 0.005253240000456572,
+        "p95": 0.005290659999445779,
+        "p99": 0.005854469000041718
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk4k\\128k_c4\\128k_c4.json": {
+      "benchmark_name": "128k_c4",
+      "total_requests": 12,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 8,
+      "trimmed_drain_requests": 8,
+      "raw_ttft_percentiles_s": {
+        "p50": 10.475176121999539,
+        "p90": 15.658666884000922,
+        "p95": 20.82195051599956,
+        "p99": 20.82195051599956
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 10.471248202000424,
+        "p90": 10.689737011000034,
+        "p95": 10.689737011000034,
+        "p99": 10.689737011000034
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.15414558900010888,
+        "p90": 0.19847661799940397,
+        "p95": 0.20451489799961564,
+        "p99": 0.20811200800017104
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.16055249800047022,
+        "p90": 0.19871627800057468,
+        "p95": 0.20680189799895743,
+        "p99": 0.20811200800017104
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk4k\\1m_c1\\1m_c1.json": {
+      "benchmark_name": "1m_c1",
+      "total_requests": 1,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 122.04867084199941,
+        "p90": 122.04867084199941,
+        "p95": 122.04867084199941,
+        "p99": 122.04867084199941
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 122.04867084199941,
+        "p90": 122.04867084199941,
+        "p95": 122.04867084199941,
+        "p99": 122.04867084199941
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010193699999945238,
+        "p90": 0.010265928998705931,
+        "p95": 0.012922359997901367,
+        "p99": 0.012922359997901367
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.010193699999945238,
+        "p90": 0.010265928998705931,
+        "p95": 0.012922359997901367,
+        "p99": 0.012922359997901367
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk4k\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 40.272025915000995,
+        "p90": 40.272025915000995,
+        "p95": 40.272025915000995,
+        "p99": 40.272025915000995
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 40.27060204400186,
+        "p90": 40.27060204400186,
+        "p95": 40.27060204400186,
+        "p99": 40.27060204400186
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007566820000647567,
+        "p90": 0.007650559997273376,
+        "p95": 0.007981360002304427,
+        "p99": 0.008699710000655614
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0075510899987421,
+        "p90": 0.007644810000783764,
+        "p95": 0.008099430000584107,
+        "p99": 0.008699710000655614
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk16k\\128k_c1\\128k_c1.json": {
+      "benchmark_name": "128k_c1",
+      "total_requests": 4,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_ttft_percentiles_s": {
+        "p50": 4.367762310001126,
+        "p90": 4.3791674799977045,
+        "p95": 4.3791674799977045,
+        "p99": 4.3791674799977045
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 4.358464820001245,
+        "p90": 4.367762310001126,
+        "p95": 4.367762310001126,
+        "p99": 4.367762310001126
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.005088530000648461,
+        "p90": 0.005181968997931108,
+        "p95": 0.005199369999900227,
+        "p99": 0.005640259998472175
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00509519000115688,
+        "p90": 0.00518626000121003,
+        "p95": 0.0052028799982508644,
+        "p99": 0.005640259998472175
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk16k\\128k_c4\\128k_c4.json": {
+      "benchmark_name": "128k_c4",
+      "total_requests": 12,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 8,
+      "trimmed_drain_requests": 8,
+      "raw_ttft_percentiles_s": {
+        "p50": 13.12392059999911,
+        "p90": 16.92495810499895,
+        "p95": 17.119164061998163,
+        "p99": 17.119164061998163
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 13.12392059999911,
+        "p90": 16.92495810499895,
+        "p95": 16.92495810499895,
+        "p99": 16.92495810499895
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.009381690000736853,
+        "p90": 0.5051488549979695,
+        "p95": 0.5739824250013044,
+        "p99": 0.641013683998608
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.009398570000485051,
+        "p90": 0.504921715000819,
+        "p95": 0.5739828949990624,
+        "p99": 0.6410145939989889
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk16k\\1m_c1\\1m_c1.json": {
+      "benchmark_name": "1m_c1",
+      "total_requests": 1,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 88.95133969900053,
+        "p90": 88.95133969900053,
+        "p95": 88.95133969900053,
+        "p99": 88.95133969900053
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 88.95133969900053,
+        "p90": 88.95133969900053,
+        "p95": 88.95133969900053,
+        "p99": 88.95133969900053
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010177609998208936,
+        "p90": 0.010240700001304504,
+        "p95": 0.012129999999160646,
+        "p99": 0.012129999999160646
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.010177609998208936,
+        "p90": 0.010240700001304504,
+        "p95": 0.012129999999160646,
+        "p99": 0.012129999999160646
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_chunk16k\\512k_c1\\512k_c1.json": {
+      "benchmark_name": "512k_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_ttft_percentiles_s": {
+        "p50": 30.457370989999617,
+        "p90": 30.457370989999617,
+        "p95": 30.457370989999617,
+        "p99": 30.457370989999617
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 30.457370989999617,
+        "p90": 30.457370989999617,
+        "p95": 30.457370989999617,
+        "p99": 30.457370989999617
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007564120001916308,
+        "p90": 0.007617859999299981,
+        "p95": 0.007733239999652142,
+        "p99": 0.008867489999829559
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0075523999985307455,
+        "p90": 0.007617859999299981,
+        "p95": 0.007658729999093339,
+        "p99": 0.008805999998003244
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_512k_maxseq8\\512k_c4\\512k_c4.json": {
+      "benchmark_name": "512k_c4",
+      "total_requests": 8,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 95.41185234500153,
+        "p90": 127.84001052899839,
+        "p95": 127.84001052899839,
+        "p99": 127.84001052899839
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 95.41185234500153,
+        "p90": 96.1958143970005,
+        "p95": 96.1958143970005,
+        "p99": 96.1958143970005
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.45090574600180844,
+        "p90": 0.7117942730001232,
+        "p95": 0.7477954230016621,
+        "p99": 0.7750594319986703
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.49562194499958423,
+        "p90": 0.721557542001392,
+        "p95": 0.7481075030009379,
+        "p99": 0.7755885830010811
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_512k_maxseq4\\512k_c4\\512k_c4.json": {
+      "benchmark_name": "512k_c4",
+      "total_requests": 8,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 95.43696052499945,
+        "p90": 127.91509477600266,
+        "p95": 127.91509477600266,
+        "p99": 127.91509477600266
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 95.43696052499945,
+        "p90": 96.21830054900056,
+        "p95": 96.21830054900056,
+        "p99": 96.21830054900056
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.4509183359987219,
+        "p90": 0.7120797130010033,
+        "p95": 0.748104782000155,
+        "p99": 0.7743242030010151
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.4958238050021464,
+        "p90": 0.7215444520006713,
+        "p95": 0.7482288030005293,
+        "p99": 0.7750704329992004
+      }
+    },
+    "Performance_Intelligence_Platform\\results\\real_data\\vllm_single_node_v6_matrix\\tp4_512k_maxseq16\\512k_c4\\512k_c4.json": {
+      "benchmark_name": "512k_c4",
+      "total_requests": 8,
+      "concurrency": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_ttft_percentiles_s": {
+        "p50": 95.40767384400169,
+        "p90": 127.84755414000028,
+        "p95": 127.84755414000028,
+        "p99": 127.84755414000028
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 95.40767384400169,
+        "p90": 96.19515223599956,
+        "p95": 96.19515223599956,
+        "p99": 96.19515223599956
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.45100709599864786,
+        "p90": 0.7119283930005622,
+        "p95": 0.7481935630021326,
+        "p99": 0.7749712120021286
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.4955476050017751,
+        "p90": 0.7212983530007477,
+        "p95": 0.7484100420006143,
+        "p99": 0.77578373200231
+      }
+    }
+  }
+}

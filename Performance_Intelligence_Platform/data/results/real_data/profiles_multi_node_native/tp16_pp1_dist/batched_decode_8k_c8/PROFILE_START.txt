@@ -1,0 +1,1 @@
+===== DISTRIBUTED PROFILE tp16_pp1_dist_batched_decode_8k_c8 TP=16 PP=1 GPUs/node=8 =====

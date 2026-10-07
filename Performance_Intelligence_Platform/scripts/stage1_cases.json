@@ -1,0 +1,106 @@
+{
+  "schema_version": 2,
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "evidence_class": "MEASURED-48B-STAGE1",
+  "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
+  "server_defaults": {
+    "max_model_len": 1048576,
+    "gpu_memory_utilization": 0.9,
+    "kv_cache_dtype": "auto",
+    "performance_mode": "balanced",
+    "optimization_level": 2,
+    "observability_profile": "full",
+    "metrics_interval_s": 0.5
+  },
+  "cases": [
+    {
+      "name": "tp4_8k_chunk_control_8192",
+      "groups": ["stage1", "chunk_budget", "single_node"],
+      "purpose": "A/B Control: 8K prompts under baseline chunk budget of 8192 tokens with matched pilot waves.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {"name": "8k_c4", "input": 8192, "output": 256, "concurrency": 4, "prompts": 24, "warmups": 2},
+        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 128, "warmups": 2}
+      ]
+    },
+    {
+      "name": "tp4_8k_chunk_fix_8448",
+      "groups": ["stage1", "chunk_budget", "single_node"],
+      "purpose": "A/B Test: 8K prompts with expanded chunk budget of 8448 tokens to eliminate chunk-splitting artifact.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8448,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {"name": "8k_c4", "input": 8192, "output": 256, "concurrency": 4, "prompts": 24, "warmups": 2},
+        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 128, "warmups": 2}
+      ]
+    },
+    {
+      "name": "tp4_short_prompts",
+      "groups": ["stage1", "short_prompts", "single_node"],
+      "purpose": "Sub-8K prompt scaling at 1K and 2K with full 4-wave statistical depth at c32.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {"name": "1k_c1", "input": 1024, "output": 128, "concurrency": 1, "prompts": 20, "warmups": 2},
+        {"name": "1k_c8", "input": 1024, "output": 128, "concurrency": 8, "prompts": 40, "warmups": 2},
+        {"name": "1k_c32", "input": 1024, "output": 128, "concurrency": 32, "prompts": 128, "warmups": 2},
+        {"name": "2k_c1", "input": 2048, "output": 128, "concurrency": 1, "prompts": 16, "warmups": 2},
+        {"name": "2k_c8", "input": 2048, "output": 128, "concurrency": 8, "prompts": 32, "warmups": 2},
+        {"name": "2k_c32", "input": 2048, "output": 128, "concurrency": 32, "prompts": 128, "warmups": 2}
+      ]
+    },
+    {
+      "name": "tp4_128k_chunk_sensitivity",
+      "groups": ["stage1", "chunk_sensitivity", "single_node"],
+      "purpose": "128K stall-vs-chunk evaluation (Plan A9): 16384 token chunk budget.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 16384,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {"name": "128k_c1", "input": 131072, "output": 64, "concurrency": 1, "prompts": 4, "warmups": 1},
+        {"name": "128k_c4", "input": 131072, "output": 64, "concurrency": 4, "prompts": 12, "warmups": 1}
+      ]
+    },
+    {
+      "name": "tp4_knee_repeats",
+      "groups": ["stage1", "usable_throughput", "repeats"],
+      "purpose": "3x repeats of the two usable-throughput knee points for statistical confirmation.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 32,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {"name": "8k_knee_rep1", "input": 8192, "output": 256, "concurrency": 16, "prompts": 64, "warmups": 2},
+        {"name": "8k_knee_rep2", "input": 8192, "output": 256, "concurrency": 16, "prompts": 64, "warmups": 2},
+        {"name": "8k_knee_rep3", "input": 8192, "output": 256, "concurrency": 16, "prompts": 64, "warmups": 2},
+        {"name": "128k_knee_rep1", "input": 131072, "output": 128, "concurrency": 4, "prompts": 12, "warmups": 1},
+        {"name": "128k_knee_rep2", "input": 131072, "output": 128, "concurrency": 4, "prompts": 12, "warmups": 1},
+        {"name": "128k_knee_rep3", "input": 131072, "output": 128, "concurrency": 4, "prompts": 12, "warmups": 1}
+      ]
+    }
+  ]
+}

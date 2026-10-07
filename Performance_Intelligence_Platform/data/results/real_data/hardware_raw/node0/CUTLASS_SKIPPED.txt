@@ -1,0 +1,1 @@
+CUTLASS skipped: RUN_CUTLASS=1 binary=/home/ayu23/rtx_g4_smoke/cutlass/build_sm120/tools/profiler/cutlass_profiler
