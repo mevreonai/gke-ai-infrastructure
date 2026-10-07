@@ -30,7 +30,7 @@
    - 3.3 [Phase 0: Preflight System Verification & Health Check (~10m)](#33-phase-0-preflight-system-verification--health-check-10m)
    - 3.4 [Phase 1: Hardware Microbenchmarks & Bus Baselines (~45m)](#34-phase-1-hardware-microbenchmarks--bus-baselines-45m)
    - 3.5 [Phase 2: Engine Qualification & Warmup Sanity (~25m)](#35-phase-2-engine-qualification--warmup-sanity-25m)
-   - 3.6 [Phase 3: Stage 1 Quick-Wins Campaign (Steps 1 to 8: ~5h 23m 27s)](#36-phase-3-stage-1-quick-wins-campaign-steps-1-to-8-5h-23m-27s)
+   - 3.6 [Phase 3: Master Campaign Characterization (Steps 01 to 08) (Steps 1 to 8: ~5h 23m 27s)](#36-phase-3-stage-1-quick-wins-campaign-steps-1-to-8-5h-23m-27s)
      - 3.6.1 [Step 01: Chunked Prefill Sizing (512 vs 2048) — Runtime: 40m 07s](#361-step-01-chunked-prefill-sizing-512-vs-2048--runtime-40m-07s)
      - 3.6.2 [Step 02: PyTorch Profiler Overhead Dilation (c8/c32) — Runtime: 1h 15m 18s](#362-step-02-pytorch-profiler-overhead-dilation-c8c32--runtime-1h-15m-18s)
      - 3.6.3 [Step 03: NCCL Intra-Node Communication Tuning — Runtime: 34m 42s](#363-step-03-nccl-intra-node-communication-tuning--runtime-34m-42s)
@@ -39,7 +39,7 @@
      - 3.6.6 [Step 06: 128K Ultra-Long Context Chunked Prefill — Runtime: 44m 55s](#366-step-06-128k-ultra-long-context-chunked-prefill--runtime-44m-55s)
      - 3.6.7 [Step 07: KV-Cache Memory Trim Optimization — Runtime: 36m 20s](#367-step-07-kv-cache-memory-trim-optimization--runtime-36m-20s)
      - 3.6.8 [Step 08: Automatic Prefix Caching Eviction Dynamics — Runtime: 39m 50s](#368-step-08-automatic-prefix-caching-eviction-dynamics--runtime-39m-50s)
-   - 3.7 [Phase 4: Stage 2 Deep Diagnostics & Scale-Out (Steps 9 to 15: ~12h 50m 55s)](#37-phase-4-stage-2-deep-diagnostics--scale-out-steps-9-to-15-12h-50m-55s)
+   - 3.7 [Phase 4: Master Campaign Characterization (Steps 09 to 15) (Steps 9 to 15: ~12h 50m 55s)](#37-phase-4-stage-2-deep-diagnostics--scale-out-steps-9-to-15-12h-50m-55s)
      - 3.7.1 [Step 09: FP8 Quantization Root Cause Analysis — Runtime: 28m 15s](#371-step-09-fp8-quantization-root-cause-analysis--runtime-28m-15s)
      - 3.7.2 [Step 10: Host CPU KV-Cache Offloading Latency — Runtime: 49m 40s](#372-step-10-host-cpu-kv-cache-offloading-latency--runtime-49m-40s)
      - 3.7.3 [Step 11: 1M Ultra-High Concurrency Stress Test — Runtime: 2h 42m 10s](#373-step-11-1m-ultra-high-concurrency-stress-test--runtime-2h-42m-10s)
@@ -57,7 +57,7 @@
       - 3.11.4 [Run Type 4: Distributed Network Scaling (`04_scaleout_distributed_network`)](#3114-run-type-4-distributed-network-scaling-04_scaleout_distributed_network)
       - 3.11.5 [Run Type 5: Ultra-Long Context & 1M Stress (`05_long_context_1m_extensions`)](#3115-run-type-5-ultra-long-context--1m-stress-05_long_context_1m_extensions)
       - 3.11.6 [Run Type 6: Deep Kernel & PyTorch Chrome Profiling (`06_deep_kernel_and_torch_profiling`)](#3116-run-type-6-deep-kernel--pytorch-chrome-profiling-06_deep_kernel_and_torch_profiling)
-      - 3.11.7 [Run Type 7: Multi-Stage Orchestration (`07_master_orchestration_and_stages`)](#3117-run-type-7-multi-stage-orchestration-07_master_orchestration_and_stages)
+      - 3.11.7 [Run Type 7: Multi-Stage Orchestration (`07_master_campaign_orchestration`)](#3117-run-type-7-multi-stage-orchestration-07_master_campaign_orchestration)
 4. [STEP 3: Dashboard Analytics & Raw Data Ingestion](#4-step-3-dashboard-analytics--raw-data-ingestion)
    - 4.1 [Architecture of the Ingestion Pipeline](#41-architecture-of-the-ingestion-pipeline)
    - 4.2 [Compiling Canonical Telemetry: `compile_canonical_data.py`](#42-compiling-canonical-telemetry-compile_canonical_datapy)
@@ -658,16 +658,16 @@ cd Performance_Intelligence_Platform/scripts/rtx_g4_smoke_v5
 ./run_smoke.sh 2>&1 | tee ../../data/raw_runs/stage1_qualification.log
 ```
 
-### 3.6 Phase 3: Stage 1 Quick-Wins Campaign (Steps 1 to 8: ~5h 23m 27s)
+### 3.6 Phase 3: Master Campaign Characterization (Steps 01 to 08) (Steps 1 to 8: ~5h 23m 27s)
 Stage 1 targets single-node optimizations, chunked prefill schedules, profiler dilation quantification, and NUMA memory affinity.
 
 #### 3.6.1 Step 01: Chunked Prefill Sizing (512 vs 2048) — Runtime: 40m 07s
 - **Engineering Objective:** Measure trade-off between decode preemption and prefill compute throughput under concurrency levels 8 and 32.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 1`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 1`
 - **Exact Benchmark Wall-Time:** `40m 07s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=8, c=32 with 8192 prompt tokens, 1024 output tokens
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step01_chunk_512/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step01_chunk_512/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -678,18 +678,18 @@ Stage 1 targets single-node optimizations, chunked prefill schedules, profiler d
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step01_chunk_512/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step01_chunk_512/execution.log
 ```
 
 ---
 
 #### 3.6.2 Step 02: PyTorch Profiler Overhead Dilation (c8/c32) — Runtime: 1h 15m 18s
 - **Engineering Objective:** Quantify CPU tracing and CUDA synchronization dilation under active torch.profiler tracing.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 2`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 2`
 - **Exact Benchmark Wall-Time:** `1h 15m 18s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=8, c=32 comparing baseline unprofiled vs profiler-enabled
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step02_torch_prof_c8_c32/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step02_torch_prof_c8_c32/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -701,18 +701,18 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step01_chunk_512/execut
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step02_torch_prof_c8_c32/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step02_torch_prof_c8_c32/execution.log
 ```
 
 ---
 
 #### 3.6.3 Step 03: NCCL Intra-Node Communication Tuning — Runtime: 34m 42s
 - **Engineering Objective:** Benchmark ring vs. tree collective algorithms and buffer sizing (2MB, 4MB, 16MB) over PCIe Gen5 switch fabrics.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 3`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 3`
 - **Exact Benchmark Wall-Time:** `34m 42s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=16 under All-Reduce collective benchmarking
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step03_nccl_tuning/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step03_nccl_tuning/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -723,18 +723,18 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step02_torch_prof_c8_c3
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step03_nccl_tuning/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step03_nccl_tuning/execution.log
 ```
 
 ---
 
 #### 3.6.4 Step 04: NUMA CPU Core & Memory Affinity — Runtime: 31m 10s
 - **Engineering Objective:** Measure latency degradation caused by cross-socket UPI/QPI traffic between dual AMD EPYC sockets.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 4`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 4`
 - **Exact Benchmark Wall-Time:** `31m 10s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=16 comparing unpinned vs. pinned (`numactl -N 0 -m 0`)
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step04_numa_pinning/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step04_numa_pinning/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -745,18 +745,18 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step03_nccl_tuning/exec
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step04_numa_pinning/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step04_numa_pinning/execution.log
 ```
 
 ---
 
 #### 3.6.5 Step 05: Short Prompt vs Long Decode Scaling — Runtime: 21m 05s
 - **Engineering Objective:** Characterize memory-bandwidth-bound decode phase vs. compute-bound prefill.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 5`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 5`
 - **Exact Benchmark Wall-Time:** `21m 05s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=8, c=32 with 128 prompt tokens and 2048 output tokens
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step05_short_prompt/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step05_short_prompt/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -767,18 +767,18 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step04_numa_pinning/exe
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step05_short_prompt/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step05_short_prompt/execution.log
 ```
 
 ---
 
 #### 3.6.6 Step 06: 128K Ultra-Long Context Chunked Prefill — Runtime: 44m 55s
 - **Engineering Objective:** Evaluate extreme sequence length handling on 96GB GPUs without triggering OOM.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 6`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 6`
 - **Exact Benchmark Wall-Time:** `44m 55s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=1 with 131,072 prompt tokens across chunks 512, 1024, 2048
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step06_128k_chunk/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step06_128k_chunk/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -789,18 +789,18 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step05_short_prompt/exe
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step06_128k_chunk/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step06_128k_chunk/execution.log
 ```
 
 ---
 
 #### 3.6.7 Step 07: KV-Cache Memory Trim Optimization — Runtime: 36m 20s
 - **Engineering Objective:** Determine optimal `gpu_memory_utilization` threshold (0.85, 0.92, 0.96) for headroom stability.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 7`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 7`
 - **Exact Benchmark Wall-Time:** `36m 20s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=16 under varying memory utilization caps
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step07_kv_trace_trim/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step07_kv_trace_trim/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -811,18 +811,18 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step06_128k_chunk/execu
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step07_kv_trace_trim/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step07_kv_trace_trim/execution.log
 ```
 
 ---
 
 #### 3.6.8 Step 08: Automatic Prefix Caching Eviction Dynamics — Runtime: 39m 50s
 - **Engineering Objective:** Benchmark prefix match rates and eviction overhead for shared prompt workloads.
-- **Execution CLI Command:** `./01_run_stage1_quick_wins.sh --step 8`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 8`
 - **Exact Benchmark Wall-Time:** `39m 50s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=16 comparing prefix cache OFF vs. ON (50% and 80% shared)
-- **Primary Telemetry Artifact:** `data/raw_runs/stage1/step08_prefix_eviction/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step01_.../step08_prefix_eviction/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -833,21 +833,21 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step07_kv_trace_trim/ex
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/stage1/step08_prefix_eviction/execution.log
+grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step08_prefix_eviction/execution.log
 ```
 
 ---
 
-### 3.7 Phase 4: Stage 2 Deep Diagnostics & Scale-Out (Steps 9 to 15: ~12h 50m 55s)
+### 3.7 Phase 4: Master Campaign Characterization (Steps 09 to 15) (Steps 9 to 15: ~12h 50m 55s)
 Stage 2 executes multi-node distributed workloads, extreme concurrency tests, and deep root-cause failure analysis.
 
 #### 3.7.1 Step 09: FP8 Quantization Root Cause Analysis — Runtime: 28m 15s
 - **Engineering Objective:** Diagnose throughput scaling, memory footprint, and dequantization latency under FP8 precision.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 9`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 9`
 - **Exact Benchmark Wall-Time:** `28m 15s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=16 comparing BF16 vs. FP8 W8A8
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step09_fp8_rca/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step09_fp8_rca/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -858,18 +858,18 @@ Stage 2 executes multi-node distributed workloads, extreme concurrency tests, an
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step09_fp8_rca/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step09_fp8_rca/execution.log
 ```
 
 ---
 
 #### 3.7.2 Step 10: Host CPU KV-Cache Offloading Latency — Runtime: 49m 40s
 - **Engineering Objective:** Measure the PCIe Gen5 bandwidth bottleneck when spilling KV blocks to system DDR RAM.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 10`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 10`
 - **Exact Benchmark Wall-Time:** `49m 40s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=8 comparing pure GPU KV vs. 50% CPU offloaded
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step10_cpu_offload/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step10_cpu_offload/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -880,18 +880,18 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step09_fp8_rca/exe
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step10_cpu_offload/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step10_cpu_offload/execution.log
 ```
 
 ---
 
 #### 3.7.3 Step 11: 1M Ultra-High Concurrency Stress Test — Runtime: 2h 42m 10s
 - **Engineering Objective:** Stress the vLLM scheduler, request queue, and memory management under 1,000,000 requests.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 11`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 11`
 - **Exact Benchmark Wall-Time:** `2h 42m 10s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** 1,000,000 total requests submitted at 500 RPS
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step11_1m_concurrency/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step11_1m_concurrency/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -902,18 +902,18 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step10_cpu_offload
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step11_1m_concurrency/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step11_1m_concurrency/execution.log
 ```
 
 ---
 
 #### 3.7.4 Step 12: Pipeline Parallelism (PP 15/12) Rebalancing — Runtime: 1h 28m 30s
 - **Engineering Objective:** Mitigate pipeline bubbles and balance stage execution across asymmetric layer allocations.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 12`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 12`
 - **Exact Benchmark Wall-Time:** `1h 28m 30s`
 - **Hardware Infrastructure Scope:** Dual Nodes (16x RTX PRO 6000 across 2 Nodes)
 - **Workload Configuration:** c=16 comparing naive 40/40 split vs. rebalanced 38/42 split
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step12_pp15_12_rebalance/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step12_pp15_12_rebalance/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -924,18 +924,18 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step11_1m_concurre
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step12_pp15_12_rebalance/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step12_pp15_12_rebalance/execution.log
 ```
 
 ---
 
 #### 3.7.5 Step 13: Capped Profiling Runs (Low-Overhead) — Runtime: 3h 16m 45s
 - **Engineering Objective:** Collect operator execution traces with minimal performance skew by capping trace durations.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 13`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 13`
 - **Exact Benchmark Wall-Time:** `3h 16m 45s`
 - **Hardware Infrastructure Scope:** Single Node (8x RTX PRO 6000 96GB GDDR7)
 - **Workload Configuration:** c=16 with trace duration strictly capped at 50 iterations
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step13_capped_profiles/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step13_capped_profiles/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -946,18 +946,18 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step12_pp15_12_reb
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step13_capped_profiles/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step13_capped_profiles/execution.log
 ```
 
 ---
 
 #### 3.7.6 Step 14: Multi-Node TP16 512K Context Serving — Runtime: 1h 44m 20s
 - **Engineering Objective:** Coordinate 16 GPUs across 2 nodes over 100G VPC to serve 512K context sequences.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 14`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 14`
 - **Exact Benchmark Wall-Time:** `1h 44m 20s`
 - **Hardware Infrastructure Scope:** Dual Nodes (16x RTX PRO 6000 across 2 Nodes)
 - **Workload Configuration:** c=1 with 524,288 token context window
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step14_tp16_512k/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step14_tp16_512k/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -968,18 +968,18 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step13_capped_prof
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step14_tp16_512k/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step14_tp16_512k/execution.log
 ```
 
 ---
 
 #### 3.7.7 Step 15: Full Timeline Nsight Systems Traces — Runtime: 2h 21m 15s
 - **Engineering Objective:** Capture full timeline Nsight Systems traces across multi-node execution to isolate kernel execution bubbles, socket latency, and CPU-GPU synchronization stalls.
-- **Execution CLI Command:** `./02_run_stage2_failed_and_scaleout.sh --step 15`
+- **Execution CLI Command:** `./run_master_benchmark.sh --step 15`
 - **Exact Benchmark Wall-Time:** `2h 21m 15s`
 - **Hardware Infrastructure Scope:** Dual Nodes (16x RTX PRO 6000 across 2 Nodes)
 - **Workload Configuration:** c=16 under continuous multi-node serving
-- **Primary Telemetry Artifact:** `data/raw_runs/stage2/step15_timeline_profiles/execution.log`
+- **Primary Telemetry Artifact:** `data/raw_runs/step08_.../step15_timeline_profiles/execution.log`
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
@@ -990,7 +990,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step14_tp16_512k/e
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/stage2/step15_timeline_profiles/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step15_timeline_profiles/execution.log
 ```
 
 ---
@@ -1010,7 +1010,7 @@ To execute the entire 21.5-hour campaign autonomously from end to end:
 ```bash
 cd Performance_Intelligence_Platform/scripts
 chmod +x *.sh
-nohup ./00_run_master_additional_runs.sh > ../data/raw_runs/master_campaign_stdout.log 2>&1 &
+nohup ./run_master_benchmark.sh > ../data/raw_runs/master_campaign_stdout.log 2>&1 &
 echo "Campaign launched in background with PID $!"
 ```
 
@@ -1032,14 +1032,14 @@ If an unexpected host crash occurs, the campaign can be safely resumed without r
 ```bash
 cd Performance_Intelligence_Platform/scripts
 export PLATFORM_RESUME=1
-./00_run_master_additional_runs.sh
+./run_master_benchmark.sh
 ```
 
 ---
 
 ### 3.11 Specialized Run-Type Subfolder Execution Protocols
 
-In addition to executing the end-to-end master pipeline via `00_run_master_additional_runs.sh`, operators can launch, monitor, and isolate each category of benchmark workloads directly within its dedicated subfolder under `Performance_Intelligence_Platform/scripts/`. Each folder contains modular scripts and JSON case manifests configured with relative path resolution.
+In addition to executing the end-to-end master pipeline via `run_master_benchmark.sh`, operators can launch, monitor, and isolate each category of benchmark workloads directly within its dedicated subfolder under `Performance_Intelligence_Platform/scripts/`. Each folder contains modular scripts and JSON case manifests configured with relative path resolution.
 
 #### 3.11.1 Run Type 1: Preflight & Diagnostic Probing (`01_preflight_and_diagnostics`)
 - **Operational Focus:** Validate host environment, PCIe Gen5 bi-directional link bandwidth (target >55 GB/s host-to-device), NUMA node affinity, GPU thermal equilibrium, and inter-node Ray cluster synchronization.
@@ -1092,9 +1092,9 @@ cd Performance_Intelligence_Platform/scripts/04_scaleout_distributed_network
 # Verify inter-node network pacing qdisc
 tc qdisc show dev eth0
 # Execute Step 12 Pipeline Parallelism rebalancing test
-../02_run_stage2_failed_and_scaleout.sh --step 12
+../run_master_benchmark.sh --step 12
 ```
-- **Artifacts Produced:** `data/raw_runs/stage2/step12_pipeline_parallel/execution.log`, `data/raw_runs/stage2/step14_tp16_512k/execution.log`.
+- **Artifacts Produced:** `data/raw_runs/step08_.../step12_pipeline_parallel/execution.log`, `data/raw_runs/step08_.../step14_tp16_512k/execution.log`.
 
 #### 3.11.5 Run Type 5: Ultra-Long Context & 1M Stress (`05_long_context_1m_extensions`)
 - **Operational Focus:** Stress test memory management and attention kernels across 128K, 512K, and 1,000,000 token request lengths. Analyzes Chunked Prefill chunk size optimizations (512 vs 2048), KV-cache trim algorithms, and host CPU offloading latency under memory saturation.
@@ -1103,11 +1103,11 @@ tc qdisc show dev eth0
 ```bash
 cd Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions
 # Execute 128K Ultra-Long Context benchmark
-../01_run_stage1_quick_wins.sh --step 6
+../run_master_benchmark.sh --step 6
 # Execute 1M Ultra-High Concurrency Stress run
-../02_run_stage2_failed_and_scaleout.sh --step 11
+../run_master_benchmark.sh --step 11
 ```
-- **Artifacts Produced:** `data/raw_runs/stage1/step06_long_context_chunking/execution.log`, `data/raw_runs/stage2/step11_1m_concurrency/execution.log`.
+- **Artifacts Produced:** `data/raw_runs/step01_.../step06_long_context_chunking/execution.log`, `data/raw_runs/step08_.../step11_1m_concurrency/execution.log`.
 
 #### 3.11.6 Run Type 6: Deep Kernel & PyTorch Chrome Profiling (`06_deep_kernel_and_torch_profiling`)
 - **Operational Focus:** Capture low-overhead Nsight Systems hardware traces and PyTorch Chrome profiler timelines. Quantifies instrumentation overhead dilation (showing a measured 14.8% latency dilation under full profiling), identifies SM warp execution stalls, and maps NCCL inter-GPU collective communication bubbles.
@@ -1116,27 +1116,27 @@ cd Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions
 ```bash
 cd Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling
 # Execute Step 02 PyTorch Profiler dilation run
-../01_run_stage1_quick_wins.sh --step 2
+../run_master_benchmark.sh --step 2
 # Execute Step 13 Capped Low-Overhead Profiling
-../02_run_stage2_failed_and_scaleout.sh --step 13
+../run_master_benchmark.sh --step 13
 # Execute Step 15 Nsight Systems Multi-Node Trace
-../02_run_stage2_failed_and_scaleout.sh --step 15
+../run_master_benchmark.sh --step 15
 ```
-- **Artifacts Produced:** `data/raw_runs/stage1/step02_profiler_overhead/`, `data/raw_runs/stage2/step13_capped_profiles/`, `data/raw_runs/stage2/step15_timeline_profiles/nsys_reports/`.
+- **Artifacts Produced:** `data/raw_runs/step01_.../step02_profiler_overhead/`, `data/raw_runs/step08_.../step13_capped_profiles/`, `data/raw_runs/step08_.../step15_timeline_profiles/nsys_reports/`.
 
-#### 3.11.7 Run Type 7: Multi-Stage Orchestration (`07_master_orchestration_and_stages`)
+#### 3.11.7 Run Type 7: Multi-Stage Orchestration (`07_master_campaign_orchestration`)
 - **Operational Focus:** Oversees full campaign lifecycle execution, encompassing Phase 0 Preflight, Phase 1 Hardware Probing, Phase 2 Warmup, Phase 3 Stage 1 (Steps 1-8), Phase 4 Stage 2 (Steps 9-15), and Phase 5 Canonical Aggregation. Provides automatic crash recovery, process watchdog supervision, and checkpointed step resumption.
-- **Subfolder Location:** `Performance_Intelligence_Platform/scripts/07_master_orchestration_and_stages/`
+- **Subfolder Location:** `Performance_Intelligence_Platform/scripts/07_master_campaign_orchestration/`
 - **Execution Runbook:**
 ```bash
-cd Performance_Intelligence_Platform/scripts/07_master_orchestration_and_stages
+cd Performance_Intelligence_Platform/scripts/07_master_campaign_orchestration
 chmod +x *.sh
-# Option A: Launch Stage 1 Quick-Wins Campaign (~5.4 hours)
-./01_run_stage1_quick_wins.sh
+# Option A: Launch Master Campaign Characterization (Steps 01 to 08) (~5.4 hours)
+./run_master_benchmark.sh --step
 # Option B: Launch Stage 2 Deep Diagnostics Campaign (~12.8 hours)
-./02_run_stage2_failed_and_scaleout.sh
+./run_master_benchmark.sh --step
 # Option C: Launch Master Campaign Supervisor (All 15 Steps autonomously ~21.5 hours)
-nohup ./00_run_master_additional_runs.sh > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
+nohup ./run_master_benchmark.sh > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
 ```
 - **Artifacts Produced:** `data/raw_runs/master_step_status.jsonl`, `data/raw_runs/master_campaign_stdout.log`.
 
@@ -1160,8 +1160,8 @@ The ingestion pipeline bridges raw telemetry streams with the visual dashboard w
 |  data/results/real_data/vllm_single_node_1m_extensions/ (128K..1M long-context)     |
 |  data/results/real_data/profiles_*/ (Nsight Systems & PyTorch Chrome traces)            |
 |  data/results/real_data/hardware_raw/ & hardware_processed/ (100ms NVML sensor logs)   |
-|  data/raw_runs/stage1/ (Master Additional Steps 01 to 08 quick-wins logs)               |
-|  data/raw_runs/stage2/ (Master Additional Steps 09 to 15 deep scale-out logs)           |
+|  data/raw_runs/step01_.../ (Master Additional Steps 01 to 08 quick-wins logs)               |
+|  data/raw_runs/step08_.../ (Master Additional Steps 09 to 15 deep scale-out logs)           |
 |                         |                                                               |
 |                         v  (Aggregation & Invariant Auditing Engine)                    |
 |  data/combined_vllm_runs.csv & data/combined_vllm_runs.json (Master 32-Col Matrix)     |
@@ -1513,7 +1513,7 @@ This appendix provides 20 detailed troubleshooting recipes for real-world failur
 ### 5.5 NUMA Cross-Socket Latency Spikes & Core Isolation
 - **Observed Symptom:** Symptom: TTFT tail percentiles (P99) show high jitter (>20% standard deviation) despite constant prompt lengths.
 - **Micro-Architectural Root Cause:** Root Cause: Linux kernel scheduler migrating the vLLM engine process between CPU Socket 0 and Socket 1.
-- **Step-by-Step Remediation:** Remediation: Launch the benchmark runner with NUMA core and memory binding: `numactl --cpunodebind=0 --membind=0 ./01_run_stage1_quick_wins.sh`. Verify zero cross-node allocations via `numastat -c vllm`.
+- **Step-by-Step Remediation:** Remediation: Launch the benchmark runner with NUMA core and memory binding: `numactl --cpunodebind=0 --membind=0 ./run_master_benchmark.sh --step`. Verify zero cross-node allocations via `numastat -c vllm`.
 
 ### 5.6 Cloud VPC MTU Fragmentation & Packet Drop Remediation
 - **Observed Symptom:** Symptom: Cross-node All-Reduce throughput caps at ~35 Gbps despite 100 Gbps network provisioning.
@@ -1737,7 +1737,7 @@ This appendix provides 20 detailed troubleshooting recipes for real-world failur
 ### 5.12 FlashAttention JIT Compilation Stalls on First Request
 - **Observed Symptom:** Symptom: TTFT for the very first prompt is over 60 seconds, but subsequent requests execute in under 300ms.
 - **Micro-Architectural Root Cause:** Root Cause: Triton JIT compiling custom FlashAttention kernels on initial invocation.
-- **Step-by-Step Remediation:** Remediation: Always run the 3-request warmup phase implemented in `01_run_stage1_quick_wins.sh` before capturing metered benchmark telemetry.
+- **Step-by-Step Remediation:** Remediation: Always run the 3-request warmup phase implemented in `run_master_benchmark.sh` before capturing metered benchmark telemetry.
 
 ### 5.13 Orphaned Worker Processes Retaining GPU VRAM Contexts
 - **Observed Symptom:** Symptom: Starting a benchmark step fails with `CUDA error: out of memory` immediately upon engine initialization.
@@ -1788,7 +1788,7 @@ This appendix provides 20 detailed troubleshooting recipes for real-world failur
   1. Inspect PCIe status: `lspci | grep -i nvidia`.
   2. Perform PCIe bus rescan: `echo 1 | sudo tee /sys/bus/pci/rescan`.
   3. Lock blower fans to 100% duty cycle: `sudo nvidia-smi -i 0 -pl 280` (temporarily reduce power limit to 280W to prevent thermal spikes).
-  4. Resume benchmark via `export PLATFORM_RESUME=1 && ./00_run_master_additional_runs.sh`.
+  4. Resume benchmark via `export PLATFORM_RESUME=1 && ./run_master_benchmark.sh`.
 
 ### 5.12 Kernel Socket SYN Flood Drops on High-Concurrency Bursts
 - **Observed Symptom:** Client benchmark logs `Connection refused` or `Connection timed out` during Step 11 (1M concurrency burst).
@@ -1967,7 +1967,7 @@ To ensure clean operational handoff across operations teams, the matrix below su
 For production escalation, infrastructure support, or performance anomalies, refer to the following platform channels:
 
 - **Primary Repository:** `Performance_Intelligence_Platform/`
-- **Automation Engine:** `scripts/00_run_master_additional_runs.sh`
+- **Automation Engine:** `scripts/run_master_benchmark.sh`
 - **Canonical Analytics UI:** `dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`
 - **Ground Truth Telemetry:** `data/results/real_data/combined_vllm_runs.csv`
 - **Formal Invariant Report:** `data/results/real_data/invariant_verification_log.json`

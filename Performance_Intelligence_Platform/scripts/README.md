@@ -44,7 +44,7 @@ Performance_Intelligence_Platform/scripts/
 ├── 05_long_context_1m_extensions/        <- [RUN TYPE 5] Extreme 128K to 1M token sequence lengths & memory limits
 │   ├── 10d_1m_extended_cases.json        <- 128K, 256K, 512K, and 1M context length workload manifest
 │   ├── 24_audit_kv_and_trim_traces.py    <- KV-cache block allocation auditor & fragmentation tracker
-│   ├── stage2_cases_single_node.json     <- Concurrency and memory stress parameters
+│   ├── 1m_single_node_cases.json         <- Concurrency and memory stress parameters
 │   └── README.md                         <- Deep documentation for long-context runs
 │
 ├── 06_deep_kernel_and_torch_profiling/   <- [RUN TYPE 6] NVIDIA Nsight Systems & PyTorch Profiler Chrome traces
@@ -56,18 +56,15 @@ Performance_Intelligence_Platform/scripts/
 │   ├── 19_postprocess_nsys.py            <- Nsight SQLite / text export processor
 │   └── README.md                         <- Deep documentation for kernel and operator profiling
 │
-├── 07_master_orchestration_and_stages/   <- [RUN TYPE 7] Autonomous multi-hour campaign orchestrator & stage runners
-│   ├── 00_run_master_additional_runs.sh  <- Master campaign supervisor (Steps 01 to 15: ~21.5h wall-time)
-│   ├── 01_run_stage1_quick_wins.sh       <- Stage 1 runner (Steps 01 to 08 quick wins: ~5h 23m)
-│   ├── 02_run_stage2_failed_and_scaleout.sh <- Stage 2 runner (Steps 09 to 15 deep scaleout: ~12h 50m)
-│   ├── stage1_cases.json                 <- Workload manifest for Stage 1
-│   ├── stage2_cases_multi_node_load.json <- Workload manifest for distributed multi-node
-│   └── README.md                         <- Deep documentation for campaign orchestration
+├── 07_master_campaign_orchestration/     <- [RUN TYPE 7] Autonomous multi-hour campaign orchestrator
+│   ├── run_master_benchmark.sh           <- Unified master campaign orchestrator supervising all 15 benchmark steps (~21.5h)
+│   ├── master_benchmark_cases.json       <- Unified test case declaration across all 15 benchmark steps
+│   ├── RUN_CONFIG.env.example            <- Documented master configuration template
+│   └── README.md                         <- Deep documentation for master campaign orchestration
 │
 ├── run_quickstart.sh                     <- Root 2-minute preflight environment & sanity verifier
-├── 00_run_master_additional_runs.sh      <- Root master campaign launcher
-├── 01_run_stage1_quick_wins.sh           <- Root Stage 1 quick-wins launcher
-├── 02_run_stage2_failed_and_scaleout.sh  <- Root Stage 2 deep scale-out launcher
+├── run_master_benchmark.sh               <- Root unified master campaign orchestrator (Runs all 15 steps in main run)
+├── master_benchmark_cases.json           <- Master cases manifest across all characterization steps
 ├── RUN_CONFIG.env                        <- Active cluster configuration (IPs, engine flags)
 ├── RUN_CONFIG.env.example                <- Documented master configuration template
 └── README.md                             <- Exhaustive scripts directory navigation guide (This File)
@@ -116,15 +113,16 @@ Every run type can be executed independently from its dedicated subfolder:
   ```bash
   cd 06_deep_kernel_and_torch_profiling && ./14_run_vllm_nsys_profile.sh
   ```
-- **Full Autonomous 21.5-Hour Master Campaign:**
+- **Full Autonomous 21.5-Hour Master Campaign (All 15 Steps in Main Run):**
   ```bash
-  cd 07_master_orchestration_and_stages
-  nohup ./00_run_master_additional_runs.sh > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
+  cd 07_master_campaign_orchestration
+  nohup ./run_master_benchmark.sh --all > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
   ```
 
 ---
 
 ## 🛡️ Operational Features
-1. **State Resumption (`PLATFORM_RESUME=1`):** Automatically skips completed steps and resumes interrupted campaigns from the exact point of failure.
-2. **Watchdog Daemon:** Periodically inspects GPU memory allocation and kills dangling Ray actors between steps.
-3. **Inter-Step Cooldown:** 120-second resting period between intensive test phases with page cache flushes (`sync && echo 3 > /proc/sys/vm/drop_caches`) and GPU memory resets.
+1. **Unified Main Run Pipeline:** All 15 benchmark steps are embedded directly in `run_master_benchmark.sh` without requiring disjoint stage wrappers or manual split scripts.
+2. **State Resumption (`RESUME=1`):** Automatically skips completed steps and resumes interrupted campaigns from the exact point of failure.
+3. **Watchdog Daemon:** Periodically inspects GPU memory allocation and terminates dangling Ray actors cleanly between steps.
+4. **Inter-Step Cooldown:** 120-second resting period between intensive test phases with page cache flushes (`sync && echo 3 > /proc/sys/vm/drop_caches`) and GPU memory resets.

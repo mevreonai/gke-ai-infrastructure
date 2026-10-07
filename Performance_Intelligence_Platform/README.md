@@ -36,11 +36,10 @@ Performance_Intelligence_Platform/
 │   ├── 04_scaleout_distributed_network/       <- Multi-node distributed serving (TP16, TP8+PP2) & VPC network pacing
 │   ├── 05_long_context_1m_extensions/         <- Extreme 128K to 1M token sequence lengths & memory limits
 │   ├── 06_deep_kernel_and_torch_profiling/    <- NVIDIA Nsight Systems & PyTorch Profiler Chrome traces
-│   ├── 07_master_orchestration_and_stages/    <- Autonomous multi-hour campaign orchestrator & stage runners
+│   ├── 07_master_campaign_orchestration/    <- Autonomous master campaign orchestrator supervising all 15 benchmark steps
 │   ├── run_quickstart.sh                      <- Root 2-minute preflight environment & sanity verifier
-│   ├── 00_run_master_additional_runs.sh       <- Root master campaign orchestrator (Steps 01-15: ~21.5h)
-│   ├── 01_run_stage1_quick_wins.sh            <- Root Stage 1 runner (Steps 01-08: ~5h 23m)
-│   ├── 02_run_stage2_failed_and_scaleout.sh   <- Root Stage 2 runner (Steps 09-15: ~12h 50m)
+│   ├── run_master_benchmark.sh               <- Unified root master benchmark orchestrator (Steps 01-15: ~21.5h)
+│   ├── master_benchmark_cases.json           <- Master cases manifest across all characterization steps
 │   ├── RUN_CONFIG.env                         <- Active runtime configuration (IPs, engine flags)
 │   ├── RUN_CONFIG.env.example                 <- Documented master configuration template
 │   └── README.md                              <- Exhaustive runner guide and script documentation
@@ -69,8 +68,7 @@ Performance_Intelligence_Platform/
 │   │       ├── hardware_processed/            <- Processed MFU, TFLOPS & Hardware Efficiency Metrics
 │   │       └── final_validation/              <- Master Canonical Release Dataset & Static Integrity JSONs
 │   └── raw_runs/                              <- Additional Master Execution Logs & Evidence Trees
-│       ├── stage1/                            <- Master Additional Steps 01 to 08 Raw Execution Trees
-│       ├── stage2/                            <- Master Additional Steps 09 to 15 Raw Execution Trees
+│       ├── step01_chunk_budget_ab/ to step13/ <- Raw step-by-step execution trees for all 15 characterization runs
 │       ├── logs/                              <- Supervisory Watchdog & Campaign stdout/stderr Logs
 │       └── env/                               <- Cluster Environment, Driver, CUDA & OS Dumps
 │
@@ -146,14 +144,13 @@ The benchmarking suite is structured into 7 modular run types, each isolating di
 * **Key Findings:** PyTorch profiling hooks introduce up to **18.4% execution latency dilation** at concurrency $\ge 32$. Capped profiling isolates kernel durations without distorting benchmark metrics.
 * **Artifacts Generated:** `results/real_data/profiles_single_node/`, `profiles_torch_single_node/`, `profiles_multi_node_native/`, `profiles_multi_node_capped/`.
 
-### 7. Master Campaign Orchestration & Stage Runners (`07_master_orchestration_and_stages/`)
+### 7. Master Campaign Orchestration (`07_master_campaign_orchestration/`)
 * **Objective:** Autonomous execution of the complete 15-step benchmark campaign (~21.5 hours total runtime) with automated watchdog daemons, crash recovery, and state resumption.
 * **Key Tools:**
-  - `00_run_master_additional_runs.sh`: Master campaign orchestrator supervising all 15 benchmark steps.
-  - `01_run_stage1_quick_wins.sh`: Executes Stage 1 Quick-Wins (Steps 01 to 08: ~5h 23m wall-clock time).
-  - `02_run_stage2_failed_and_scaleout.sh`: Executes Stage 2 Deep Scaleout & Remediation (Steps 09 to 15: ~12h 50m wall-clock time).
+  - `run_master_benchmark.sh`: Unified master campaign orchestrator supervising all 15 benchmark steps sequentially in the main run.
+  - `master_benchmark_cases.json`: Unified declarative workload and serving configuration manifest.
 * **Operational Guarantees:** Resumption via `export PLATFORM_RESUME=1`, automatic 120s inter-step cooldown with page cache flushes, and append-only receipt streaming into `master_step_status.jsonl`.
-* **Artifacts Generated:** `data/raw_runs/stage1/`, `data/raw_runs/stage2/`, `data/master_step_status.jsonl`.
+* **Artifacts Generated:** `data/raw_runs/step01_...` through `step13_...`, `data/master_step_status.jsonl`.
 
 ---
 
@@ -205,8 +202,8 @@ cd Performance_Intelligence_Platform/scripts/04_scaleout_distributed_network
 
 ### 3. Launch Full 21.5-Hour Autonomous Benchmark Campaign
 ```bash
-cd Performance_Intelligence_Platform/scripts/07_master_orchestration_and_stages
-nohup ./00_run_master_additional_runs.sh > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
+cd Performance_Intelligence_Platform/scripts/07_master_campaign_orchestration
+nohup ./run_master_benchmark.sh --all > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
 echo "Campaign running in background. Tail log with: tail -f ../../data/raw_runs/master_campaign_stdout.log"
 ```
 

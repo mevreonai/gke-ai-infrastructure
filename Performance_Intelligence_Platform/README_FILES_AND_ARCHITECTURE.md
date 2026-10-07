@@ -22,7 +22,7 @@
    - 3.5 [Run Type 4: Scale-Out Distributed Network (`04_scaleout_distributed_network/`)](#35-run-type-4-scale-out-distributed-network-04_scaleout_distributed_network)
    - 3.6 [Run Type 5: Long-Context 1M Extensions (`05_long_context_1m_extensions/`)](#36-run-type-5-long-context-1m-extensions-05_long_context_1m_extensions)
    - 3.7 [Run Type 6: Deep Kernel & PyTorch Profiling (`06_deep_kernel_and_torch_profiling/`)](#37-run-type-6-deep-kernel--pytorch-profiling-06_deep_kernel_and_torch_profiling)
-   - 3.8 [Run Type 7: Master Campaign Orchestration & Stage Runners (`07_master_orchestration_and_stages/`)](#38-run-type-7-master-campaign-orchestration--stage-runners-07_master_orchestration_and_stages)
+   - 3.8 [Run Type 7: Master Campaign Orchestration & Stage Runners (`07_master_campaign_orchestration/`)](#38-run-type-7-master-campaign-orchestration--stage-runners-07_master_campaign_orchestration)
    - 3.9 [Master Campaign Resumption, Watchdogs & Configuration (`RUN_CONFIG.env`)](#39-master-campaign-resumption-watchdogs--configuration-run_configenv)
 4. [Pillar 2: Empirical Data Repository (`data/`)](#4-pillar-2-empirical-data-repository-data)
    - 4.1 [Data Provenance, Integrity & Immutability Guarantee](#41-data-provenance-integrity--immutability-guarantee)
@@ -37,7 +37,7 @@
    - 4.10 [Kernel Profiling Traces: Nsight Systems & PyTorch Chrome Traces](#410-kernel-profiling-traces-nsight-systems--pytorch-chrome-traces)
    - 4.11 [Distributed Multi-Node Native & Capped Profiles](#411-distributed-multi-node-native--capped-profiles)
    - 4.12 [Hardware Sensor Traces: `results/hardware_raw/` & `hardware_processed/`](#412-hardware-sensor-traces-resultshardware_raw--hardware_processed)
-   - 4.13 [Stage 1 Quick-Wins Raw Execution Trees: `raw_runs/stage1/`](#413-stage-1-quick-wins-raw-execution-trees-raw_runsstage1)
+   - 4.13 [Master Benchmark Steps 01 to 08 Raw Execution Trees: `raw_runs/stage1/`](#413-stage-1-quick-wins-raw-execution-trees-raw_runsstage1)
    - 4.14 [Stage 2 Deep Diagnostics & Scaleout: `raw_runs/stage2/`](#414-stage-2-deep-diagnostics--scaleout-raw_runsstage2)
    - 4.15 [Final Release Datasets: `final_validation/` & Release JSONs](#415-final-release-datasets-final_validation--release-jsons)
    - 4.16 [Master Empirical Dataset: `combined_vllm_runs.csv` (32-Column Data Dictionary)](#416-master-empirical-dataset-combined_vllm_runscsv-32-column-data-dictionary)
@@ -87,15 +87,15 @@ Performance_Intelligence_Platform/
 ├── README_SETUP_AND_OPERATIONS.md             <- 3-Step Operations Manual, VM Specifications & Timelines
 │
 ├── scripts/                                   <- [PILLAR 1] BENCHMARK EXECUTION & ORCHESTRATION SUITE
-│   ├── 00_run_master_additional_runs.sh       <- Master Campaign Orchestrator, Watchdog & Resume Coordinator
-│   ├── 01_run_stage1_quick_wins.sh            <- Stage 1 Benchmark Runner (Single-Node Quick-Wins, Steps 1-8)
-│   ├── 02_run_stage2_failed_and_scaleout.sh   <- Stage 2 Benchmark Runner (Multi-Node & Deep RCA, Steps 9-15)
+│   ├── run_master_benchmark.sh       <- Master Campaign Orchestrator, Watchdog & Resume Coordinator
+│   ├── run_master_benchmark.sh --step 1            <- Stage 1 Benchmark Runner (Single-Node Quick-Wins, Steps 1-8)
+│   ├── run_master_benchmark.sh --step 9   <- Stage 2 Benchmark Runner (Multi-Node & Deep RCA, Steps 9-15)
 │   ├── run_quickstart.sh                      <- Rapid 2-Minute Preflight Smoke & Sanity Harness
 │   ├── RUN_CONFIG.env                         <- Active Runtime Configuration, IP Endpoints & Engine Overrides
 │   ├── RUN_CONFIG.env.example                 <- Documented Master Configuration Template
-│   ├── stage1_cases.json                      <- Workload Manifest for Stage 1 (Steps 1 to 8)
-│   ├── stage2_cases_multi_node_load.json      <- Distributed Multi-Node Workload Manifest (TP16, PP2)
-│   ├── stage2_cases_single_node.json          <- Extreme Concurrency Single-Node Workload Manifest (1M Stress)
+│   ├── master_benchmark_cases.json                      <- Workload Manifest for Stage 1 (Steps 1 to 8)
+│   ├── master_benchmark_cases.json      <- Distributed Multi-Node Workload Manifest (TP16, PP2)
+│   ├── 1m_single_node_cases.json          <- Extreme Concurrency Single-Node Workload Manifest (1M Stress)
 │   ├── rtx_g4_smoke_v5/                       <- Legacy Qualification Smoke Test Harness v5
 │   │   ├── run_smoke.sh                       <- v5 Smoke Test Execution Script
 │   │   ├── check_env.py                       <- Environment, Python, and CUDA Sanity Checker
@@ -174,7 +174,7 @@ scripts/
 ├── 04_scaleout_distributed_network/   -> Distributed TP16 vs TP8+PP2 comparison across VPC 100G with MTU/tc shaping
 ├── 05_long_context_1m_extensions/     -> Extreme 128K..1M context length serving, chunked prefill chunk sizes & KV trim
 ├── 06_deep_kernel_and_torch_profiling/-> Nsight Systems kernel traces, PyTorch Chrome JSON profiles & dilation audits
-└── 07_master_orchestration_and_stages/-> 21.5-hour autonomous orchestrator, Stage 1 quick wins & Stage 2 deep scaleout
+└── 07_master_campaign_orchestration/-> 21.5-hour autonomous orchestrator, Stage 1 quick wins & Stage 2 deep scaleout
 ```
 
 ### 3.2 Run Type 1: Preflight & Hardware Diagnostics (`01_preflight_and_diagnostics/`)
@@ -211,7 +211,7 @@ scripts/
 ### 3.6 Run Type 5: Long-Context 1M Extensions (`05_long_context_1m_extensions/`)
 * **Objective:** Evaluates extreme sequence lengths from 128,000 to 1,000,000 tokens on dual-node accelerator clusters.
 * **Component Architecture:**
-  - **`10d_1m_extended_cases.json` & `stage2_cases_single_node.json`:** Workload manifests defining 128K, 256K, 512K, and 1M prompt configurations.
+  - **`10d_1m_extended_cases.json` & `1m_single_node_cases.json`:** Workload manifests defining 128K, 256K, 512K, and 1M prompt configurations.
   - **`24_audit_kv_and_trim_traces.py`:** Inspects KV-cache block allocation tables, tracking memory fragmentation and chunk boundary delays during 1M prefill passes.
 
 ### 3.7 Run Type 6: Deep Kernel & PyTorch Profiling (`06_deep_kernel_and_torch_profiling/`)
@@ -222,13 +222,13 @@ scripts/
   - **`21_run_vllm_capped_profiles.sh`:** Targeted iteration window profiling eliminating profiler dilation skew.
   - **`16_analyze_vllm_profiles.py` & `19_postprocess_nsys.py`:** Analyzes SQLite exports to compute GEMM vs Attention execution breakdown.
 
-### 3.8 Run Type 7: Master Campaign Orchestration & Stage Runners (`07_master_orchestration_and_stages/`)
+### 3.8 Run Type 7: Master Campaign Orchestration & Stage Runners (`07_master_campaign_orchestration/`)
 * **Objective:** Autonomous execution of the complete 15-step characterization campaign (~21.5 hours total runtime) with automated crash recovery.
 * **Component Architecture:**
-  - **`00_run_master_additional_runs.sh`:** Master campaign orchestrator supervising all 15 benchmark steps.
-  - **`01_run_stage1_quick_wins.sh`:** Executes Stage 1 Quick-Wins (Steps 01 to 08: ~5h 23m wall-clock time).
-  - **`02_run_stage2_failed_and_scaleout.sh`:** Executes Stage 2 Deep Scaleout & Remediation (Steps 09 to 15: ~12h 50m wall-clock time).
-  - **`stage1_cases.json` & `stage2_cases_multi_node_load.json`:** Declarative workload manifests.
+  - **`run_master_benchmark.sh`:** Master campaign orchestrator supervising all 15 benchmark steps.
+  - **`run_master_benchmark.sh --step 1`:** Executes Master Benchmark Steps 01 to 08 (Steps 01 to 08: ~5h 23m wall-clock time).
+  - **`run_master_benchmark.sh --step 9`:** Executes Stage 2 Deep Scaleout & Remediation (Steps 09 to 15: ~12h 50m wall-clock time).
+  - **`master_benchmark_cases.json` & `master_benchmark_cases.json`:** Declarative workload manifests.
 
 ### 3.9 Master Campaign Resumption, Watchdogs & Configuration (`RUN_CONFIG.env`)
 The platform enforces robust operational safeguards across all benchmark phases:
@@ -256,8 +256,8 @@ Every single file in `data/` is subject to strict immutability rules. No telemet
 | [6. 1M Context Sweeps]  -> 128K..1M Stress-> data/results/real_data/vllm_single_node... |
 | [7. Kernel Profilers]   -> Nsys / PyTorch -> data/results/real_data/profiles_...        |
 | [8. Hardware Daemons]   -> NVML Telemetry -> data/results/real_data/hardware_raw/       |
-| [9. Stage 1 Quick Wins] -> Steps 01 to 08 -> data/raw_runs/stage1/                      |
-| [10. Stage 2 Scaleout]  -> Steps 09 to 15 -> data/raw_runs/stage2/                      |
+| [9. Stage 1 Quick Wins] -> Steps 01 to 08 -> data/raw_runs/step01_.../                      |
+| [10. Stage 2 Scaleout]  -> Steps 09 to 15 -> data/raw_runs/step08_.../                      |
 | [11. Final Validation]  -> 32-Col Matrix  -> data/combined_vllm_runs.csv                |
 | [12. Visual Dashboards] -> Static Engines -> dashboard/v4 & v5                          |
 +-----------------------------------------------------------------------------------------+
@@ -331,7 +331,7 @@ High-frequency environmental and electrical sensor data captured concurrently wi
 - **`hardware_raw/`:** Raw NVML sensor streams logging GPU temperature, fan speed, power consumption (watts), core SM clocks, memory clocks, and PCIe throughput at 100ms granularity.
 - **`hardware_processed/`:** Aggregated hardware utilization metrics including Model FLOPs Utilization (MFU), sustained TFLOPS, thermal throttling events, and energy efficiency (tokens per joule).
 
-### 4.13 Stage 1 Quick-Wins Raw Execution Trees: `raw_runs/stage1/`
+### 4.13 Master Benchmark Steps 01 to 08 Raw Execution Trees: `raw_runs/stage1/`
 Stores pristine execution artifacts for Master Additional Steps 01 through 08. Each directory contains `execution.log`, `vllm_engine.log`, and `request_traces.jsonl`:
 - **`step01_chunk_512/`:** Chunked prefill sizing comparison (512 vs 2048 batch token limit).
 - **`step02_torch_prof_c8_c32/`:** PyTorch profiler hook overhead dilation characterization.
@@ -457,7 +457,7 @@ This section provides a complete, exhaustive systems characterization of all 15 
 ### 6.1 Step 01: Chunked Prefill Sizing (512 vs 2048 Tokens)
 - **Total Benchmark Wall-Time:** `40m 07s`
 - **Architectural Hypothesis:** Under continuous serving, prompt prefill and token decoding compete directly for GPU execution resources. Monolithic 2048-token chunk prefilling maximizes matrix-multiplication efficiency on Tensor Cores, yielding ~7% higher peak compute throughput. However, in multi-tenant serving, processing a 2048-token chunk monopolizes streaming multiprocessors for up to 350ms. Concurrent decode requests cannot execute during this window, causing massive Inter-Token Latency (ITL) spikes and stuttering streams. Enforcing a 512-token chunk size caps prefill execution duration to under 45ms, eliminating P99 ITL jitter and reducing P99 TTFT by 46.2%.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 1`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 1`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -487,7 +487,7 @@ Deploy `max_num_batched_tokens=512` in production serving configs. Reserve 2048 
 ### 6.2 Step 02: PyTorch Profiler Overhead Dilation (c8 vs c32)
 - **Total Benchmark Wall-Time:** `1h 15m 18s`
 - **Architectural Hypothesis:** Enabling the PyTorch profiler (`torch.profiler`) introduces significant CPU thread tracing overhead and CUDA event synchronization stalls, diluting serving throughput and artificially inflating latency percentiles.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 2`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 2`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -517,7 +517,7 @@ Never run sustained production benchmarks with active profiler hooks. Operator p
 ### 6.3 Step 03: NCCL Intra-Node Communication Tuning
 - **Total Benchmark Wall-Time:** `34m 42s`
 - **Architectural Hypothesis:** Tuning NCCL buffer size (`NCCL_BUFFSIZE=4MB`) and forcing tree topology over ring topology on PCIe switch fabrics eliminates inter-GPU collective stalls.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 3`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 3`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -545,7 +545,7 @@ Set `export NCCL_BUFFSIZE=4194304` and `export NCCL_ALGO=Tree` in all production
 ### 6.4 Step 04: NUMA CPU Core & Memory Affinity
 - **Total Benchmark Wall-Time:** `31m 10s`
 - **Architectural Hypothesis:** Cross-socket NUMA memory accesses degrade host driver dispatch latency, inflating TTFT tail distributions due to UPI/QPI interconnect bandwidth saturation.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 4`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 4`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -572,7 +572,7 @@ Always launch the vLLM engine using `numactl --cpunodebind=0 --membind=0` on dua
 ### 6.5 Step 05: Short Prompt vs. Long Decode Scaling
 - **Total Benchmark Wall-Time:** `21m 05s`
 - **Architectural Hypothesis:** Workloads with short prompts (128 tokens) and long decodes (2048 tokens) are memory-bandwidth bound, exhibiting linear ITL scaling as concurrency increases.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 5`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 5`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -600,7 +600,7 @@ For agentic coding or long generation tasks, scale Tensor Parallelism conservati
 ### 6.6 Step 06: 128K Ultra-Long Context Chunked Prefill
 - **Total Benchmark Wall-Time:** `44m 55s`
 - **Architectural Hypothesis:** Chunked prefill enables processing 131,072-token sequences on 96GB GPUs without triggering out-of-memory errors or starving active decodes.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 6`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 6`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -628,7 +628,7 @@ Configure dynamic chunk sizing where standalone long documents receive 2048 chun
 ### 6.7 Step 07: KV-Cache Memory Trim Optimization
 - **Total Benchmark Wall-Time:** `36m 20s`
 - **Architectural Hypothesis:** Setting `gpu_memory_utilization` to 0.92 provides maximum KV-cache capacity while reserving adequate headroom for temporary PyTorch runtime allocations.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 7`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 7`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -656,7 +656,7 @@ Standardize on `gpu_memory_utilization=0.92` across all production deployments.
 ### 6.8 Step 08: Prefix Caching Hit/Eviction Dynamics
 - **Total Benchmark Wall-Time:** `39m 50s`
 - **Architectural Hypothesis:** Automatic prefix caching eliminates redundant prompt prefill computation when system prompts or document headers are shared across requests.
-- **Execution CLI Invocation:** `./01_run_stage1_quick_wins.sh --step 8`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 1 --step 8`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -684,7 +684,7 @@ Enable `enable_prefix_caching=true` for all multi-turn conversational agents, RA
 ### 6.9 Step 09: FP8 Quantization Root Cause Analysis
 - **Total Benchmark Wall-Time:** `28m 15s`
 - **Architectural Hypothesis:** FP8 weight and activation quantization cuts model memory footprint in half, doubling available KV-cache capacity, but introduces slight dequantization latency overhead.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 9`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 9`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -711,7 +711,7 @@ Adopt FP8 quantization for production serving to double cluster request capacity
 ### 6.10 Step 10: Host CPU KV-Cache Offloading Latency
 - **Total Benchmark Wall-Time:** `49m 40s`
 - **Architectural Hypothesis:** Offloading inactive KV-cache blocks to host DDR5 RAM prevents request eviction but introduces an extreme PCIe Gen5 bandwidth penalty during page recall.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 10`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 10`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -738,7 +738,7 @@ Disable CPU KV-cache offloading for interactive serving APIs. Offloading is viab
 ### 6.11 Step 11: 1M Ultra-High Concurrency Stress Test
 - **Total Benchmark Wall-Time:** `2h 42m 10s`
 - **Architectural Hypothesis:** Submitting 1,000,000 requests tests vLLM request queuing, PagedAttention block table fragmentation, and thread pool stability under heavy backpressure.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 11`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 11`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -766,7 +766,7 @@ Deploy external reverse proxy admission controllers (e.g. Envoy with token bucke
 ### 6.12 Step 12: Pipeline Parallelism (PP 15/12) Rebalancing
 - **Total Benchmark Wall-Time:** `1h 28m 30s`
 - **Architectural Hypothesis:** Partitioning 80 transformer layers across uneven pipeline stages (PP=2) leads to pipeline bubbles unless layer allocation is counter-balanced for embedding and LM head overhead.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 12`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 12`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -793,7 +793,7 @@ Apply asymmetric layer partitioning whenever deploying pipeline parallelism acro
 ### 6.13 Step 13: Capped Profiling Runs (Low-Overhead)
 - **Total Benchmark Wall-Time:** `3h 16m 45s`
 - **Architectural Hypothesis:** Restricting PyTorch Profiler and Nsight Systems capture to exactly 50 warmup-skipped iterations allows collecting operator traces without skewing aggregate metrics.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 13`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 13`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -820,7 +820,7 @@ Incorporate capped profiling runs into automated CI/CD performance regression pi
 ### 6.14 Step 14: Multi-Node TP16 512K Distributed Serving
 - **Total Benchmark Wall-Time:** `1h 44m 20s`
 - **Architectural Hypothesis:** Distributing Llama-3-70B across 16 GPUs on 2 physical nodes via GCP Andromeda 100G VPC interconnect to serve extreme 512K token context windows.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 14`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 14`
 
 #### Empirical Multi-Metric Telemetry Table:
 
@@ -847,7 +847,7 @@ For extreme context (>256K), deploy TP16 multi-node clusters with `tc` HTB rate 
 ### 6.15 Step 15: Full Timeline Nsight Traces
 - **Total Benchmark Wall-Time:** `2h 21m 15s`
 - **Architectural Hypothesis:** Capturing full timeline Nsight Systems traces across multi-node execution to isolate kernel execution bubbles, socket latency, and CPU-GPU synchronization stalls.
-- **Execution CLI Invocation:** `./02_run_stage2_failed_and_scaleout.sh --step 15`
+- **Execution CLI Invocation:** `./run_master_benchmark.sh --step 9 --step 15`
 
 #### Empirical Multi-Metric Telemetry Table:
 

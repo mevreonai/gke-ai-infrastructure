@@ -1,0 +1,787 @@
+{
+  "schema_version": "2.0.0",
+  "description": "Unified Master Benchmark Cases Manifest across all 15 System Characterization Steps",
+  "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+  "revision": "e1df551a447157d4658b573f9a695d57658590e9",
+  "evidence_class": "ENTERPRISE_PRODUCTION",
+  "server_defaults": {
+    "host": "0.0.0.0",
+    "port": 8000,
+    "max_model_len": 1048576,
+    "max_num_batched_tokens": 8192,
+    "max_num_seqs": 64,
+    "gpu_memory_utilization": 0.9,
+    "trust_remote_code": true
+  },
+  "cases": {
+    "tp4_8k_chunk_control_8192": {
+      "name": "tp4_8k_chunk_control_8192",
+      "groups": [
+        "stage1",
+        "chunk_budget",
+        "single_node"
+      ],
+      "purpose": "A/B Control: 8K prompts under baseline chunk budget of 8192 tokens with matched pilot waves.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 24,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_8k_chunk_fix_8448": {
+      "name": "tp4_8k_chunk_fix_8448",
+      "groups": [
+        "stage1",
+        "chunk_budget",
+        "single_node"
+      ],
+      "purpose": "A/B Test: 8K prompts with expanded chunk budget of 8448 tokens to eliminate chunk-splitting artifact.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8448,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 24,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_short_prompts": {
+      "name": "tp4_short_prompts",
+      "groups": [
+        "stage1",
+        "short_prompts",
+        "single_node"
+      ],
+      "purpose": "Sub-8K prompt scaling at 1K and 2K with full 4-wave statistical depth at c32.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "1k_c1",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 20,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c8",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c32",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        },
+        {
+          "name": "2k_c1",
+          "input": 2048,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 16,
+          "warmups": 2
+        },
+        {
+          "name": "2k_c8",
+          "input": 2048,
+          "output": 128,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "2k_c32",
+          "input": 2048,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_128k_chunk_sensitivity": {
+      "name": "tp4_128k_chunk_sensitivity",
+      "groups": [
+        "stage1",
+        "chunk_sensitivity",
+        "single_node"
+      ],
+      "purpose": "128K stall-vs-chunk evaluation (Plan A9): 16384 token chunk budget.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 16384,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 12,
+          "warmups": 1
+        }
+      ]
+    },
+    "tp4_knee_repeats": {
+      "name": "tp4_knee_repeats",
+      "groups": [
+        "stage1",
+        "usable_throughput",
+        "repeats"
+      ],
+      "purpose": "3x repeats of the two usable-throughput knee points for statistical confirmation.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 32,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_knee_rep1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 16,
+          "prompts": 64,
+          "warmups": 2
+        },
+        {
+          "name": "8k_knee_rep2",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 16,
+          "prompts": 64,
+          "warmups": 2
+        },
+        {
+          "name": "8k_knee_rep3",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 16,
+          "prompts": 64,
+          "warmups": 2
+        },
+        {
+          "name": "128k_knee_rep1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 12,
+          "warmups": 1
+        },
+        {
+          "name": "128k_knee_rep2",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 12,
+          "warmups": 1
+        },
+        {
+          "name": "128k_knee_rep3",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 12,
+          "warmups": 1
+        }
+      ]
+    },
+    "tp4_pp2_dist_load": {
+      "name": "tp4_pp2_dist_load",
+      "groups": [
+        "stage2",
+        "scaleout_load",
+        "multi_node"
+      ],
+      "purpose": "TP4/PP2 scale-out under concurrency load at 8K, 128K (5 waves), and 1M.",
+      "tp": 4,
+      "pp": 2,
+      "ray_gpus_per_node": 4,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 1
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp8_pp2_dist_load": {
+      "name": "tp8_pp2_dist_load",
+      "groups": [
+        "stage2",
+        "scaleout_load",
+        "multi_node"
+      ],
+      "purpose": "TP8/PP2 scale-out under concurrency load across both nodes.",
+      "tp": 8,
+      "pp": 2,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 1
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp4_pp4_dist_load": {
+      "name": "tp4_pp4_dist_load",
+      "groups": [
+        "stage2",
+        "scaleout_load",
+        "multi_node"
+      ],
+      "purpose": "TP4/PP4 scale-out under concurrency load across 4 pipeline stages.",
+      "tp": 4,
+      "pp": 4,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 1
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp16_pp1_dist_load": {
+      "name": "tp16_pp1_dist_load",
+      "groups": [
+        "stage2",
+        "scaleout_load",
+        "multi_node"
+      ],
+      "purpose": "TP16/PP1 flat tensor-parallel scale-out under concurrency load across 16 GPUs.",
+      "tp": 16,
+      "pp": 1,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 1
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp4_pp2_split_eval": {
+      "name": "tp4_pp2_split_eval",
+      "groups": [
+        "stage2",
+        "pp2_split",
+        "multi_node"
+      ],
+      "purpose": "PP2 layer split evaluation (15/12 split vs default 14/13) on 2 nodes at 128K and 512K.",
+      "tp": 4,
+      "pp": 2,
+      "ray_gpus_per_node": 4,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp8_pp2_split_eval": {
+      "name": "tp8_pp2_split_eval",
+      "groups": [
+        "stage2",
+        "pp2_split",
+        "multi_node"
+      ],
+      "purpose": "TP8/PP2 layer split evaluation (15/12 split vs default 14/13) on 2 nodes at 128K and 512K.",
+      "tp": 8,
+      "pp": 2,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp4_fp8_kv_fixed": {
+      "name": "tp4_fp8_kv_fixed",
+      "groups": [
+        "stage2",
+        "kv_dtype",
+        "fp8_rerun",
+        "single_node"
+      ],
+      "purpose": "Rerun the 4 failed FP8 KV runs from Platform including 1M c1 with required prefill query quantization flag.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "kv_cache_dtype": "fp8",
+      "attention_config": "{\"use_prefill_query_quantization\": true}",
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 128,
+          "concurrency": 4,
+          "prompts": 12,
+          "warmups": 1
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        },
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_native_offload_reuse_test": {
+      "name": "tp4_native_offload_reuse_test",
+      "groups": [
+        "stage2",
+        "offload",
+        "offload_rerun",
+        "single_node"
+      ],
+      "purpose": "True CPU KV offload test with prefix caching on: A -> B (evicts A) -> revisit A (reloads from CPU).",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": true,
+      "offload_gib": 32,
+      "kv_cache_memory_bytes": 9126805504,
+      "benchmarks": [
+        {
+          "name": "128k_c1",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 3,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c1",
+          "input": 524288,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c1",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 1,
+          "warmups": 0
+        },
+        {
+          "name": "offload_revisit_a",
+          "dataset": "prefix_repetition",
+          "prefix": 600000,
+          "suffix": 256,
+          "num_prefixes": 2,
+          "output": 32,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    }
+  }
+}

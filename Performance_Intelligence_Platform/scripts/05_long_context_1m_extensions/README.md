@@ -7,14 +7,14 @@ Pushes the context boundaries of large language models from 128,000 to 1,000,000
 
 ## 🛠️ Tool Catalog & Execution Commands
 
-### 1. `10d_1m_extended_cases.json` & `stage2_cases_single_node.json`
+### 1. `10d_1m_extended_cases.json` & `1m_single_node_cases.json`
 * **Purpose:** Declarative test manifests specifying ultra-long sequence lengths (`128K`, `256K`, `512K`, `1M`).
 
 ### 2. `24_audit_kv_and_trim_traces.py`
 * **Purpose:** Audits KV-cache block allocation tables, tracking memory fragmentation, block reuse, and prefix cache hit ratios during 1M prefill passes.
 * **Usage:**
   ```bash
-  python3 24_audit_kv_and_trim_traces.py --log-dir ../../data/raw_runs/stage2/step11_1m_high_concurrency
+  python3 24_audit_kv_and_trim_traces.py --log-dir ../../data/raw_runs/main_run/step11_1m_high_concurrency
   ```
 
 ---
