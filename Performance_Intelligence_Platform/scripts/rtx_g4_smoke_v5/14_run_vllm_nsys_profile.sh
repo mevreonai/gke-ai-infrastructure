@@ -7,7 +7,7 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 : "${TP:=4}"
 : "${PROFILE_MODE:=prefill}"   # prefill | decode | batched_decode
 : "${PORT:=8010}"
-: "${PROFILE_ROOT:=$HOME/rtx_g4_smoke/v5_profiles/$(date +%Y%m%d_%H%M%S)_${PROFILE_MODE}_tp${TP}}"
+: "${PROFILE_ROOT:=${OUT_ROOT:-$HOME/v8_full_results/$(date +%Y%m%d_%H%M%S)/profiles_single_node/tp${TP}_${PROFILE_MODE}}}"
 mkdir -p "$PROFILE_ROOT"
 command -v nsys >/dev/null || { echo "nsys not installed"; exit 2; }
 command -v vllm >/dev/null || { echo "vllm CLI missing; activate vllm_env"; exit 2; }
@@ -50,11 +50,16 @@ vllm bench serve --backend openai --host 127.0.0.1 --port "$PORT" --endpoint /v1
   --save-result --save-detailed --result-dir "$PROFILE_ROOT" --result-filename bench.json > "$PROFILE_ROOT/bench.log" 2>&1
 cleanup; trap - EXIT
 
-REP=$(find "$PROFILE_ROOT" -name '*.nsys-rep' | head -1 || true)
+# Purge idle helper rank zero-byte placeholder files immediately
+find "$PROFILE_ROOT" -type f -name '*.nsys-rep' -size 0 -delete 2>/dev/null || true
+
+REP=$(find "$PROFILE_ROOT" -name '*.nsys-rep' -size +0 | head -1 || true)
 if [[ -n "$REP" ]]; then
   nsys stats --report cuda_gpu_kern_sum,cuda_api_sum,nvtx_pushpop_sum "$REP" > "$PROFILE_ROOT/nsys_stats.txt" 2>&1 || true
   for r in cuda_gpu_kern_sum cuda_api_sum nvtx_pushpop_sum; do nsys stats --format csv --report "$r" "$REP" > "$PROFILE_ROOT/${r}.csv" 2> "$PROFILE_ROOT/${r}.err" || true; done
   nsys export --type sqlite --output "$PROFILE_ROOT/vllm_profile.sqlite" "$REP" > "$PROFILE_ROOT/nsys_export.log" 2>&1 || true
+  # Clean up empty sqlite if export failed
+  find "$PROFILE_ROOT" -type f -name '*.sqlite' -size 0 -delete 2>/dev/null || true
 fi
 cat > "$PROFILE_ROOT/PROFILE_METADATA.json" <<EOF
 {"profile_mode":"$PROFILE_MODE","model":"$MODEL","revision":"$REVISION","tp":$TP,"input":$INPUT_LEN,"output":$OUTPUT_LEN,"concurrency":$CONCURRENCY,"prompts":$PROMPTS,"evidence_class":"MEASURED-48B-PROFILE","warning":"Aggregate kernel sums are GPU work, not wall-clock critical path. KDA/MLA/MoE attribution requires NVTX correlation; absolute times do not scale to K3."}

@@ -13,7 +13,7 @@ if [[ -n "$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK
 : "${VENV_DIR:=$HOME/vllm_env}"
 : "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
 : "${PROFILE_MATRIX:=$SCRIPT_DIR/18_multi_node_profile_matrix.json}"
-: "${OUT_ROOT:=$HOME/Performance_Intelligence_Platform/$(date +%Y%m%d_%H%M%S)/profiles_multi_node}"
+: "${OUT_ROOT:=${OUT_ROOT:-$HOME/v8_full_results/$(date +%Y%m%d_%H%M%S)/profiles_multi_node_native}}"
 : "${RUN_HEAVY_PROFILE:=1}"
 : "${PROFILE_TOPOLOGY_FILTER:=}"
 : "${PROFILE_MODE_FILTER:=}"
@@ -156,7 +156,14 @@ EOS
   if [[ -n "$NODE1_SESSION" ]]; then
     "${SSH[@]}" "$NODE1_IP" "cd '$NODE1_SESSION/logs' 2>/dev/null && tar -czf /tmp/platform_${ID}_raylogs.tgz \$(find . -maxdepth 1 -type f \( -name '*worker*' -o -name '*raylet*' \) -size -32M -printf '%P ' 2>/dev/null) 2>/dev/null || true"
     "${SCP[@]}" "$NODE1_IP:/tmp/platform_${ID}_raylogs.tgz" "$DIR/node1_capture/" >/dev/null 2>&1 || true
+    "${SSH[@]}" "$NODE1_IP" "rm -f /tmp/platform_${ID}_raylogs.tgz" 2>/dev/null || true
   fi
+
+  # Purge any zero-byte placeholder .nsys-rep files (idle helper ranks) from both captures
+  find "$DIR/node0_capture" "$DIR/node1_capture" -type f -name '*.nsys-rep' -size 0 -delete 2>/dev/null || true
+
+  # Clean up remote node1 metrics sampler files left in /tmp
+  "${SSH[@]}" "$NODE1_IP" "rm -f /tmp/v5_metrics_sampler.py /tmp/platform_prof_sampler.out" 2>/dev/null || true
 
   stop_ray_both
   python3 "$SCRIPT_DIR/19_postprocess_nsys.py" "$DIR" --out "$DIR/NSYS_ANALYSIS.json" || true

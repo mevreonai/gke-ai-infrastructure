@@ -6,8 +6,10 @@ set -euo pipefail
 : "${MODEL:=moonshotai/Kimi-Linear-48B-A3B-Instruct}"
 : "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
 : "${TP:=4}"; : "${INPUT_LEN:=8192}"; : "${OUTPUT_LEN:=1024}"; : "${CONCURRENCY:=8}"; : "${PORT:=8021}"
-: "${PROFILE_ROOT:=$HOME/platform_additional_runs/torch_profiles/$(date +%Y%m%d_%H%M%S)_tp${TP}_c${CONCURRENCY}}"
-mkdir -p "$PROFILE_ROOT"
+: "${PROFILE_ROOT:=${OUT_ROOT:-$HOME/v8_additional_runs/$(date +%Y%m%d_%H%M%S)/torch_profiles/tp${TP}_c${CONCURRENCY}}}"
+mkdir -p "$PROFILE_ROOT/torch"
+export VLLM_TORCH_PROFILER_DIR="$PROFILE_ROOT/torch"
+export TORCH_PROFILER_OUTPUT_DIR="$PROFILE_ROOT/torch"
 command -v vllm >/dev/null || exit 2
 
 export CUDA_VISIBLE_DEVICES=$(python3 - <<PY
@@ -73,6 +75,9 @@ wait "$BENCH_PID" 2>/dev/null || true
 
 cleanup
 trap - EXIT
+
+# Relocate any PyTorch traces dumped to /tmp into the canonical placeholder
+find /tmp -maxdepth 1 -name '*.pt.trace.json*' -exec mv -f {} "$PROFILE_ROOT/torch/" \; 2>/dev/null || true
 
 # Validate that trace exists and post-process
 python3 - <<'PY' "$PROFILE_ROOT" "$CONCURRENCY"

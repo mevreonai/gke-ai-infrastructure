@@ -140,8 +140,15 @@ The benchmarking suite is structured into 7 modular run types, each isolating di
 * **Key Tools:**
   - `14_run_vllm_nsys_profile.sh`: Full system NVIDIA Nsight Systems capture (`.nsys-rep`), tracing CUDA runtime calls, cuBLAS GEMMs, SM warp occupancy, and OS thread context switches.
   - `14b_run_vllm_torch_profile.sh`: PyTorch Profiler Chrome Trace JSON generation (`.pt.trace.json.gz`), providing operator-level call stacks.
+  - `14c_run_vllm_torch_profile_batched.sh`: Batched iteration profiling under high concurrency.
   - `21_run_vllm_capped_profiles.sh`: Targeted low-overhead profiling capturing only iterations 10–15 to eliminate profiler skew.
+  - `19_postprocess_nsys.py`: Exports Nsight reports to `.sqlite` databases, kernel duration CSVs, and `NSYS_ANALYSIS.json`.
 * **Key Findings:** PyTorch profiling hooks introduce up to **18.4% execution latency dilation** at concurrency $\ge 32$. Capped profiling isolates kernel durations without distorting benchmark metrics.
+* **Canonical Artifact Placeholders (Strict No-`/tmp` Policy):**
+  - All profiler outputs (`.nsys-rep`, `.sqlite`, `.pt.trace.json`, CSVs) are deposited directly into designated run folders (`profiles_single_node/`, `torch_profiles/`, `profiles_multi_node_native/`, `profiles_multi_node_capped/`).
+  - **Zero `/tmp` Footprint:** Temporary files, remote metrics samplers, and intermediate tarballs created in `/tmp` are automatically relocated and purged on completion.
+  - **Zero-Byte Suppression:** Idle Ray helper ranks generating 0-byte `.nsys-rep` stubs are automatically purged upon capture, ensuring downstream tools (`nsys stats`, `nsys export`) never crash.
+  - **Dual SQLite Co-location:** Relational SQLite databases are generated directly alongside `.nsys-rep` in the case root and inside `<trace>_processed/` for seamless querying without GPU or Nsight requirements.
 * **Artifacts Generated:** `results/real_data/profiles_single_node/`, `profiles_torch_single_node/`, `profiles_multi_node_native/`, `profiles_multi_node_capped/`.
 
 ### 7. Master Campaign Orchestration (`07_master_campaign_orchestration/`)

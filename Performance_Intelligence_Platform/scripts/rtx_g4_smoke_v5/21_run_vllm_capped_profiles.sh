@@ -8,7 +8,7 @@ for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smo
 : "${NODE0_IP:?NODE0_IP missing}"
 : "${NODE1_IP:?NODE1_IP missing}"
 : "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
-: "${OUT_ROOT:=$HOME/Performance_Intelligence_Platform/$(date +%Y%m%d_%H%M%S)/profiles_multi_node_capped}"
+: "${OUT_ROOT:=${OUT_ROOT:-$HOME/v8_full_results/$(date +%Y%m%d_%H%M%S)/profiles_multi_node_capped}}"
 : "${CAPPED_PROFILE_MODES:=100g 20g}"
 mkdir -p "$OUT_ROOT"
 SSH=(ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null)

@@ -4,8 +4,10 @@ set -euo pipefail
 : "${MODEL:=moonshotai/Kimi-Linear-48B-A3B-Instruct}"
 : "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
 : "${TP:=4}"; : "${INPUT_LEN:=8192}"; : "${OUTPUT_LEN:=128}"; : "${CONCURRENCY:=1}"; : "${PORT:=8011}"
-: "${PROFILE_ROOT:=$HOME/rtx_g4_smoke/v5_torch_profiles/$(date +%Y%m%d_%H%M%S)_tp${TP}}"
-mkdir -p "$PROFILE_ROOT"; command -v vllm >/dev/null || exit 2
+: "${PROFILE_ROOT:=${OUT_ROOT:-$HOME/v8_full_results/$(date +%Y%m%d_%H%M%S)/torch_profiles/tp${TP}}}"
+mkdir -p "$PROFILE_ROOT/torch"; command -v vllm >/dev/null || exit 2
+export VLLM_TORCH_PROFILER_DIR="$PROFILE_ROOT/torch"
+export TORCH_PROFILER_OUTPUT_DIR="$PROFILE_ROOT/torch"
 export CUDA_VISIBLE_DEVICES=$(python3 - <<PY
 print(','.join(str(i) for i in range(int('$TP'))))
 PY
@@ -25,4 +27,7 @@ vllm bench serve --backend openai --host 127.0.0.1 --port "$PORT" --endpoint /v1
   --num-prompts "$CONCURRENCY" --max-concurrency "$CONCURRENCY" --num-warmups 0 --ignore-eos --profile \
   --save-result --save-detailed --result-dir "$PROFILE_ROOT" --result-filename bench.json > "$PROFILE_ROOT/bench.log" 2>&1
 cleanup; trap - EXIT
+
+# Relocate any PyTorch traces dumped to /tmp into the canonical placeholder
+find /tmp -maxdepth 1 -name '*.pt.trace.json*' -exec mv -f {} "$PROFILE_ROOT/torch/" \; 2>/dev/null || true
 echo "Torch profile results: $PROFILE_ROOT"

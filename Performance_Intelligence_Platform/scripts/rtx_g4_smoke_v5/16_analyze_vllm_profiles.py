@@ -36,8 +36,8 @@ def analyze_nsys(root):
       "profile_dir":str(root),"kernel_csv_present":bool(kernels),"nvtx_csv_present":bool(nvtx),
       "aggregate_gpu_work_ms":total,"cuda_api_aggregate_ms":cuda_api,"name_heuristic_groups":groups,
       "semantic_attribution_status":"HEURISTIC_ONLY unless correlated with layerwise NVTX ranges",
-      "critical_path_warning":"aggregate_gpu_work_ms sums GPU kernel work across devices/streams and is NOT wall-clock critical-path time",
-      "nsys_rep_present":bool(list(root.glob("*.nsys-rep"))),"sqlite_present":bool(list(root.glob("*.sqlite")))
+      "nsys_rep_present": bool([f for f in root.rglob("*.nsys-rep") if f.stat().st_size > 0]),
+      "sqlite_present": bool([f for f in root.rglob("*.sqlite") if f.stat().st_size > 0])
     }
 
 def torch_profile_inventory(root):

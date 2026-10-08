@@ -25,14 +25,30 @@ def fnum(v):
 def main():
     ap=argparse.ArgumentParser(); ap.add_argument('root',type=Path); ap.add_argument('--out',type=Path,default=None); a=ap.parse_args()
     root=a.root.resolve(); out=(a.out or root/'NSYS_ANALYSIS.json').resolve()
-    reports=sorted(root.rglob('*.nsys-rep')); analyses=[]
-    candidate_reports=['cuda_gpu_kern_sum','cuda_api_sum','nvtx_pushpop_sum','nccl_gpu_proj_sum','nccl_gpu_time_sum','nccl_op_sum']
+    # Purge any lingering 0-byte nsys-rep placeholder files
+    for z in root.rglob('*.nsys-rep'):
+        if z.stat().st_size == 0:
+            z.unlink(missing_ok=True)
+    reports = sorted([r for r in root.rglob('*.nsys-rep') if r.stat().st_size > 0])
+    analyses = []
+    candidate_reports = ['cuda_gpu_kern_sum','cuda_api_sum','nvtx_pushpop_sum','nccl_gpu_proj_sum','nccl_gpu_time_sum','nccl_op_sum']
     for rep in reports:
-        rd=rep.parent/(rep.stem+'_processed'); rd.mkdir(exist_ok=True)
-        rec={'report':str(rep),'size_bytes':rep.stat().st_size,'exports':{},'trace_role':'node1' if 'node1' in str(rep).lower() else 'node0_or_local'}
-        sqlite=rd/(rep.stem+'.sqlite')
-        rc,txt=run(['nsys','export','--type','sqlite','--output',str(sqlite),str(rep)])
-        rec['sqlite']={'rc':rc,'path':str(sqlite),'exists':sqlite.exists(),'log':txt[-4000:]}
+        rd = rep.parent / (rep.stem + '_processed')
+        rd.mkdir(exist_ok=True)
+        rec = {'report': str(rep), 'size_bytes': rep.stat().st_size, 'exports': {}, 'trace_role': 'node1' if 'node1' in str(rep).lower() else 'node0_or_local'}
+        sqlite = rd / (rep.stem + '.sqlite')
+        rc, txt = run(['nsys', 'export', '--type', 'sqlite', '--output', str(sqlite), str(rep)])
+        if sqlite.exists() and sqlite.stat().st_size == 0:
+            sqlite.unlink(missing_ok=True)
+        # Ensure sqlite database is co-located directly in rep.parent alongside the .nsys-rep capture
+        colocated_sqlite = rep.parent / (rep.stem + '.sqlite')
+        if sqlite.exists() and not colocated_sqlite.exists():
+            try:
+                import shutil
+                shutil.copy2(sqlite, colocated_sqlite)
+            except Exception:
+                pass
+        rec['sqlite'] = {'rc': rc, 'path': str(sqlite), 'exists': sqlite.exists(), 'colocated_path': str(colocated_sqlite) if colocated_sqlite.exists() else None, 'log': txt[-4000:]}
         for r in candidate_reports:
             cp=rd/(r+'.csv'); rc,txt=run(['nsys','stats','--format','csv','--report',r,str(rep)])
             if rc==0 and txt.strip(): cp.write_text(txt)

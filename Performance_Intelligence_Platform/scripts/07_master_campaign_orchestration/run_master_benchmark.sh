@@ -325,7 +325,10 @@ if step_should_run 14; then
   TIMELINE_DIR="$MASTER_ROOT/step14_timeline_profiles"
   run_step 14 "timeline_profiles" bash -c "
     mkdir -p '$TIMELINE_DIR'
-    echo 'Capturing deep kernel timeline traces...'
+    echo 'Capturing deep kernel timeline traces into canonical placeholder: $TIMELINE_DIR...'
+    OUT_ROOT='$TIMELINE_DIR/single_node' '$PROF_DIR/14_run_vllm_nsys_profile.sh' || true
+    OUT_ROOT='$TIMELINE_DIR/torch_batched' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+    python3 '$PROF_DIR/19_postprocess_nsys.py' '$TIMELINE_DIR' || true
   "
 fi
 

@@ -26,6 +26,7 @@ def stop_remote_sampler(key,host,pid,remote_out,local_out):
         subprocess.run(ssh_base(key,host)+[f"kill {pid} 2>/dev/null || true"],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
         time.sleep(1)
     subprocess.run(scp_base(key)+[f"{host}:{remote_out}",str(local_out)],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
+    subprocess.run(ssh_base(key,host)+[f"rm -f {shlex.quote(remote_out)} /tmp/platform_prof_sampler.out 2>/dev/null || true"],check=False,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL)
 
 def snap(outdir,label):
     for name,cmd in {
