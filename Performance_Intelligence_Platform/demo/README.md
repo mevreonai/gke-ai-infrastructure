@@ -1,6 +1,6 @@
-# Distributed AI Inference Cluster: End-to-End Deployment & Empirical Characterization Runbook
+# Multi-Node Distributed AI Inference Cluster: Master Presentation & Live Benchmark Runbook
 
-**Cluster Architecture:** Dual-Node GPU Supercomputing Cluster  
+**Target Architecture:** Dual-Node GPU Supercomputing Cluster  
 **Hardware Accelerators:** 2× GCP G4 Instances × 8× NVIDIA RTX PRO 6000 Blackwell GPUs (16 GPUs Total, 1.5 TB High-Bandwidth GDDR7 VRAM)  
 **Host Platform:** AMD EPYC 9654 (384 vCPUs, 1.44 TB RAM per node)  
 **Network Fabric:** Google Cloud Virtual Private Cloud (120 Gbps aggregate throughput, 0.075 ms latency)  
@@ -8,241 +8,140 @@
 
 ---
 
-## 1. Executive Architecture & Workflow Overview
+## 🎙️ Meeting Presentation Flow (What to Say & Do Chronologically)
 
-This runbook documents the complete lifecycle of deploying a multi-node, multi-GPU distributed inference cluster from bare metal / cold-start cloud APIs to live tensor parallel serving of the **48B Parameter Model** (`moonshotai/Kimi-Linear-48B-A3B-Instruct`).
+When presenting in the meeting, follow this 4-act narrative structure:
 
 ```text
 +----------------------------------------------------------------------------------------------------+
-|                                    END-TO-END DEPLOYMENT PIPELINE                                   |
+|                                    MEETING PRESENTATION STRUCTURE                                   |
 +----------------------------------------------------------------------------------------------------+
 |                                                                                                    |
-|  [PHASE 1: CLUSTER PROVISIONING (CUSTOMIZABLE NAMES)]                                              |
-|   gcloud Compute API -> 2x g4-standard-384 instances -> 16x RTX PRO 6000 Ada/Blackwell GPUs        |
+|  [ACT 1: THE COLD START & PROVISIONING] (Minutes 00:00 - 02:00)                                    |
+|   "We are spinning up a 16-GPU cluster with 1.5 TB GDDR7 memory from scratch in real time."        |
 |                                         │                                                          |
 |                                         ▼                                                          |
-|  [PHASE 2: SECURE LINKAGE & REPOSITORY DISPATCH]                                                   |
-|   OpenSSH terminal sessions -> Deploy deployment suite via high-throughput SCP                     |
+|  [ACT 2: TOPOLOGY & CLUSTER FABRIC] (Minutes 02:00 - 04:00)                                        |
+|   "Notice our 8x8 P2P fabric and our inter-node 120 Gbps VPC interconnect running at 0.075 ms."     |
 |                                         │                                                          |
 |                                         ▼                                                          |
-|  [PHASE 3: SOFTWARE STACK BOOTSTRAP]                                                               |
-|   Astral uv Package Manager -> Isolated virtualenv -> PyTorch CUDA 12.8 sm_120 -> Ray & vLLM       |
+|  [ACT 3: RUNTIME BOOTSTRAP & DISTRIBUTED RAY LINKAGE] (Minutes 04:00 - 06:00)                      |
+|   "Using uv, we bootstrap CUDA 12.8 with Blackwell sm_120 support and pool all 16 GPUs in Ray."     |
 |                                         │                                                          |
 |                                         ▼                                                          |
-|  [PHASE 4: MULTI-NODE DISTRIBUTED CLUSTER LINKAGE]                                                 |
-|   Node 0 Ray Head (Port 6379) <==== 120 Gbps VPC ====> Node 1 Ray Worker -> 16 GPU Unified Pool     |
-|                                         │                                                          |
-|                                         ▼                                                          |
-|  [PHASE 5: ZERO-COPY WEIGHTS INGESTION & HARDWARE BENCHMARK]                                       |
-|   GCS FUSE Mount -> Direct checkpoint access -> 8-GPU GEMM Benchmark (~295 TFLOPS/GPU, 816 GB/s)   |
-|                                         │                                                          |
-|                                         ▼                                                          |
-|  [PHASE 6: 48B MODEL DISTRIBUTED SERVING (TP=8 / TP=16)]                                           |
-|   vLLM Engine -> Kimi-Linear-48B-A3B-Instruct -> 12 GB weights/GPU + 81 GB KV-Cache/GPU             |
+|  [ACT 4: 48B MODEL INGESTION & MASTER BENCHMARK RUN] (Minutes 06:00 - 10:00)                       |
+|   "We mount our model via zero-copy FUSE and trigger our multi-phase benchmark suite live."         |
 |                                                                                                    |
 +----------------------------------------------------------------------------------------------------+
 ```
 
 ---
 
-## 2. Pre-Flight Preparation & Workspace Layout
+## 🖥️ Screen & Terminal Workspace Layout
 
-### 2.1 Terminal Layout (Recommended: 3 Split Windows)
-To maintain complete visibility and seamless execution during a live demonstration, arrange 3 terminal tabs side-by-side:
+Before sharing your screen, arrange **3 Terminal Windows side-by-side**:
 
-| Terminal Window | Identifier | Role & Execution Scope | Working Path |
-| :--- | :--- | :--- | :--- |
-| **Terminal 1** | `[LOCAL-CONTROL]` | Local Workstation: Infrastructure API calls & SCP dispatches | `Performance_Intelligence_Platform/demo/` |
-| **Terminal 2** | `[NODE-0-HEAD]` | Primary Node 0: Head Node, Ray Master, Ingestion & Serving | Remote SSH Session (`ayu23@<NODE0_IP>`) |
-| **Terminal 3** | `[NODE-1-WORKER]` | Secondary Node 1: Worker Node, Distributed Acceleration | Remote SSH Session (`ayu23@<NODE1_IP>`) |
-
-### 2.2 Customizing Names & Environment Variables
-Every parameter in this suite is configurable. You can override defaults via environment variables or CLI arguments:
-
-| Configuration Variable | Default Value | Description |
-| :--- | :--- | :--- |
-| `PROJECT_ID` | `mevreon` | Target Google Cloud Project ID |
-| `ZONE` | `us-central1-b` | GCP Availability Zone (supports G4 accelerators) |
-| `NODE0_NAME` | `rtx-demo-node-0` | Name of Primary / Head Instance |
-| `NODE1_NAME` | `rtx-demo-node-1` | Name of Secondary / Worker Instance |
-| `SSH_KEY` | `~/.ssh/google_compute_engine` | Path to local OpenSSH private key |
-| `SSH_USER` | `ayu23` | Default GCP provisioned Linux user |
-| `MODEL_ID` | `moonshotai/Kimi-Linear-48B-A3B-Instruct` | Target LLM to serve and benchmark |
+```text
++--------------------------+--------------------------+--------------------------+
+|  TERMINAL 1: LOCAL       |   TERMINAL 2: NODE 0     |  TERMINAL 3: NODE 1      |
+|                          |                          |                          |
+|   Your laptop shell      |     Primary Head (SSH)   |    Secondary Worker (SSH)|
+|  Provisioning & Copying  |     Master & Serving     |      Ray Worker Pool     |
++--------------------------+--------------------------+--------------------------+
+```
 
 ---
 
-## 3. Deep Dive: How the 48B Parameter Model is Loaded
+## 🚀 Step-by-Step Execution Guide
 
-### 3.1 VRAM Memory Arithmetic & Partitioning
-When serving `moonshotai/Kimi-Linear-48B-A3B-Instruct` (48 Billion Parameters):
-* **Raw Weights Footprint (BF16 / FP16):** 48 Billion × 2 Bytes = **~96.0 GB Total**.
-* **Under Tensor Parallelism (TP=8 across all 8 GPUs on Node 0):**
-  * **Model Weights per GPU:** `96 GB / 8` = **~12.0 GB per GPU**.
-  * **Total Physical VRAM per RTX PRO 6000:** **95.0 GB GDDR7**.
-  * **Runtime Allocations:**
-    * Model Shard: `12.0 GB`
-    * Activation Memory + CUDA Graphs: `~2.0 GB`
-    * **PagedAttention KV-Cache Pool:** **~81.0 GB per GPU!**
-* **Why This Matters:**
-  * Because 81 GB of VRAM per GPU is dedicated solely to the KV-cache, the cluster can hold **hundreds of thousands of cached tokens**, enabling massive multi-user concurrency and context windows up to **32K / 128K tokens** without out-of-memory (OOM) eviction.
-
-### 3.2 Multi-Node Scale-Out (TP=16 across Both Nodes)
-Via the Ray cluster link, the model can also be sharded across **all 16 GPUs** across both nodes:
-* `96 GB / 16` = **~6.0 GB weights per GPU**.
-* Unlocks over **1.4 Terabytes of pooled KV-cache** across the cluster.
-
----
-
-## 4. Step-by-Step Execution Runbook
-
-### STEP 1: Provision the Dual-Node Infrastructure from Scratch
-* **Target Environment:** 👉 **Terminal 1 (`[LOCAL-CONTROL]`)**
-* **Command (Default Names):**
+### STEP 1: Provision the 2 VMs Live
+* **Where:** 👉 **Terminal 1 (`[LOCAL]`)**
+* **What to say:**  
+  *"I'm initiating the cluster provisioning on Google Cloud G4. We are requesting two `g4-standard-384` instances with 8 NVIDIA RTX PRO 6000 Blackwell GPUs each, backed by high-throughput NVMe hyperdisks."*
+* **Command:**
 ```bash
 cd Performance_Intelligence_Platform/demo
 bash 01_provision_cluster.sh
 ```
-
-* **Command (Custom Names - if you want custom instance identifiers):**
-```bash
-# Pass custom names directly as arguments:
-bash 01_provision_cluster.sh prod-ai-node-0 prod-ai-node-1
-```
-
-**Technical Details & Flags:**
-* `--machine-type="g4-standard-384"`: Allocates 384 vCPUs and 1,440 GB host memory per instance.
-* `--accelerator="count=8,type=nvidia-rtx-pro-6000"`: Attaches 8 PCIe Gen5 GPUs per instance.
-* `--boot-disk-type="hyperdisk-balanced"`: High IOPS NVMe persistent storage for rapid checkpoint caching.
-* `--image="rocky-linux-10-optimized-gcp-nvidia-580-v20260910"`: Enterprise Linux image with production NVIDIA 580 kernel drivers pre-compiled.
-* `--provisioning-model=SPOT`: Utilizes spot capacity for cost efficiency while maintaining performance parity.
-
-**Expected Output:**
-```text
-Created [rtx-demo-node-0].
-Created [rtx-demo-node-1].
-
-NAME              ZONE          STATUS   INTERNAL_IP  EXTERNAL_IP
-rtx-demo-node-0   us-central1-b RUNNING  10.128.0.41  34.70.242.214
-rtx-demo-node-1   us-central1-b RUNNING  10.128.0.42  35.225.118.110
-```
-*(Record the external IPs printed for the subsequent steps).*
+*(Takes ~90 seconds. Once completed, note down the External IPs printed in the summary table).*
 
 ---
 
-### STEP 2: Establish SSH Connectivity & Hardware Discovery
-
-#### 2.1 Connect to Primary Node 0
-* **Target Environment:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)**
-* **Command:**
-```bash
-ssh -i ~/.ssh/google_compute_engine ayu23@<NODE0_EXTERNAL_IP>
-```
-
-#### 2.2 Inspect Topology & Device Health
-On Node 0, run hardware qualification probes:
-```bash
-nvidia-smi
-```
-* **Verification:** Confirms 8× NVIDIA RTX PRO 6000 Blackwell Server Edition GPUs (96 GB GDDR7 VRAM each, 760 GB total node VRAM, Driver 580.173, CUDA 13.0).
-
-```bash
-nvidia-smi topo -m
-```
-* **Verification:** Displays the dual-NUMA host bridge interconnect matrix:
-  * NUMA Node 0: GPUs 0–3 (PCIe PIX/NODE affinity)
-  * NUMA Node 1: GPUs 4–7 (PCIe PIX/NODE affinity)
-  * Inter-NUMA: SYS bus links across the AMD EPYC SMP interconnect.
-
-#### 2.3 Connect to Secondary Node 1
-* **Target Environment:** 👉 **Terminal 3 (`[NODE-1-WORKER]`)**
-* **Command:**
-```bash
-ssh -i ~/.ssh/google_compute_engine ayu23@<NODE1_EXTERNAL_IP>
-```
+### STEP 2: Connect via SSH & Verify Hardware Topology
+* **Where:** 👉 **Terminal 2 (`[NODE 0]`)** and **Terminal 3 (`[NODE 1]`)**
+* **What to say:**  
+  *"Both nodes are active. Let's inspect the hardware primitives and PCIe bus hierarchy."*
+* **Commands:**
+  * In **Terminal 2**:
+    ```bash
+    ssh -i ~/.ssh/google_compute_engine ayu23@<NODE0_EXTERNAL_IP>
+    ```
+  * In **Terminal 3**:
+    ```bash
+    ssh -i ~/.ssh/google_compute_engine ayu23@<NODE1_EXTERNAL_IP>
+    ```
+* **In Terminal 2, show the live hardware status:**
+  ```bash
+  nvidia-smi
+  nvidia-smi topo -m
+  ```
+  👉 **Point out:**
+  * All 8 GPUs recognized with **96 GB GDDR7 VRAM each** (760 GB total node capacity).
+  * Direct dual-NUMA host bridge architecture with PCIe PIX links between adjacent accelerators.
 
 ---
 
-### STEP 3: Dispatch Deployment Suite to Remote Nodes
-* **Target Environment:** 👉 **Terminal 1 (`[LOCAL-CONTROL]`)**
-* **Command:**
-
-**Using PowerShell (Windows):**
-```powershell
-.\copy_scripts_to_nodes.ps1 <NODE0_EXTERNAL_IP> <NODE1_EXTERNAL_IP>
-```
-
-**Using Bash / Linux / macOS:**
-```bash
-./copy_scripts_to_nodes.sh <NODE0_EXTERNAL_IP> <NODE1_EXTERNAL_IP>
-```
-
-* **Verification:** Deploys the self-contained execution harness into `~/demo/` on both nodes and sets executable permissions (`chmod +x`).
+### STEP 3: Deploy the Platform & Demo Suite
+* **Where:** 👉 **Terminal 1 (`[LOCAL]`)**
+* **What to say:**  
+  *"We are now deploying our complete Performance Intelligence Platform repository and execution suite onto both nodes."*
+* **Commands:**
+  * **On Windows PowerShell:**
+    ```powershell
+    .\copy_scripts_to_nodes.ps1 <NODE0_EXTERNAL_IP> <NODE1_EXTERNAL_IP>
+    ```
+  * **On Bash / Linux / macOS:**
+    ```bash
+    ./copy_scripts_to_nodes.sh <NODE0_EXTERNAL_IP> <NODE1_EXTERNAL_IP>
+    ```
 
 ---
 
-### STEP 4: Automated Software Stack & Driver Runtime Bootstrap
-Execute this step simultaneously across both active terminal sessions:
-
-* **Target Environments:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)** and **Terminal 3 (`[NODE-1-WORKER]`)**
-* **Command:**
+### STEP 4: High-Speed Software Stack Bootstrap
+Run this simultaneously on **both nodes**:
+* **Where:** 👉 **Terminal 2 (`[NODE 0]`)** and **Terminal 3 (`[NODE 1]`)**
+* **What to say:**  
+  *"Rather than a slow standard install, we use `uv` and pre-compiled wheels to install our isolated virtual environment, PyTorch with CUDA 12.8 Blackwell `sm_120` support, vLLM, and Ray in under 90 seconds."*
+* **Command on Both Nodes:**
 ```bash
 cd ~/demo
 ./02_install_stack.sh
 ```
-
-**What this script automates:**
-1. Installs enterprise networking and PCIe diagnostic packages (`iperf3`, `git`, `pciutils`).
-2. Installs `uv` (Rust-based package manager, resolving environments in seconds rather than minutes).
-3. Creates a dedicated virtual environment at `~/vllm_env`.
-4. Installs PyTorch nightly with native CUDA 12.8 / `sm_120` (Blackwell micro-architecture support).
-5. Installs `vllm`, `ray[default]`, `triton`, `transformers`, `huggingface-hub`, and `fastapi`.
-6. Executes an automated sanity test validating CUDA tensor allocation across all 8 devices.
-
-**Expected Output:**
-```text
-[DEMO] Verification & Self-Test
- Python Version : 3.12.14
- PyTorch Version: 2.12.0.dev20260408+cu128
- CUDA Runtime   : 12.8
- CUDA Available : True
- GPU Count      : 8 GPUs detected
-   -> GPU 0: NVIDIA RTX PRO 6000 (sm_120) | 95.0 GB GDDR7
-   -> GPU 1: NVIDIA RTX PRO 6000 (sm_120) | 95.0 GB GDDR7
-   ...
-   -> GPU 7: NVIDIA RTX PRO 6000 (sm_120) | 95.0 GB GDDR7
- STATUS: Ready for Multi-Node Ray Cluster & vLLM Serving!
-```
+👉 **Expected confirmation:** Outputs 8 GPUs detected with `sm_120` architecture, CUDA 12.8 runtime, and vLLM + Ray paths confirmed.
 
 ---
 
-### STEP 5: Coordinate Multi-Node Ray Cluster
+### STEP 5: Form the Multi-Node 16-GPU Ray Cluster
+* **What to say:**  
+  *"We now link Node 0 and Node 1 across the 120 Gbps VPC interconnect into a unified distributed computing mesh."*
 
-#### 5.1 Initialize Head Node on Node 0
-* **Target Environment:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)**
-* **Command:**
+#### 5.1 On Node 0 (Terminal 2):
 ```bash
 cd ~/demo
 ./03_start_ray_cluster.sh --head
 ```
-* **Output:** Starts Ray Head on port `6379` and initializes the Ray Dashboard on port `8265`.
-* *(Note the internal IP printed in the terminal, e.g., `10.128.0.41`).*
+*(Notice Node 0's Internal IP printed on screen, e.g. `10.128.0.41`)*
 
-#### 5.2 Join Worker Node on Node 1
-* **Target Environment:** 👉 **Terminal 3 (`[NODE-1-WORKER]`)**
-* **Command:**
+#### 5.2 On Node 1 (Terminal 3):
 ```bash
 cd ~/demo
 ./03_start_ray_cluster.sh --worker <NODE0_INTERNAL_IP>
 ```
-
-#### 5.3 Verify Unified 16-GPU Cluster Pool
-The script automatically executes `ray status`. Verify the pooled hardware resources:
+👉 **Point out the Ray Status Output:**
 ```text
-====================== Ray Cluster Status ======================
 Healthy:
  1 Node '10.128.0.41' (Head)
  1 Node '10.128.0.42' (Worker)
-----------------------------------------------------------------
 Resources:
   GPU: 16.0 / 16.0 GPUs
   CPU: 768.0 / 768.0 CPUs
@@ -251,96 +150,123 @@ Resources:
 
 ---
 
-### STEP 6: Ingest Model Weights (Zero-Copy GCS FUSE vs Streaming)
-
-* **Target Environment:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)**
-
-#### Method A: Instant Zero-Copy Cloud Storage FUSE Mount (Recommended for live demonstrations)
+### STEP 6: Mount the 48B Model Checkpoint (Zero-Copy)
+* **Where:** 👉 **Terminal 2 (`[NODE 0]`)**
+* **What to say:**  
+  *"For model weights ingestion, rather than waiting 20 minutes to copy a 100GB+ checkpoint over disk, we use Cloud Storage FUSE. The weights are mounted directly into kernel memory in 2 seconds."*
+* **Command:**
 ```bash
 cd ~/demo
 ./04_get_weights.sh fuse
 ```
-* **How it works:** Mounts `gs://mevreon-kimi-k3-weights` directly to `/mnt/models` via kernel-level FUSE caching.
-* **Advantage:** Eliminates download waiting time for multi-gigabyte checkpoints.
-
-#### Method B: Direct VPC High-Speed Multi-Threaded Streaming
+* **Show the mounted files:**
 ```bash
-cd ~/demo
-./04_get_weights.sh download gs://mevreon-deepseek-models/deepseek-ai/DeepSeek-V4.1-Flash
+ls -lh /mnt/models/moonshotai/Kimi-K3/
 ```
 
 ---
 
-### STEP 7: Run Live 8-GPU Compute & Interconnect Characterization
-
-* **Target Environment:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)**
+### STEP 7: Run Live Compute & P2P Hardware Characterization
+* **Where:** 👉 **Terminal 2 (`[NODE 0]`)**
+* **What to say:**  
+  *"Before launching model inference, we validate our hardware primitives: FP16 GEMM compute throughput, GDDR7 copy bandwidth, and P2P interconnect latency."*
 * **Command:**
 ```bash
 cd ~/demo
 ./05_run_smoke_benchmark.sh
 ```
-
-**Measured Empirical Benchmark Results:**
-* **Compute:** **~295.2 TFLOPS per GPU** (8192×8192 FP16 GEMM in 3.7 ms).
+👉 **Point out the Live Metrics:**
+* **Compute:** **~295 TFLOPS per GPU** (8192×8192 GEMM in 3.7 ms).
 * **Memory Bandwidth:** **816.1 GB/s** GDDR7 copy throughput.
-* **Interconnect:** **100% P2P** across all 8 devices.
+* **Interconnect:** Full **100% P2P** across all 8 devices.
 
 ---
 
-### STEP 8: Serve the 48B Model Live & Run Inference
+### STEP 8: Running the Master Benchmark Suite
 
-#### 8.1 Launch vLLM Serving Engine with TP=8
-* **Target Environment:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)**
+There are two ways to showcase the benchmark suite depending on your meeting agenda:
+
+#### Option A: Run the Live Characterization Benchmark (Best for 2-Minute Live Demos)
+* **Where:** 👉 **Terminal 2 (`[NODE 0]`)**
+* **What to say:**  
+  *"Now we trigger our automated characterization run for Step 1 (Chunked Prefill Sizing under varying concurrency). Watch the engine execute warmups and measure token throughput in real time."*
 * **Command:**
+```bash
+cd ~/demo
+./08_run_full_master_benchmark.sh --step 1
+```
+* **What happens:**
+  * Runs the automated test case defined in `master_benchmark_cases.json`.
+  * Evaluates chunk budgets (512 vs 2048 vs 8192 tokens).
+  * Streams real-time prompt tokens/sec, decode tokens/sec, and P95 latency.
+
+#### Option B: Launch the Complete 15-Step Master Campaign (Long-Running Sweep)
+* **What to say:**  
+  *"Our platform includes a unified 15-step master campaign covering FP8 root cause analysis, 128K ultra-long context, 1M concurrency stress testing, pipeline parallelism rebalancing, and Nsight tracing. I can launch the supervisor to run in the background."*
+* **Command:**
+```bash
+cd ~/demo
+./08_run_full_master_benchmark.sh --all
+```
+* To monitor in real time:
+```bash
+tail -f ~/platform_benchmark_runs/*/logs/MASTER_BENCHMARK_RUN.log
+```
+
+---
+
+### STEP 9: Serve the 48B Model Live & Execute Queries
+* **Where:** 👉 **Terminal 2 (`[NODE 0]`)**
+* **What to say:**  
+  *"Now let's launch the distributed vLLM serving engine on our 48B parameter model using Tensor Parallelism TP=8 across all 8 GPUs."*
+
+#### 9.1 Start the Serving Engine:
 ```bash
 cd ~/demo
 ./06_serve_48b_model.sh
 ```
-* **What happens:**
-  * vLLM loads `moonshotai/Kimi-Linear-48B-A3B-Instruct`.
-  * Partitions the weights across GPUs 0–7 (12 GB per GPU).
-  * Allocates 81 GB of KV-cache per GPU.
-  * Starts the OpenAI-compatible API on `http://0.0.4:8000/v1`.
+* **Explain the memory partitioning:**
+  * Total Model Footprint: `~96 GB` in BF16.
+  * Sharded across 8 GPUs: **~12 GB per GPU**.
+  * Remaining **~81 GB VRAM per GPU** is dedicated to PagedAttention KV-Cache, giving our cluster a combined **>640 GB KV-cache pool** for long context windows and massive concurrency.
 
-#### 8.2 Test Live Chat Completion Query
-Open another terminal tab or run from background:
-* **Target Environment:** 👉 **Terminal 2 (`[NODE-0-HEAD]`)**
-* **Command:**
+#### 9.2 Execute Live Query:
+In another tab or on Node 1:
 ```bash
-cd ~/demo
-./07_test_inference_query.sh
+curl -s http://127.0.0.1:8000/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+    "messages": [{"role": "user", "content": "Explain tensor parallelism in 2 sentences."}],
+    "max_tokens": 64
+  }' | jq .
 ```
-* **Verification:** Returns a live LLM streaming response confirming successful end-to-end distributed inference.
+*(Or run `./07_test_inference_query.sh`)*
 
 ---
 
-### STEP 9: Resource Teardown & Cost Management
-Once the presentation is concluded, stop or delete the cluster to eliminate idle compute costs:
-
-* **Target Environment:** 👉 **Terminal 1 (`[LOCAL-CONTROL]`)**
-
+### STEP 10: Clean Resource Teardown
+* **Where:** 👉 **Terminal 1 (`[LOCAL]`)**
+* **What to say:**  
+  *"To manage infrastructure costs, we cleanly tear down the spot instances via the GCP CLI."*
+* **Command:**
 ```bash
-# Option A: Stop instances (Preserves disks, halts billing)
-gcloud compute instances stop rtx-demo-node-0 rtx-demo-node-1 --zone=us-central1-b
-
-# Option B: Complete Deletion (Clean removal)
 gcloud compute instances delete rtx-demo-node-0 rtx-demo-node-1 --zone=us-central1-b --quiet
 ```
 
 ---
 
-## 5. Script Index & File Reference
+## 📁 Summary of Demo Scripts in `Performance_Intelligence_Platform/demo/`
 
-All deployment and benchmarking assets are located in [`Performance_Intelligence_Platform/demo/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo):
-
-| Script | Purpose | Host Execution Environment |
+| Script | Purpose | Where to Run |
 | :--- | :--- | :--- |
-| [`01_provision_cluster.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/01_provision_cluster.sh) | Creates 2× G4 GPU nodes via GCP Compute API (customizable names) | Local Workstation (`Terminal 1`) |
-| [`02_install_stack.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/02_install_stack.sh) | Fast bootstrap: `uv`, PyTorch `sm_120`, vLLM & Ray | Both Nodes (`~/demo/`) |
-| [`03_start_ray_cluster.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/03_start_ray_cluster.sh) | Links Head and Worker into unified 16-GPU Ray pool | Node 0 (`--head`) & Node 1 (`--worker`) |
-| [`04_get_weights.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/04_get_weights.sh) | Ingests weights via GCS FUSE or VPC parallel streaming | Node 0 (`~/demo/`) |
-| [`05_run_smoke_benchmark.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/05_run_smoke_benchmark.sh) | Executes 8-GPU GEMM TFLOPS, GDDR7 and P2P benchmark | Node 0 (`~/demo/`) |
-| [`06_serve_48b_model.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/06_serve_48b_model.sh) | Serves 48B Model (`Kimi-Linear-48B`) with TP=8 on vLLM | Node 0 (`~/demo/`) |
-| [`07_test_inference_query.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/07_test_inference_query.sh) | Sends live chat completion request to test inference latency | Node 0 (`~/demo/`) |
-| [`copy_scripts_to_nodes.ps1`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/copy_scripts_to_nodes.ps1) | High-speed SCP deployment across both nodes (PowerShell) | Local Workstation (`Terminal 1`) |
-| [`copy_scripts_to_nodes.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/demo/copy_scripts_to_nodes.sh) | High-speed SCP deployment across both nodes (Bash) | Local Workstation (`Terminal 1`) |
+| `01_provision_cluster.sh` | Provisions 2x G4 nodes (customizable names) | Terminal 1 (Local) |
+| `02_install_stack.sh` | Installs uv, PyTorch sm_120, vLLM & Ray | Terminals 2 & 3 (Node 0 & 1) |
+| `03_start_ray_cluster.sh` | Links nodes into unified 16-GPU Ray cluster | Terminals 2 & 3 (`--head` / `--worker`) |
+| `04_get_weights.sh` | Mounts model weights via GCS FUSE | Terminal 2 (Node 0) |
+| `05_run_smoke_benchmark.sh` | 8-GPU GEMM TFLOPS, GDDR7 & P2P bench | Terminal 2 (Node 0) |
+| `06_serve_48b_model.sh` | Launches vLLM serving on 48B model (TP=8) | Terminal 2 (Node 0) |
+| `07_test_inference_query.sh` | Sends live curl query to test inference | Terminal 2 (Node 0) |
+| `08_run_full_master_benchmark.sh` | Launches master benchmark campaign (`--step 1` or `--all`) | Terminal 2 (Node 0) |
+| `copy_scripts_to_nodes.ps1` | Deploys entire repo to both nodes (PowerShell) | Terminal 1 (Local) |
+| `copy_scripts_to_nodes.sh` | Deploys entire repo to both nodes (Bash) | Terminal 1 (Local) |
