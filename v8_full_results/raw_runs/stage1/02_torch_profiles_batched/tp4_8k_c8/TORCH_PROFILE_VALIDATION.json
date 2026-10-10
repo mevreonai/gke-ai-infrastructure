@@ -1,12 +1,12 @@
 {
-  "profile_dir": "/home/ayu23/v8_additional_runs/20261005_210750/stage1/02_torch_profiles_batched/tp4_8k_c8",
+  "profile_dir": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/02_torch_profiles_batched/tp4_8k_c8",
   "concurrency": 8,
   "trace_files_found": [
-    "/home/ayu23/v8_additional_runs/20261005_210750/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/kimi-node-0_37455.async_llm.1791245885796393894.pt.trace.json.gz",
-    "/home/ayu23/v8_additional_runs/20261005_210750/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp0_dcp0_ep0_rank0.1791245886019965211.pt.trace.json.gz",
-    "/home/ayu23/v8_additional_runs/20261005_210750/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp1_dcp0_ep1_rank1.1791245886021129881.pt.trace.json.gz",
-    "/home/ayu23/v8_additional_runs/20261005_210750/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp2_dcp0_ep2_rank2.1791245886023915781.pt.trace.json.gz",
-    "/home/ayu23/v8_additional_runs/20261005_210750/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp3_dcp0_ep3_rank3.1791245886024014951.pt.trace.json.gz"
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/kimi-node-0_680070.async_llm.1791557496761746188.pt.trace.json.gz",
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp0_dcp0_ep0_rank0.1791557505112721804.pt.trace.json.gz",
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp3_dcp0_ep3_rank3.1791557505156654484.pt.trace.json.gz",
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp1_dcp0_ep1_rank1.1791557505709587979.pt.trace.json.gz",
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage1/02_torch_profiles_batched/tp4_8k_c8/torch/dp0_pp0_tp2_dcp0_ep2_rank2.1791557505949081497.pt.trace.json.gz"
   ],
   "target_serving_step_ms": 7.7,
   "status": "CAPTURED"

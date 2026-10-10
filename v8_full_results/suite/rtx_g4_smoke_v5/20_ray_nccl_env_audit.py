@@ -31,7 +31,7 @@ def main():
         return {
             'hostname':socket.gethostname(),
             'pid':os.getpid(),
-            'env':{k:v for k,v in os.environ.items() if k.startswith('NCCL_')},
+            'env':{k:v for k,v in os.environ.items() if k.startswith('NCCL_') or k.startswith('VLLM_')},
             'ld_library_path':os.environ.get('LD_LIBRARY_PATH'),
         }
 
@@ -53,9 +53,15 @@ def main():
             if r['env'].get(k) != v:
                 violations.append({'type':'NCCL_ENV_MISMATCH','node_id':r['node_id'],'hostname':r['hostname'],
                                    'variable':k,'expected':v,'actual':r['env'].get(k)})
-        if expected_ld is not None and r.get('ld_library_path') != expected_ld:
+        def _norm_paths(p):
+            return set(filter(None, (p or "").split(":")))
+        if expected_ld is not None and _norm_paths(r.get('ld_library_path')) != _norm_paths(expected_ld):
             violations.append({'type':'LD_LIBRARY_PATH_MISMATCH','node_id':r['node_id'],'hostname':r['hostname'],
                                'expected':expected_ld,'actual':r.get('ld_library_path')})
+        expected_pp = os.environ.get('VLLM_PP_LAYER_PARTITION')
+        if expected_pp is not None and r['env'].get('VLLM_PP_LAYER_PARTITION') != expected_pp:
+            violations.append({'type':'PP_LAYER_PARTITION_MISMATCH','node_id':r['node_id'],'hostname':r['hostname'],
+                               'expected':expected_pp,'actual':r['env'].get('VLLM_PP_LAYER_PARTITION')})
 
     payload={
         'schema_version':2,'timestamp':time.time(),'expected_nodes':args.expected_nodes,

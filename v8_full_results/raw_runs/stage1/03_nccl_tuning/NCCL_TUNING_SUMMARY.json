@@ -2,16 +2,16 @@
   "variant_a_baseline": {
     "allreduce_16k_us": null,
     "sendrecv_256m_gbps": null,
-    "transport_logged": "kimi-node-0:43283:43283 [0] NCCL INFO NET/Socket : Using [0]ens3:10.128.0.39<0>"
+    "transport_logged": "kimi-node-0:687472:687472 [0] NCCL INFO NET/Socket : Using [0]ens3:10.128.0.39<0>"
   },
   "variant_b_4x4": {
     "allreduce_16k_us": null,
     "sendrecv_256m_gbps": null,
-    "transport_logged": "kimi-node-1:16390:16390 [0] NCCL INFO NET/Socket : Using [0]ens3:10.128.0.40<0>"
+    "transport_logged": "kimi-node-0:687566:687566 [0] NCCL INFO NET/Socket : Using [0]ens3:10.128.0.39<0>"
   },
   "variant_c_8x2": {
     "allreduce_16k_us": null,
     "sendrecv_256m_gbps": null,
-    "transport_logged": "kimi-node-1:16546:16546 [0] NCCL INFO NET/Socket : Using [0]ens3:10.128.0.40<0>"
+    "transport_logged": "kimi-node-1:83778:83778 [0] NCCL INFO NET/Socket : Using [0]ens3:10.128.0.40<0>"
   }
 }

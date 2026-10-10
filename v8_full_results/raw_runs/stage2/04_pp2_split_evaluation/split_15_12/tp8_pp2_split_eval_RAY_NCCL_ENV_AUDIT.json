@@ -1,38 +1,49 @@
 {
   "schema_version": 2,
-  "timestamp": 1791291458.559221,
+  "timestamp": 1791591660.0570033,
   "expected_nodes": 2,
   "live_nodes": 2,
   "driver_expected_nccl_env": {
-    "NCCL_SOCKET_IFNAME": "=ens3",
+    "NCCL_SOCKET_IFNAME": "ens3",
+    "NCCL_BUFFSIZE": "4194304",
     "NCCL_NET": "Socket",
-    "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+    "NCCL_CROSS_NIC": "1"
   },
-  "driver_expected_ld_library_path": "/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
+  "driver_expected_ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
   "workers": [
     {
-      "hostname": "kimi-node-0",
-      "pid": 397920,
+      "hostname": "kimi-node-1",
+      "pid": 140398,
       "env": {
+        "VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS": "trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2",
+        "NCCL_SOCKET_IFNAME": "ens3",
+        "NCCL_BUFFSIZE": "4194304",
+        "NCCL_CROSS_NIC": "1",
         "NCCL_NET": "Socket",
-        "NCCL_SOCKET_IFNAME": "=ens3",
-        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+        "VLLM_PP_LAYER_PARTITION": "15,12"
       },
-      "ld_library_path": "/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
-      "node_id": "9b2d75f33cfd2a1157003ee8d9926aeab3dbf50fee297d4a3aebaec1",
-      "node_manager_address": "10.128.0.39"
+      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
+      "node_id": "54f699817dc51c6963e4304c6a76822ea7e02b097c89431fe66b503e",
+      "node_manager_address": "10.128.0.40"
     },
     {
-      "hostname": "kimi-node-1",
-      "pid": 41303,
+      "hostname": "kimi-node-0",
+      "pid": 1329377,
       "env": {
-        "NCCL_SOCKET_IFNAME": "=ens3",
-        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED",
-        "NCCL_NET": "Socket"
+        "VLLM_WORKER_HOST": "10.128.0.40",
+        "NCCL_SOCKET_IFNAME": "ens3",
+        "VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS": "trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2",
+        "VLLM_HOST": "10.128.0.39",
+        "NCCL_NET": "Socket",
+        "VLLM_MOE_BACKEND": "triton",
+        "NCCL_CROSS_NIC": "1",
+        "NCCL_BUFFSIZE": "4194304",
+        "VLLM_FLASHINFER_AUTOTUNE": "1",
+        "VLLM_PP_LAYER_PARTITION": "15,12"
       },
-      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
-      "node_id": "773d0c2efd2e480e5b6bf0ba02164b178fe4c88f5748240ff826224b",
-      "node_manager_address": "10.128.0.40"
+      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
+      "node_id": "0c69efac24fe884f7214528ca429bdd511f22bdcaa63aee8182389dd",
+      "node_manager_address": "10.128.0.39"
     }
   ],
   "forbidden_variables": [

@@ -109,8 +109,15 @@ run_tp8_pinning_test() {
     --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
     --no-enable-prefix-caching > "$pdir/server.log" 2>&1 & local PID=$!
 
-  cleanup_tp8(){ kill "$PID" 2>/dev/null || true; wait "$PID" 2>/dev/null || true; }
-  trap cleanup_tp8 EXIT
+  cleanup_tp8(){
+    echo "Stopping TP8 server PID $PID..."
+    kill -15 "$PID" 2>/dev/null || true
+    sleep 3
+    kill -9 "$PID" 2>/dev/null || true
+    wait "$PID" 2>/dev/null || true
+    pkill -9 -f "vllm serve.*8035" 2>/dev/null || true
+  }
+  trap cleanup_tp8 EXIT INT TERM ERR
 
   for _ in $(seq 1 1800); do
     curl -fsS "http://127.0.0.1:$port/v1/models" >/dev/null 2>&1 && break

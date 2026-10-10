@@ -1,0 +1,8 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_additional_runs/20261009_104123/stage3/06_b6_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k/node1_capture/worker_process_35276.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_additional_runs/20261009_104123/stage3/06_b6_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k/node1_capture/worker_process_35276.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_additional_runs/20261009_104123/stage3/06_b6_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k/node1_capture/worker_process_35276.sqlite] with [nccl_op_sum]... 
+ERROR: Report 'nccl_op_sum' could not be found.
+

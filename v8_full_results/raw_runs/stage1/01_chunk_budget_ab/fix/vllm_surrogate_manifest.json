@@ -4,10 +4,10 @@
   "revision": "e1df551a447157d4658b573f9a695d57658590e9",
   "evidence_class": "MEASURED-48B-STAGE1",
   "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
-  "started": 1791235051.5993075,
+  "started": 1791557090.3922515,
   "source_cases": "/home/ayu23/v8_additional_runs_suite/stage1_cases.json",
   "environment": {
-    "time": 1791235051.5994296,
+    "time": 1791557090.392355,
     "host": "kimi-node-0",
     "python": "3.12.14 (main, Aug 13 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)]",
     "commands": {
@@ -26,7 +26,7 @@
           "--format=csv,noheader,nounits"
         ],
         "rc": 0,
-        "out": "0, GPU-1db7cc10-d5eb-e6d0-1c78-f80fb4417599, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0\n1, GPU-5a58b662-5a91-ce2b-3369-6525fdb38d7a, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0\n2, GPU-75b45d30-025b-5ddd-3ca9-7ab5c199a5b0, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0\n3, GPU-2731329e-ceb9-7755-daa6-085ab00058bb, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0\n4, GPU-12bcde22-75db-3bc5-6d9f-f8c7c81218d9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0\n5, GPU-2fb54662-506b-2198-f26d-28770bea6e20, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0\n6, GPU-43342975-4473-bf73-937e-abd36a3cce48, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0\n7, GPU-828ae8c5-3d23-5a81-f428-ccc6759f50d0, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0\n"
+        "out": "0, GPU-f32d3add-cdf0-1078-0fa6-25878e018387, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0\n1, GPU-fc7c96b1-2159-1c62-824b-8069c1ded8ac, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0\n2, GPU-7fc87cf6-870e-1f6a-86d2-529c6f6daa30, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0\n3, GPU-a6480364-f508-ed69-5834-f672f04dc8e3, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0\n4, GPU-96abfb1c-e56c-73b4-ec9c-1571a6429b63, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0\n5, GPU-775c432e-4633-0a7a-2aad-842be0f2f554, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0\n6, GPU-94ddf724-06d5-921a-aa21-13178063d450, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0\n7, GPU-df5954fb-d712-b86e-c72d-e2769b9aaaa1, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0\n"
       },
       "nvidia_topo": {
         "cmd": [
@@ -49,7 +49,13 @@
       }
     },
     "env": {
-      "CUDA_HOME": "/usr/local/cuda"
+      "VLLM_MOE_BACKEND": "triton",
+      "CUDA_DEVICE_ORDER": "PCI_BUS_ID",
+      "VLLM_FLASHINFER_AUTOTUNE": "1",
+      "VLLM_HOST": "10.128.0.39",
+      "VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS": "trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2",
+      "CUDA_HOME": "/usr/local/cuda",
+      "VLLM_WORKER_HOST": "10.128.0.40"
     }
   },
   "cases": [
@@ -165,7 +171,7 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261005_210750/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4",
+            "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4",
             "--result-filename",
             "8k_c4.json",
             "--metadata",
@@ -173,18 +179,18 @@
             "bench=8k_c4",
             "revision=e1df551a447157d4658b573f9a695d57658590e9"
           ],
-          "start": 1791235196.402747,
-          "end": 1791235225.8401167,
+          "start": 1791557251.4747381,
+          "end": 1791557281.948265,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261005_210750/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/8k_c4.json",
-          "stdout": "/home/ayu23/v8_additional_runs/20261005_210750/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/bench_stdout.log",
+          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/8k_c4.json",
+          "stdout": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/bench_stdout.log",
           "warmup_separate": true,
           "request_rate": "inf",
           "burstiness": null,
           "probe_request_rate": null,
           "peak_kv_usage": 0.005047000189262518,
           "preemptions_delta": 0.0,
-          "metric_samples": 51,
+          "metric_samples": 52,
           "expected_input_tokens": 8192,
           "requested_output_tokens": 256,
           "input_lens_count": 24,
@@ -244,7 +250,7 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261005_210750/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32",
+            "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32",
             "--result-filename",
             "8k_c32.json",
             "--metadata",
@@ -252,18 +258,18 @@
             "bench=8k_c32",
             "revision=e1df551a447157d4658b573f9a695d57658590e9"
           ],
-          "start": 1791235238.5397499,
-          "end": 1791235291.3616073,
+          "start": 1791557296.1320512,
+          "end": 1791557352.6154056,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261005_210750/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/8k_c32.json",
-          "stdout": "/home/ayu23/v8_additional_runs/20261005_210750/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/bench_stdout.log",
+          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/8k_c32.json",
+          "stdout": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/bench_stdout.log",
           "warmup_separate": true,
           "request_rate": "inf",
           "burstiness": null,
           "probe_request_rate": null,
           "peak_kv_usage": 0.040376001514100035,
           "preemptions_delta": 0.0,
-          "metric_samples": 86,
+          "metric_samples": 93,
           "expected_input_tokens": 8192,
           "requested_output_tokens": 256,
           "input_lens_count": 128,
@@ -277,24 +283,24 @@
           "actual_output_mean": 256.0
         }
       ],
-      "server_start": 1791235059.5128121,
-      "server_ready": 1791235183.5388522,
+      "server_start": 1791557098.5081706,
+      "server_ready": 1791557236.566575,
       "models_endpoint": {
         "object": "list",
         "data": [
           {
             "id": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
             "object": "model",
-            "created": 1791235183,
+            "created": 1791557236,
             "owned_by": "vllm",
             "root": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
             "parent": null,
             "max_model_len": 1048576,
             "permission": [
               {
-                "id": "modelperm-99a40fddcff31b65",
+                "id": "modelperm-89162e7b65f86a16",
                 "object": "model_permission",
-                "created": 1791235183,
+                "created": 1791557236,
                 "allow_create_engine": false,
                 "allow_sampling": true,
                 "allow_logprobs": true,
@@ -309,8 +315,10 @@
           }
         ]
       },
-      "server_end": 1791235292.4062412
+      "server_pid": 676300,
+      "gpu_kv_pool_announcement": "(EngineCore pid=676505) INFO 10-09 14:47:08 [kv_cache_utils.py:2321] GPU KV cache size: 8,104,352 tokens, Maximum concurrency for 1,048,576 tokens per request: 7.73x",
+      "server_end": 1791557353.6590996
     }
   ],
-  "ended": 1791235292.821118
+  "ended": 1791557354.1245663
 }

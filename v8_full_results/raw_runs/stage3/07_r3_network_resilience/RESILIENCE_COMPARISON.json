@@ -1,0 +1,12 @@
+{
+  "tp16": {
+    "native_ttft_ms": 15646.6600977501,
+    "impaired_ttft_ms": 39833.20569550006,
+    "degradation_pct": 154.57960642493822
+  },
+  "pp4": {
+    "native_ttft_ms": 2966.768595749727,
+    "impaired_ttft_ms": 2141.9846517501355,
+    "degradation_pct": -27.800750796041164
+  }
+}

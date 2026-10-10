@@ -1,0 +1,34 @@
+[
+  {
+    "case": "tp8_r1_continuous_context_curve",
+    "bench": "16k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_r1_continuous_context_curve",
+    "bench": "32k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_r1_continuous_context_curve",
+    "bench": "64k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_r1_continuous_context_curve",
+    "bench": "256k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  }
+]

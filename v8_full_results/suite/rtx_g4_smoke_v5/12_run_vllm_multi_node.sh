@@ -58,9 +58,13 @@ PY
   ray stop -f || true
   ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; ray stop -f || true"
 
-  CUDA_VISIBLE_DEVICES="$GPU_LIST" ray start --head --node-ip-address="$NODE0_IP" --port=6379 --num-gpus="$GPUS"
+  PP_EXPORT=""
+  if [[ -n "${VLLM_PP_LAYER_PARTITION:-}" ]]; then
+    PP_EXPORT="export VLLM_PP_LAYER_PARTITION='$VLLM_PP_LAYER_PARTITION'; "
+  fi
+  eval "${PP_EXPORT}CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --head --node-ip-address='$NODE0_IP' --port=6379 --num-gpus='$GPUS'"
   ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" \
-    "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --address='$NODE0_IP:6379' --num-gpus='$GPUS'"
+    "$REMOTE_V6_ENV $PP_EXPORT unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --address='$NODE0_IP:6379' --num-gpus='$GPUS'"
   sleep 8
   ray status | tee "$OUT_ROOT/${CASE}_ray_status_before.log"
   # Audit actual Ray-worker environments on every live node before vLLM actors are created.

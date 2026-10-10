@@ -102,13 +102,25 @@ def trim_benchmark_trace(bench_json_path: Path) -> Dict[str, Any]:
     raw_ttfts = [r["ttft"] for r in paired if r["ttft"] is not None]
     raw_itls = [itl for r in paired for itl in r.get("itls", []) if itl is not None]
 
+    wave1_ttfts = [r["ttft"] for r in paired[:concurrency] if r["ttft"] is not None]
+    
+    def mean(lst): return (sum(lst) / len(lst)) if lst else None
+
     return {
         "benchmark_name": data.get("bench"),
         "total_requests": num_requests,
         "concurrency": concurrency,
+        "wave1_request_count": len(wave1_ttfts),
+        "steady_state_request_count": len(valid_ttfts),
         "trimmed_first_token_requests": len(valid_ttfts),
         "trimmed_drain_requests": len(token_sample),
+        "raw_untrimmed_ttft_mean_s": mean(raw_ttfts),
+        "wave1_burst_ttft_mean_s": mean(wave1_ttfts),
+        "steady_state_ttft_mean_s": mean(valid_ttfts),
+        "raw_untrimmed_itl_mean_ms": (mean(raw_itls) * 1000.0) if mean(raw_itls) else None,
+        "steady_state_itl_mean_ms": (mean(flat_itls) * 1000.0) if mean(flat_itls) else None,
         "raw_ttft_percentiles_s": calc_percentiles(raw_ttfts),
+        "wave1_burst_ttft_percentiles_s": calc_percentiles(wave1_ttfts),
         "steady_state_ttft_percentiles_s": calc_percentiles(valid_ttfts),
         "raw_itl_percentiles_s": calc_percentiles(raw_itls),
         "steady_state_itl_percentiles_s": calc_percentiles(flat_itls),

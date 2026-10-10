@@ -134,7 +134,7 @@
           "input": 1024,
           "output": 128,
           "concurrency": 32,
-          "prompts": 128,
+          "prompts": 160,
           "warmups": 2
         },
         {
@@ -158,7 +158,7 @@
           "input": 2048,
           "output": 128,
           "concurrency": 32,
-          "prompts": 128,
+          "prompts": 160,
           "warmups": 2
         }
       ]
@@ -296,6 +296,14 @@
       "offload_gib": 0,
       "benchmarks": [
         {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
+        {
           "name": "8k_c8",
           "input": 8192,
           "output": 256,
@@ -371,6 +379,14 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
         {
           "name": "8k_c8",
           "input": 8192,
@@ -448,6 +464,14 @@
       "offload_gib": 0,
       "benchmarks": [
         {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
+        {
           "name": "8k_c8",
           "input": 8192,
           "output": 256,
@@ -523,6 +547,14 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
         {
           "name": "8k_c8",
           "input": 8192,
@@ -679,7 +711,9 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "kv_cache_dtype": "fp8",
-      "attention_config": "{\"use_prefill_query_quantization\": true}",
+      "attention_config": {
+        "use_prefill_query_quantization": true
+      },
       "benchmarks": [
         {
           "name": "128k_c1",
@@ -780,6 +814,271 @@
           "concurrency": 1,
           "prompts": 4,
           "warmups": 0
+        }
+      ]
+    },
+    "tp8_r1_continuous_context_curve": {
+      "name": "tp8_r1_continuous_context_curve",
+      "groups": [
+        "stage3",
+        "r1_continuous_context",
+        "single_node"
+      ],
+      "purpose": "R1: Continuous long-context power-law curve (16K, 32K, 64K, 256K) to map the 48K token cache inflection.",
+      "tp": 8,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 16384,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "16k_c1",
+          "input": 16384,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 6,
+          "warmups": 1
+        },
+        {
+          "name": "32k_c1",
+          "input": 32768,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "64k_c1",
+          "input": 65536,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "256k_c1",
+          "input": 262144,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp4_r2_agentic_prefix_cache_decay": {
+      "name": "tp4_r2_agentic_prefix_cache_decay",
+      "groups": [
+        "stage3",
+        "r2_prefix_decay",
+        "single_node"
+      ],
+      "purpose": "R2: 5-turn conversational sequence (1K to 5K context) measuring TTFT decay under prefix caching.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": true,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "turn1_cold_1k",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "turn2_cached_2k",
+          "dataset": "prefix_repetition",
+          "prefix": 1024,
+          "suffix": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "turn3_cached_3k",
+          "dataset": "prefix_repetition",
+          "prefix": 2048,
+          "suffix": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "turn4_cached_4k",
+          "dataset": "prefix_repetition",
+          "prefix": 3072,
+          "suffix": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "turn5_cached_5k",
+          "dataset": "prefix_repetition",
+          "prefix": 4096,
+          "suffix": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 0
+        }
+      ]
+    },
+    "tp4_r4_streaming_itl_jitter": {
+      "name": "tp4_r4_streaming_itl_jitter",
+      "groups": [
+        "stage3",
+        "r4_streaming_jitter",
+        "single_node"
+      ],
+      "purpose": "R4: Real-time streaming inter-token latency (ITL) pacing and jitter distribution across c=1, 8, 16.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 32,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "stream_1k_c1",
+          "input": 1024,
+          "output": 512,
+          "concurrency": 1,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "stream_1k_c8",
+          "input": 1024,
+          "output": 512,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 1
+        },
+        {
+          "name": "stream_1k_c16",
+          "input": 1024,
+          "output": 512,
+          "concurrency": 16,
+          "prompts": 64,
+          "warmups": 1
+        }
+      ]
+    },
+    "stage3_r3_network_jitter_tp16": {
+      "name": "stage3_r3_network_jitter_tp16",
+      "groups": [
+        "stage3",
+        "r3_network_resilience",
+        "multi_node"
+      ],
+      "purpose": "R3: Network jitter resilience stress test for TP16 flat layout under simulated packet loss.",
+      "tp": 16,
+      "pp": 1,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1_tp16_resilience",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4_tp16_resilience",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1
+        }
+      ]
+    },
+    "stage3_r3_network_jitter_pp4": {
+      "name": "stage3_r3_network_jitter_pp4",
+      "groups": [
+        "stage3",
+        "r3_network_resilience",
+        "multi_node"
+      ],
+      "purpose": "R3: Network jitter resilience stress test for TP4/PP4 pipeline layout under simulated packet loss.",
+      "tp": 4,
+      "pp": 4,
+      "ray_gpus_per_node": 8,
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "128k_c1_pp4_resilience",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4_pp4_resilience",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 1
         }
       ]
     }

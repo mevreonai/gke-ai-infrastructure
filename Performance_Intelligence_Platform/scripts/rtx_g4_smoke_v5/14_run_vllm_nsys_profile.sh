@@ -25,10 +25,19 @@ PY
 )
 export VLLM_WORKER_MULTIPROC_METHOD=spawn
 
+: "${ENFORCE_EAGER:=0}"
 SERVER_CMD=(vllm serve "$MODEL" --revision "$REVISION" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port "$PORT"
   --tensor-parallel-size "$TP" --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32
-  --no-enable-prefix-caching --enforce-eager --enable-layerwise-nvtx-tracing --enable-logging-iteration-details
+  --no-enable-prefix-caching --enable-layerwise-nvtx-tracing --enable-logging-iteration-details
   --profiler-config.profiler cuda)
+
+if [[ "$ENFORCE_EAGER" == "1" ]]; then
+  SERVER_CMD+=(--enforce-eager)
+  echo "PROFILER MODE: Diagnostic Eager Baseline (--enforce-eager enabled)"
+else
+  SERVER_CMD+=(--gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2)
+  echo "PROFILER MODE: Production Serving Critical Path (CUDA Graphs Enabled, --cuda-graph-trace=node)"
+fi
 printf '%q ' "${SERVER_CMD[@]}" > "$PROFILE_ROOT/server_command.txt"; echo >> "$PROFILE_ROOT/server_command.txt"
 
 NSYS_ARGS=(profile --trace-fork-before-exec=true --cuda-graph-trace=node --trace=cuda,nvtx,nccl,cublas,osrt

@@ -24,11 +24,21 @@ print(','.join(str(i) for i in range(int('$TP'))))
 PY
 )
 export VLLM_WORKER_MULTIPROC_METHOD=spawn
+unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
 
+: "${ENFORCE_EAGER:=0}"
 SERVER_CMD=(vllm serve "$MODEL" --revision "$REVISION" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port "$PORT"
   --tensor-parallel-size "$TP" --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32
-  --no-enable-prefix-caching --enforce-eager --enable-layerwise-nvtx-tracing --enable-logging-iteration-details
+  --no-enable-prefix-caching --enable-layerwise-nvtx-tracing --enable-logging-iteration-details
   --profiler-config.profiler cuda)
+
+if [[ "$ENFORCE_EAGER" == "1" ]]; then
+  SERVER_CMD+=(--enforce-eager)
+  echo "PROFILER MODE: Diagnostic Eager Baseline (--enforce-eager enabled)"
+else
+  SERVER_CMD+=(--gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2)
+  echo "PROFILER MODE: Production Serving Critical Path (CUDA Graphs Enabled, --cuda-graph-trace=node)"
+fi
 printf '%q ' "${SERVER_CMD[@]}" > "$PROFILE_ROOT/server_command.txt"; echo >> "$PROFILE_ROOT/server_command.txt"
 
 NSYS_ARGS=(profile --trace-fork-before-exec=true --cuda-graph-trace=node --trace=cuda,nvtx,nccl,cublas,osrt
@@ -50,7 +60,7 @@ vllm bench serve --backend openai --host 127.0.0.1 --port "$PORT" --endpoint /v1
   --save-result --save-detailed --result-dir "$PROFILE_ROOT" --result-filename bench.json > "$PROFILE_ROOT/bench.log" 2>&1
 cleanup; trap - EXIT
 
-REP=$(find "$PROFILE_ROOT" -name '*.nsys-rep' | head -1 || true)
+REP=$(find "$PROFILE_ROOT" -name '*.nsys-rep' -size +0c | head -1 || true)
 if [[ -n "$REP" ]]; then
   nsys stats --report cuda_gpu_kern_sum,cuda_api_sum,nvtx_pushpop_sum "$REP" > "$PROFILE_ROOT/nsys_stats.txt" 2>&1 || true
   for r in cuda_gpu_kern_sum cuda_api_sum nvtx_pushpop_sum; do nsys stats --format csv --report "$r" "$REP" > "$PROFILE_ROOT/${r}.csv" 2> "$PROFILE_ROOT/${r}.err" || true; done

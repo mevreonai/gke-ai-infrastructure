@@ -76,8 +76,9 @@ wait "$BENCH_PID" 2>/dev/null || true
 cleanup
 trap - EXIT
 
-# Relocate any PyTorch traces dumped to /tmp into the canonical placeholder
-find /tmp -maxdepth 1 -name '*.pt.trace.json*' -exec mv -f {} "$PROFILE_ROOT/torch/" \; 2>/dev/null || true
+# Relocate any PyTorch traces dumped to /tmp or current directory into the canonical placeholder
+find /tmp -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROFILE_ROOT/torch/" \; 2>/dev/null || true
+find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROFILE_ROOT/torch/" \; 2>/dev/null || true
 
 # Validate that trace exists and post-process
 python3 - <<'PY' "$PROFILE_ROOT" "$CONCURRENCY"

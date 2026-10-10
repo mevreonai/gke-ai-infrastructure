@@ -69,6 +69,15 @@ def main():
             server_proc=subprocess.Popen(server_cmd,stdout=server_log,stderr=subprocess.STDOUT,text=True,env=env,start_new_session=True)
             models=wait_ready(f"http://127.0.0.1:{args.port}",server_proc,args.startup_timeout)
             case_rec["server_ready"]=time.time(); case_rec["models_endpoint"]=models
+            case_rec["server_pid"]=server_proc.pid
+            time.sleep(1)
+            try:
+                with open(cdir/"server.log", "r", encoding="utf-8", errors="ignore") as lf:
+                    for line in lf:
+                        if "GPU KV cache size:" in line:
+                            case_rec["gpu_kv_pool_announcement"]=line.strip()
+                            break
+            except Exception: pass
             (cdir/"resolved_models.json").write_text(json.dumps(models,indent=2))
 
             for bi,b in enumerate(case["benchmarks"]):

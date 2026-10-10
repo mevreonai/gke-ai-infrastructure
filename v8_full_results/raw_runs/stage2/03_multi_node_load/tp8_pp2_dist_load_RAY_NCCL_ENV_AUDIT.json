@@ -1,38 +1,41 @@
 {
   "schema_version": 2,
-  "timestamp": 1791288599.723265,
+  "timestamp": 1791583576.142891,
   "expected_nodes": 2,
   "live_nodes": 2,
   "driver_expected_nccl_env": {
-    "NCCL_SOCKET_IFNAME": "=ens3",
+    "NCCL_SOCKET_IFNAME": "ens3",
+    "NCCL_BUFFSIZE": "4194304",
     "NCCL_NET": "Socket",
-    "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+    "NCCL_CROSS_NIC": "1"
   },
-  "driver_expected_ld_library_path": "/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
+  "driver_expected_ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
   "workers": [
     {
-      "hostname": "kimi-node-0",
-      "pid": 166401,
+      "hostname": "kimi-node-1",
+      "pid": 103740,
       "env": {
-        "NCCL_SOCKET_IFNAME": "=ens3",
-        "NCCL_NET": "Socket",
-        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+        "NCCL_BUFFSIZE": "4194304",
+        "NCCL_SOCKET_IFNAME": "ens3",
+        "NCCL_CROSS_NIC": "1",
+        "NCCL_NET": "Socket"
       },
-      "ld_library_path": "/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
-      "node_id": "2ee53fd13f8d51f6bdaaf5592e926dbf7d8fc403214bede9c33f0585",
-      "node_manager_address": "10.128.0.39"
+      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
+      "node_id": "9232912b3f9d4a7907ce6a6aef232601e74ea63c39abd0a29bfe1fc2",
+      "node_manager_address": "10.128.0.40"
     },
     {
-      "hostname": "kimi-node-1",
-      "pid": 19862,
+      "hostname": "kimi-node-0",
+      "pid": 858420,
       "env": {
-        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED",
         "NCCL_NET": "Socket",
-        "NCCL_SOCKET_IFNAME": "=ens3"
+        "NCCL_BUFFSIZE": "4194304",
+        "NCCL_CROSS_NIC": "1",
+        "NCCL_SOCKET_IFNAME": "ens3"
       },
-      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
-      "node_id": "4459cc8c3022ece2407cd376e4d45d7f13d791d74e349e0bdb012adc",
-      "node_manager_address": "10.128.0.40"
+      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
+      "node_id": "be3c6aba87342114a4fd31581fdd329fb7751b0abdb836d68164f00f",
+      "node_manager_address": "10.128.0.39"
     }
   ],
   "forbidden_variables": [

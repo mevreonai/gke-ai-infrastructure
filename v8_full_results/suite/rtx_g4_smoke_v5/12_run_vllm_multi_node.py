@@ -78,6 +78,7 @@ def main():
              "configured_network_cap_gbps":os.environ.get("V8_VLLM_NETWORK_CAP_GBPS","0"),
              "network_mode":os.environ.get("V8_VLLM_NETWORK_MODE","native"),
              "nccl_transport_provenance":os.environ.get("NCCL_TRANSPORT_PROVENANCE","UNSPECIFIED"),
+             "pp_layer_partition":os.environ.get("VLLM_PP_LAYER_PARTITION","default_14_13"),
              "server_command":server_cmd,"benchmarks":[]}
         if args.dry_run:
             top["cases"].append(rec); continue

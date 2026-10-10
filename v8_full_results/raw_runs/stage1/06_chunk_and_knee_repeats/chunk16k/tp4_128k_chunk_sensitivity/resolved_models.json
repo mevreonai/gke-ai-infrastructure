@@ -4,16 +4,16 @@
     {
       "id": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
       "object": "model",
-      "created": 1791247590,
+      "created": 1791560559,
       "owned_by": "vllm",
       "root": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
       "parent": null,
       "max_model_len": 1048576,
       "permission": [
         {
-          "id": "modelperm-915de50f5423717d",
+          "id": "modelperm-af14f9f57490a955",
           "object": "model_permission",
-          "created": 1791247590,
+          "created": 1791560559,
           "allow_create_engine": false,
           "allow_sampling": true,
           "allow_logprobs": true,

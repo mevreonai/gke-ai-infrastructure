@@ -4,10 +4,10 @@
   "revision": "e1df551a447157d4658b573f9a695d57658590e9",
   "evidence_class": "MEASURED-48B-STAGE2-RERUN",
   "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
-  "started": 1791285437.4044657,
+  "started": 1791579042.48773,
   "source_cases": "/home/ayu23/v8_additional_runs_suite/stage2_cases_single_node.json",
   "environment": {
-    "time": 1791285437.4045694,
+    "time": 1791579042.4878612,
     "host": "kimi-node-0",
     "python": "3.12.14 (main, Aug 13 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)]",
     "commands": {
@@ -26,7 +26,7 @@
           "--format=csv,noheader,nounits"
         ],
         "rc": 0,
-        "out": "0, GPU-0ed422e8-2598-4d4b-88a3-7f4f693e3342, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0\n1, GPU-0ad60e27-1f1d-c3e5-3c88-49e7928cdfb0, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0\n2, GPU-adab9d85-c3f9-65d1-3be2-0351c61481d9, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0\n3, GPU-e623d9ff-99f9-16cb-cf2d-79858027da17, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0\n4, GPU-80c72d54-2a4a-59c9-3dcf-a23459cfd4ac, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0\n5, GPU-3817c2fe-cb05-3f10-2c04-2e5a3aeaee70, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0\n6, GPU-e99a430e-22ef-2748-0d57-743961b1206d, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0\n7, GPU-6294d2f7-7dd4-a245-3d04-dc505deb3ff7, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0\n"
+        "out": "0, GPU-f32d3add-cdf0-1078-0fa6-25878e018387, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:05:00.0\n1, GPU-fc7c96b1-2159-1c62-824b-8069c1ded8ac, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:06:00.0\n2, GPU-7fc87cf6-870e-1f6a-86d2-529c6f6daa30, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0A:00.0\n3, GPU-a6480364-f508-ed69-5834-f672f04dc8e3, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:0B:00.0\n4, GPU-96abfb1c-e56c-73b4-ec9c-1571a6429b63, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:84:00.0\n5, GPU-775c432e-4633-0a7a-2aad-842be0f2f554, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:85:00.0\n6, GPU-94ddf724-06d5-921a-aa21-13178063d450, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:89:00.0\n7, GPU-df5954fb-d712-b86e-c72d-e2769b9aaaa1, NVIDIA RTX PRO 6000 Blackwell Server Edition, 97887, 00000000:8A:00.0\n"
       },
       "nvidia_topo": {
         "cmd": [
@@ -49,6 +49,7 @@
       }
     },
     "env": {
+      "VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS": "trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2",
       "CUDA_HOME": "/usr/local/cuda"
     }
   },
@@ -85,7 +86,6 @@
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",
         "vllm",
-        "--no-enable-flashinfer-autotune",
         "--trust-remote-code",
         "--revision",
         "e1df551a447157d4658b573f9a695d57658590e9",
@@ -122,10 +122,10 @@
         "{\"use_prefill_query_quantization\": true}"
       ],
       "benchmarks": [],
-      "server_start": 1791285446.9148645,
+      "server_start": 1791579053.5643444,
       "error": "RuntimeError('server exited rc=1')",
-      "server_end": 1791285630.9562023
+      "server_end": 1791579233.6302123
     }
   ],
-  "ended": 1791285630.9565773
+  "ended": 1791579235.9612308
 }

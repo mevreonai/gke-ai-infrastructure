@@ -9,6 +9,7 @@ set -euo pipefail
 SUITE_ROOT=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 : "${V8_RUN_STAGE1:=1}"
 : "${V8_RUN_STAGE2:=1}"
+: "${V8_RUN_STAGE3:=1}"
 : "${RESUME:=1}"
 
 RUN_ID_FILE="$HOME/v8_additional_runs/latest_run_id.txt"
@@ -26,16 +27,25 @@ while [[ $# -gt 0 ]]; do
     --stage1-only)
       V8_RUN_STAGE1=1
       V8_RUN_STAGE2=0
+      V8_RUN_STAGE3=0
       shift
       ;;
     --stage2-only)
       V8_RUN_STAGE1=0
       V8_RUN_STAGE2=1
+      V8_RUN_STAGE3=0
+      shift
+      ;;
+    --stage3-only)
+      V8_RUN_STAGE1=0
+      V8_RUN_STAGE2=0
+      V8_RUN_STAGE3=1
       shift
       ;;
     --all)
       V8_RUN_STAGE1=1
       V8_RUN_STAGE2=1
+      V8_RUN_STAGE3=1
       shift
       ;;
     --run-id)
@@ -77,6 +87,7 @@ echo "  Output Root  : $MASTER_ROOT"
 echo "  Suite Root   : $SUITE_ROOT"
 echo "  Run Stage 1  : $V8_RUN_STAGE1 (~2.0 hours)"
 echo "  Run Stage 2  : $V8_RUN_STAGE2 (~3.5 hours)"
+echo "  Run Stage 3  : $V8_RUN_STAGE3 (~10.4 hours wall-clock / 13.5 machine hours)"
 echo "================================================================================"
 
 # Discover GCP configuration if present
@@ -140,6 +151,12 @@ fi
 if [[ "$V8_RUN_STAGE2" == 1 ]]; then
   step run_stage2 env RUN_ID="$RUN_ID" STAGE2_ROOT="$MASTER_ROOT/stage2" STAGE2_RESUME="$RESUME" \
     "$SUITE_ROOT/02_run_stage2_failed_and_scaleout.sh"
+fi
+
+# 5. Execute Stage 3 (Strategic Expansions, True Serving Profiles & Resilience)
+if [[ "$V8_RUN_STAGE3" == 1 ]]; then
+  step run_stage3 env RUN_ID="$RUN_ID" STAGE3_ROOT="$MASTER_ROOT/stage3" STAGE3_RESUME="$RESUME" \
+    "$SUITE_ROOT/03_run_stage3_expansion_and_profiling.sh"
 fi
 
 echo ""

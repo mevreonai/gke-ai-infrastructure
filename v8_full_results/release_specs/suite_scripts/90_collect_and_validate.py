@@ -161,11 +161,11 @@ def main():
     # audit JSONs verify the actual worker environment on each live node before vLLM actors.
     policy_files=[]
     for p in root.rglob('NCCL_ENV*.txt'):
-        hits=forbidden_env_hits(p); policy_files.append({'path':str(p.relative_to(root)),'forbidden_hits':hits,'ok':not hits})
+        hits=forbidden_env_hits(p); policy_files.append({'path':p.relative_to(root).as_posix(),'forbidden_hits':hits,'ok':not hits})
     ray_audits=[]
     for p in root.rglob('*RAY_NCCL_ENV_AUDIT.json'):
         d=load_json(p,{}) or {}
-        ray_audits.append({'path':str(p.relative_to(root)),'ok':bool(d.get('ok')),'live_nodes':d.get('live_nodes'),'violations':d.get('violations',[])})
+        ray_audits.append({'path':p.relative_to(root).as_posix(),'ok':bool(d.get('ok')),'live_nodes':d.get('live_nodes'),'violations':d.get('violations',[])})
     scaleout_ray_count=sum(1 for x in ray_audits if x['path'].startswith('vllm_scaleout_network_matrix/'))
     profile_ray_count=sum(1 for x in ray_audits if x['path'].startswith('profiles_multi_node_'))
     expected_scaleout_ray=12  # four topologies x Native/100G/20G

@@ -1,38 +1,41 @@
 {
   "schema_version": 2,
-  "timestamp": 1791287466.5046039,
+  "timestamp": 1791582686.1935158,
   "expected_nodes": 2,
   "live_nodes": 2,
   "driver_expected_nccl_env": {
-    "NCCL_SOCKET_IFNAME": "=ens3",
+    "NCCL_SOCKET_IFNAME": "ens3",
+    "NCCL_BUFFSIZE": "4194304",
     "NCCL_NET": "Socket",
-    "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+    "NCCL_CROSS_NIC": "1"
   },
-  "driver_expected_ld_library_path": "/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
+  "driver_expected_ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
   "workers": [
     {
-      "hostname": "kimi-node-1",
-      "pid": 12899,
-      "env": {
-        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED",
-        "NCCL_SOCKET_IFNAME": "=ens3",
-        "NCCL_NET": "Socket"
-      },
-      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
-      "node_id": "48f8274518bc8c3a5b3722fbfc832c696daeab529d5a79206e09e671",
-      "node_manager_address": "10.128.0.40"
-    },
-    {
       "hostname": "kimi-node-0",
-      "pid": 91645,
+      "pid": 792596,
       "env": {
         "NCCL_NET": "Socket",
-        "NCCL_SOCKET_IFNAME": "=ens3",
-        "NCCL_TRANSPORT_PROVENANCE": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED"
+        "NCCL_CROSS_NIC": "1",
+        "NCCL_SOCKET_IFNAME": "ens3",
+        "NCCL_BUFFSIZE": "4194304"
       },
-      "ld_library_path": "/usr/local/cuda/lib64:/tmp/clean_nccl_libs",
-      "node_id": "1343a91990d168c2f5eaa28345e296a1db8996088773830e633b87ba",
+      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
+      "node_id": "380520d610c9800cb8cfa98aa3de33961fa917a94a729293f1f4dc34",
       "node_manager_address": "10.128.0.39"
+    },
+    {
+      "hostname": "kimi-node-1",
+      "pid": 98516,
+      "env": {
+        "NCCL_CROSS_NIC": "1",
+        "NCCL_SOCKET_IFNAME": "ens3",
+        "NCCL_BUFFSIZE": "4194304",
+        "NCCL_NET": "Socket"
+      },
+      "ld_library_path": "/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:/usr/local/cuda/lib64:",
+      "node_id": "4baaefeffa5c2caf2202f5550edcefd9d3acce25640f2a9491fdfa26",
+      "node_manager_address": "10.128.0.40"
     }
   ],
   "forbidden_variables": [

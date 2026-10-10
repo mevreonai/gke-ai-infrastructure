@@ -72,8 +72,10 @@ nccl_remote_v6_aligned_exports() {
     printf -v q '%q' "$LD_LIBRARY_PATH"
     printf 'export LD_LIBRARY_PATH=%s; ' "$q"
   fi
-  if [[ -n "${VLLM_PP_LAYER_PARTITION+x}" ]]; then
-    printf -v q '%q' "$VLLM_PP_LAYER_PARTITION"
-    printf 'export VLLM_PP_LAYER_PARTITION=%s; ' "$q"
-  fi
+  for var in CUDA_DEVICE_ORDER MODEL REVISION VLLM_MODEL VLLM_REVISION VLLM_MOE_BACKEND VLLM_FLASHINFER_AUTOTUNE VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS VLLM_PP_LAYER_PARTITION; do
+    if [[ -n "${!var+x}" ]]; then
+      printf -v q '%q' "${!var}"
+      printf 'export %s=%s; ' "$var" "$q"
+    fi
+  done
 }

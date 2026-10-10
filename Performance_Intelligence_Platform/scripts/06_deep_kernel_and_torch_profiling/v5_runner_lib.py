@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""Unified runner library for Performance Intelligence Platform.
+Supports arbitrary model architectures, single-node and multi-node execution,
+and robust JSON/CLI flag generation with strict error boundaries.
+"""
 from __future__ import annotations
 import json, math, os, platform, shlex, shutil, signal, subprocess, sys, time
 from pathlib import Path
@@ -29,7 +33,7 @@ def cli_help(vllm, parts):
 
 def require_flag(help_text, flag, where):
     if flag not in help_text:
-        raise RuntimeError(f"Required CLI flag {flag} is not supported by installed {where}. Run 07_preflight_v5.py and use the same vLLM environment.")
+        raise RuntimeError(f"Required CLI flag {flag} is not supported by installed {where}. Run preflight checks and use the same vLLM environment.")
 
 def add_if_supported(cmd, help_text, flag, *values):
     if flag in help_text: cmd += [flag, *map(str,values)]; return True
@@ -54,17 +58,20 @@ def environment_manifest(vllm):
       "python_packages":[sys.executable,"-m","pip","freeze"],
     }
     rec={"time":time.time(),"host":platform.node(),"python":sys.version,"commands":{},
-         "env":{k:v for k,v in os.environ.items() if k.startswith(("NCCL_","CUDA_","VLLM_","RAY_"))}}
+         "env":{k:v for k,v in os.environ.items() if k.startswith(("NCCL_","CUDA_","VLLM_","RAY_","V8_"))}}
     for k,c in cmds.items(): rec["commands"][k]={"cmd":c,**run_capture(c,timeout=120)}
     return rec
 
 def choose_cases(cfg, names, groups, run_all=False):
     names=set(names or []); groups=set(groups or [])
     out=[]
-    for c in cfg["cases"]:
+    raw_cases = cfg["cases"]
+    if isinstance(raw_cases, dict):
+        raw_cases = list(raw_cases.values())
+    for c in raw_cases:
         if run_all or c.get("name") in names or groups.intersection(c.get("groups",[])): out.append(c)
     if not out: raise SystemExit("No cases selected. Use --group qualification, --group <name>, --case <name>, or --all.")
-    unknown=names-{c["name"] for c in cfg["cases"]}
+    unknown=names-{c["name"] for c in raw_cases}
     if unknown: raise SystemExit(f"Unknown case(s): {sorted(unknown)}")
     return out
 
@@ -75,10 +82,12 @@ def resolved(case, cfg, key, default=None):
 def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False):
     for flag in ("--tensor-parallel-size","--pipeline-parallel-size","--max-model-len","--max-num-batched-tokens","--kv-cache-dtype","--revision"):
         require_flag(serve_help,flag,"vllm serve")
+    model = os.environ.get("MODEL", model)
+    revision = os.environ.get("REVISION", str(cfg.get("revision", "")))
     cmd=[vllm,"serve",model]
     add_if_supported(cmd,serve_help,"--model-impl","vllm")
     if "--trust-remote-code" in serve_help: cmd += ["--trust-remote-code"]
-    cmd += ["--revision",str(cfg["revision"]),"--host","0.0.0.0","--port",str(port),
+    cmd += ["--revision",revision,"--host","0.0.0.0","--port",str(port),
             "--tensor-parallel-size",str(case["tp"]),"--pipeline-parallel-size",str(case.get("pp",1)),
             "--max-model-len",str(resolved(case,cfg,"max_model_len")),
             "--max-num-batched-tokens",str(case["max_num_batched_tokens"]),
@@ -119,7 +128,10 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
             if f in serve_help: cmd += [f]
     if case.get("attention_config") is not None:
         require_flag(serve_help, "--attention-config", "vllm serve")
-        cmd += ["--attention-config", str(case["attention_config"])]
+        cfg_val = case["attention_config"]
+        if isinstance(cfg_val, dict):
+            cfg_val = json.dumps(cfg_val)
+        cmd += ["--attention-config", cfg_val]
     if case.get("extra_server_args"):
         cmd.extend(case["extra_server_args"])
     return cmd
@@ -131,6 +143,7 @@ def dataset_expected_input(b):
 def build_bench_cmd(vllm, bench_help, model, port, b, outdir, result_file, seed, measured=True, metadata=None):
     for flag in ("--dataset-name","--num-prompts","--max-concurrency","--num-warmups"):
         require_flag(bench_help,flag,"vllm bench serve")
+    model = os.environ.get("MODEL", model)
     dataset=b.get("dataset","random")
     cmd=[vllm,"bench","serve","--backend","openai","--host","127.0.0.1","--port",str(port),
          "--endpoint","/v1/completions","--model",model]
@@ -144,7 +157,7 @@ def build_bench_cmd(vllm, bench_help, model, port, b, outdir, result_file, seed,
     else:
         cmd += ["--random-input-len",str(b["input"]),"--random-output-len",str(b["output"]),"--random-range-ratio","0"]
     cmd += ["--num-prompts",str(b["prompts"]),"--max-concurrency",str(b["concurrency"]),"--ignore-eos","--num-warmups","0",
-            "--percentile-metrics","ttft,tpot,itl,e2el","--metric-percentiles","50,95,99","--seed",str(seed)]
+            "--percentile-metrics","ttft,tpot,itl,e2el","--metric-percentiles","50,95,99,100","--seed",str(seed)]
     if b.get("request_rate") is not None:
         require_flag(bench_help,"--request-rate","vllm bench serve"); cmd += ["--request-rate",str(b["request_rate"])]
         if b.get("burstiness") is not None:
@@ -162,11 +175,13 @@ def build_bench_cmd(vllm, bench_help, model, port, b, outdir, result_file, seed,
 def run_warmup(vllm, bench_help, model, port, b, bdir, seed, env):
     n=int(b.get("warmups",0) or 0)
     if n<=0: return {"ran":False}
-    wb=dict(b); wb["prompts"]=n; wb["concurrency"]=min(max(1,int(b.get("concurrency",1))),n)
+    c=int(b.get("concurrency",1))
+    prompts_cnt=max(n, 2*c)
+    wb=dict(b); wb["prompts"]=prompts_cnt; wb["concurrency"]=c
     cmd=build_bench_cmd(vllm,bench_help,model,port,wb,bdir,"unused.json",seed,measured=False)
     t0=time.time()
     with (bdir/"warmup_stdout.log").open("w") as log: rc=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT,env=env)
-    return {"ran":True,"command":cmd,"start":t0,"end":time.time(),"exit_code":rc}
+    return {"ran":True,"command":cmd,"start":t0,"end":time.time(),"exit_code":rc,"warmup_prompts":prompts_cnt,"warmup_concurrency":c}
 
 def parse_result(path:Path):
     if not path.exists(): return {}
@@ -222,3 +237,38 @@ def kill_process_group(proc):
     except Exception:
         try: os.killpg(proc.pid,signal.SIGKILL)
         except Exception: pass
+
+def start_server_with_timestamp_logging(server_cmd, log_path, env):
+    env = env.copy()
+    env["PYTHONUNBUFFERED"] = "1"
+    env["VLLM_LOG_STATS_INTERVAL"] = "1"
+    env["TORCH_LOGS"] = "recompiles"
+    proc = subprocess.Popen(server_cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, bufsize=1, env=env, start_new_session=True)
+    import threading
+    def logger_thread():
+        try:
+            with open(log_path, "w", encoding="utf-8", buffering=1) as f:
+                for line in proc.stdout:
+                    f.write(f"{time.time():.6f} {line}")
+                    f.flush()
+        except Exception:
+            pass
+    t = threading.Thread(target=logger_thread, daemon=True)
+    t.start()
+    return proc
+
+def package_run_evidence(cdir: Path, bdir: Path, bench_name: str):
+    import tarfile
+    archive_path = bdir / f"evidence_{bench_name}.tar.gz"
+    files_to_pack = []
+    server_log = cdir / "server.log"
+    if server_log.exists(): files_to_pack.append(server_log)
+    for pattern in ("metrics_*.jsonl", "metrics_raw.prom.log", "bench_stdout.log", "warmup_stdout.log", "COMMAND.txt", "warmup_manifest.json"):
+        for f in bdir.glob(pattern): files_to_pack.append(f)
+    for ray_f in cdir.glob("ray_*.log"): files_to_pack.append(ray_f)
+    try:
+        with tarfile.open(archive_path, "w:gz") as tar:
+            for f in files_to_pack: tar.add(f, arcname=f.name)
+    except Exception:
+        pass
+    return archive_path

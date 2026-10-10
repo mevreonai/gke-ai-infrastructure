@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
-"""Single-node V5 runner for Kimi-Linear-48B.
+"""Single-node surrogate runner for Performance Intelligence Platform.
 Key correctness properties:
-- exact HF revision passed to vLLM server
+- exact HF revision passed to vLLM server (model-agnostic)
 - TP4 samples only selected GPUs
 - per-case KV dtype is honored
 - warmup is outside the measured telemetry window
 - actual token lengths are validated from detailed result JSON
 - 512K/1M concurrency can be capacity-gated
 - request_rate/burstiness/probe loads are supported
+- FlashInfer autotune skips injected to prevent Triton MoE hang
+- Strict non-zero exit code on failure
 """
 from __future__ import annotations
 import argparse, json, os, shutil, subprocess, sys, time
@@ -27,7 +29,9 @@ def main():
     ap.add_argument("--dry-run",action="store_true")
     args=ap.parse_args()
 
-    cfg=json.loads(Path(args.cases).read_text()); model=cfg["model"]
+    cfg=json.loads(Path(args.cases).read_text())
+    model=os.environ.get("MODEL", cfg.get("model", "moonshotai/Kimi-Linear-48B-A3B-Instruct"))
+    revision=os.environ.get("REVISION", cfg.get("revision", ""))
     cases=choose_cases(cfg,args.case,args.group,args.all)
     out=Path(args.out).resolve(); out.mkdir(parents=True,exist_ok=True)
     vllm=shutil.which("vllm")
@@ -35,7 +39,7 @@ def main():
     py=sys.executable; sampler=str(Path(__file__).with_name("09_metrics_sampler.py").resolve())
     serve_help=cli_help(vllm,["serve"]); bench_help=cli_help(vllm,["bench","serve"])
 
-    top={"schema_version":2,"model":model,"revision":cfg.get("revision"),"evidence_class":cfg.get("evidence_class","MEASURED-48B"),
+    top={"schema_version":2,"model":model,"revision":revision,"evidence_class":cfg.get("evidence_class","MEASURED-PRODUCTION"),
          "guardrail":cfg.get("guardrail"),"started":time.time(),"source_cases":str(Path(args.cases).resolve()),
          "environment":environment_manifest(vllm),"cases":[]}
 
@@ -43,7 +47,9 @@ def main():
         cdir=out/case["name"]; cdir.mkdir(parents=True,exist_ok=True)
         gpus=case.get("gpu_indices",list(range(int(case["tp"]))))
         gpu_csv=",".join(map(str,gpus))
-        env=os.environ.copy(); env["CUDA_VISIBLE_DEVICES"]=gpu_csv
+        env=os.environ.copy()
+        env["CUDA_VISIBLE_DEVICES"]=gpu_csv
+        env["VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS"]=os.environ.get("VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS", "trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2")
         server_cmd=build_server_cmd(vllm,serve_help,cfg,case,model,args.port,distributed=False)
         (cdir/"SERVER_COMMAND.txt").write_text(q(server_cmd)+"\n")
         case_rec={"name":case["name"],"groups":case.get("groups",[]),"purpose":case.get("purpose"),"tp":case["tp"],"pp":case.get("pp",1),
@@ -62,13 +68,22 @@ def main():
                 case_rec["benchmarks"].append({**b,"planned_command":cmd,"dry_run":True})
             top["cases"].append(case_rec); continue
 
-        server_log=(cdir/"server.log").open("w",buffering=1); server_proc=None; metrics_proc=None
+        server_proc=None; metrics_proc=None
         observations={}
         try:
             case_rec["server_start"]=time.time()
-            server_proc=subprocess.Popen(server_cmd,stdout=server_log,stderr=subprocess.STDOUT,text=True,env=env,start_new_session=True)
+            server_proc=start_server_with_timestamp_logging(server_cmd, cdir/"server.log", env)
             models=wait_ready(f"http://127.0.0.1:{args.port}",server_proc,args.startup_timeout)
             case_rec["server_ready"]=time.time(); case_rec["models_endpoint"]=models
+            case_rec["server_pid"]=server_proc.pid
+            time.sleep(1)
+            try:
+                with open(cdir / "server.log", "r", encoding="utf-8", errors="ignore") as lf:
+                    for line in lf:
+                        if "GPU KV cache size:" in line:
+                            case_rec["gpu_kv_pool_announcement"] = line.strip()
+                            break
+            except Exception: pass
             (cdir/"resolved_models.json").write_text(json.dumps(models,indent=2))
 
             for bi,b in enumerate(case["benchmarks"]):
@@ -86,7 +101,7 @@ def main():
                     case_rec["benchmarks"].append(rec); observations[b["name"]]=rec; continue
                 time.sleep(1)
 
-                interval=float(case.get("metrics_interval_s",cfg["server_defaults"].get("metrics_interval_s",0.5)))
+                interval=float(case.get("metrics_interval_s",cfg.get("server_defaults",{}).get("metrics_interval_s",0.5)))
                 metrics_cmd=[py,sampler,"--url",f"http://127.0.0.1:{args.port}/metrics","--interval",str(interval),
                              "--out",str(bdir/"metrics_gpu.jsonl"),"--raw-prom",str(bdir/"metrics_raw.prom.log"),
                              "--gpu-indices",gpu_csv,"--node-label","node0"]
@@ -95,16 +110,22 @@ def main():
                 time.sleep(max(1.0,2*interval))
                 result_file=f"{b['name']}.json"
                 bench_cmd=build_bench_cmd(vllm,bench_help,model,args.port,b,bdir,result_file,args.seed_base+ci*1000+bi,
-                                          True,{"case":case["name"],"bench":b["name"],"revision":cfg.get("revision","")})
+                                          True,{"case":case["name"],"bench":b["name"],"revision":revision})
                 (bdir/"COMMAND.txt").write_text(q(bench_cmd)+"\n")
+                clock_wall=time.time(); clock_mono=time.monotonic()
                 t0=time.time()
                 with (bdir/"bench_stdout.log").open("w") as log:
                     rc=subprocess.call(bench_cmd,stdout=log,stderr=subprocess.STDOUT,env=env)
                 t1=time.time(); time.sleep(max(1.0,2*interval)); stop_proc(metrics_proc); metrics_proc=None
                 result_path=bdir/result_file; result=parse_result(result_path); qm=quick_metrics(bdir/"metrics_gpu.jsonl")
                 lens=validate_result_lengths(result,b)
+                package_run_evidence(cdir, bdir, b["name"])
                 rec={**b,"status":"COMPLETED" if rc==0 else "FAILED","command":bench_cmd,"start":t0,"end":t1,"exit_code":rc,
                      "result_json":str(result_path),"stdout":str(bdir/"bench_stdout.log"),"warmup_separate":True,
+                     "clock_wall":clock_wall,"clock_mono":clock_mono,"rank_in_session":bi,
+                     "server_start":case_rec["server_start"],"server_ready":case_rec["server_ready"],
+                     "time_since_ready":t0 - case_rec["server_ready"],
+                     "evidence_archive":str(bdir/f"evidence_{b['name']}.tar.gz"),
                      "request_rate":b.get("request_rate","inf"),"burstiness":b.get("burstiness"),"probe_request_rate":b.get("probe_request_rate"),
                      **qm,**lens}
                 case_rec["benchmarks"].append(rec); observations[b["name"]]=rec
@@ -113,10 +134,12 @@ def main():
         finally:
             case_rec["server_end"]=time.time()
             if metrics_proc: stop_proc(metrics_proc)
-            kill_process_group(server_proc); server_log.close()
+            kill_process_group(server_proc)
             (cdir/"case_manifest.json").write_text(json.dumps(case_rec,indent=2)); top["cases"].append(case_rec)
 
     top["ended"]=time.time(); (out/"vllm_surrogate_manifest.json").write_text(json.dumps(top,indent=2))
     print(f"Wrote {out/'vllm_surrogate_manifest.json'}")
+    if any(c.get("error") for c in top["cases"]):
+        raise RuntimeError("Case execution failed with error")
 
 if __name__=="__main__": main()

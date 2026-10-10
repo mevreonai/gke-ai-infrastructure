@@ -1,0 +1,33 @@
+
+NOTICE: Existing SQLite export found: /home/ayu23/v8_additional_runs/20261009_104123/stage3/01_b1_graphs_on_decode/vllm_profile.1.sqlite
+        It is assumed file was previously exported from: /home/ayu23/v8_additional_runs/20261009_104123/stage3/01_b1_graphs_on_decode/vllm_profile.1.nsys-rep
+        Consider using --force-export=true if needed.
+
+Processing [/home/ayu23/v8_additional_runs/20261009_104123/stage3/01_b1_graphs_on_decode/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+Time (%),Total Time (ns),Num Calls,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
+68.9,2463436410,512,4811399.2,4428615.0,3368810,155443941,6687773.5,cudaEventSynchronize
+12.2,437747640,2044,214162.3,205310.0,189660,10453020,228474.2,cudaGraphLaunch_v10000
+5.9,212424301,3,70808100.3,62423760.0,58639780,91360761,17899400.0,cudaProfilerStop
+4.0,141691690,23684,5982.6,4180.0,2860,104210,5204.4,cudaLaunchKernel
+3.0,106720632,20728,5148.6,3890.0,2100,102890,2547.0,cudaMemcpyAsync
+2.1,76629930,19724,3885.1,3300.0,2540,24840,1556.5,cuLaunchKernelEx
+1.0,36880920,18767,1965.2,1540.0,510,1045640,10855.7,cudaEventQuery
+0.6,21859821,76,287629.2,287055.0,117210,504360,89843.5,cudaMalloc
+0.4,14810950,12364,1197.9,1070.0,350,55710,1072.8,cudaEventRecordWithFlags_v11010
+0.4,13507540,12938,1044.0,750.0,450,39000,791.0,cudaStreamWaitEvent
+0.3,12317930,2043,6029.3,5790.0,1780,201030,4466.2,cudaLaunchHostFunc_v10000
+0.3,8958340,10890,822.6,580.0,350,18070,700.0,cudaEventRecord
+0.2,6413480,22764,281.7,210.0,170,17210,324.6,cudaStreamIsCapturing_v10000
+0.1,4505260,23684,190.2,140.0,80,16710,283.1,cuKernelGetName
+0.1,4370950,4096,1067.1,1250.0,350,17360,784.5,cudaEventCreateWithFlags
+0.1,3556150,4096,868.2,860.0,320,31160,1353.7,cudaEventDestroy
+0.1,3091370,652,4741.4,3440.0,2940,65530,4871.0,cudaLaunchKernelExC_v11060
+0.1,2810790,832,3378.4,3240.0,2360,12020,881.8,cuLaunchKernel
+0.1,2616140,4716,554.7,570.0,160,18800,673.6,cudaStreamGetCaptureInfo_v12030
+0.1,2208880,2268,973.9,960.0,490,5330,253.8,cudaGetFuncBySymbol_v11000
+0.0,548790,36,15244.2,5725.0,2340,66840,18097.7,cudaHostAlloc
+0.0,381870,832,459.0,360.0,220,6770,533.3,cuKernelGetFunction
+0.0,264210,32,8256.6,6200.0,5910,16640,3647.4,cudaMemsetAsync
+0.0,38880,4,9720.0,8155.0,6820,15750,4152.5,cuProfilerStart
+0.0,29880,4,7470.0,7165.0,6650,8900,983.8,cudaStreamSynchronize
+

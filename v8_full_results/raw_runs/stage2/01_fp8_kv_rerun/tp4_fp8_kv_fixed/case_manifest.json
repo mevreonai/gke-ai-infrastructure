@@ -30,7 +30,6 @@
     "moonshotai/Kimi-Linear-48B-A3B-Instruct",
     "--model-impl",
     "vllm",
-    "--no-enable-flashinfer-autotune",
     "--trust-remote-code",
     "--revision",
     "e1df551a447157d4658b573f9a695d57658590e9",
@@ -67,7 +66,7 @@
     "{\"use_prefill_query_quantization\": true}"
   ],
   "benchmarks": [],
-  "server_start": 1791285446.9148645,
+  "server_start": 1791579053.5643444,
   "error": "RuntimeError('server exited rc=1')",
-  "server_end": 1791285630.9562023
+  "server_end": 1791579233.6302123
 }

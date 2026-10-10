@@ -119,7 +119,10 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
             if f in serve_help: cmd += [f]
     if case.get("attention_config") is not None:
         require_flag(serve_help, "--attention-config", "vllm serve")
-        cmd += ["--attention-config", str(case["attention_config"])]
+        cfg_val = case["attention_config"]
+        if isinstance(cfg_val, dict):
+            cfg_val = json.dumps(cfg_val)
+        cmd += ["--attention-config", str(cfg_val)]
     if case.get("extra_server_args"):
         cmd.extend(case["extra_server_args"])
     return cmd

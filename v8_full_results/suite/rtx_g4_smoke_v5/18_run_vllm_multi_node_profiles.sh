@@ -111,9 +111,13 @@ PYG
     local dir="$1"
     local prev="" cur
     for _ in $(seq 1 90); do
-      cur=$(find "$dir" -name '*.nsys-rep' -printf '%f:%s\n' 2>/dev/null | sort)
-      if ! pgrep -f 'nsys (profile|launch)' >/dev/null && [[ -n "$cur" && "$cur" == "$prev" ]] \
-         && [[ -z "$(find "$dir" -name '*.nsys-rep' -size 0 2>/dev/null)" ]]; then return 0; fi
+      if ! pgrep -f 'nsys (profile|launch)' >/dev/null; then
+        find "$dir" -name '*.nsys-rep' -size 0 -delete 2>/dev/null || true
+      fi
+      cur=$(find "$dir" -name '*.nsys-rep' -size +0c -printf '%f:%s\n' 2>/dev/null | sort)
+      if ! pgrep -f 'nsys (profile|launch)' >/dev/null && [[ -n "$cur" && "$cur" == "$prev" ]]; then
+        return 0
+      fi
       prev="$cur"; sleep 10
     done
     return 1
@@ -124,9 +128,13 @@ PYG
     "${SSH[@]}" "$NODE1_IP" "bash -s" <<EOS
 prev=""
 for _ in \$(seq 1 90); do
-  cur=\$(find "$dir" -name '*.nsys-rep' -printf '%f:%s\n' 2>/dev/null | sort)
-  if ! pgrep -f 'nsys (profile|launch)' >/dev/null && [[ -n "\$cur" && "\$cur" == "\$prev" ]] \
-     && [[ -z "\$(find "$dir" -name '*.nsys-rep' -size 0 2>/dev/null)" ]]; then exit 0; fi
+  if ! pgrep -f 'nsys (profile|launch)' >/dev/null; then
+    find "$dir" -name '*.nsys-rep' -size 0 -delete 2>/dev/null || true
+  fi
+  cur=\$(find "$dir" -name '*.nsys-rep' -size +0c -printf '%f:%s\n' 2>/dev/null | sort)
+  if ! pgrep -f 'nsys (profile|launch)' >/dev/null && [[ -n "\$cur" && "\$cur" == "\$prev" ]]; then
+    exit 0
+  fi
   prev=\$cur; sleep 10
 done
 exit 1

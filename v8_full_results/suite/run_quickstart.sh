@@ -3,10 +3,15 @@
 # V8 Benchmark Suite — Beginner-Friendly 1-Click Quickstart Runner
 # ==============================================================================
 # Usage:
-#   Option A (Interactive/Auto):
+#   Option A (Interactive/Auto - runs Stages 1, 2, and 3):
 #       ./run_quickstart.sh
 #
-#   Option B (Pass IPs on command line):
+#   Option B (Specific Stage):
+#       ./run_quickstart.sh --stage1-only
+#       ./run_quickstart.sh --stage2-only
+#       ./run_quickstart.sh --stage3-only
+#
+#   Option C (Pass IPs on command line):
 #       ./run_quickstart.sh <NODE0_IP> <NODE1_IP>
 #       Example: ./run_quickstart.sh 10.240.0.10 10.240.0.11
 # ==============================================================================

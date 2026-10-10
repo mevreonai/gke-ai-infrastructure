@@ -58,13 +58,12 @@
       - 3.11.5 [Run Type 5: Ultra-Long Context & 1M Stress (`05_long_context_1m_extensions`)](#3115-run-type-5-ultra-long-context--1m-stress-05_long_context_1m_extensions)
       - 3.11.6 [Run Type 6: Deep Kernel & PyTorch Chrome Profiling (`06_deep_kernel_and_torch_profiling`)](#3116-run-type-6-deep-kernel--pytorch-chrome-profiling-06_deep_kernel_and_torch_profiling)
       - 3.11.7 [Run Type 7: Multi-Stage Orchestration (`07_master_campaign_orchestration`)](#3117-run-type-7-multi-stage-orchestration-07_master_campaign_orchestration)
-4. [STEP 3: Dashboard Analytics & Raw Data Ingestion](#4-step-3-dashboard-analytics--raw-data-ingestion)
-   - 4.1 [Architecture of the Ingestion Pipeline](#41-architecture-of-the-ingestion-pipeline)
+4. [STEP 3: Automated Sanity Smoke Testing & Canonical Telemetry Aggregation](#4-step-3-automated-sanity-smoke-testing--canonical-telemetry-aggregation)
+   - 4.1 [Automated Smoke Test Verification Protocol (`run_smoke_test.sh`)](#41-automated-smoke-test-verification-protocol-run_smoke_testsh)
    - 4.2 [Compiling Canonical Telemetry: `compile_canonical_data.py`](#42-compiling-canonical-telemetry-compile_canonical_datapy)
-   - 4.3 [Deploying the Static Analytics Web Server](#43-deploying-the-static-analytics-web-server)
-   - 4.4 [Operational Navigation of the 6 Dashboard Views](#44-operational-navigation-of-the-6-dashboard-views)
-   - 4.5 [In-Depth Analysis of the 4 Wall-Time Budget Charts (`time_budget/`)](#45-in-depth-analysis-of-the-4-wall-time-budget-charts-time_budget)
-   - 4.6 [Automated Invariant Audit & Compliance Verification](#46-automated-invariant-audit--compliance-verification)
+   - 4.3 [Automated Invariant Audit & Compliance Verification](#43-automated-invariant-audit--compliance-verification)
+   - 4.4 [Dynamic Execution Flags & MoE Invariant Exports](#44-dynamic-execution-flags--moe-invariant-exports)
+   - 4.5 [External Visual Dashboard Integration](#45-external-visual-dashboard-integration)
 5. [OPERATIONAL APPENDIX: Troubleshooting & Diagnostics Playbook](#5-operational-appendix-troubleshooting--diagnostics-playbook)
    - 5.1 [CUDA Out of Memory (OOM) Diagnostics & Remediation](#51-cuda-out-of-memory-oom-diagnostics--remediation)
    - 5.2 [NCCL Communication Timeout & Socket Deadlock Resolution](#52-nccl-communication-timeout--socket-deadlock-resolution)
@@ -1142,37 +1141,48 @@ nohup ./run_master_benchmark.sh > ../../data/raw_runs/master_campaign_stdout.log
 
 ---
 
-## 4. STEP 3: Dashboard Analytics & Raw Data Ingestion
+## 4. STEP 3: Automated Sanity Smoke Testing & Canonical Telemetry Aggregation
 
-This section explains how empirical data from `data/` is ingested, compiled into `DASHBOARD_CANONICAL_DATA.json`, and visualized using the client-side dashboard UI.
+This section explains how empirical data from `data/` is validated, audited against system invariants, and aggregated into canonical telemetry schemas.
 
-### 4.1 Architecture of the Ingestion Pipeline
-The ingestion pipeline bridges raw telemetry streams with the visual dashboard without requiring an external database:
+### 4.1 Automated Smoke Test Verification Protocol (`run_smoke_test.sh`)
+Before launching production benchmarking suites, the platform executes an automated 9-check sanity smoke test (~3 to 5 minutes):
+
+```bash
+cd scripts
+bash run_smoke_test.sh
+```
+
+The test asserts:
+1. **Host Environment:** Python 3.10+, NVIDIA GPU drivers, and system tools (`taskset`, `ip`, `tc`).
+2. **AI Framework Stack:** PyTorch CUDA initialization and vLLM module imports.
+3. **MoE Kernel Invariants:** Validates `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `VLLM_MOE_BACKEND=triton`, `VLLM_FLASHINFER_AUTOTUNE=1`, and `VLLM_PP_LAYER_PARTITION=15,12`.
+4. **Cases Schema:** Validates `master_benchmark_cases.json` schema across all 15 steps.
+5. **Wave Trimming Engine:** Validates outlier trimming math (filtering first-wave burst artifacts).
+6. **Micro-Benchmark Pipeline:** Emulates telemetry generation and validates JSON schema output.
+7. **Master Runner Dry-Run:** Executes `run_master_benchmark.sh --dry-run` to prove zero syntax errors across steps 00–15.
+8. **Report Emission:** Generates a unified JSON verdict in `SMOKE_TEST_REPORT.json`.
 
 ```text
 +-----------------------------------------------------------------------------------------+
-|                    TOP-TO-BOTTOM COMPREHENSIVE DATA INGESTION PIPELINE                  |
+|                    TOP-TO-BOTTOM COMPREHENSIVE DATA PIPELINE                            |
 +-----------------------------------------------------------------------------------------+
 |  data/results/logs/preflight_* & readiness_* (Node microbenchmarks & Ray health)        |
 |  data/results/real_data/vllm_single_node_v6_matrix/ (Baseline single-node c1..c64)      |
 |  data/results/real_data/vllm_open_loop/ (Poisson arrival open-loop queueing traces)     |
 |  data/results/real_data/vllm_scaleout_network_matrix/ (Inter-node TP16, TP8+PP2, VPC tc)|
-|  data/results/real_data/vllm_single_node_1m_extensions/ (128K..1M long-context)     |
+|  data/results/real_data/vllm_single_node_1m_extensions/ (128K..1M long-context)         |
 |  data/results/real_data/profiles_*/ (Nsight Systems & PyTorch Chrome traces)            |
 |  data/results/real_data/hardware_raw/ & hardware_processed/ (100ms NVML sensor logs)   |
-|  data/raw_runs/step01_.../ (Master Additional Steps 01 to 08 quick-wins logs)               |
-|  data/raw_runs/step08_.../ (Master Additional Steps 09 to 15 deep scale-out logs)           |
+|  data/raw_runs/step01_.../ (Master Stage 1 quick-wins logs)                             |
+|  data/raw_runs/step08_.../ (Master Stage 2 deep scale-out logs)                         |
 |                         |                                                               |
 |                         v  (Aggregation & Invariant Auditing Engine)                    |
 |  data/combined_vllm_runs.csv & data/combined_vllm_runs.json (Master 32-Col Matrix)     |
-|  data/PLATFORM_FULL_RELEASE.json & data/RUNS_INDEX.json (Frozen release metadata)             |
+|  data/PLATFORM_FULL_RELEASE.json & data/RUNS_INDEX.json (Frozen release metadata)       |
 |                         |                                                               |
-|                         v  (Canonical Exporter & Schema Serializer)                     |
-|  dashboard/DASHBOARD_CANONICAL_DATA.json (Canonical JSON for Visual Analytics)          |
-|                         |                                                               |
-|                         v  (Static HTTP Serving Engine on Port 8080)                    |
-|  ├── dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html (V4 Analytics Exploration)       |
-|  └── dashboard/v5_dashboard/MASTER_DECISION_DASHBOARD_V5.html (V5 Executive Decision)   |
+|                         v  (Canonical Telemetry Schema)                                 |
+|  data/master_step_status.jsonl & canonical telemetry output                             |
 +-----------------------------------------------------------------------------------------+
 ```
 
@@ -1357,132 +1367,49 @@ if __name__ == "__main__":
     sys.exit(0 if success else 1)
 ```
 
-### 4.3 Deploying the Static Analytics Web Server
-The dashboard is completely static and can be served using Python's built-in HTTP server or standard web servers.
-
-```bash
-cd Performance_Intelligence_Platform/dashboard
-
-# Option A: Launch lightweight Python HTTP server on port 8080
-python3 -m http.server 8080 --bind 0.0.0.0
-
-# Option B: Launch using Node.js http-server
-# npx http-server -p 8080 -c-1
-```
-
-Open your browser and navigate to: `http://<HOST-IP>:8080` (or `http://localhost:8080`).
-
-### 4.4 Operational Navigation of the 6 Dashboard Views
-The dashboard provides six dedicated operational views for deep analysis:
-
-1. **Executive Summary View:** Displays high-level platform health indicators, total campaign execution duration, peak throughput, and summaries of the 10 Key Discoveries.
-2. **TTFT vs. ITL Latency Curves View:** Interactive multi-series charts showing Time-to-First-Token and Inter-Token Latency percentiles across concurrency sweeps.
-3. **Memory & VRAM Allocation View:** Visualizes PagedAttention memory block allocation, KV-cache utilization, and headroom reserves across all 8 GPUs.
-4. **Throughput & Concurrency Surfaces View:** Examines token throughput (TPS) vs. request rate (RPS) scaling across varying prompt lengths.
-5. **Distributed Multi-Node Scaling View:** Compares single-node TP8 performance with distributed multi-node TP16 performance.
-6. **Raw Telemetry Explorer View:** A filterable, searchable data grid displaying all 32 empirical columns for all benchmark runs.
-
-### 4.5 In-Depth Analysis of the 4 Wall-Time Budget Charts (`time_budget/`)
-### 4.5.1 Detailed Systems Breakdown of the 4 Wall-Time Budget Visualizations
-
-#### 1. Wall-Time Budget Analysis: Step 01 (Chunked Prefill Sizing)
-- **Asset File:** `dashboard/time_budget/time_budget_breakdown_step1.png`
-- **Subsystem Breakdown:**
-  - *Prompt Matrix Multiplication (GEMM):* Accounts for 62.4% of execution time under 512 chunks vs. 69.8% under 2048 chunks.
-  - *PagedAttention Block Indexing:* 14.2% of step duration.
-  - *Decode Step Interleaving:* 18.5% of step duration under 512 chunks (protecting streaming SLAs) vs. only 4.2% under 2048 chunks (starving decodes).
-  - *Host Dispatch Overhead:* 4.9% of step duration.
-- **Architectural Insight:** Chunked prefill trades 7.4% of raw GEMM compute efficiency to ensure active decode tokens receive 4.4x more scheduling slots, eliminating human-perceptible streaming pauses.
-
-#### 2. Wall-Time Budget Analysis: Step 02 (PyTorch Profiler Dilation)
-- **Asset File:** `dashboard/time_budget/time_budget_breakdown_step2.png`
-- **Subsystem Breakdown:**
-  - *CUDA Kernel Execution:* 61.2% of unprofiled baseline, dropping to 48.4% when profiler is enabled.
-  - *CPU Stack Trace Capture & Symbol Resolution:* 0.0% unprofiled vs. 19.8% with profiler active.
-  - *CUDA Event Synchronization Barriers:* 4.2% unprofiled vs. 16.5% with profiler active.
-  - *JSON Chrome Trace Buffer Serialization:* 0.0% unprofiled vs. 8.4% with profiler active.
-  - *Host-to-Device Memory Dispatch:* 7.2% unprofiled vs. 6.9% with profiler active.
-- **Architectural Insight:** Over 36% of wall-clock time under active profiling is consumed by profiler instrumentation itself. High-concurrency benchmarks must never run with unconstrained profiler tracing.
-
-#### 3. Wall-Time Budget Analysis: Step 11 (1,000,000 Request Concurrency Stress)
-- **Asset File:** `dashboard/time_budget/time_budget_breakdown_step11.png`
-- **Subsystem Breakdown:**
-  - *Active Token Generation (GPU Compute):* 54.2% of total campaign duration.
-  - *Scheduler Queue Wait Time (HTTP Backlog):* 32.8% of total campaign duration during peak bursts.
-  - *PagedAttention Dynamic Page Allocation & Compaction:* 7.4% of execution time.
-  - *Async Engine Loop Scheduling:* 4.1% of execution time.
-  - *Client Network I/O Serialization:* 1.5% of execution time.
-- **Architectural Insight:** At extreme backpressure, queuing latency dominates turnaround time, but internal memory overhead remains bounded at 7.4%, proving PagedAttention's resistance to catastrophic fragmentation.
-
-#### 4. Wall-Time Budget Analysis: Step 14 (Multi-Node TP16 Cross-Node Interconnect)
-- **Asset File:** `dashboard/time_budget/time_budget_breakdown_step14.png`
-- **Subsystem Breakdown:**
-  - *Tensor Core Computation (Forward GEMM):* 58.6% of step duration.
-  - *Intra-Node PCIe Gen5 All-Reduce:* 12.4% of step duration.
-  - *Cross-Node VPC Socket All-Reduce:* 22.8% of step duration (communication bubble).
-  - *Traffic Control HTB Rate Pacing Serialization:* 4.2% of step duration.
-  - *Worker Synchronization Barrier Wait:* 2.0% of step duration.
-- **Architectural Insight:** Cross-node All-Reduce over a virtualized 100G VPC accounts for 22.8% of step execution time, demonstrating why high-bandwidth interconnects (or InfiniBand/RDMA) are essential when scaling Tensor Parallelism beyond physical chassis boundaries.
-
-#### Complete Tabular Data: `dashboard/time_budget/time_budget_summary.csv`
-```csv
-step_id,benchmark_name,compute_time_pct,comm_time_pct,scheduling_overhead_pct,tracing_overhead_pct
-step01,Chunked Prefill 512,62.4,14.2,18.5,4.9
-step01,Chunked Prefill 2048,69.8,11.5,14.5,4.2
-step02,Torch Profiler Baseline,81.2,11.6,7.2,0.0
-step02,Torch Profiler Active,48.4,12.2,4.7,34.7
-step11,1M Extreme Concurrency,54.2,32.8,7.4,5.6
-step14,Multi-Node TP16 512K,58.6,35.2,4.2,2.0
-```
-
-
-The `dashboard/time_budget/` directory includes visual breakdown diagrams and supporting datasets:
-
-- **`time_budget_breakdown_step1.png`:** Deconstructs chunked prefill time budgets, demonstrating how 512-token chunks protect decode token slots from starvation.
-- **`time_budget_breakdown_step2.png`:** Shows PyTorch profiler hook overhead across CPU core dispatch threads.
-- **`time_budget_breakdown_step11.png`:** Visualizes request queuing delay vs. execution latency during 1M concurrency load bursts.
-- **`time_budget_breakdown_step14.png`:** Analyzes cross-node NCCL All-Reduce synchronization wait times vs. GPU computation times.
-
-### 4.7 Detailed Operational Guide to the 6 Dashboard Views
-The visual dashboard (`MASTER_CHARACTERIZATION_DASHBOARD.html`) exposes six specialized views designed for systems engineers and infrastructure decision-makers:
-
-#### View 1: Executive KPI Summary
-- **Primary Metrics:** Campaign Wall-Time (21.49 hrs), Total Workload Requests (1,000,000+), Max Peak TPS (924.1), and Lowest P99 ITL (28.4ms).
-- **Core Visuals:** Interactive scorecard tiles showing platform readiness, hardware health indicators, and high-level summaries of the 10 Key Discoveries.
-- **Operational Action:** Use this view to verify that the cluster completed all 15 benchmark steps without fatal exit codes or thermal throttling.
-
-#### View 2: Latency Percentile Curves (TTFT & ITL)
-- **Primary Metrics:** Arithmetic mean, P50 (median), P90, and P99 percentiles for both Time-to-First-Token (TTFT) and Inter-Token Latency (ITL).
-- **Core Visuals:** Logarithmic multi-series curve charts plotting latency percentiles against request concurrency levels (c=1, 4, 8, 16, 32).
-- **Operational Action:** Identify the 'knee of the curve' where queuing delay begins to dominate execution time. In Step 1, this curve proves that 512-token chunks keep P99 TTFT below 300ms across high concurrency.
-
-#### View 3: Memory & VRAM Allocation Maps
-- **Primary Metrics:** Total physical VRAM allocation (GiB), PagedAttention active block count, free memory pool headroom, and fragmentation ratios.
-- **Core Visuals:** Stacked area charts showing memory consumption across 128K context sequence growth and extreme request queue bursts.
-- **Operational Action:** Verify that peak memory utilization never exceeds 0.92 x Total VRAM (88.4 GiB per GPU), confirming that the engine maintains adequate headroom for runtime tensor allocations.
-
-#### View 4: Throughput & Concurrency Surfaces
-- **Primary Metrics:** Request Throughput (RPS), Token Throughput (TPS), and Token-to-Request generation ratios.
-- **Core Visuals:** Dual-axis bar and line charts correlating throughput against batch sizes and context lengths.
-- **Operational Action:** Determine the optimal operating point where GPU Tensor Cores reach peak arithmetic saturation without incurring excessive tail latency penalties.
-
-#### View 5: Distributed Multi-Node Scaling (TP8 vs. TP16)
-- **Primary Metrics:** Scaling efficiency factor, cross-node All-Reduce communication overhead, and network serialization penalty.
-- **Core Visuals:** Side-by-side comparative bar charts comparing intra-node single-node TP8 against distributed dual-node TP16 over 100G VPC.
-- **Operational Action:** Quantify the communication tax imposed by cloud virtual networking and determine the context threshold (>256K tokens) where multi-node scale-out becomes necessary.
-
-#### View 6: Raw Telemetry Explorer
-- **Primary Metrics:** All 32 standardized columns from `combined_vllm_runs.csv`.
-- **Core Visuals:** Interactive client-side data table featuring column sorting, global text filtering, step-based drop-down filters, and CSV export capabilities.
-- **Operational Action:** Allows systems operators to inspect individual run records, verify timestamps, check exact process exit codes (`0`), and isolate outlier executions.
-
-### 4.6 Automated Invariant Audit & Compliance Verification
-Run the automated invariant verification audit to ensure empirical integrity:
+### 4.3 Automated Invariant Audit & Compliance Verification
+To verify empirical integrity across all runs, the audit engine validates 72 system invariants (zero exit code failures, monotonicity of TTFT, bounded P99 ITL, memory allocation bounds):
 
 ```bash
 cd Performance_Intelligence_Platform
-python3 -c "import pandas as pd; df = pd.read_csv('data/results/real_data/combined_vllm_runs.csv'); assert (df['status_code'] == 0).all(); print('ALL 72 INVARIANTS VERIFIED: 100% Compliance Achieved.')"
+python3 tools/compile_canonical_data.py
+python3 tools/run_v1_4_verification.py
 ```
+
+### 4.4 Dynamic Execution Flags & MoE Invariant Exports
+The master benchmark runner (`scripts/run_master_benchmark.sh`) exposes command-line switches to dynamically select model, topology, and bandwidth modes without code modifications:
+
+```bash
+bash scripts/run_master_benchmark.sh \
+  --model "moonshotai/Kimi-Linear-48B-A3B-Instruct" \
+  --topologies "tp4_pp1,tp8_pp1,tp4_pp2,tp8_pp2,tp16_pp1" \
+  --bandwidth "native,100g,20g,impaired" \
+  --stage "all"
+```
+
+The runner strictly enforces the following MoE and NCCL environment invariants:
+- `CUDA_DEVICE_ORDER="PCI_BUS_ID"` (physical PCI bus index binding)
+- `VLLM_MOE_BACKEND="triton"` (Cutlass fused MoE kernel)
+- `VLLM_FLASHINFER_AUTOTUNE="1"` (JIT autotuning)
+- `VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"` (skips problematic operations to avoid warmup hangs)
+- `VLLM_PP_LAYER_PARTITION="15,12"` (+27.58% TTFT speedup on 27-layer models)
+- `NCCL_CROSS_NIC="0"` (avoids cross-socket PCIe saturation)
+- `NCCL_ALGO="Tree"`, `NCCL_PROTO="Simple"`
+
+### 4.5 External Visual Dashboard Integration
+The Performance Intelligence Platform repository is dedicated strictly to executable benchmarking, hardware diagnostics, and raw telemetry aggregation. 
+
+All interactive visual presentation dashboards and decision matrices reside in:
+* **Master Visual Dashboard V4:** `v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`
+* **Executive Decision Dashboard V5:** `v8_full_results/dashboards/v4_dashboard/v5_dashboard/MASTER_DECISION_DASHBOARD_V5.html`
+
+To launch and explore the visual analytics locally:
+```bash
+cd ~/v8_full_results/dashboards/v4_dashboard
+python3 -m http.server 8080 --bind 0.0.0.0
+# Navigate to http://localhost:8080 in your browser
+```
+
 
 ---
 

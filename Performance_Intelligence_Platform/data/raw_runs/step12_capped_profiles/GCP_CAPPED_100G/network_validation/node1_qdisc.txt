@@ -1,4 +1,0 @@
-Warning: Permanently added '10.128.0.40' (ED25519) to the list of known hosts.
-qdisc htb 1: root refcnt 17 r2q 10 default 0x10 direct_packets_stat 1 direct_qlen 1000
- Sent 80255764 bytes 1215945 pkt (dropped 0, overlimits 1 requeues 17) 
- backlog 0b 0p requeues 17

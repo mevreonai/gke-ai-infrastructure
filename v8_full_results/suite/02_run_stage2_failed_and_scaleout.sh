@@ -76,11 +76,18 @@ step s2_02_offload_summarize python3 "$VLLM_DIR/15_summarize_vllm.py" "$OFFLOAD_
 # Part 2: Two-Node Distributed Concurrency Under Load (75 min)
 # -----------------------------------------------------------------------------
 if [[ -n "${NODE1_IP:-}" ]]; then
-  # Verify no lingering traffic control caps exist before running native benchmarks
+  clean_tc() {
+    local iface="$1"
+    sudo -n tc qdisc del dev "$iface" root 2>/dev/null || true
+    sudo -n tc qdisc del dev "$iface" ingress 2>/dev/null || true
+  }
   LOCAL_IFACE=$(ip route get "$NODE1_IP" | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
-  sudo -n tc qdisc del dev "$LOCAL_IFACE" root 2>/dev/null || true
-  ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
-    "sudo -n tc qdisc del dev \$(ip route get '$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}') root 2>/dev/null || true" || true
+  clean_tc "$LOCAL_IFACE"
+  ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "
+    REMOTE_IFACE=\$(ip route get '$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+    sudo -n tc qdisc del dev \"\$REMOTE_IFACE\" root 2>/dev/null || true
+    sudo -n tc qdisc del dev \"\$REMOTE_IFACE\" ingress 2>/dev/null || true
+  " || true
 
   LOAD_DIR="$STAGE2_ROOT/03_multi_node_load"
   step s2_03_multi_node_load env OUT_ROOT="$LOAD_DIR" \

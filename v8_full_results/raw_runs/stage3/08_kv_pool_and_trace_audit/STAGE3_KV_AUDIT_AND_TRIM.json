@@ -1,0 +1,1192 @@
+{
+  "scanned_closedloop_runs": {
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/01_b1_graphs_on_decode/bench.json": {
+      "benchmark_name": null,
+      "total_requests": 1,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_untrimmed_ttft_mean_s": 0.42103969999971014,
+      "wave1_burst_ttft_mean_s": 0.42103969999971014,
+      "steady_state_ttft_mean_s": 0.42103969999971014,
+      "raw_untrimmed_itl_mean_ms": 4.854790121568358,
+      "steady_state_itl_mean_ms": 4.854790121568358,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.42103969999971014,
+        "p90": 0.42103969999971014,
+        "p95": 0.42103969999971014,
+        "p99": 0.42103969999971014
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.42103969999971014,
+        "p90": 0.42103969999971014,
+        "p95": 0.42103969999971014,
+        "p99": 0.42103969999971014
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.42103969999971014,
+        "p90": 0.42103969999971014,
+        "p95": 0.42103969999971014,
+        "p99": 0.42103969999971014
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004776999999194231,
+        "p90": 0.004842819000259624,
+        "p95": 0.004896479999842995,
+        "p99": 0.008458400000563415
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004776999999194231,
+        "p90": 0.004842819000259624,
+        "p95": 0.004896479999842995,
+        "p99": 0.008458400000563415
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/02_r1_continuous_context/tp8_r1_continuous_context_curve/16k_c1/16k_c1.json": {
+      "benchmark_name": "16k_c1",
+      "total_requests": 6,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 5,
+      "trimmed_first_token_requests": 5,
+      "trimmed_drain_requests": 5,
+      "raw_untrimmed_ttft_mean_s": 0.5314642088331615,
+      "wave1_burst_ttft_mean_s": 0.5337206399999559,
+      "steady_state_ttft_mean_s": 0.5310129225998026,
+      "raw_untrimmed_itl_mean_ms": 6.735755082007489,
+      "steady_state_itl_mean_ms": 6.742101812695124,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.5337206399999559,
+        "p90": 0.5364487810002174,
+        "p95": 0.5364487810002174,
+        "p99": 0.5364487810002174
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.5337206399999559,
+        "p90": 0.5337206399999559,
+        "p95": 0.5337206399999559,
+        "p99": 0.5337206399999559
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.5313333610001791,
+        "p90": 0.5364487810002174,
+        "p95": 0.5364487810002174,
+        "p99": 0.5364487810002174
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.00671039999997447,
+        "p90": 0.006776919999538222,
+        "p95": 0.006820010000410548,
+        "p99": 0.009024840000165568
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0067114800003764685,
+        "p90": 0.006777730000067095,
+        "p95": 0.006828890000178944,
+        "p99": 0.009024840000165568
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/02_r1_continuous_context/tp8_r1_continuous_context_curve/32k_c1/32k_c1.json": {
+      "benchmark_name": "32k_c1",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 1.0662620102498295,
+      "wave1_burst_ttft_mean_s": 1.0674722089997886,
+      "steady_state_ttft_mean_s": 1.0658586106665098,
+      "raw_untrimmed_itl_mean_ms": 6.879095126986079,
+      "steady_state_itl_mean_ms": 6.905580592593222,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.0706015010000556,
+        "p90": 1.071028209999895,
+        "p95": 1.071028209999895,
+        "p99": 1.071028209999895
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 1.0674722089997886,
+        "p90": 1.0674722089997886,
+        "p95": 1.0674722089997886,
+        "p99": 1.0674722089997886
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 1.0706015010000556,
+        "p90": 1.071028209999895,
+        "p95": 1.071028209999895,
+        "p99": 1.071028209999895
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.006802560000323865,
+        "p90": 0.006856859999970766,
+        "p95": 0.006896529999721679,
+        "p99": 0.009551099999953294
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.006803860000218265,
+        "p90": 0.006869300000289513,
+        "p95": 0.006900009999299073,
+        "p99": 0.009554309999657562
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/02_r1_continuous_context/tp8_r1_continuous_context_curve/64k_c1/64k_c1.json": {
+      "benchmark_name": "64k_c1",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 2.2038311490000524,
+      "wave1_burst_ttft_mean_s": 2.221668451000369,
+      "steady_state_ttft_mean_s": 2.1978853816666137,
+      "raw_untrimmed_itl_mean_ms": 7.009968662700091,
+      "steady_state_itl_mean_ms": 7.012149068787664,
+      "raw_ttft_percentiles_s": {
+        "p50": 2.2000960519999353,
+        "p90": 2.221668451000369,
+        "p95": 2.221668451000369,
+        "p99": 2.221668451000369
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 2.221668451000369,
+        "p90": 2.221668451000369,
+        "p95": 2.221668451000369,
+        "p99": 2.221668451000369
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 2.199089470999752,
+        "p90": 2.2000960519999353,
+        "p95": 2.2000960519999353,
+        "p99": 2.2000960519999353
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.007004979999692296,
+        "p90": 0.007040679999590793,
+        "p95": 0.007069800000863324,
+        "p99": 0.007446960000379477
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0070028399995862856,
+        "p90": 0.007038520000605786,
+        "p95": 0.007055989999571466,
+        "p99": 0.008703500000592612
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/02_r1_continuous_context/tp8_r1_continuous_context_curve/256k_c1/256k_c1.json": {
+      "benchmark_name": "256k_c1",
+      "total_requests": 2,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_untrimmed_ttft_mean_s": 10.386274205000063,
+      "wave1_burst_ttft_mean_s": 10.427256740000303,
+      "steady_state_ttft_mean_s": 10.345291669999824,
+      "raw_untrimmed_itl_mean_ms": 8.434376476189856,
+      "steady_state_itl_mean_ms": 8.480208380956718,
+      "raw_ttft_percentiles_s": {
+        "p50": 10.427256740000303,
+        "p90": 10.427256740000303,
+        "p95": 10.427256740000303,
+        "p99": 10.427256740000303
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 10.427256740000303,
+        "p90": 10.427256740000303,
+        "p95": 10.427256740000303,
+        "p99": 10.427256740000303
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 10.345291669999824,
+        "p90": 10.345291669999824,
+        "p95": 10.345291669999824,
+        "p99": 10.345291669999824
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.008443439999609836,
+        "p90": 0.008519609999893873,
+        "p95": 0.008578879999731726,
+        "p99": 0.009430449999854318
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.00848833000054583,
+        "p90": 0.008541830000467598,
+        "p95": 0.008585620000303607,
+        "p99": 0.010183430000324734
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/03_r2_agentic_prefix_decay/tp4_r2_agentic_prefix_cache_decay/turn1_cold_1k/turn1_cold_1k.json": {
+      "benchmark_name": "turn1_cold_1k",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 0.09957394474986359,
+      "wave1_burst_ttft_mean_s": 0.2482988789997762,
+      "steady_state_ttft_mean_s": 0.049998966666559376,
+      "raw_untrimmed_itl_mean_ms": 4.772935905512129,
+      "steady_state_itl_mean_ms": 4.773147908137492,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.05021234000014374,
+        "p90": 0.2482988789997762,
+        "p95": 0.2482988789997762,
+        "p99": 0.2482988789997762
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.2482988789997762,
+        "p90": 0.2482988789997762,
+        "p95": 0.2482988789997762,
+        "p99": 0.2482988789997762
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.05002972999955091,
+        "p90": 0.05021234000014374,
+        "p95": 0.05021234000014374,
+        "p99": 0.05021234000014374
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004780860000209941,
+        "p90": 0.004849300000387302,
+        "p95": 0.004887300000518735,
+        "p99": 0.005898711000554613
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004779240000061691,
+        "p90": 0.00485199000013381,
+        "p95": 0.004904989000351634,
+        "p99": 0.005898711000554613
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/03_r2_agentic_prefix_decay/tp4_r2_agentic_prefix_cache_decay/turn2_cached_2k/turn2_cached_2k.json": {
+      "benchmark_name": "turn2_cached_2k",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 0.07298146475022804,
+      "wave1_burst_ttft_mean_s": 0.079770670000471,
+      "steady_state_ttft_mean_s": 0.07071839633348039,
+      "raw_untrimmed_itl_mean_ms": 4.786380019686834,
+      "steady_state_itl_mean_ms": 4.787378433072294,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.079770670000471,
+        "p90": 0.105498500000067,
+        "p95": 0.105498500000067,
+        "p99": 0.105498500000067
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.079770670000471,
+        "p90": 0.079770670000471,
+        "p95": 0.079770670000471,
+        "p99": 0.079770670000471
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.053751520000332675,
+        "p90": 0.105498500000067,
+        "p95": 0.105498500000067,
+        "p99": 0.105498500000067
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004783259999385336,
+        "p90": 0.0048502299996471265,
+        "p95": 0.004907910000838456,
+        "p99": 0.006394449999788776
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004783520000273711,
+        "p90": 0.004858819999753905,
+        "p95": 0.004924369999571354,
+        "p99": 0.0081172999998671
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/03_r2_agentic_prefix_decay/tp4_r2_agentic_prefix_cache_decay/turn3_cached_3k/turn3_cached_3k.json": {
+      "benchmark_name": "turn3_cached_3k",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 0.08594107224985237,
+      "wave1_burst_ttft_mean_s": 0.10463255000013305,
+      "steady_state_ttft_mean_s": 0.07971057966642547,
+      "raw_untrimmed_itl_mean_ms": 4.79748716732029,
+      "steady_state_itl_mean_ms": 4.802544916008848,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.10463255000013305,
+        "p90": 0.1297887989994706,
+        "p95": 0.1297887989994706,
+        "p99": 0.1297887989994706
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.10463255000013305,
+        "p90": 0.10463255000013305,
+        "p95": 0.10463255000013305,
+        "p99": 0.10463255000013305
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.05471622000004572,
+        "p90": 0.1297887989994706,
+        "p95": 0.1297887989994706,
+        "p99": 0.1297887989994706
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0047817599997870275,
+        "p90": 0.004843439999604016,
+        "p95": 0.004884670000137703,
+        "p99": 0.005215330000282847
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004781780000485014,
+        "p90": 0.004842410000492237,
+        "p95": 0.004890289999821107,
+        "p99": 0.005914149999625806
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/03_r2_agentic_prefix_decay/tp4_r2_agentic_prefix_cache_decay/turn4_cached_4k/turn4_cached_4k.json": {
+      "benchmark_name": "turn4_cached_4k",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 0.10276178949993664,
+      "wave1_burst_ttft_mean_s": 0.14569923999988532,
+      "steady_state_ttft_mean_s": 0.08844930599995375,
+      "raw_untrimmed_itl_mean_ms": 4.796674568894996,
+      "steady_state_itl_mean_ms": 4.79779601836982,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.14569923999988532,
+        "p90": 0.14864544899955945,
+        "p95": 0.14864544899955945,
+        "p99": 0.14864544899955945
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.14569923999988532,
+        "p90": 0.14569923999988532,
+        "p95": 0.14569923999988532,
+        "p99": 0.14569923999988532
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.0600019000003158,
+        "p90": 0.14864544899955945,
+        "p95": 0.14864544899955945,
+        "p99": 0.14864544899955945
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004793039999640314,
+        "p90": 0.004857079999965208,
+        "p95": 0.004886800000349467,
+        "p99": 0.005123520000779536
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004794140000740299,
+        "p90": 0.004857790000642126,
+        "p95": 0.004886800000349467,
+        "p99": 0.005211419999795908
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/03_r2_agentic_prefix_decay/tp4_r2_agentic_prefix_cache_decay/turn5_cached_5k/turn5_cached_5k.json": {
+      "benchmark_name": "turn5_cached_5k",
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 0.11118462700028431,
+      "wave1_burst_ttft_mean_s": 0.15296939900053985,
+      "steady_state_ttft_mean_s": 0.0972563696668658,
+      "raw_untrimmed_itl_mean_ms": 4.831107497043834,
+      "steady_state_itl_mean_ms": 4.821690532812526,
+      "raw_ttft_percentiles_s": {
+        "p50": 0.15296939900053985,
+        "p90": 0.17033608899964747,
+        "p95": 0.17033608899964747,
+        "p99": 0.17033608899964747
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 0.15296939900053985,
+        "p90": 0.15296939900053985,
+        "p95": 0.15296939900053985,
+        "p99": 0.15296939900053985
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 0.062438980000479205,
+        "p90": 0.17033608899964747,
+        "p95": 0.17033608899964747,
+        "p99": 0.17033608899964747
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.004820590000235825,
+        "p90": 0.0048850899993340136,
+        "p95": 0.004906680000203778,
+        "p99": 0.005148429999280779
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.004821589999664866,
+        "p90": 0.0048892099994191085,
+        "p95": 0.004930080000121961,
+        "p99": 0.005269670000416227
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/06_b6_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k/workload/bench.json": {
+      "benchmark_name": null,
+      "total_requests": 1,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 1,
+      "trimmed_first_token_requests": 1,
+      "trimmed_drain_requests": 1,
+      "raw_untrimmed_ttft_mean_s": 59.828916880998804,
+      "wave1_burst_ttft_mean_s": 59.828916880998804,
+      "steady_state_ttft_mean_s": 59.828916880998804,
+      "raw_untrimmed_itl_mean_ms": 34.39600100006958,
+      "steady_state_itl_mean_ms": 34.39600100006958,
+      "raw_ttft_percentiles_s": {
+        "p50": 59.828916880998804,
+        "p90": 59.828916880998804,
+        "p95": 59.828916880998804,
+        "p99": 59.828916880998804
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 59.828916880998804,
+        "p90": 59.828916880998804,
+        "p95": 59.828916880998804,
+        "p99": 59.828916880998804
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 59.828916880998804,
+        "p90": 59.828916880998804,
+        "p95": 59.828916880998804,
+        "p99": 59.828916880998804
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0319538099993224,
+        "p90": 0.05676103900077578,
+        "p95": 0.05676103900077578,
+        "p99": 0.05676103900077578
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0319538099993224,
+        "p90": 0.05676103900077578,
+        "p95": 0.05676103900077578,
+        "p99": 0.05676103900077578
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/native/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience/128k_c1_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 15.6466600977501,
+      "wave1_burst_ttft_mean_s": 11.518542298999819,
+      "steady_state_ttft_mean_s": 17.022699364000193,
+      "raw_untrimmed_itl_mean_ms": 29.312894694439386,
+      "steady_state_itl_mean_ms": 27.85212320105486,
+      "raw_ttft_percentiles_s": {
+        "p50": 12.504266788000677,
+        "p90": 26.20457567399899,
+        "p95": 26.20457567399899,
+        "p99": 26.20457567399899
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 11.518542298999819,
+        "p90": 11.518542298999819,
+        "p95": 11.518542298999819,
+        "p99": 11.518542298999819
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 12.504266788000677,
+        "p90": 26.20457567399899,
+        "p95": 26.20457567399899,
+        "p99": 26.20457567399899
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.029359519001445733,
+        "p90": 0.03415306899842108,
+        "p95": 0.04029357999934291,
+        "p99": 0.21480441799940309
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.028769699998520082,
+        "p90": 0.03427514000031806,
+        "p95": 0.03943839999919874,
+        "p99": 0.05098912900029973
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/native/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience/128k_c4_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 22.226509141125007,
+      "wave1_burst_ttft_mean_s": 29.63974420049999,
+      "steady_state_ttft_mean_s": 14.813274081750023,
+      "raw_untrimmed_itl_mean_ms": 402.2112854523721,
+      "steady_state_itl_mean_ms": 507.08725522221476,
+      "raw_ttft_percentiles_s": {
+        "p50": 16.13228954999977,
+        "p90": 46.71631349800009,
+        "p95": 46.71631349800009,
+        "p99": 46.71631349800009
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 35.71121666399995,
+        "p90": 46.71631349800009,
+        "p95": 46.71631349800009,
+        "p99": 46.71631349800009
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 15.776747975000035,
+        "p90": 16.13228954999977,
+        "p95": 16.13228954999977,
+        "p99": 16.13228954999977
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.648560212999655,
+        "p90": 0.7537358219997259,
+        "p95": 0.7838161810013844,
+        "p99": 0.8743657009999879
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.6763958530009404,
+        "p90": 0.7456776529998024,
+        "p95": 0.7613634520002961,
+        "p99": 0.9079228099999455
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/native/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c1_pp4_resilience/128k_c1_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 2.966768595749727,
+      "wave1_burst_ttft_mean_s": 2.830547679999654,
+      "steady_state_ttft_mean_s": 3.012175567666418,
+      "raw_untrimmed_itl_mean_ms": 21.749748650794544,
+      "steady_state_itl_mean_ms": 22.80873673545396,
+      "raw_ttft_percentiles_s": {
+        "p50": 2.9757254279993504,
+        "p90": 3.2354003860000375,
+        "p95": 3.2354003860000375,
+        "p99": 3.2354003860000375
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 2.830547679999654,
+        "p90": 2.830547679999654,
+        "p95": 2.830547679999654,
+        "p99": 2.830547679999654
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 2.9757254279993504,
+        "p90": 3.2354003860000375,
+        "p95": 3.2354003860000375,
+        "p99": 3.2354003860000375
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.0200346499987063,
+        "p90": 0.03005175999896892,
+        "p95": 0.03012449900052161,
+        "p99": 0.04003002900026331
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.02076379999925848,
+        "p90": 0.030086329999903683,
+        "p95": 0.030298539000796154,
+        "p99": 0.04004740999880596
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/native/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c4_pp4_resilience/128k_c4_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 6.792122071625272,
+      "wave1_burst_ttft_mean_s": 6.978686834500422,
+      "steady_state_ttft_mean_s": 6.605557308750122,
+      "raw_untrimmed_itl_mean_ms": 88.8112228705208,
+      "steady_state_itl_mean_ms": 92.89152996799385,
+      "raw_ttft_percentiles_s": {
+        "p50": 7.999323063000702,
+        "p90": 11.15197163799894,
+        "p95": 11.15197163799894,
+        "p99": 11.15197163799894
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 8.119157013001313,
+        "p90": 11.15197163799894,
+        "p95": 11.15197163799894,
+        "p99": 11.15197163799894
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 7.999323063000702,
+        "p90": 10.229239560001588,
+        "p95": 10.229239560001588,
+        "p99": 10.229239560001588
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.030005820000951644,
+        "p90": 0.04032609999921988,
+        "p95": 0.6162381329995696,
+        "p99": 0.8617139799989673
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.030000180000570253,
+        "p90": 0.04033614999934798,
+        "p95": 0.6203266619995702,
+        "p99": 1.1014906769996742
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_100g/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience/128k_c1_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 20.745838033000382,
+      "wave1_burst_ttft_mean_s": 22.047248102000594,
+      "steady_state_ttft_mean_s": 20.31203467666698,
+      "raw_untrimmed_itl_mean_ms": 63.30118026190099,
+      "steady_state_itl_mean_ms": 57.533642873009,
+      "raw_ttft_percentiles_s": {
+        "p50": 21.749970443001075,
+        "p90": 22.047248102000594,
+        "p95": 22.047248102000594,
+        "p99": 22.047248102000594
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 22.047248102000594,
+        "p90": 22.047248102000594,
+        "p95": 22.047248102000594,
+        "p99": 22.047248102000594
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 19.741933486999187,
+        "p90": 21.749970443001075,
+        "p95": 21.749970443001075,
+        "p99": 21.749970443001075
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.059940488999927766,
+        "p90": 0.09495094900012191,
+        "p95": 0.12500537899904884,
+        "p99": 0.18001332800122327
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.05964571899858129,
+        "p90": 0.09003997900072136,
+        "p95": 0.118312529000832,
+        "p99": 0.18001332800122327
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_100g/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience/128k_c4_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 43.11449066212481,
+      "wave1_burst_ttft_mean_s": 60.427059157500025,
+      "steady_state_ttft_mean_s": 25.80192216674959,
+      "raw_untrimmed_itl_mean_ms": 1001.4184409404852,
+      "steady_state_itl_mean_ms": 1353.1389211031767,
+      "raw_ttft_percentiles_s": {
+        "p50": 28.224584011999468,
+        "p90": 108.09604513699924,
+        "p95": 108.09604513699924,
+        "p99": 108.09604513699924
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 73.36967916400135,
+        "p90": 108.09604513699924,
+        "p95": 108.09604513699924,
+        "p99": 108.09604513699924
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 27.558615557998564,
+        "p90": 28.224584011999468,
+        "p95": 28.224584011999468,
+        "p99": 28.224584011999468
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 1.1995783090005716,
+        "p90": 1.8318131529995298,
+        "p95": 2.5029974879998917,
+        "p99": 5.309443411999382
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 1.260871718000999,
+        "p90": 2.5029974879998917,
+        "p95": 3.6897369460002665,
+        "p99": 5.496283880000192
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_100g/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c1_pp4_resilience/128k_c1_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 1.9757314597500226,
+      "wave1_burst_ttft_mean_s": 1.9184854430004634,
+      "steady_state_ttft_mean_s": 1.994813465333209,
+      "raw_untrimmed_itl_mean_ms": 9.32117784920578,
+      "steady_state_itl_mean_ms": 9.485167899473078,
+      "raw_ttft_percentiles_s": {
+        "p50": 1.970568942000682,
+        "p90": 2.102823470999283,
+        "p95": 2.102823470999283,
+        "p99": 2.102823470999283
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 1.9184854430004634,
+        "p90": 1.9184854430004634,
+        "p95": 1.9184854430004634,
+        "p99": 1.9184854430004634
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 1.970568942000682,
+        "p90": 2.102823470999283,
+        "p95": 2.102823470999283,
+        "p99": 2.102823470999283
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.010391849998995895,
+        "p90": 0.012647789999391534,
+        "p95": 0.013361369999984163,
+        "p99": 0.020625659999495838
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.010585559999526595,
+        "p90": 0.012700760000370792,
+        "p95": 0.0135324099992431,
+        "p99": 0.030047309999645222
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_100g/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c4_pp4_resilience/128k_c4_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 4.612619139375283,
+      "wave1_burst_ttft_mean_s": 4.785087486749944,
+      "steady_state_ttft_mean_s": 4.4401507920006225,
+      "raw_untrimmed_itl_mean_ms": 58.12311247117438,
+      "steady_state_itl_mean_ms": 61.42548103187335,
+      "raw_ttft_percentiles_s": {
+        "p50": 5.227492502999667,
+        "p90": 7.292187934001049,
+        "p95": 7.292187934001049,
+        "p99": 7.292187934001049
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 5.614746968998588,
+        "p90": 7.292187934001049,
+        "p95": 7.292187934001049,
+        "p99": 7.292187934001049
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 5.227492502999667,
+        "p90": 6.647630499001025,
+        "p95": 6.647630499001025,
+        "p99": 6.647630499001025
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.022506499000883196,
+        "p90": 0.0529562600004283,
+        "p95": 0.39010897600019234,
+        "p99": 0.4778108249993238
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.024151149998942856,
+        "p90": 0.05993638899963116,
+        "p95": 0.4129564960003336,
+        "p99": 0.5123652549991675
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_20g/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience/128k_c1_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 45.59100023125029,
+      "wave1_burst_ttft_mean_s": 61.7724747960001,
+      "steady_state_ttft_mean_s": 40.19717537633369,
+      "raw_untrimmed_itl_mean_ms": 31.56225042856397,
+      "steady_state_itl_mean_ms": 31.416820719569508,
+      "raw_ttft_percentiles_s": {
+        "p50": 47.42778693699984,
+        "p90": 61.7724747960001,
+        "p95": 61.7724747960001,
+        "p99": 61.7724747960001
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 61.7724747960001,
+        "p90": 61.7724747960001,
+        "p95": 61.7724747960001,
+        "p99": 61.7724747960001
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 38.153393292001056,
+        "p90": 47.42778693699984,
+        "p95": 47.42778693699984,
+        "p99": 47.42778693699984
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.03154856000037398,
+        "p90": 0.041170590000547236,
+        "p95": 0.04479774999890651,
+        "p99": 0.051790409999739495
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.03154856000037398,
+        "p90": 0.04138681900076335,
+        "p95": 0.04479774999890651,
+        "p99": 0.05507629000021552
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_20g/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience/128k_c4_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 74.10960399274995,
+      "wave1_burst_ttft_mean_s": 101.7859297975001,
+      "steady_state_ttft_mean_s": 46.433278187999804,
+      "raw_untrimmed_itl_mean_ms": 1260.9122496726213,
+      "steady_state_itl_mean_ms": 1610.7572895158762,
+      "raw_ttft_percentiles_s": {
+        "p50": 50.81500494899956,
+        "p90": 156.90628785599984,
+        "p95": 156.90628785599984,
+        "p99": 156.90628785599984
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 122.00999987599971,
+        "p90": 156.90628785599984,
+        "p95": 156.90628785599984,
+        "p99": 156.90628785599984
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 49.74278100899937,
+        "p90": 50.81500494899956,
+        "p95": 50.81500494899956,
+        "p99": 50.81500494899956
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 2.160087198999463,
+        "p90": 2.348230997999053,
+        "p95": 2.404605977000756,
+        "p99": 2.530380336000235
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 2.2203119690002495,
+        "p90": 2.385707507999541,
+        "p95": 2.4921128469995892,
+        "p99": 2.6097570450001513
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_20g/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c1_pp4_resilience/128k_c1_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 2.1525568474994543,
+      "wave1_burst_ttft_mean_s": 2.159102219999113,
+      "steady_state_ttft_mean_s": 2.1503750566662347,
+      "raw_untrimmed_itl_mean_ms": 15.61755524206034,
+      "steady_state_itl_mean_ms": 15.686319582008373,
+      "raw_ttft_percentiles_s": {
+        "p50": 2.159102219999113,
+        "p90": 2.183309759999247,
+        "p95": 2.183309759999247,
+        "p99": 2.183309759999247
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 2.159102219999113,
+        "p90": 2.159102219999113,
+        "p95": 2.159102219999113,
+        "p99": 2.159102219999113
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 2.1381423999991966,
+        "p90": 2.183309759999247,
+        "p95": 2.183309759999247,
+        "p99": 2.183309759999247
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.01350946000093245,
+        "p90": 0.022189659999639844,
+        "p95": 0.03019052899981034,
+        "p99": 0.0508699690017238
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.01350946000093245,
+        "p90": 0.022189659999639844,
+        "p95": 0.030187820000719512,
+        "p99": 0.05091195899876766
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/capped_20g/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c4_pp4_resilience/128k_c4_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 5.004732203999993,
+      "wave1_burst_ttft_mean_s": 5.1612838889996056,
+      "steady_state_ttft_mean_s": 4.84818051900038,
+      "raw_untrimmed_itl_mean_ms": 64.1753584027789,
+      "steady_state_itl_mean_ms": 68.00063943651438,
+      "raw_ttft_percentiles_s": {
+        "p50": 5.757611394999913,
+        "p90": 8.02368227399893,
+        "p95": 8.02368227399893,
+        "p99": 8.02368227399893
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 6.10743856299996,
+        "p90": 8.02368227399893,
+        "p95": 8.02368227399893,
+        "p99": 8.02368227399893
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 5.757611394999913,
+        "p90": 7.3613045000001875,
+        "p95": 7.3613045000001875,
+        "p99": 7.3613045000001875
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.024893550000342657,
+        "p90": 0.04543087999991258,
+        "p95": 0.455758355999933,
+        "p99": 0.5235217850004119
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.0299343200003932,
+        "p90": 0.04544443999839132,
+        "p95": 0.4731950149998738,
+        "p99": 0.5870182540002133
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience/128k_c1_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 39.833205695500055,
+      "wave1_burst_ttft_mean_s": 38.12554797000121,
+      "steady_state_ttft_mean_s": 40.402424937333,
+      "raw_untrimmed_itl_mean_ms": 100.07423457143106,
+      "steady_state_itl_mean_ms": 101.87328760846906,
+      "raw_ttft_percentiles_s": {
+        "p50": 45.90870889500002,
+        "p90": 49.11069030499857,
+        "p95": 49.11069030499857,
+        "p99": 49.11069030499857
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 38.12554797000121,
+        "p90": 38.12554797000121,
+        "p95": 38.12554797000121,
+        "p99": 38.12554797000121
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 45.90870889500002,
+        "p90": 49.11069030499857,
+        "p95": 49.11069030499857,
+        "p99": 49.11069030499857
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.08994255900142889,
+        "p90": 0.12000884900044184,
+        "p95": 0.27050848699946073,
+        "p99": 0.3003416770006879
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.08994255900142889,
+        "p90": 0.1201426290008385,
+        "p95": 0.2801813869991747,
+        "p99": 0.30056867799976317
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience/128k_c4_tp16_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 103.01208151862488,
+      "wave1_burst_ttft_mean_s": 144.87042850475018,
+      "steady_state_ttft_mean_s": 61.153734532499584,
+      "raw_untrimmed_itl_mean_ms": 2017.058927503971,
+      "steady_state_itl_mean_ms": 3172.534742253981,
+      "raw_ttft_percentiles_s": {
+        "p50": 109.29883837999841,
+        "p90": 239.00959118100036,
+        "p95": 239.00959118100036,
+        "p99": 239.00959118100036
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 164.3645110360012,
+        "p90": 239.00959118100036,
+        "p95": 239.00959118100036,
+        "p99": 239.00959118100036
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 58.58568881199972,
+        "p90": 109.29883837999841,
+        "p95": 109.29883837999841,
+        "p99": 109.29883837999841
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 1.5306153260007704,
+        "p90": 5.8301156500001525,
+        "p95": 6.867782642000748,
+        "p99": 7.981786562000707
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 2.8129170360007265,
+        "p90": 6.867782642000748,
+        "p95": 7.259866727999906,
+        "p99": 8.07147490099851
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c1_pp4_resilience/128k_c1_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 4,
+      "concurrency": 1,
+      "wave1_request_count": 1,
+      "steady_state_request_count": 3,
+      "trimmed_first_token_requests": 3,
+      "trimmed_drain_requests": 3,
+      "raw_untrimmed_ttft_mean_s": 2.1419846517501355,
+      "wave1_burst_ttft_mean_s": 1.961815574000866,
+      "steady_state_ttft_mean_s": 2.202041010999892,
+      "raw_untrimmed_itl_mean_ms": 17.63588802777887,
+      "steady_state_itl_mean_ms": 16.46109705819904,
+      "raw_ttft_percentiles_s": {
+        "p50": 2.2967699599994376,
+        "p90": 2.3166862500002026,
+        "p95": 2.3166862500002026,
+        "p99": 2.3166862500002026
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 1.961815574000866,
+        "p90": 1.961815574000866,
+        "p95": 1.961815574000866,
+        "p99": 1.961815574000866
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 2.2967699599994376,
+        "p90": 2.3166862500002026,
+        "p95": 2.3166862500002026,
+        "p99": 2.3166862500002026
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.012855880000643083,
+        "p90": 0.020136510000156704,
+        "p95": 0.023516130000643898,
+        "p99": 0.20433222800056683
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.01281818999996176,
+        "p90": 0.020093958999495953,
+        "p95": 0.02344198999890068,
+        "p99": 0.20433222800056683
+      }
+    },
+    "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4/128k_c4_pp4_resilience/128k_c4_pp4_resilience.json": {
+      "benchmark_name": null,
+      "total_requests": 8,
+      "concurrency": 4,
+      "wave1_request_count": 4,
+      "steady_state_request_count": 4,
+      "trimmed_first_token_requests": 4,
+      "trimmed_drain_requests": 4,
+      "raw_untrimmed_ttft_mean_s": 5.144933899875241,
+      "wave1_burst_ttft_mean_s": 5.487873253000544,
+      "steady_state_ttft_mean_s": 4.801994546749938,
+      "raw_untrimmed_itl_mean_ms": 71.58901349402116,
+      "steady_state_itl_mean_ms": 77.04813266000565,
+      "raw_ttft_percentiles_s": {
+        "p50": 5.6979946219998965,
+        "p90": 8.446434878000218,
+        "p95": 8.446434878000218,
+        "p99": 8.446434878000218
+      },
+      "wave1_burst_ttft_percentiles_s": {
+        "p50": 6.525800924000578,
+        "p90": 8.446434878000218,
+        "p95": 8.446434878000218,
+        "p99": 8.446434878000218
+      },
+      "steady_state_ttft_percentiles_s": {
+        "p50": 5.6979946219998965,
+        "p90": 7.2287632879997545,
+        "p95": 7.2287632879997545,
+        "p99": 7.2287632879997545
+      },
+      "raw_itl_percentiles_s": {
+        "p50": 0.029841659999874537,
+        "p90": 0.2106681990007928,
+        "p95": 0.46789634600099816,
+        "p99": 0.5912109649998456
+      },
+      "steady_state_itl_percentiles_s": {
+        "p50": 0.030013529998541344,
+        "p90": 0.21314456799882464,
+        "p95": 0.4907953860001726,
+        "p99": 0.6170052350007609
+      }
+    }
+  }
+}

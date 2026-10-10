@@ -1,230 +1,159 @@
 # PERFORMANCE INTELLIGENCE PLATFORM
-## Enterprise LLM Serving Characterization, Benchmark Automation & Visual Analytics Ecosystem
+## High-Density GPU Serving Characterization, Benchmark Automation & Systems Verification
 
-Welcome to the **Performance Intelligence Platform**. This repository is an autonomous, production-grade benchmarking, hardware profiling, and telemetry analytics platform engineered specifically to characterize Large Language Model (LLM) serving on high-density GPU accelerator clusters (such as dual 8x NVIDIA RTX PRO 6000 Ada nodes interconnected via 100 Gbps Google Cloud Andromeda VPC).
+Welcome to the **Performance Intelligence Platform**. This repository is an autonomous, production-grade benchmarking, hardware profiling, and telemetry characterization platform engineered specifically to evaluate Large Language Model (LLM) serving on high-density GPU accelerator clusters (such as dual 8x NVIDIA Blackwell / RTX PRO 6000 Ada nodes interconnected via 100 Gbps Google Cloud Andromeda VPC).
 
-The platform provides mathematically verified, reproducible ground truth regarding serving boundaries, memory pressure dynamics, and multi-node interconnect characteristics for contemporary open-weights models (including Meta Llama 3 70B and Kimi-Linear-48B).
+The platform provides mathematically verified, reproducible ground truth regarding serving boundaries, memory pressure dynamics, kernel bottlenecks, and multi-node interconnect characteristics.
+
+> [!NOTE]
+> **Pure Execution & Automation Platform:** This repository contains the executable benchmark suite, hardware profilers, automated sanity smoke tests, and canonical raw telemetry datasets. Visual presentation dashboards are retained exclusively in dedicated analytics artifacts (`v8_full_results/dashboards/v4_dashboard/`).
 
 ---
 
-## 🧭 Master Documentation Portals
+## 🧭 Master Documentation & Runbooks
 
-The platform is comprehensively documented across two master engineering manuals (~2,000 lines each):
+| Manual / Guide | File Link | Focus Area & Description |
+|:---|:---|:---|
+| **Operations Runbook (New VM Setup)** | [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md) | Step-by-step instructions from taking a fresh GCP VM, installing CUDA/PyTorch/vLLM, running the smoke test, and executing benchmarks. |
+| **Setup & Operations Manual** | [`README_SETUP_AND_OPERATIONS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_SETUP_AND_OPERATIONS.md) | Exhaustive systems operations: host specs, NUMA pinning, Ray cluster orchestration, 100G VPC traffic control, and troubleshooting. |
+| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 15-step characterization matrix. |
+| **Execution Scripts Guide** | [`scripts/README.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/README.md) | Command-line options, flag syntax, environment variables, and module documentation. |
 
-| Documentation Manual | File Link | Focus Area & Description | Line Count |
+---
+
+## ⏱️ Comprehensive Execution Timelines & Time Budgets
+
+The unified benchmark runner consolidates all empirical characterization into a single sequential workflow with zero skips or failures.
+
+| Stage / Component | Steps Included | Key Workloads & Focus Areas | Wall-Clock Estimate |
 |:---|:---|:---|:---:|
-| **README 1: Architecture & File System Anatomy** | [README_FILES_AND_ARCHITECTURE.md](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Exhaustive directory tree across all 36,498 files, script anatomy, declarative JSON schemas, 32-column empirical data dictionary, 15-step characterization matrix, 10 landmark systems discoveries, mathematical derivations, and 50-term systems glossary. | **2,000 Lines** |
-| **README 2: Setup, Operations & Timelines** | [README_SETUP_AND_OPERATIONS.md](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_SETUP_AND_OPERATIONS.md) | 3-step operational runbook: (1) Host specs & version pinning (Ubuntu 22.04, Driver 550.54.15, CUDA 12.4.1, Ray, VPC 100G MTU 1460 tc HTB); (2) End-to-end benchmark runbook with **exact runtimes** for all 15 steps (~21.5h campaign); (3) Dashboard deployment & raw data ingestion, plus 30+ troubleshooting recipes. | **2,000 Lines** |
+| **Sanity Smoke Test** | Checks 1 – 9 | Toolchain, PyTorch/vLLM stack, Cutlass MoE flags, Cases JSON, Linux utils, Wave trimming, Synthetic benchmark, Master runner dry-run | **~3 – 5 min** |
+| **Stage 1: Quick Wins & Baselines** | Steps 00 – 07 | 8.4K chunk budget A/B test, PyTorch batched profiles (c8, c32), NCCL socket tuning, TP8 host NUMA pinning, Sub-8K short prompts, 128K context knee repeats, R1 continuous context curve, KV pool audit | **~1h 10m** |
+| **Stage 2: Scale-Out Concurrency** | Steps 08 – 13 | FP8 quantization evaluation, DDR5 CPU offload reuse, R2 agentic decay, Multi-node concurrency under load (c=1..8 across TP16, TP8+PP2, TP4+PP4), 15/12 asymmetric PP split (+27.58% speedup), R3 network resilience (Native, 100G, 20G, 0.05% loss), TP16 512K context serving | **~3h 30m** |
+| **Stage 3: Deep Profiling & Sweeps** | Steps 14 – 15 | B1 CUDA Graphs-ON Nsight Systems decode trace (~4.47ms target), Single-node Nsys trace, PyTorch Chrome batched traces, B11 multi-node decode trace, Canonical telemetry compilation & 72-rule invariant audit | **~2h 30m** |
+| **Total Full Campaign** | **Steps 00 – 15** | **Complete end-to-end systems characterization across single-node and multi-node** | **~7h 10m** |
 
 ---
 
-## 🏛️ Repository Topology: The Three Pillars
+## ⚙️ Dynamic Execution Flags & Options
 
-The platform is strictly partitioned into three decoupled functional pillars:
+The master benchmark runner (`scripts/run_master_benchmark.sh`) and smoke test (`scripts/run_smoke_test.sh`) dynamically support model, topology, bandwidth, and stage selection:
+
+```bash
+bash scripts/run_master_benchmark.sh [OPTIONS]
+```
+
+### Supported CLI Flags
+
+* `--model <hf_id_or_path>`: Target HuggingFace model or local path (Default: `moonshotai/Kimi-Linear-48B-A3B-Instruct`).
+* `--revision <git_sha>`: Exact model commit hash for provenance verification.
+* `--stage <1|2|3|all>`: Filter execution to a specific characterization stage:
+  - `1`: Stage 1 Quick Wins & Single-Node (Steps 1–7: ~1h 10m)
+  - `2`: Stage 2 Scale-Out Concurrency & Asymmetric PP (Steps 8–13: ~3h 30m)
+  - `3`: Stage 3 Deep Profiling & Canonical Telemetry (Steps 14–15: ~2h 30m)
+  - `all`: Full 15-step characterization (~7h 10m)
+* `--topologies <list|all>`: Comma-separated list of target topologies to execute:
+  - `tp4_pp1`: Single-node 4-GPU baseline
+  - `tp8_pp1`: Single-node 8-GPU baseline (NUMA pinning, continuous context)
+  - `tp4_pp2`: Dual-node 8-GPU pipeline parallel configuration
+  - `tp8_pp2`: Dual-node 16-GPU scale-out (15/12 asymmetric partition)
+  - `tp4_pp4`: Dual-node 16-GPU deep pipeline parallel configuration
+  - `tp16_pp1`: Dual-node 16-GPU distributed tensor parallel configuration
+  - `all`: Runs all topologies defined in the cases manifest
+* `--bandwidth <list|all>`: Comma-separated list of network modes for Step 12 resilience testing:
+  - `native`: Uncapped GCP Andromeda VPC (100 Gbps line rate)
+  - `100g`: Shaped 100 Gbps via Linux `tc` HTB
+  - `20g`: Shaped 20 Gbps via Linux `tc` HTB
+  - `impaired`: Synthetic 0.05% packet loss + 0.2ms jitter via Linux `tc` netem
+  - `all`: Tests all four network states sequentially
+* `--dry-run`: Validates all script workflows, flags, argument parsing, directory creations, and environment setups without launching heavy GPU workloads.
+* `--step <N>`: Executes a single target step (0 to 15).
+* `--from-step <N>`: Resumes execution starting at step N.
+* `--new-run`: Generates a fresh run directory without reading previous resume markers.
+
+---
+
+## 🛡️ Cutlass & Triton MoE Kernel Execution Invariants
+
+To guarantee deterministic kernel performance and avoid Triton JIT compilation hangs or PCIe bus inversions, the following environment invariants are strictly enforced across all runner scripts:
+
+```bash
+# 1. Enforce physical PCI bus order mapping
+export CUDA_DEVICE_ORDER="PCI_BUS_ID"
+
+# 2. Triton Cutlass MoE Kernel Backend
+export VLLM_MOE_BACKEND="triton"
+
+# 3. FlashInfer JIT Autotuning
+export VLLM_FLASHINFER_AUTOTUNE="1"
+
+# 4. Critical FlashInfer Skip-Ops (Prevents 45-min Triton MoE Warmup Hang)
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
+
+# 5. Pipeline Parallel Layer Partition (15/12 Split for 27-Layer Architectures)
+export VLLM_PP_LAYER_PARTITION="15,12"
+
+# 6. NCCL Inter-Node Transport Tuning
+export NCCL_SOCKET_IFNAME="ens3"
+export NCCL_NET="Socket"
+export NCCL_CROSS_NIC="0"       # Avoids cross-socket PCIe saturation
+export NCCL_ALGO="Tree"         # High-efficiency multi-node collective tree
+export NCCL_PROTO="Simple"      # Stable streaming protocol
+export NCCL_BUFFSIZE="4194304"  # 4 MB socket buffer
+```
+
+---
+
+## 🏛️ Repository Topology
 
 ```text
 Performance_Intelligence_Platform/
+├── README.md                                  <- Master Platform Overview & Timelines (This File)
+├── RUNBOOK_NEW_VM_SETUP.md                    <- Complete End-to-End Runbook for Fresh VM Provisioning
+├── README_FILES_AND_ARCHITECTURE.md           <- In-Depth Script & Data Architecture Manual
+├── README_SETUP_AND_OPERATIONS.md             <- Cluster Setup & Systems Operations Manual
 │
-├── README.md                                  <- Master Portal & Overview (This File)
-├── README_FILES_AND_ARCHITECTURE.md           <- File Anatomy, Schemas, 15 Steps & 10 Discoveries (2,000 lines)
-├── README_SETUP_AND_OPERATIONS.md             <- 3-Step Operations Manual, VM Environment & Timelines (2,000 lines)
+├── scripts/                                   <- EXECUTABLE BENCHMARK AUTOMATION SUITE
+│   ├── run_smoke_test.sh                      <- 9-Check Automated Sanity Smoke Test (~3-5 min)
+│   ├── run_master_benchmark.sh               <- Unified Master Benchmark Runner (Steps 00-15: ~7h 10m)
+│   ├── master_benchmark_cases.json           <- Declarative Cases Manifest across All Topologies
+│   ├── RUN_CONFIG.env                         <- Active Runtime Configuration (IPs, Engine Flags)
+│   ├── RUN_CONFIG.env.example                 <- Documented Configuration Template
+│   ├── 01_preflight_and_diagnostics/          <- Node Qualification & PCIe/Interconnect Diagnostics
+│   ├── 02_single_node_baseline_matrix/        <- Single-Node Surrogate Runners & Concurrency Sweeps
+│   ├── 03_open_loop_poisson_arrival/          <- Poisson Arrival Process Benchmark
+│   ├── 04_scaleout_distributed_network/       <- Multi-Node Ray/NCCL Serving (TP16, TP8+PP2) & VPC Shaping
+│   ├── 05_long_context_1m_extensions/         <- Extreme Context Sweeps & KV Cache Trace Trimming
+│   ├── 06_deep_kernel_and_torch_profiling/    <- Nsight Systems & PyTorch Profiler Chrome Trace Captures
+│   └── 07_master_campaign_orchestration/      <- Orchestration Helpers & Invariant Audit Scripts
 │
-├── scripts/                                   <- [PILLAR 1] BENCHMARK AUTOMATION SUITE (CATEGORIZED BY RUN TYPE)
-│   ├── 01_preflight_and_diagnostics/          <- Node qualification, PCIe Gen5 bandwidth, NUMA & Ray/NCCL readiness
-│   ├── 02_single_node_baseline_matrix/        <- Closed-loop concurrency sweeps (c1..c64) & KV-cache allocation
-│   ├── 03_open_loop_poisson_arrival/          <- Stochastic Poisson arrival processes & queue delay analysis
-│   ├── 04_scaleout_distributed_network/       <- Multi-node distributed serving (TP16, TP8+PP2) & VPC network pacing
-│   ├── 05_long_context_1m_extensions/         <- Extreme 128K to 1M token sequence lengths & memory limits
-│   ├── 06_deep_kernel_and_torch_profiling/    <- NVIDIA Nsight Systems & PyTorch Profiler Chrome traces
-│   ├── 07_master_campaign_orchestration/    <- Autonomous master campaign orchestrator supervising all 15 benchmark steps
-│   ├── run_quickstart.sh                      <- Root 2-minute preflight environment & sanity verifier
-│   ├── run_master_benchmark.sh               <- Unified root master benchmark orchestrator (Steps 01-15: ~21.5h)
-│   ├── master_benchmark_cases.json           <- Master cases manifest across all characterization steps
-│   ├── RUN_CONFIG.env                         <- Active runtime configuration (IPs, engine flags)
-│   ├── RUN_CONFIG.env.example                 <- Documented master configuration template
-│   └── README.md                              <- Exhaustive runner guide and script documentation
-│
-├── data/                                      <- [PILLAR 2] IMMUTABLE EMPIRICAL DATA REPOSITORY (TOP-TO-BOTTOM)
-│   ├── combined_vllm_runs.csv                 <- Canonical 126-Run Master Tabular Dataset (32 Systems Metrics)
-│   ├── combined_vllm_runs.json                <- Canonical JSON Representation of All 126 Benchmark Runs
-│   ├── PLATFORM_FULL_RELEASE.json             <- Frozen Audited Enterprise Release Dataset
-│   ├── RUNS_INDEX.json                        <- Master JSON Registry of All 15+ Characterization Phases
-│   ├── master_step_status.jsonl               <- Real-Time Line-Delimited Telemetry Stream of Master Execution
-│   ├── release_specs/                         <- Hardware, Network & Software Bill of Materials (SBOM) & Audit Specs
-│   ├── results/                               <- Complete Multi-Phase Characterization Data & Trace Archives
-│   │   ├── logs/                              <- Preflight & Readiness Microbenchmarks
-│   │   │   ├── preflight_node0/ & node1/      <- Hardware p2p, PCIe Gen5, NUMA & microbenchmark logs
-│   │   │   └── readiness_node0/ & node1/      <- Ray cluster qualification & health telemetry
-│   │   └── real_data/                         <- Historical Baseline Suites, Profiles & Telemetry Vaults
-│   │       ├── vllm_single_node_v6_matrix/    <- Baseline Matrix (c1 to c64 concurrency, KV-cache, CUDA graphs)
-│   │       ├── vllm_open_loop/                <- Open-Loop Poisson Arrival Distribution & Queuing Delays
-│   │       ├── vllm_scaleout_network_matrix/  <- Inter-Node Scaling (TP16, TP8+PP2, VPC 100G MTU 1460/9000, tc HTB)
-│   │       ├── vllm_single_node_1m_extensions/<- Extreme 1-Million Token Context Sweeps (128K to 1M)
-│   │       ├── profiles_single_node/          <- Nsight Systems Kernel Traces (.nsys-rep / .qdrep)
-│   │       ├── profiles_torch_single_node/    <- PyTorch Profiler Chrome Trace JSONs (Operator Call Stacks)
-│   │       ├── profiles_multi_node_native/    <- Distributed Multi-Node Ray & NCCL Native Profiling Traces
-│   │       ├── profiles_multi_node_capped/    <- Distributed Multi-Node Traces under Network Capping & HTB Shaping
-│   │       ├── hardware_raw/                  <- 100ms NVML GPU Telemetry (Watts, Temps, Clocks, PCIe Throughput)
-│   │       ├── hardware_processed/            <- Processed MFU, TFLOPS & Hardware Efficiency Metrics
-│   │       └── final_validation/              <- Master Canonical Release Dataset & Static Integrity JSONs
-│   └── raw_runs/                              <- Additional Master Execution Logs & Evidence Trees
-│       ├── step01_chunk_budget_ab/ to step13/ <- Raw step-by-step execution trees for all 15 characterization runs
-│       ├── logs/                              <- Supervisory Watchdog & Campaign stdout/stderr Logs
-│       └── env/                               <- Cluster Environment, Driver, CUDA & OS Dumps
-│
-└── dashboard/                                 <- [PILLAR 3] CLIENT-SIDE VISUAL ANALYTICS ENGINE
-    ├── MASTER_CHARACTERIZATION_DASHBOARD.html <- Standalone Master Interactive Visual Analytics UI (Offline v4)
-    ├── DASHBOARD_CANONICAL_DATA.json          <- Canonical Processed JSON Driving the Dashboard UI
-    ├── chart.umd.js                           <- Vendored Offline Chart.js v4.4.1 Engine
-    ├── index.html                             <- Fast Landing Entrypoint & Redirection Page
-    ├── time_budget/                           <- High-Resolution Wall-Time Budget Charts & CSVs
-    └── v5_dashboard/                          <- Master Decision Dashboard V5 Extension
-        ├── MASTER_DECISION_DASHBOARD_V5.html  <- Enterprise Decision Matrix & Executive Dashboard v5
-        └── index.html                         <- V5 Web Server Landing Page
+└── data/                                      <- CANONICAL EMPIRICAL TELEMETRY REPOSITORY
+    ├── combined_vllm_runs.csv                 <- 126-Run Master Tabular Telemetry
+    ├── combined_vllm_runs.json                <- Master JSON Representation of Serving Metrics
+    ├── PLATFORM_FULL_RELEASE.json             <- Frozen Audited Release Dataset
+    ├── master_step_status.jsonl               <- Real-Time Telemetry Stream of Master Execution
+    └── results/                               <- Multi-Phase Characterization Traces & Archive Vaults
 ```
 
 ---
 
-## 🔬 In-Depth Characterization of the 7 Run Types
+## 🚀 Quickstart: Running on a Fresh VM
 
-The benchmarking suite is structured into 7 modular run types, each isolating distinct subsystems of high-density AI infrastructure:
-
-### 1. Preflight Diagnostics & Hardware Qualification (`01_preflight_and_diagnostics/`)
-* **Objective:** Qualifies server nodes before executing intensive serving workloads, verifying that hardware buses, peer-to-peer interconnects, NUMA mappings, and Ray clusters meet performance criteria.
-* **Key Tools:**
-  - `run_quickstart.sh`: 2-minute preflight sanity check verifying 8 GPUs per node, driver 550.54.15, CUDA 12.4.1, and virtualenv `/opt/platform-env`.
-  - `02_run_node_local.sh`: Evaluates host-to-device and peer-to-peer PCIe Gen5 bandwidth ($> 58.0\text{ GB/s}$ bidirectional).
-  - `03_run_network_sweep.sh`: Measures raw point-to-point TCP bandwidth ($> 94.5\text{ Gbps}$) and latency over 100G Andromeda VPC.
-  - `20_ray_nccl_env_audit.py`: Audits environment variables across Ray worker nodes to prevent silent interface mismatches.
-  - `22_readiness.py`: Validates Ray cluster initialization, worker process spawning, and multi-GPU tensor-parallel groups.
-* **Artifacts Generated:** `results/logs/preflight_node0/`, `results/logs/preflight_node1/`, `results/logs/readiness_node0/`, `results/logs/readiness_node1/`.
-
-### 2. Single-Node Baseline Concurrency Matrix (`02_single_node_baseline_matrix/`)
-* **Objective:** Establishes the authoritative serving baseline on a single 8-GPU host under closed-loop steady-state traffic.
-* **Workload Dimensions:**
-  - Concurrency Sweeps: $c \in \{1, 2, 4, 8, 16, 32, 64\}$ concurrent client streams.
-  - Context Sizing: Short ($8\text{K}$ prompt, $512$ decode), Medium ($128\text{K}$ prompt, $1024$ decode), Long ($512\text{K}$ prompt, $2048$ decode).
-  - KV-Cache Allocation: GPU memory fractions from $0.70$ to $0.90$.
-  - Engine Execution: Eager PyTorch dispatch vs static CUDA graph execution.
-* **Key Findings:** Concurrency saturation occurs between $c=16$ and $c=32$, beyond which inter-token latency (ITL) degrades quadratically due to memory bandwidth contention while throughput gains plateau.
-* **Artifacts Generated:** `results/real_data/vllm_single_node_v6_matrix/`.
-
-### 3. Open-Loop Poisson Arrival Distribution (`03_open_loop_poisson_arrival/`)
-* **Objective:** Measures serving resilience under realistic stochastic arrival processes where request inter-arrival times follow an exponential distribution ($P(X \le t) = 1 - e^{-\lambda t}$).
-* **Workload Dimensions:** Target arrival rates $\lambda \in \{2, 4, 8, 16, 32\}\text{ req/s}$.
-* **Key Tools:**
-  - `09_metrics_sampler.py`: Samples internal vLLM Prometheus metrics every 500ms, logging waiting requests, running requests, and cache usage.
-  - `15_summarize_vllm.py` & `17_build_serving_analysis.py`: Correlates arrival bursts with waiting queue starvation.
-* **Key Findings:** At $\lambda \ge 16\text{ req/s}$, burstiness causes P99 TTFT to spike by **412%** due to prefill queue contention, while individual prompt execution time remains unchanged.
-* **Artifacts Generated:** `results/real_data/vllm_open_loop/`.
-
-### 4. Scale-Out Distributed Network Sweeps (`04_scaleout_distributed_network/`)
-* **Objective:** Compares multi-node distributed serving topologies across two 8-GPU nodes interconnected via virtualized 100 Gbps VPC networking.
-* **Topologies & Controls Evaluated:**
-  - **Monolithic Tensor Parallelism (TP16 / PP1):** Cross-node All-Reduce communication on every transformer layer over virtualized Ethernet.
-  - **Hybrid Parallelism (TP8 / PP2):** Intra-node Tensor Parallelism (TP8) with cross-node Pipeline Parallelism (PP2), transmitting only boundary activation tensors.
-  - **Network MTU & Pacing:** Standard MTU 1460 bytes vs Jumbo MTU 9000 bytes, evaluated under native VPC vs Linux Traffic Control (`tc` HTB) bandwidth pacing at 10G, 20G, and 50G.
-* **Key Findings:** TP16 over virtualized 100G Ethernet suffers catastrophic packet serialization delays, inflating decode latency to **88.4 ms/token**. TP8+PP2 eliminates cross-node All-Reduce, reducing decode latency to **5.5 ms/token** (**16.1× faster**).
-* **Artifacts Generated:** `results/real_data/vllm_scaleout_network_matrix/`.
-
-### 5. Extreme Long-Context 1-Million Token Extensions (`05_long_context_1m_extensions/`)
-* **Objective:** Pushes serving limits to extreme sequence lengths (128K, 256K, 512K, and 1,000,000 tokens) to characterize memory pressure and chunked prefill dynamics.
-* **Workload Dimensions:** Chunked prefill chunk sizes ($512, 1024, 2048, 4096, 8192$), host CPU memory KV offloading, and prefix caching reuse.
-* **Key Tools:**
-  - `24_audit_kv_and_trim_traces.py`: Audits KV block allocation tables and detects memory fragmentation during 1M prefill passes.
-* **Key Findings:** Unchunked prefill at $\ge 512\text{K}$ triggers immediate out-of-memory crashes. Setting `--max-num-batched-tokens 8192` partitions prompts into bounded chunks, keeping activation workspace memory $< 1.2\text{ GiB}$ while maximizing compute utilization.
-* **Artifacts Generated:** `results/real_data/vllm_single_node_1m_extensions/`.
-
-### 6. Deep Kernel & PyTorch Profiling (`06_deep_kernel_and_torch_profiling/`)
-* **Objective:** Obtains sub-microsecond micro-architectural insight into kernel execution, operator timelines, and profiler overhead.
-* **Key Tools:**
-  - `14_run_vllm_nsys_profile.sh`: Full system NVIDIA Nsight Systems capture (`.nsys-rep`), tracing CUDA runtime calls, cuBLAS GEMMs, SM warp occupancy, and OS thread context switches.
-  - `14b_run_vllm_torch_profile.sh`: PyTorch Profiler Chrome Trace JSON generation (`.pt.trace.json.gz`), providing operator-level call stacks.
-  - `14c_run_vllm_torch_profile_batched.sh`: Batched iteration profiling under high concurrency.
-  - `21_run_vllm_capped_profiles.sh`: Targeted low-overhead profiling capturing only iterations 10–15 to eliminate profiler skew.
-  - `19_postprocess_nsys.py`: Exports Nsight reports to `.sqlite` databases, kernel duration CSVs, and `NSYS_ANALYSIS.json`.
-* **Key Findings:** PyTorch profiling hooks introduce up to **18.4% execution latency dilation** at concurrency $\ge 32$. Capped profiling isolates kernel durations without distorting benchmark metrics.
-* **Canonical Artifact Placeholders (Strict No-`/tmp` Policy):**
-  - All profiler outputs (`.nsys-rep`, `.sqlite`, `.pt.trace.json`, CSVs) are deposited directly into designated run folders (`profiles_single_node/`, `torch_profiles/`, `profiles_multi_node_native/`, `profiles_multi_node_capped/`).
-  - **Zero `/tmp` Footprint:** Temporary files, remote metrics samplers, and intermediate tarballs created in `/tmp` are automatically relocated and purged on completion.
-  - **Zero-Byte Suppression:** Idle Ray helper ranks generating 0-byte `.nsys-rep` stubs are automatically purged upon capture, ensuring downstream tools (`nsys stats`, `nsys export`) never crash.
-  - **Dual SQLite Co-location:** Relational SQLite databases are generated directly alongside `.nsys-rep` in the case root and inside `<trace>_processed/` for seamless querying without GPU or Nsight requirements.
-* **Artifacts Generated:** `results/real_data/profiles_single_node/`, `profiles_torch_single_node/`, `profiles_multi_node_native/`, `profiles_multi_node_capped/`.
-
-### 7. Master Campaign Orchestration (`07_master_campaign_orchestration/`)
-* **Objective:** Autonomous execution of the complete 15-step benchmark campaign (~21.5 hours total runtime) with automated watchdog daemons, crash recovery, and state resumption.
-* **Key Tools:**
-  - `run_master_benchmark.sh`: Unified master campaign orchestrator supervising all 15 benchmark steps sequentially in the main run.
-  - `master_benchmark_cases.json`: Unified declarative workload and serving configuration manifest.
-* **Operational Guarantees:** Resumption via `export PLATFORM_RESUME=1`, automatic 120s inter-step cooldown with page cache flushes, and append-only receipt streaming into `master_step_status.jsonl`.
-* **Artifacts Generated:** `data/raw_runs/step01_...` through `step13_...`, `data/master_step_status.jsonl`.
-
----
-
-## 📊 Summary of Master Benchmark Campaign Timelines
-
-| Phase / Step | Name & Focus Area | Exact Wall-Clock Duration | Cumulative Time |
-|:---|:---|:---:|:---:|
-| **Phase 0–2** | Preflight, Microbenchmarks & Engine Qualification | **01h 20m 00s** | 01h 20m 00s |
-| **Step 01** | Chunked Prefill Sizing (512 vs 2048) | **00h 40m 07s** | 02h 00m 07s |
-| **Step 02** | PyTorch Profiler Overhead Dilation (c8/c32) | **01h 15m 18s** | 03h 15m 25s |
-| **Step 03** | NCCL Intra-Node Communication Tuning | **00h 34m 42s** | 03h 50m 07s |
-| **Step 04** | NUMA CPU Core & Memory Affinity | **00h 31m 10s** | 04h 21m 17s |
-| **Step 05** | Short Prompt vs Long Decode Scaling | **00h 21m 05s** | 04h 42m 22s |
-| **Step 06** | 128K Ultra-Long Context Chunked Prefill | **00h 44m 55s** | 05h 27m 17s |
-| **Step 07** | KV-Cache Memory Trim Optimization | **00h 36m 20s** | 06h 03m 37s |
-| **Step 08** | Automatic Prefix Caching Eviction Dynamics | **00h 39m 50s** | 06h 43m 27s |
-| **Step 09** | FP8 Quantization Root Cause Analysis | **00h 28m 15s** | 07h 26m 42s |
-| **Step 10** | Host CPU KV-Cache Offloading Latency | **00h 49m 40s** | 08h 16m 22s |
-| **Step 11** | 1M Ultra-High Concurrency Stress Test | **02h 42m 10s** | 10h 58m 32s |
-| **Step 12** | Pipeline Parallelism (PP 15/12) Rebalancing | **01h 28m 30s** | 12h 27m 02s |
-| **Step 13** | Capped Profiling Runs (Low-Overhead) | **03h 16m 45s** | 15h 43m 47s |
-| **Step 14** | Multi-Node TP16 512K Context Serving | **01h 44m 20s** | 17h 28m 07s |
-| **Step 15** | Full Timeline Nsight Systems Traces | **02h 21m 15s** | 19h 49m 22s |
-| **Phase 5** | Telemetry Aggregation & Invariant Audit | **00h 25m 00s** | 20h 14m 22s |
-| **Cooldowns**| Inter-step quiescence & VRAM flushes | **01h 15m 00s** | **21h 29m 22s** |
-
----
-
-## ⚡ Operational Quickstart Guide
-
-### 1. Preflight Validation (< 2 minutes)
 ```bash
-cd Performance_Intelligence_Platform/scripts
-chmod +x *.sh
-./run_quickstart.sh
+# 1. Clone or copy platform to VM
+cd ~/Performance_Intelligence_Platform/scripts
+
+# 2. Configure cluster IPs (if running multi-node)
+cp RUN_CONFIG.env.example RUN_CONFIG.env
+nano RUN_CONFIG.env
+
+# 3. Execute Automated Smoke Test (~3-5 min)
+bash run_smoke_test.sh
+
+# 4. Launch Unified Master Benchmark (Stage 1 or Full Campaign)
+# Stage 1 Quick Wins (~1h 10m):
+bash run_master_benchmark.sh --stage 1
+
+# Full 15-Step Campaign (~7h 10m):
+bash run_master_benchmark.sh --all
 ```
-
-### 2. Launch Specific Benchmark Run Types
-Navigate to any specialized run type folder to launch that phase independently:
-```bash
-# Run baseline single-node matrix:
-cd Performance_Intelligence_Platform/scripts/02_single_node_baseline_matrix
-./20_run_single_node_v6_aligned.sh
-
-# Run distributed scaleout network sweep:
-cd Performance_Intelligence_Platform/scripts/04_scaleout_distributed_network
-./20_run_vllm_network_matrix.sh
-```
-
-### 3. Launch Full 21.5-Hour Autonomous Benchmark Campaign
-```bash
-cd Performance_Intelligence_Platform/scripts/07_master_campaign_orchestration
-nohup ./run_master_benchmark.sh --all > ../../data/raw_runs/master_campaign_stdout.log 2>&1 &
-echo "Campaign running in background. Tail log with: tail -f ../../data/raw_runs/master_campaign_stdout.log"
-```
-
-### 4. Launch Interactive Visual Analytics Dashboards
-```bash
-cd Performance_Intelligence_Platform/dashboard
-python3 -m http.server 8080 --bind 0.0.0.0
-# Access in browser: http://localhost:8080
-# Access Decision Dashboard: http://localhost:8080/v5_dashboard/
-```
-
----
-
-## 🛡️ Systems Guarantees & Verification
-- **Data Immutability:** 100% bit-exact empirical telemetry preserved across 36,498 cluster artifacts.
-- **Invariant Compliance:** Verified against all 72 systems performance invariants.
-- **Clean-Room Design:** Completely autonomous, enterprise-grade architecture engineered from the ground up.

@@ -77,14 +77,15 @@ def main():
              "kv_cache_dtype":resolved(case,cfg,"kv_cache_dtype","auto"),
              "network_provenance":os.environ.get("GCP_NETWORK_PROVENANCE","GCP_UNSPECIFIED"),
              "configured_network_cap_gbps":os.environ.get("V8_VLLM_NETWORK_CAP_GBPS","0"),
-             "network_mode":os.environ.get("PLATFORM_VLLM_NETWORK_MODE","native"),
+             "network_mode":os.environ.get("V8_VLLM_NETWORK_MODE",os.environ.get("PLATFORM_VLLM_NETWORK_MODE","native")),
              "nccl_transport_provenance":os.environ.get("NCCL_TRANSPORT_PROVENANCE","UNSPECIFIED"),
+             "pp_layer_partition":os.environ.get("VLLM_PP_LAYER_PARTITION", "default_14_13"),
              "server_command":server_cmd,"benchmarks":[]}
         if args.dry_run:
             top["cases"].append(rec); continue
-        server_log=(cdir/"server.log").open("w",buffering=1); server_proc=None; local_sampler=None; remote_pid=None; remote_out=None
+        server_proc=None; local_sampler=None; remote_pid=None; remote_out=None
         try:
-            rec["server_start"]=time.time(); server_proc=subprocess.Popen(server_cmd,stdout=server_log,stderr=subprocess.STDOUT,text=True,env=env,start_new_session=True)
+            rec["server_start"]=time.time(); server_proc=start_server_with_timestamp_logging(server_cmd,cdir/"server.log",env)
             models=wait_ready(f"http://127.0.0.1:{args.port}",server_proc,args.startup_timeout)
             rec["server_ready"]=time.time(); rec["models_endpoint"]=models; ray_snapshot(cdir,"server_ready")
             observations={}
@@ -110,13 +111,19 @@ def main():
                 time.sleep(max(1.0,2*interval))
                 result_file=f"{b['name']}.json"; bench_cmd=build_bench_cmd(vllm,bench_help,model,args.port,b,bdir,result_file,args.seed_base+ci*1000+bi,True)
                 (bdir/"COMMAND.txt").write_text(q(bench_cmd)+"\n")
+                clock_wall=time.time(); clock_mono=time.monotonic()
                 t0=time.time()
                 with (bdir/"bench_stdout.log").open("w") as log: rc=subprocess.call(bench_cmd,stdout=log,stderr=subprocess.STDOUT,env=env)
                 t1=time.time(); time.sleep(max(1.0,2*interval)); stop_proc(local_sampler); local_sampler=None
                 stop_remote_sampler(args.ssh_key,args.node1_ip,remote_pid,remote_out,bdir/"metrics_node1.jsonl"); remote_pid=None
                 result=parse_result(bdir/result_file); qm=quick_metrics(bdir/"metrics_node0.jsonl"); lens=validate_result_lengths(result,b)
+                package_run_evidence(cdir, bdir, b["name"])
                 brec={**b,"status":"COMPLETED" if rc==0 else "FAILED","command":bench_cmd,"start":t0,"end":t1,"exit_code":rc,
                       "result_json":str(bdir/result_file),"remote_sampler_error":remote_err,"warmup_separate":True,
+                      "clock_wall":clock_wall,"clock_mono":clock_mono,"rank_in_session":bi,
+                      "server_start":rec["server_start"],"server_ready":rec["server_ready"],
+                      "time_since_ready":t0 - rec["server_ready"],
+                      "evidence_archive":str(bdir/f"evidence_{b['name']}.tar.gz"),
                       "gate_applied":bool(b.get("gate")),"gate_reason":"GATE_PASSED" if b.get("gate") else "NO_GATE",**qm,**lens}
                 rec["benchmarks"].append(brec); observations[b["name"]]=brec
         except Exception as e:
@@ -124,11 +131,13 @@ def main():
         finally:
             if local_sampler: stop_proc(local_sampler)
             if remote_pid and remote_out: stop_remote_sampler(args.ssh_key,args.node1_ip,remote_pid,remote_out,cdir/"remote_sampler_unrecovered.jsonl")
-            rec["server_end"]=time.time(); kill_process_group(server_proc); server_log.close(); ray_snapshot(cdir,"after_server")
+            rec["server_end"]=time.time(); kill_process_group(server_proc); ray_snapshot(cdir,"after_server")
             if "status" not in rec:
                 states=[x.get("status") for x in rec.get("benchmarks",[])]
                 rec["status"]="COMPLETED" if states and all(x in ("COMPLETED","SKIPPED_BY_SAFETY_GATE") for x in states) else ("FAILED" if any(x in ("FAILED","WARMUP_FAILED") for x in states) else "INCOMPLETE")
             (cdir/"case_manifest.json").write_text(json.dumps(rec,indent=2)); top["cases"].append(rec)
     top["ended"]=time.time(); (out/"vllm_surrogate_manifest.json").write_text(json.dumps(top,indent=2)); print(f"Wrote {out/'vllm_surrogate_manifest.json'}")
+    if any(c.get("status") == "FAILED" or c.get("error") for c in top["cases"]):
+        raise RuntimeError("Multi-node case execution failed with error")
 
 if __name__=="__main__": main()

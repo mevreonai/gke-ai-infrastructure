@@ -60,6 +60,10 @@ tmp/
 backups/
 v8_full_release_package/
 v4_mockup_extracted/
+v8_runs_today/
+v9_full_result/
+v8_full_results/raw_runs_20261005_backup/
+pip_bundle.tar.gz
 
 # Temporary scratch scripts & media
 scratch/

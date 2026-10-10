@@ -1,0 +1,42 @@
+[
+  {
+    "case": "tp4_r2_agentic_prefix_cache_decay",
+    "bench": "turn1_cold_1k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_r2_agentic_prefix_cache_decay",
+    "bench": "turn2_cached_2k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_r2_agentic_prefix_cache_decay",
+    "bench": "turn3_cached_3k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_r2_agentic_prefix_cache_decay",
+    "bench": "turn4_cached_4k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_r2_agentic_prefix_cache_decay",
+    "bench": "turn5_cached_5k",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  }
+]

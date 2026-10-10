@@ -26,6 +26,7 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
+        {"name": "8k_c1", "input": 8192, "output": 256, "concurrency": 1, "prompts": 12, "warmups": 2},
         {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 32, "warmups": 2},
         {"name": "128k_c2", "input": 131072, "output": 64, "concurrency": 2, "prompts": 10, "warmups": 1},
         {"name": "128k_c4", "input": 131072, "output": 64, "concurrency": 4, "prompts": 20, "warmups": 1},
@@ -47,6 +48,7 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
+        {"name": "8k_c1", "input": 8192, "output": 256, "concurrency": 1, "prompts": 12, "warmups": 2},
         {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 32, "warmups": 2},
         {"name": "128k_c2", "input": 131072, "output": 64, "concurrency": 2, "prompts": 10, "warmups": 1},
         {"name": "128k_c4", "input": 131072, "output": 64, "concurrency": 4, "prompts": 20, "warmups": 1},
@@ -68,6 +70,7 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
+        {"name": "8k_c1", "input": 8192, "output": 256, "concurrency": 1, "prompts": 12, "warmups": 2},
         {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 32, "warmups": 2},
         {"name": "128k_c2", "input": 131072, "output": 64, "concurrency": 2, "prompts": 10, "warmups": 1},
         {"name": "128k_c4", "input": 131072, "output": 64, "concurrency": 4, "prompts": 20, "warmups": 1},
@@ -89,6 +92,7 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
+        {"name": "8k_c1", "input": 8192, "output": 256, "concurrency": 1, "prompts": 12, "warmups": 2},
         {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 32, "warmups": 2},
         {"name": "128k_c2", "input": 131072, "output": 64, "concurrency": 2, "prompts": 10, "warmups": 1},
         {"name": "128k_c4", "input": 131072, "output": 64, "concurrency": 4, "prompts": 20, "warmups": 1},

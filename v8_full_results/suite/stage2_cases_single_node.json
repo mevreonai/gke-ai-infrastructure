@@ -26,7 +26,9 @@
       "prefix_caching": false,
       "offload_gib": 0,
       "kv_cache_dtype": "fp8",
-      "attention_config": "{\"use_prefill_query_quantization\": true}",
+      "attention_config": {
+        "use_prefill_query_quantization": true
+      },
       "benchmarks": [
         {"name": "128k_c1", "input": 131072, "output": 128, "concurrency": 1, "prompts": 4, "warmups": 1},
         {"name": "128k_c4", "input": 131072, "output": 128, "concurrency": 4, "prompts": 12, "warmups": 1},

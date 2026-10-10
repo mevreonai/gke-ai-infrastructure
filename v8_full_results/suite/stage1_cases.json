@@ -60,10 +60,10 @@
       "benchmarks": [
         {"name": "1k_c1", "input": 1024, "output": 128, "concurrency": 1, "prompts": 20, "warmups": 2},
         {"name": "1k_c8", "input": 1024, "output": 128, "concurrency": 8, "prompts": 40, "warmups": 2},
-        {"name": "1k_c32", "input": 1024, "output": 128, "concurrency": 32, "prompts": 128, "warmups": 2},
+        {"name": "1k_c32", "input": 1024, "output": 128, "concurrency": 32, "prompts": 160, "warmups": 2},
         {"name": "2k_c1", "input": 2048, "output": 128, "concurrency": 1, "prompts": 16, "warmups": 2},
         {"name": "2k_c8", "input": 2048, "output": 128, "concurrency": 8, "prompts": 32, "warmups": 2},
-        {"name": "2k_c32", "input": 2048, "output": 128, "concurrency": 32, "prompts": 128, "warmups": 2}
+        {"name": "2k_c32", "input": 2048, "output": 128, "concurrency": 32, "prompts": 160, "warmups": 2}
       ]
     },
     {

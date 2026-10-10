@@ -1,11 +1,11 @@
 {
   "split_15_12": {
-    "tpot_ms": 5.964899563499178
+    "tpot_ms": 9.344347880970519
   },
   "split_default": {
-    "tpot_ms": 6.035877023808979
+    "tpot_ms": 12.902693718258108
   },
   "delta_pct": {
-    "tpot_speedup_pct": 1.1759262163530666
+    "tpot_speedup_pct": 27.578317481506286
   }
 }

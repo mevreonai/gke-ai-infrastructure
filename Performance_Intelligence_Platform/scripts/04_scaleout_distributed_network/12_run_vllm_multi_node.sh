@@ -1,13 +1,14 @@
 #!/usr/bin/env bash
 # Enterprise Platform: V6-aligned Ray orchestration with explicit local-P2P/SHM protection.
-# TP4/PP2 is guaranteed to span nodes.
+# TP4/PP2 is guaranteed to span nodes with rock-solid Ray initialization.
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "$SCRIPT_DIR/20_nccl_policy.sh"
 PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE=${PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE:-}
-CONFIG_CANDIDATES=("$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env")
+V8_GCP_NETWORK_PROVENANCE_OVERRIDE=${V8_GCP_NETWORK_PROVENANCE_OVERRIDE:-$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE}
+CONFIG_CANDIDATES=("$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env" "$HOME/v8_additional_runs_suite/RUN_CONFIG.env")
 for f in "${CONFIG_CANDIDATES[@]}"; do if [[ -f "$f" ]]; then source "$f"; break; fi; done
-if [[ -n "$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK_PROVENANCE="$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE"; fi
+if [[ -n "$V8_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK_PROVENANCE="$V8_GCP_NETWORK_PROVENANCE_OVERRIDE"; fi
 : "${NODE0_IP:?NODE0_IP missing; run 00_init_gcp_config.sh or provide RUN_CONFIG.env}"
 : "${NODE1_IP:?NODE1_IP missing; multi-node run requires node1}"
 : "${VENV_DIR:=$HOME/vllm_env}"
@@ -16,11 +17,12 @@ if [[ -n "$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK
 : "${OUT_ROOT:=$HOME/v5_profiling/results/$(date +%Y%m%d_%H%M%S)/$(hostname -s)/vllm_multi_node}"
 mkdir -p "$OUT_ROOT"
 source "$VENV_DIR/bin/activate"
-# Preserve V6 cross-node Socket-network workaround if configured, but never disable
-# local GPU P2P/SHM within either node.
+
+# Export FlashInfer autotune skips to prevent Triton MoE hang
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
+
+# Preserve cross-node Socket-network workaround, protect local P2P/SHM within each node
 nccl_multi_node_v6_aligned_env
-# Direct invocations (outside 20_run_vllm_network_matrix.sh) still bind NCCL Socket
-# to the peer-facing interface.  Network-matrix callers already provide this.
 if [[ -z "${NCCL_SOCKET_IFNAME:-}" ]]; then
   _local_if=$(ip route get "$NODE1_IP" | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
   _remote_if=$(ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "ip route get '$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}'")
@@ -28,7 +30,7 @@ if [[ -z "${NCCL_SOCKET_IFNAME:-}" ]]; then
   export NCCL_SOCKET_IFNAME="=$_local_if"
 fi
 nccl_capture_env "$OUT_ROOT/NCCL_ENV_BEFORE_MULTI_NODE.txt"
-REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports)"
+REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports) export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=\"trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2\";"
 
 SELECT_MODE="qualification"
 if [[ ${1:-} == "--all" ]]; then SELECT_MODE="all"; shift; fi
@@ -38,7 +40,10 @@ if [[ ${1:-} == "--case" ]]; then SELECT_MODE="case:$2"; shift 2; fi
 mapfile -t CASE_ROWS < <(python3 - "$CASES_FILE" "$SELECT_MODE" <<'PY'
 import json,sys
 cfg=json.load(open(sys.argv[1])); sel=sys.argv[2]
-for c in cfg['cases']:
+raw_cases = cfg['cases']
+if isinstance(raw_cases, dict):
+    raw_cases = list(raw_cases.values())
+for c in raw_cases:
     ok = sel=='all' or (sel.startswith('case:') and c['name']==sel.split(':',1)[1]) or (not sel.startswith('case:') and sel in c.get('groups',[]))
     if ok: print(f"{c['name']}|{c.get('ray_gpus_per_node',8)}")
 PY
@@ -55,12 +60,19 @@ for row in "${CASE_ROWS[@]}"; do
 print(','.join(str(i) for i in range(int('$GPUS'))))
 PY
 )
+  # Stop Ray cleanly and allow port 6379 to clear TIME_WAIT
   ray stop -f || true
   ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; ray stop -f || true"
+  sleep 4
 
-  CUDA_VISIBLE_DEVICES="$GPU_LIST" ray start --head --node-ip-address="$NODE0_IP" --port=6379 --num-gpus="$GPUS"
+  PP_EXPORT=""
+  if [[ -n "${VLLM_PP_LAYER_PARTITION:-}" ]]; then
+    PP_EXPORT="export VLLM_PP_LAYER_PARTITION='$VLLM_PP_LAYER_PARTITION'; "
+  fi
+
+  eval "${PP_EXPORT}CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --head --node-ip-address='$NODE0_IP' --port=6379 --num-gpus='$GPUS'"
   ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" \
-    "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --address='$NODE0_IP:6379' --num-gpus='$GPUS'"
+    "$REMOTE_V6_ENV $PP_EXPORT unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --address='$NODE0_IP:6379' --num-gpus='$GPUS'"
   sleep 8
   ray status | tee "$OUT_ROOT/${CASE}_ray_status_before.log"
   # Audit actual Ray-worker environments on every live node before vLLM actors are created.

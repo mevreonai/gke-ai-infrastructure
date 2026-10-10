@@ -1,6 +1,14 @@
 [
   {
     "case": "tp4_pp2_dist_load",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_pp2_dist_load",
     "bench": "8k_c8",
     "status": "COMPLETED",
     "exit": 0,
@@ -49,6 +57,14 @@
   },
   {
     "case": "tp8_pp2_dist_load",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp8_pp2_dist_load",
     "bench": "8k_c8",
     "status": "COMPLETED",
     "exit": 0,
@@ -97,6 +113,14 @@
   },
   {
     "case": "tp4_pp4_dist_load",
+    "bench": "8k_c1",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp4_pp4_dist_load",
     "bench": "8k_c8",
     "status": "COMPLETED",
     "exit": 0,
@@ -138,6 +162,14 @@
   {
     "case": "tp4_pp4_dist_load",
     "bench": "1m_c4",
+    "status": "COMPLETED",
+    "exit": 0,
+    "result_exists": true,
+    "metrics": true
+  },
+  {
+    "case": "tp16_pp1_dist_load",
+    "bench": "8k_c1",
     "status": "COMPLETED",
     "exit": 0,
     "result_exists": true,

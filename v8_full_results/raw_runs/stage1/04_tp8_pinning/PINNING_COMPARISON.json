@@ -1,5 +1,5 @@
 {
-  "unpinned_mean_tpot_ms": 6.647905533007395,
-  "pinned_mean_tpot_ms": 6.598655134638605,
-  "delta_ms": -0.049250398368790194
+  "unpinned_mean_tpot_ms": 6.891224756861381,
+  "pinned_mean_tpot_ms": 6.883009167645498,
+  "delta_ms": -0.008215589215883057
 }
