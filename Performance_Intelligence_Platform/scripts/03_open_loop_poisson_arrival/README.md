@@ -1,7 +1,7 @@
 # 03. Open-Loop Poisson Arrival Distribution Suite
 
 ## 🎯 Purpose & Scope
-Characterizes serving behavior under realistic stochastic traffic. In contrast to synthetic closed-loop benchmarks where new requests wait for prior responses, open-loop benchmarks inject requests according to a Poisson arrival process regardless of server queue depth.
+Characterizes serving behavior under realistic stochastic traffic. In contrast to synthetic closed-loop benchmarks where new requests wait for prior responses, open-loop benchmarks inject requests according to a Poisson arrival process regardless of server queue depth, exposing queue starvation and latency degradation under micro-bursts.
 
 ---
 
@@ -19,7 +19,11 @@ Characterizes serving behavior under realistic stochastic traffic. In contrast t
   ```
 
 ### 2. `15_summarize_vllm.py`
-* **Purpose:** Aggregates open-loop request logs, computes queue wait time distributions, and isolates prefill queue starvation phenomena.
+* **Purpose:** Aggregates open-loop and closed-loop request logs, computes queue wait time distributions, extracts percentile metrics, and produces `vllm_runs.csv`.
+* **Usage:**
+  ```bash
+  python3 15_summarize_vllm.py <results_dir> --out <summary_dir>
+  ```
 
 ### 3. `17_build_serving_analysis.py`
 * **Purpose:** Compiles multi-variable plots correlating arrival rate ($\lambda$) against P99 TTFT inflation.
@@ -27,4 +31,10 @@ Characterizes serving behavior under realistic stochastic traffic. In contrast t
 ---
 
 ## 💡 Landmark Finding
-Under high arrival bursts ($\lambda \ge 16\text{ req/s}$), TTFT P99 latency inflates by up to **412%** due to queueing delays, while individual prompt execution time remains constant.
+Under high arrival bursts ($\lambda \ge 4\text{ req/s}$ with burstiness), TTFT P99 latency inflates by up to **324%** (382 ms $\to$ 1,240 ms) due to temporary queue depth accumulation, while raw compute execution time remains constant.
+
+---
+
+## 📖 Reference Guides
+- Full script execution parameters: [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
+- Complete measured benchmarks: [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)

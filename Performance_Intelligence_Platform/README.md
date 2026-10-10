@@ -3,10 +3,10 @@
 
 Welcome to the **Performance Intelligence Platform**. This repository is an autonomous, production-grade benchmarking, hardware profiling, and telemetry characterization platform engineered specifically to evaluate Large Language Model (LLM) serving on high-density GPU accelerator clusters (such as dual 8x NVIDIA Blackwell / RTX PRO 6000 Ada nodes interconnected via 100 Gbps Google Cloud Andromeda VPC).
 
-The platform provides mathematically verified, reproducible ground truth regarding serving boundaries, memory pressure dynamics, kernel bottlenecks, and multi-node interconnect characteristics.
+The platform provides mathematically verified, reproducible ground truth regarding serving boundaries, memory pressure dynamics, kernel bottlenecks, continuous batching step budgets, and multi-node interconnect characteristics.
 
 > [!NOTE]
-> **Pure Execution & Automation Platform:** This repository contains the executable benchmark suite, hardware profilers, automated sanity smoke tests, and canonical raw telemetry datasets. Visual presentation dashboards are retained exclusively in dedicated analytics artifacts (`v8_full_results/dashboards/v4_dashboard/`).
+> **Pure Execution & Automation Platform:** This repository contains the executable benchmark suite, hardware profilers, automated sanity smoke tests, continuous batching engines, and canonical raw telemetry datasets. Visual presentation dashboards are retained exclusively in dedicated analytics artifacts (`v8_full_results/dashboards/v4_dashboard/`).
 
 ---
 
@@ -14,9 +14,11 @@ The platform provides mathematically verified, reproducible ground truth regardi
 
 | Manual / Guide | File Link | Focus Area & Description |
 |:---|:---|:---|
+| **Master Results & Benchmarks Compendium** | [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md) | **Exhaustive empirical results:** TTFT, TPOT, throughput, continuous batching blocks 1–7, step-cost linear fits, wave & stall telemetry, 1M context limits, and NUMA deltas. |
+| **Scripts & Configuration Guide** | [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md) | **Script-by-script operations:** How to configure `RUN_CONFIG.env` or CLI flags, select specific topologies/stages, and what exact files and metrics are written. |
 | **Operations Runbook (New VM Setup)** | [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md) | Step-by-step instructions from taking a fresh GCP VM, installing CUDA/PyTorch/vLLM, running the smoke test, and executing benchmarks. |
 | **Setup & Operations Manual** | [`README_SETUP_AND_OPERATIONS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_SETUP_AND_OPERATIONS.md) | Exhaustive systems operations: host specs, NUMA pinning, Ray cluster orchestration, 100G VPC traffic control, and troubleshooting. |
-| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 15-step characterization matrix. |
+| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 17-step characterization matrix. |
 | **Execution Scripts Guide** | [`scripts/README.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/README.md) | Command-line options, flag syntax, environment variables, and module documentation. |
 
 ---
@@ -27,11 +29,12 @@ The unified benchmark runner consolidates all empirical characterization into a 
 
 | Stage / Component | Steps Included | Key Workloads & Focus Areas | Wall-Clock Estimate |
 |:---|:---|:---|:---:|
-| **Sanity Smoke Test** | Checks 1 – 9 | Toolchain, PyTorch/vLLM stack, Cutlass MoE flags, Cases JSON, Linux utils, Wave trimming, Synthetic benchmark, Master runner dry-run | **~3 – 5 min** |
+| **Sanity Smoke Test** | Checks 1 – 10 | Toolchain, PyTorch/vLLM stack, Cutlass MoE flags, Cases JSON, Linux utils, Wave trimming, Synthetic benchmark, Master runner dry-run | **~3 – 5 min** |
 | **Stage 1: Quick Wins & Baselines** | Steps 00 – 07 | 8.4K chunk budget A/B test, PyTorch batched profiles (c8, c32), NCCL socket tuning, TP8 host NUMA pinning, Sub-8K short prompts, 128K context knee repeats, R1 continuous context curve, KV pool audit | **~1h 10m** |
 | **Stage 2: Scale-Out Concurrency** | Steps 08 – 13 | FP8 quantization evaluation, DDR5 CPU offload reuse, R2 agentic decay, Multi-node concurrency under load (c=1..8 across TP16, TP8+PP2, TP4+PP4), 15/12 asymmetric PP split (+27.58% speedup), R3 network resilience (Native, 100G, 20G, 0.05% loss), TP16 512K context serving | **~3h 30m** |
 | **Stage 3: Deep Profiling & Sweeps** | Steps 14 – 15 | B1 CUDA Graphs-ON Nsight Systems decode trace (~4.47ms target), Single-node Nsys trace, PyTorch Chrome batched traces, B11 multi-node decode trace, Canonical telemetry compilation & 72-rule invariant audit | **~2h 30m** |
-| **Total Full Campaign** | **Steps 00 – 15** | **Complete end-to-end systems characterization across single-node and multi-node** | **~7h 10m** |
+| **Stage 4: Waves, Stalls & Batching** | Steps 16 – 17 | `pip_waves` & `pip_scan` stall detection, decode silence detection, Continuous Batching Blocks 1–7 (step budget sweeps, chunk caps, request caps, mixed traffic, KV memory pressure, steady arrivals) | **~1h 45m** |
+| **Total Full Campaign** | **Steps 00 – 17** | **Complete end-to-end systems characterization across single-node and multi-node** | **~8h 55m** |
 
 ---
 
@@ -51,7 +54,7 @@ bash scripts/run_master_benchmark.sh [OPTIONS]
   - `1`: Stage 1 Quick Wins & Single-Node (Steps 1–7: ~1h 10m)
   - `2`: Stage 2 Scale-Out Concurrency & Asymmetric PP (Steps 8–13: ~3h 30m)
   - `3`: Stage 3 Deep Profiling & Canonical Telemetry (Steps 14–15: ~2h 30m)
-  - `all`: Full 15-step characterization (~7h 10m)
+  - `all`: Full characterization (~8h 55m)
 * `--topologies <list|all>`: Comma-separated list of target topologies to execute:
   - `tp4_pp1`: Single-node 4-GPU baseline
   - `tp8_pp1`: Single-node 8-GPU baseline (NUMA pinning, continuous context)
@@ -66,8 +69,10 @@ bash scripts/run_master_benchmark.sh [OPTIONS]
   - `20g`: Shaped 20 Gbps via Linux `tc` HTB
   - `impaired`: Synthetic 0.05% packet loss + 0.2ms jitter via Linux `tc` netem
   - `all`: Tests all four network states sequentially
+* `--continuous-batching` (`-cb`): Executes Step 17 continuous batching characterization suite.
+* `--cb-blocks <list|all>`: Selects specific continuous batching blocks (e.g. `1,2,4` or `all`).
 * `--dry-run`: Validates all script workflows, flags, argument parsing, directory creations, and environment setups without launching heavy GPU workloads.
-* `--step <N>`: Executes a single target step (0 to 15).
+* `--step <N>`: Executes a single target step (0 to 17).
 * `--from-step <N>`: Resumes execution starting at step N.
 * `--new-run`: Generates a fresh run directory without reading previous resume markers.
 
@@ -109,14 +114,27 @@ export NCCL_BUFFSIZE="4194304"  # 4 MB socket buffer
 ```text
 Performance_Intelligence_Platform/
 ├── README.md                                  <- Master Platform Overview & Timelines (This File)
+├── PIP_MASTER_RESULTS_AND_BENCHMARKS.md       <- Definitive Ground-Truth Benchmark Results Compendium
+├── SCRIPTS_AND_RESULTS_GUIDE.md               <- Script-by-Script Operations & Results Manual
 ├── RUNBOOK_NEW_VM_SETUP.md                    <- Complete End-to-End Runbook for Fresh VM Provisioning
 ├── README_FILES_AND_ARCHITECTURE.md           <- In-Depth Script & Data Architecture Manual
 ├── README_SETUP_AND_OPERATIONS.md             <- Cluster Setup & Systems Operations Manual
 │
 ├── scripts/                                   <- EXECUTABLE BENCHMARK AUTOMATION SUITE
-│   ├── run_smoke_test.sh                      <- 9-Check Automated Sanity Smoke Test (~3-5 min)
-│   ├── run_master_benchmark.sh               <- Unified Master Benchmark Runner (Steps 00-15: ~7h 10m)
+│   ├── run_smoke_test.sh                      <- 10-Check Automated Sanity Smoke Test (~3-5 min)
+│   ├── run_master_benchmark.sh               <- Unified Master Benchmark Runner (Steps 00-17: ~8h 55m)
+│   ├── run_continuous_batching.sh / .py      <- Continuous Batching Suite Runner (Blocks 1-7)
+│   ├── pip_waves.py                           <- Request Wave Decomposition & Stall Reference Tool
+│   ├── pip_scan.py                            <- Recursive Directory Pause & Stall Scanner
+│   ├── pip_timeline.py                        <- Publication-Quality Timeline Diagram Plotter
+│   ├── pip_step_cost.py                       <- Continuous Batching Step-Cost Linear Model Fitter
+│   ├── pip_mixed_traffic.py                   <- Short + Long Concurrent Stream Interference Analyzer
+│   ├── ttft_waves.py                          <- First-Wave TTFT Decomposition & Burst Analyzer
+│   ├── bench_summary.py                       <- Aggregator with Pause & Stall Indicators
+│   ├── generate_result_summary.py             <- Markdown Report Generator for Benchmark Runs
 │   ├── master_benchmark_cases.json           <- Declarative Cases Manifest across All Topologies
+│   ├── continuous_batching_cases.json         <- Case Manifest for Continuous Batching Sweeps
+│   ├── expected_values.json                   <- Cryptographic Ground-Truth Fixtures & Reference Numbers
 │   ├── RUN_CONFIG.env                         <- Active Runtime Configuration (IPs, Engine Flags)
 │   ├── RUN_CONFIG.env.example                 <- Documented Configuration Template
 │   ├── 01_preflight_and_diagnostics/          <- Node Qualification & PCIe/Interconnect Diagnostics
@@ -128,10 +146,8 @@ Performance_Intelligence_Platform/
 │   └── 07_master_campaign_orchestration/      <- Orchestration Helpers & Invariant Audit Scripts
 │
 └── data/                                      <- CANONICAL EMPIRICAL TELEMETRY REPOSITORY
-    ├── combined_vllm_runs.csv                 <- 126-Run Master Tabular Telemetry
-    ├── combined_vllm_runs.json                <- Master JSON Representation of Serving Metrics
-    ├── PLATFORM_FULL_RELEASE.json             <- Frozen Audited Release Dataset
-    ├── master_step_status.jsonl               <- Real-Time Telemetry Stream of Master Execution
+    ├── README.md                              <- Telemetry Repository Manual & Schema
+    ├── raw_runs/                              <- Raw Execution Trees and Case Logs
     └── results/                               <- Multi-Phase Characterization Traces & Archive Vaults
 ```
 
@@ -140,20 +156,26 @@ Performance_Intelligence_Platform/
 ## 🚀 Quickstart: Running on a Fresh VM
 
 ```bash
-# 1. Clone or copy platform to VM
+# 1. Navigate to platform scripts directory
 cd ~/Performance_Intelligence_Platform/scripts
 
-# 2. Configure cluster IPs (if running multi-node)
+# 2. Configure cluster IPs and selections
 cp RUN_CONFIG.env.example RUN_CONFIG.env
 nano RUN_CONFIG.env
 
 # 3. Execute Automated Smoke Test (~3-5 min)
 bash run_smoke_test.sh
 
-# 4. Launch Unified Master Benchmark (Stage 1 or Full Campaign)
+# 4. Launch Benchmark Selections
+# Dry run check:
+bash run_master_benchmark.sh --dry-run
+
 # Stage 1 Quick Wins (~1h 10m):
 bash run_master_benchmark.sh --stage 1
 
-# Full 15-Step Campaign (~7h 10m):
+# Continuous batching blocks 1 & 2 only:
+bash run_master_benchmark.sh --continuous-batching --cb-blocks 1,2
+
+# Full 17-Step Campaign (~8h 55m):
 bash run_master_benchmark.sh --all
 ```

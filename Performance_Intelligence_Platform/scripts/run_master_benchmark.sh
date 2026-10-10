@@ -725,6 +725,8 @@ if [[ "${RUN_CONTINUOUS_BATCHING:-0}" == "1" ]] || step_should_run 17; then
   run_step 17 "continuous_batching_characterization" bash -c "
     echo 'Running Continuous Batching Suite (Blocks: $CB_BLOCKS_SEL)...'
     python3 '$SUITE_ROOT/run_continuous_batching.py' --out '$CB_OUT' --blocks '$CB_BLOCKS_SEL' $DRY_ARG || true
+    echo 'Generating result summaries...'
+    python3 '$SUITE_ROOT/generate_result_summary.py' '$CB_OUT' || true
   "
 fi
 

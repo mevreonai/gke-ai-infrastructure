@@ -225,6 +225,13 @@ def main():
     except Exception:
         pass
 
+    # Generate Markdown result summaries (RESULT_SUMMARY.md + per-block files)
+    try:
+        summary_gen = str(Path(__file__).with_name("generate_result_summary.py"))
+        subprocess.call([py, summary_gen, str(out)])
+    except Exception as e:
+        print(f"Warning: Result summary generation failed: {e}")
+
 
 if __name__ == "__main__":
     main()

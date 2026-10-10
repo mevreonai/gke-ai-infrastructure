@@ -93,3 +93,15 @@ mkdir -p "$OUT_ROOT"
   --out "$OUT_ROOT" \
   --blocks "$BLOCKS" \
   $DRY_RUN
+
+echo ""
+echo "Generating result summaries..."
+"$PYTHON_BIN" "$SCRIPT_DIR/generate_result_summary.py" "$OUT_ROOT" || true
+
+echo ""
+echo "================================================================================"
+echo "  CONTINUOUS BATCHING COMPLETE"
+echo "  Results   : $OUT_ROOT"
+echo "  Summary   : $OUT_ROOT/RESULT_SUMMARY.md"
+echo "================================================================================"
+
