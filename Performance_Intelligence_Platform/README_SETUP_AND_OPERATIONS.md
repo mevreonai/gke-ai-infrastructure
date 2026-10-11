@@ -1163,7 +1163,7 @@ bash run_smoke_test.sh
 The test asserts:
 1. **Host Environment:** Python 3.10+, NVIDIA GPU drivers, and system tools (`taskset`, `ip`, `tc`).
 2. **AI Framework Stack:** PyTorch CUDA initialization and vLLM module imports.
-3. **MoE Kernel Invariants:** Validates `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `VLLM_MOE_BACKEND=triton`, `VLLM_FLASHINFER_AUTOTUNE=1`, and `VLLM_PP_LAYER_PARTITION=15,12`.
+3. **MoE Kernel Invariants:** Validates `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, and `VLLM_PP_LAYER_PARTITION=15,12`.
 4. **Cases Schema:** Validates `master_benchmark_cases.json` schema across all 15 steps.
 5. **Wave Trimming Engine:** Validates outlier trimming math (filtering first-wave burst artifacts).
 6. **Micro-Benchmark Pipeline:** Emulates telemetry generation and validates JSON schema output.
@@ -1396,11 +1396,12 @@ bash scripts/run_master_benchmark.sh \
 
 The runner strictly enforces the following MoE and NCCL environment invariants:
 - `CUDA_DEVICE_ORDER="PCI_BUS_ID"` (physical PCI bus index binding)
-- `VLLM_MOE_BACKEND="triton"` (Cutlass fused MoE kernel)
+- `MOE_BACKEND="flashinfer_cutlass"` (FlashInfer CUTLASS MoE kernel; ~29% faster on Blackwell/Ada, use `triton` for A/B tests)
 - `VLLM_FLASHINFER_AUTOTUNE="1"` (JIT autotuning)
 - `VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"` (skips problematic operations to avoid warmup hangs)
 - `VLLM_PP_LAYER_PARTITION="15,12"` (+27.58% TTFT speedup on 27-layer models)
-- `NCCL_CROSS_NIC="0"` (avoids cross-socket PCIe saturation)
+- `LD_LIBRARY_PATH="/tmp/clean_nccl_libs:${LD_LIBRARY_PATH:-}"` (clean isolated NCCL library without buggy network plugins)
+- `NCCL_NET="Socket"`, `NCCL_CROSS_NIC="1"`
 - `NCCL_ALGO="Tree"`, `NCCL_PROTO="Simple"`
 
 ### 4.5 External Visual Dashboard Integration

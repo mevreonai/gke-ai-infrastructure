@@ -111,6 +111,10 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
     ol=resolved(case,cfg,"optimization_level")
     if ol is not None: add_if_supported(cmd,serve_help,"--optimization-level",ol)
 
+    moe_backend = case.get("moe_backend") or os.environ.get("MOE_BACKEND") or os.environ.get("VLLM_MOE_BACKEND", "flashinfer_cutlass")
+    if moe_backend:
+        add_if_supported(cmd, serve_help, "--moe-backend", str(moe_backend))
+
     if case.get("prefix_caching",False):
         require_flag(serve_help,"--enable-prefix-caching","vllm serve"); cmd += ["--enable-prefix-caching"]
     else:

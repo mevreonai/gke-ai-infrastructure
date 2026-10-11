@@ -107,22 +107,26 @@ The runner strictly exports and enforces the following kernel execution invarian
 # 1. Enforce physical PCI bus order mapping
 export CUDA_DEVICE_ORDER="PCI_BUS_ID"
 
-# 2. Triton Cutlass MoE Kernel Backend
-export VLLM_MOE_BACKEND="triton"
+# 2. FlashInfer CUTLASS MoE Kernel Backend (~29% faster on Blackwell/Ada; use 'triton' for A/B tests)
+export VLLM_MOE_BACKEND="flashinfer_cutlass"
+export MOE_BACKEND="flashinfer_cutlass"
 
 # 3. FlashInfer JIT Autotuning
 export VLLM_FLASHINFER_AUTOTUNE="1"
 
-# 4. Critical FlashInfer Skip-Ops (Eliminates 45-min Triton MoE Warmup Hang)
+# 4. Critical FlashInfer Skip-Ops (Eliminates 30-min TRTLLM MoE Warmup Hang)
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 
 # 5. Pipeline Parallel Layer Partition (15/12 Split for 27-Layer Architectures)
 export VLLM_PP_LAYER_PARTITION="15,12"
 
-# 6. NCCL Inter-Node Transport Tuning
+# 6. NCCL Inter-Node Transport Tuning (Stage 1/Stage 2 clean isolation)
+export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:${LD_LIBRARY_PATH:-}"
 export NCCL_SOCKET_IFNAME="ens3"
 export NCCL_NET="Socket"
-export NCCL_CROSS_NIC="0"       # Avoids cross-socket PCIe saturation
+export NCCL_CROSS_NIC="1"
+export NCCL_BUFFSIZE="4194304"
+export GLOO_SOCKET_IFNAME="ens3"
 export NCCL_ALGO="Tree"         # High-efficiency multi-node collective tree
 export NCCL_PROTO="Simple"      # Stable streaming protocol
 export NCCL_BUFFSIZE="4194304"  # 4 MB socket buffer

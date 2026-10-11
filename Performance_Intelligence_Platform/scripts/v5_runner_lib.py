@@ -166,6 +166,10 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
     ol=resolved(case,cfg,"optimization_level")
     if ol is not None: add_if_supported(cmd,serve_help,"--optimization-level",ol)
 
+    moe_backend = case.get("moe_backend") or os.environ.get("MOE_BACKEND") or os.environ.get("VLLM_MOE_BACKEND", "flashinfer_cutlass")
+    if moe_backend:
+        add_if_supported(cmd, serve_help, "--moe-backend", str(moe_backend))
+
     if case.get("prefix_caching",False):
         require_flag(serve_help,"--enable-prefix-caching","vllm serve"); cmd += ["--enable-prefix-caching"]
     else:
@@ -186,16 +190,7 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
         cfg_val = case["attention_config"]
         if isinstance(cfg_val, dict):
             cfg_val = json.dumps(cfg_val)
-    moe_b = os.environ.get("VLLM_MOE_BACKEND", resolved(case, cfg, "moe_backend"))
-    if moe_b and "--moe-backend" in serve_help:
-        cmd += ["--moe-backend", str(moe_b)]
-
-    if os.environ.get("VLLM_NO_FLASHINFER_AUTOTUNE") == "1" or resolved(case, cfg, "no_enable_flashinfer_autotune", False):
-        if "--no-enable-flashinfer-autotune" in serve_help:
-            cmd += ["--no-enable-flashinfer-autotune"]
-    elif "--enable-flashinfer-autotune" in serve_help and os.environ.get("VLLM_FLASHINFER_AUTOTUNE") == "1":
-        cmd += ["--enable-flashinfer-autotune"]
-
+        cmd += ["--attention-config", cfg_val]
     if case.get("extra_server_args"):
         cmd.extend(case["extra_server_args"])
     return cmd
