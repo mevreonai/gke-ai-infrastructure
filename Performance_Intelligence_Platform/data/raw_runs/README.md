@@ -67,6 +67,19 @@ Performance_Intelligence_Platform/data/raw_runs/
 
 ---
 
+### Deep Profiling Extensions (V8 Parity)
+
+| Folder | What Was Tested | Key Output File |
+| :--- | :--- | :--- |
+| **`18_poisson_sweep/`** | Open-Loop Poisson arrival rate sweep ($\lambda \in \{1, 2, 4, 8, \infty\}$) | `summary/` |
+| **`19_scheduler_sweep/`** | Scheduler `max_num_seqs` sensitivity (8, 16, 64, 128) at 8K $c=32$ | `summary/` |
+| **`20_observer_overhead/`** | Telemetry observer overhead quantification (Minimal vs Full) | `OBSERVER_OVERHEAD_COMPARISON.json` |
+
+> [!TIP]
+> Consult [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md) for the full matrix of all 20 steps, profiler tools, concurrency sweeps, context lengths, and cold/warm cache isolation methodology.
+
+---
+
 ## 🔍 How to Read the Execution Receipts
 
 To verify that all benchmarks completed successfully without opening dozens of subfolders, inspect `master_step_status.jsonl`:

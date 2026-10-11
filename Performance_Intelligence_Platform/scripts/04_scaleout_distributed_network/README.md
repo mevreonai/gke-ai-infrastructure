@@ -37,8 +37,15 @@ Evaluates multi-node distributed serving across dual 8-GPU nodes interconnected 
 2. **Network Resilience:** Under 0.05% packet loss, `TP16` suffers a **3.8× slowdown**, whereas `TP8+PP2` and `TP4+PP4` degrade by **less than 5%**.
 3. **Asymmetric 15/12 Layer Partition:** An asymmetric 15/12 layer split on 27-layer models yields a **+27.58% TTFT improvement** over default symmetric splits.
 
+## 🧊 Multi-Node Cold vs. Warm Cache Isolation
+In multi-node runs, cold/warm cache isolation is orchestrated across both cluster nodes:
+* **Coordinated Worker Termination:** Local and remote Ray actors and `vllm serve` processes are cleanly torn down via SSH (`pkill -9 -f vllm`).
+* **Cluster VRAM Drain:** Both Node 0 and Node 1 verify complete VRAM allocation return to zero prior to the next concurrency point.
+* **Cold Initial Measurements:** Initial requests at each concurrency tier evaluate pure cold performance without cross-request prefix caching.
+
 ---
 
 ## 📖 Reference Guides
+- Master Run Coverage Matrix (Steps 00-20): [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md)
 - Full script execution parameters: [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
 - Complete measured benchmarks: [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)

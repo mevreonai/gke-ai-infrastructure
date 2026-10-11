@@ -28,6 +28,11 @@ Characterizes serving behavior under realistic stochastic traffic. In contrast t
 ### 3. `17_build_serving_analysis.py`
 * **Purpose:** Compiles multi-variable plots correlating arrival rate ($\lambda$) against P99 TTFT inflation.
 
+### 4. Step 18 Master Benchmark Integration
+* **Case:** `tp4_open_loop_poisson_sweep` in [`master_benchmark_cases.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/master_benchmark_cases.json)
+* **Arrival Rates:** $\lambda \in \{1, 2, 4, 8, \infty\}$ req/sec at 8K input context ($c=8$ and $c=64$).
+* **Execution:** Executed via `run_master_benchmark.sh --profile deep-profile` or explicitly via `--step 18`.
+
 ---
 
 ## 💡 Landmark Finding
@@ -36,5 +41,6 @@ Under high arrival bursts ($\lambda \ge 4\text{ req/s}$ with burstiness), TTFT P
 ---
 
 ## 📖 Reference Guides
+- Master Run Coverage Matrix (Steps 00-20): [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md)
 - Full script execution parameters: [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
 - Complete measured benchmarks: [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)

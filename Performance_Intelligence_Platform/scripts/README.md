@@ -5,9 +5,10 @@ Welcome to the **Benchmark Automation Suite** of the Performance Intelligence Pl
 
 The automation suite is organized into **7 specialized sub-folders** categorized by the type of characterization run, alongside convenient top-level entrypoints and analytical post-processors:
 * [`run_smoke_test.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_smoke_test.sh): 10-check automated sanity verifier (~3–5 minutes) ensuring all toolchains, MoE flags, schemas, and dry-run flows are qualified.
-* [`run_master_benchmark.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_master_benchmark.sh): Unified master campaign orchestrator executing Steps 00–17 sequentially (~8h 55m).
+* [`run_master_benchmark.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_master_benchmark.sh): Unified master campaign orchestrator executing Steps 00–20 across 4 configurable run profiles.
 * [`run_continuous_batching.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_continuous_batching.sh) / [`run_continuous_batching.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_continuous_batching.py): Configurable runner for Continuous Batching characterization (Blocks 1–7).
 * Reference Guides:
+  - [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md): Comprehensive reference for all 20 steps, profiler tools, concurrency sweeps ($c=1..64$), context lengths ($1K..1M$), topologies, and cold/warm cache isolation.
   - [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md): Exhaustive guide for all scripts, configuration selection options, and output artifacts.
   - [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md): Master empirical results table, model curves, and telemetry compendium.
 
@@ -15,14 +16,26 @@ The automation suite is organized into **7 specialized sub-folders** categorized
 
 ## ⏱️ Wall-Clock Time Budgets & Execution Schedule
 
+### Predefined Run Profiles
+
+| Profile | CLI Flag | Approx. Duration | Steps Executed | Primary Objective |
+|:---|:---|:---:|:---:|:---|
+| **Smoke** | `--profile smoke` | **~10 min** | Steps 00–01 (TP4 1k/8k c=1 only) | Fast cluster hardware sanity check |
+| **Fast Dashboard** | `--profile fast-dashboard` | **~2h** | Steps 00–13 (Stage 1 + 2) | Minimum dataset required to build the characterization dashboard |
+| **Default** | `--profile default` (or `--all`) | **~9h** | Steps 00–17 (All Standard Stages) | Full characterization with strict cold/warm cache isolation |
+| **Deep Profile** | `--profile deep-profile` | **~14h** | Steps 00–20 (All + Deep Sweeps) | V8 parity: adds Poisson RPS sweeps, scheduler sensitivity, observer overhead, heavy Nsys |
+
+### Detailed Step Schedule
+
 | Stage / Component | Steps Included | Key Workloads | Estimated Duration |
 |:---|:---|:---|:---:|
 | **Sanity Smoke Test** | Checks 1 – 10 | Toolchains, PyTorch/vLLM stack, Cutlass MoE flags, Cases JSON, Linux utils, Wave trimming, Synthetic micro-benchmark, Master runner dry-run | **~3 – 5 min** |
 | **Stage 1: Quick Wins & Single-Node** | Steps 00 – 07 | 8.4K chunk budget A/B test, PyTorch batched profiles (c8, c32), NCCL socket tuning, TP8 host NUMA pinning, Sub-8K short prompts, 128K knee repeats, R1 continuous context curve, KV pool audit | **~1h 10m** |
 | **Stage 2: Scale-Out Concurrency** | Steps 08 – 13 | FP8 quantization evaluation, DDR5 CPU offload reuse, R2 agentic decay, Multi-node concurrency under load (c=1..8 across TP16, TP8+PP2, TP4+PP4), 15/12 asymmetric PP split (+27.58% TTFT speedup), R3 network resilience (Native, 100G, 20G, 0.05% loss), TP16 512K context serving | **~3h 30m** |
-| **Stage 3: Deep Profiling & Sweeps** | Steps 14 – 15 | B1 CUDA Graphs-ON Nsight Systems decode trace (~4.47ms target), Single-node Nsys trace, PyTorch Chrome batched traces, B11 multi-node decode trace, Canonical telemetry compilation & 72-rule invariant audit | **~2h 30m** |
-| **Stage 4: Waves, Stalls & Batching** | Steps 16 – 17 | `pip_waves` & `pip_scan` pause/stall analysis, Continuous Batching Blocks 1–7 (step budgets, chunk caps, request caps, mixed traffic, KV memory pressure, steady arrivals) | **~1h 45m** |
-| **Complete Unified Campaign** | **Steps 00 – 17** | **Full end-to-end characterization across single-node and multi-node scale-out** | **~8h 55m** |
+| **Stage 3: Deep Profiling & Continuous Batching** | Steps 14 – 17 | B1 CUDA Graphs-ON Nsight Systems decode trace (~4.47ms target), Single-node Nsys trace, PyTorch Chrome batched traces, B11 multi-node decode trace, Canonical telemetry compilation & 72-rule invariant audit, Waves & stalls scan, Continuous Batching Blocks 1–7 | **~4h 15m** |
+| **Stage 3 Deep Extensions** | Steps 18 – 20 | Step 18: Open-Loop Poisson Arrival Rate Sweep (RPS=1,2,4,8,∞), Step 19: Scheduler `max_num_seqs` Sensitivity (8, 16, 64, 128), Step 20: Observability Overhead Test (Minimal vs Full Prometheus) | **~1h 10m** |
+| **Total Full Campaign (Default)** | **Steps 00 – 17** | **Standard production characterization across single-node and multi-node** | **~8h 55m** |
+| **Total Deep Profile Campaign** | **Steps 00 – 20** | **Complete V8 parity with all deep sweeps and heavy profiler traces** | **~14h 00m** |
 
 ---
 
@@ -36,21 +49,34 @@ bash run_master_benchmark.sh [OPTIONS]
 
 ### Supported CLI Flags
 
+* `--profile <name>`: Select a predefined run profile (`smoke`, `fast-dashboard`, `default`, `deep-profile`).
 * `--model <id_or_path>`: Target model (Default: `moonshotai/Kimi-Linear-48B-A3B-Instruct`).
 * `--revision <git_sha>`: Exact git revision for weights provenance.
 * `--stage <1|2|3|all>`: Filter execution to specific stage:
   - `1`: Stage 1 Quick Wins & Single-Node (Steps 1–7: ~1h 10m)
   - `2`: Stage 2 Scale-Out Concurrency & Asymmetric PP (Steps 8–13: ~3h 30m)
-  - `3`: Stage 3 Deep Profiling & Telemetry Audit (Steps 14–15: ~2h 30m)
-  - `all`: All characterization steps (~8h 55m)
+  - `3`: Stage 3 Deep Profiling & Continuous Batching (Steps 14–17: ~4h 15m; Steps 14–20 with deep extensions)
+  - `all`: Full campaign (Steps 00–17 default, or 00–20 with deep-profile)
 * `--topologies <list|all>`: Filter topologies (e.g. `tp4_pp1,tp8_pp1,tp4_pp2,tp8_pp2,tp4_pp4,tp16_pp1`).
+* `--contexts <list|all>`: Filter context lengths (e.g. `1k,8k,128k,512k,1m` or `all`).
+* `--concurrencies <list|all>`: Filter concurrencies (e.g. `1,2,4,8,16,32` or `all`).
 * `--bandwidth <list|all>`: Filter network bandwidth states for Step 12 (e.g. `native,100g,20g,impaired`).
 * `--continuous-batching` (`-cb`): Executes Step 17 continuous batching characterization suite.
 * `--cb-blocks <list|all>`: Selects specific continuous batching blocks (e.g. `1,2,4` or `all`).
 * `--dry-run`: Validates all script workflows, commands, and schemas without launching GPU workloads.
-* `--step <N>`: Executes a single target step (0 to 17).
+* `--step <N>`: Executes a single target step (0 to 20).
 * `--from-step <N>`: Resumes execution starting from step N.
 * `--new-run`: Forces a clean run directory without reading resume markers.
+
+---
+
+## 🧊 Cold vs. Warm Cache Isolation Methodology
+
+To prevent prefix caching bias from distorting TTFT and TPOT readings across different concurrency levels:
+1. `vllm serve` and any remote Ray worker processes are terminated (`SIGTERM` + `pkill -9`) between concurrency sweeps.
+2. A VRAM drain barrier confirms GPU memory allocations drop to 0 bytes and OS file descriptors are released.
+3. A clean `vllm serve` instance is booted for each concurrency level, ensuring an unpopulated KV cache pool.
+4. Measurements are tagged with explicit `cache_state: "cold"` or `cache_state: "warm"` metadata in the JSON output ledger.
 
 ---
 
@@ -134,5 +160,5 @@ Performance_Intelligence_Platform/scripts/
 ├── 04_scaleout_distributed_network/      <- [RUN TYPE 4] Multi-node distributed serving (TP16, TP8+PP2) & VPC network pacing
 ├── 05_long_context_1m_extensions/        <- [RUN TYPE 5] Extreme 128K to 1M token sequence lengths & memory limits
 ├── 06_deep_kernel_and_torch_profiling/   <- [RUN TYPE 6] NVIDIA Nsight Systems & PyTorch Profiler Chrome traces
-└── 07_master_campaign_orchestration/     <- [RUN TYPE 7] Autonomous master campaign orchestrator supervising all 17 steps
+└── 07_master_campaign_orchestration/     <- [RUN TYPE 7] Autonomous master campaign orchestrator supervising all 20 steps (4 profiles)
 ```

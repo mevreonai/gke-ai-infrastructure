@@ -86,18 +86,15 @@ export CONTEXT_SELECTION="1k,8k,128k,512k,1m"
 # 6. Concurrency Grid Selection: Choose concurrencies or 'all'
 # Options: all | 1 | 2 | 4 | 8 | 16 | 32 | comma-separated list (e.g. 1,8 or 1)
 # ------------------------------------------------------------------------------
-export CONCURRENCY_SELECTION="1,8,32"
-
-# ------------------------------------------------------------------------------
-# 7. Characterization Stages: Choose one or 'all'
+export CONCURRENCY_SELECTION="1,8,32"# ------------------------------------------------------------------------------
+# 7. Characterization Stages & Run Profiles
 # Options:
-#   1   -> Stage 1: Quick Wins & Single-Node (Steps 1-7: ~1h 10m)
-#   2   -> Stage 2: Scale-Out Concurrency & Asymmetric PP (Steps 8-13: ~3h 30m)
-#   3   -> Stage 3: Deep Profiling & Strategic Sweeps (Steps 14-15: ~2h 30m)
-#   all -> All stages (Steps 0-17: ~7h 10m)
+#   smoke          -> Steps 00-01 (TP4 1k/8k c=1 sanity check: ~10m)
+#   fast-dashboard -> Steps 00-13 (Stage 1+2: ~2h, minimum for dashboard)
+#   default / all  -> Steps 00-17 (All Standard Stages: ~9h)
+#   deep-profile   -> Steps 00-20 (Full + Deep Poisson/Scheduler/Observer sweeps: ~14h)
 # ------------------------------------------------------------------------------
-export STAGE_SELECTION="1"
-
+export STAGE_SELECTION="all"
 # ------------------------------------------------------------------------------
 # 8. Continuous Batching Sweep Blocks: Choose blocks (1 to 7) or 'all'
 # Options: all | 1 | 2 | 3 | 4 | 5 | 6 | 7 | comma-separated list (e.g. 1,2,4)
@@ -111,6 +108,9 @@ bash run_master_benchmark.sh
 ```
 The script loads `RUN_CONFIG.env` and automatically filters the benchmark matrix.
 
+> [!TIP]
+> For the complete matrix of all profiling tools, concurrencies ($c=1..64$), context lengths ($1K..1M$), topologies, and cold/warm cache isolation protocols, consult [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md).
+
 ---
 
 ### 1.2 Configuring via CLI Arguments
@@ -118,6 +118,10 @@ The script loads `RUN_CONFIG.env` and automatically filters the benchmark matrix
 Every configuration can also be overridden directly on the command line without editing files:
 
 ```bash
+# Choose a predefined run profile
+bash run_master_benchmark.sh --profile fast-dashboard
+bash run_master_benchmark.sh --profile deep-profile
+
 # Run only TP4 single-node and dual-node topologies on Stage 1
 bash run_master_benchmark.sh --topologies tp4_pp1,tp4_pp2 --stage 1
 
@@ -130,8 +134,9 @@ bash run_master_benchmark.sh --contexts 512k,1m --concurrencies 1
 # Run with a custom model and specific network bandwidth
 bash run_master_benchmark.sh --model meta-llama/Llama-3.1-70B-Instruct --bandwidth native
 
-# Run only a specific step (e.g. Step 4: NUMA pinning)
+# Run only a specific step (e.g. Step 4: NUMA pinning, or Step 18: Poisson sweep)
 bash run_master_benchmark.sh --step 4
+bash run_master_benchmark.sh --step 18
 
 # Run only Continuous Batching Blocks 1 and 2
 bash run_master_benchmark.sh --continuous-batching --cb-blocks 1,2
@@ -172,8 +177,8 @@ bash run_master_benchmark.sh --dry-run
 | | `all` | Sweeps all 4 network profiles sequentially |
 | `STAGE_SELECTION` | `1` | Steps 1–7 (Chunk A/B, PyTorch profiles, NCCL tuning, NUMA, Short prompts, 128K knee, KV audit) |
 | | `2` | Steps 8–13 (FP8 KV, CPU offload, Distributed scale-out load, PP 15/12 split, Network capped, 512K prefill) |
-| | `3` | Steps 14–15 (Deep Nsight/Chrome timelines, Canonical aggregation & audit) |
-| | `all` | Executes full end-to-end campaign (Steps 0–17) |
+| | `3` | Steps 14–17 standard (Deep Nsight/Chrome timelines, Canonical aggregation & audit, Waves scan, Continuous batching) |
+| | `all` | Executes full campaign (Steps 0–17 default, or Steps 0–20 with deep-profile) |
 | `CB_BLOCKS` | `1` | Long prompts side-by-side (Chunk cap 8192 vs large step) |
 | | `2` | Step budget sweep (4K, 8K, 16K, 32K on TP4/PP1 and TP4/PP2) |
 | | `3` | Request cap binding (`max-num-seqs` 16, 32, 64) |
@@ -188,10 +193,11 @@ bash run_master_benchmark.sh --dry-run
 
 ### `run_master_benchmark.sh`
 - **Location:** [`Performance_Intelligence_Platform/scripts/run_master_benchmark.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_master_benchmark.sh)
-- **Role:** The primary entry point for full-scale characterization. Sequentially runs Steps 00 through 17.
+- **Role:** The primary entry point for full-scale characterization. Sequentially runs Steps 00 through 20 across 4 selectable run profiles.
 - **Config Selection Support:**
   - Reads `RUN_CONFIG.env` automatically.
-  - Accepts CLI flags: `--stage`, `--topologies`, `--bandwidth`, `--model`, `--step`, `--from-step`, `--cb-blocks`, `--dry-run`, `--new-run`, `--no-resume`.
+  - Accepts CLI flags: `--profile`, `--stage`, `--topologies`, `--contexts`, `--concurrencies`, `--bandwidth`, `--model`, `--step`, `--from-step`, `--cb-blocks`, `--dry-run`, `--new-run`, `--no-resume`.
+  - Enforces **Cold vs. Warm Cache Isolation**: kills `vllm serve` and waits on a VRAM drain barrier between concurrency levels within each case to prevent prefix caching distortion.
   - Resume-aware: tracks completed steps in `$MASTER_ROOT/.done/` so interrupted campaigns can resume without re-running earlier steps.
 - **Exact Results & Outputs:**
   ```
@@ -222,10 +228,24 @@ bash run_master_benchmark.sh --dry-run
   │   └── RESILIENCE_COMPARISON.json        # TP16 vs PP4 degradation under 0.05% loss
   ├── step13_tp16_512k_prefill/             # Step 13 512K context distributed results
   ├── step14_timeline_profiles/             # Step 14 Nsight & Chrome traces
+  ├── step15_canonical_aggregation/         # Step 15 Canonical data compilation & 72-rule invariant audit
   ├── step16_waves_stalls/                  # Step 16 Wave analysis outputs
   │   ├── PAUSE_AND_STALL_SCAN.csv          # Pause & stall scan across all runs
   │   └── BENCH_SUMMARY_WAVES.txt           # Text summary of wave metrics
-  └── step17_continuous_batching/           # Step 17 Continuous batching suite
+  ├── step17_continuous_batching/           # Step 17 Continuous batching suite
+  │   ├── continuous_batching_manifest.json
+  │   ├── pause_scan.csv
+  │   ├── RESULT_SUMMARY.md
+  │   └── BLOCK_<N>_SUMMARY.md
+  ├── step18_poisson_sweep/                 # Step 18 Open-loop Poisson arrival rate sweep (RPS=1..inf)
+  │   └── summary/                          # Throughput vs latency curves under Poisson arrival
+  ├── step19_scheduler_sweep/               # Step 19 Scheduler max_num_seqs sensitivity sweep
+  │   └── summary/                          # Admission cap comparison across 8, 16, 64, 128
+  └── step20_observer_overhead/             # Step 20 Observability overhead test
+      ├── minimal/                          # Minimal telemetry run
+      ├── full/                             # Full telemetry run
+      └── OBSERVER_OVERHEAD_COMPARISON.json # Delta in mean TPOT/TTFT caused by Prometheus
+  ```�─ step17_continuous_batching/           # Step 17 Continuous batching suite
       ├── continuous_batching_manifest.json
       ├── pause_scan.csv
       ├── RESULT_SUMMARY.md

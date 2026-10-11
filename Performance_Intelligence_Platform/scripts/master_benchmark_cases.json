@@ -1677,6 +1677,263 @@
           "warmups": 0
         }
       ]
+    },
+    "tp4_open_loop_poisson_sweep": {
+      "name": "tp4_open_loop_poisson_sweep",
+      "groups": [
+        "stage3",
+        "open_loop_poisson",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Open-loop Poisson arrival rate sweep at 8K context: measures throughput-latency trade-off under realistic arrival patterns (V8 parity: request_rate=1,2,4,8,inf).",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_poisson_rps1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 40,
+          "warmups": 2,
+          "request_rate": 1.0
+        },
+        {
+          "name": "8k_poisson_rps2",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 60,
+          "warmups": 2,
+          "request_rate": 2.0
+        },
+        {
+          "name": "8k_poisson_rps4",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 80,
+          "warmups": 2,
+          "request_rate": 4.0
+        },
+        {
+          "name": "8k_poisson_rps8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 120,
+          "warmups": 2,
+          "request_rate": 8.0
+        },
+        {
+          "name": "8k_poisson_inf",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_scheduler_max_seqs_sweep": {
+      "name": "tp4_scheduler_max_seqs_sweep",
+      "groups": [
+        "stage3",
+        "scheduler_sweep",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Scheduler max_num_seqs sensitivity sweep: measures impact of admission cap (8,16,32,64,128) on throughput and tail latency at 8K c=32.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 8,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c32_seqs8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_scheduler_max_seqs_16": {
+      "name": "tp4_scheduler_max_seqs_16",
+      "groups": [
+        "stage3",
+        "scheduler_sweep",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Scheduler max_num_seqs=16 evaluation point.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c32_seqs16",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_scheduler_max_seqs_64": {
+      "name": "tp4_scheduler_max_seqs_64",
+      "groups": [
+        "stage3",
+        "scheduler_sweep",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Scheduler max_num_seqs=64 evaluation point (baseline comparison).",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c32_seqs64",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_scheduler_max_seqs_128": {
+      "name": "tp4_scheduler_max_seqs_128",
+      "groups": [
+        "stage3",
+        "scheduler_sweep",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Scheduler max_num_seqs=128 evaluation point (over-admission stress test).",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 128,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "8k_c32_seqs128",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_observer_overhead_test": {
+      "name": "tp4_observer_overhead_test",
+      "groups": [
+        "stage3",
+        "observer_overhead",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Measures observability overhead: runs identical 8K c=8 workload with full metrics vs minimal metrics to quantify Prometheus/kv-cache-metrics telemetry cost.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "observability_profile": "minimal",
+      "benchmarks": [
+        {
+          "name": "8k_c8_obs_minimal",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32_obs_minimal",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
+    "tp4_r1_continuous_context_curve": {
+      "name": "tp4_r1_continuous_context_curve",
+      "groups": [
+        "stage3",
+        "r1_continuous_context",
+        "single_node"
+      ],
+      "purpose": "R1: Continuous long-context power-law curve for TP4 (16K, 32K, 64K, 256K) to map the cache inflection on 4-GPU sub-cluster (V8 parity: had TP8 only, adding TP4).",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 16384,
+      "max_num_seqs": 16,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "benchmarks": [
+        {
+          "name": "16k_c1",
+          "input": 16384,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 6,
+          "warmups": 1
+        },
+        {
+          "name": "32k_c1",
+          "input": 32768,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "64k_c1",
+          "input": 65536,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "256k_c1",
+          "input": 262144,
+          "output": 64,
+          "concurrency": 1,
+          "prompts": 2,
+          "warmups": 0
+        }
+      ]
     }
   }
 }

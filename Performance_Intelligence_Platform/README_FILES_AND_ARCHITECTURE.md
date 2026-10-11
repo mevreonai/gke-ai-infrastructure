@@ -7,12 +7,13 @@
 > **Scripts & Configuration Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)  
 > **Target Audience:** Systems Architects, Distributed Systems Engineers, ML Infrastructure Operators, Performance Engineers  
 > **Repository Root:** `Performance_Intelligence_Platform/`  
-> **Empirical Telemetry Scope:** 40+ Gigabytes across 17 High-Density Benchmark Phases  
+> **Empirical Telemetry Scope:** 40+ Gigabytes across 20 High-Density Benchmark Steps  
 > **Integrity Guarantee:** 100% Bit-Exact Empirical Telemetry Preserved  
 
 ---
 
 ## 🧭 Key Documents
+* 🗺️ **Run Coverage Matrix:** [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md)
 * 📊 **Results & Benchmark Data:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)
 * 📜 **Scripts, Configs & Outputs Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
 * 🚀 **Quick VM Setup Runbook:** [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md)

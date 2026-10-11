@@ -2,9 +2,19 @@
 # ==============================================================================
 # PERFORMANCE INTELLIGENCE PLATFORM — UNIFIED MASTER BENCHMARK RUNNER
 # ==============================================================================
-# Executes All 15 Systems Characterization Steps Sequentially in the Main Run
+# Executes All 20 Systems Characterization Steps Sequentially in the Main Run
 # Incorporates all Stage 1 (Quick Wins), Stage 2 (Scale-Out), and Stage 3 (Deep Expansions)
 # Model-Agnostic: Configured dynamically via $MODEL and $REVISION
+#
+# Run Profiles:
+#   --profile smoke           Quick 10-min sanity check: TP4 1k/8k c=1 only
+#   --profile fast-dashboard   ~2h fast dashboard build: Stage 1+2, skip profiling
+#   --profile default          ~9h full characterization (DEFAULT)
+#   --profile deep-profile     ~14h: All stages + heavy Nsys 512K/1M + Poisson + scheduler sweeps
+#
+# Cold vs Warm Cache Isolation:
+#   vLLM serve is killed and restarted between concurrency levels within each
+#   case to prevent prefix caching bias from contaminating TTFT measurements.
 # ==============================================================================
 set -euo pipefail
 
@@ -43,6 +53,10 @@ SELECTED_TOPOLOGIES="all"
 SELECTED_BANDWIDTH="all"
 SELECTED_CONTEXTS=""
 SELECTED_CONCURRENCIES=""
+RUN_POISSON_SWEEPS="${RUN_POISSON_SWEEPS:-0}"
+RUN_SCHEDULER_SWEEPS="${RUN_SCHEDULER_SWEEPS:-0}"
+RUN_OBSERVER_OVERHEAD="${RUN_OBSERVER_OVERHEAD:-0}"
+SELECTED_PROFILE=""
 DRY_RUN=0
 
 # Parse flags
@@ -121,21 +135,54 @@ while [[ $# -gt 0 ]]; do
       RESUME=0
       shift
       ;;
+    --profile)
+      SELECTED_PROFILE="$2"
+      case "$SELECTED_PROFILE" in
+        smoke)
+          SELECTED_STAGE="1"
+          SELECTED_CONTEXTS="1k,8k"
+          SELECTED_CONCURRENCIES="1"
+          ;;
+        fast-dashboard)
+          SELECTED_STAGE="1,2"
+          ;;
+        default)
+          SELECTED_STAGE="all"
+          ;;
+        deep-profile)
+          SELECTED_STAGE="all"
+          RUN_POISSON_SWEEPS=1
+          RUN_SCHEDULER_SWEEPS=1
+          RUN_OBSERVER_OVERHEAD=1
+          export RUN_HEAVY_PROFILE=1
+          ;;
+        *)
+          echo "Unknown profile: $SELECTED_PROFILE (valid: smoke, fast-dashboard, default, deep-profile)"
+          exit 1
+          ;;
+      esac
+      shift 2
+      ;;
     -h|--help)
       echo "Usage: $0 [OPTIONS]"
       echo "Options:"
-      echo "  --all                        Execute all stages and characterization steps (00-15: ~7h 10m)"
+      echo "  --all                        Execute all stages and characterization steps (00-20: ~9h default)"
+      echo "  --profile <name>             Select a run profile:"
+      echo "                                 smoke          Quick 10-min sanity: TP4 1k/8k c=1"
+      echo "                                 fast-dashboard ~2h fast dashboard build: Stage 1+2"
+      echo "                                 default        ~9h full characterization with cold/warm isolation"
+      echo "                                 deep-profile   ~14h deep: + Poisson + scheduler + observer + heavy Nsys"
       echo "  --stage <1|2|3|all>          Filter execution to specific characterization stage"
       echo "                                 Stage 1: Quick Wins & Single-Node (Steps 1-7: ~1h 10m)"
       echo "                                 Stage 2: Scale-Out Concurrency & Asymmetric PP (Steps 8-13: ~3h 30m)"
-      echo "                                 Stage 3: Deep Profiling & Strategic Sweeps (Steps 14-15: ~2h 30m)"
+      echo "                                 Stage 3: Deep Profiling & Strategic Sweeps (Steps 14-20: ~4h 20m)"
       echo "  --model <hf_id_or_path>      Select target model (default: moonshotai/Kimi-Linear-48B-A3B-Instruct)"
       echo "  --revision <git_sha>         Select model revision commit"
       echo "  --topologies <list|all>      Select topologies (e.g. tp4_pp1,tp8_pp1,tp4_pp2,tp8_pp2,tp4_pp4,tp16_pp1)"
       echo "  --bandwidth <list|all>       Select network bandwidth modes (e.g. native,100g,20g,impaired)"
       echo "  --contexts <list|all>        Select context sizes (e.g. 1k,8k,128k,512k,1m or all)"
       echo "  --concurrencies <list|all>   Select concurrencies (e.g. 1,2,4,8,32 or all)"
-      echo "  --step <0..15>               Execute a single target step"
+      echo "  --step <0..20>               Execute a single target step"
       echo "  --from-step <N>              Resume execution starting from step N"
       echo "  --dry-run                    Verify commands and configuration without launching GPU workloads"
       echo "  --new-run / --no-resume      Force clean execution without resume markers"
@@ -228,9 +275,13 @@ echo "  Topologies   : ${TOPOLOGY_SELECTION:-all}"
 echo "  Bandwidth    : ${NETWORK_BANDWIDTH_SELECTION:-all}"
 echo "  Contexts     : ${CONTEXT_SELECTION:-all}"
 echo "  Concurrency  : ${CONCURRENCY_SELECTION:-all}"
+echo "  Profile      : ${SELECTED_PROFILE:-custom}"
 echo "  Dry Run      : $DRY_RUN"
 echo "  MoE Backend  : $VLLM_MOE_BACKEND (Cutlass/Triton Autotuned)"
 echo "  PP Split     : $VLLM_PP_LAYER_PARTITION"
+echo "  Poisson      : ${RUN_POISSON_SWEEPS:-0}"
+echo "  Scheduler    : ${RUN_SCHEDULER_SWEEPS:-0}"
+echo "  Observer OH  : ${RUN_OBSERVER_OVERHEAD:-0}"
 echo "================================================================================"
 
 topology_matches() {
@@ -262,9 +313,25 @@ bandwidth_matches() {
 step_should_run() {
   local num="$1"
   local stage="${STAGE_SELECTION:-all}"
-  if [[ "$stage" == "1" && ( "$num" -lt 1 || "$num" -gt 7 ) ]]; then return 1; fi
-  if [[ "$stage" == "2" && ( "$num" -lt 8 || "$num" -gt 13 ) ]]; then return 1; fi
-  if [[ "$stage" == "3" && ( "$num" -lt 14 || "$num" -gt 17 ) ]]; then return 1; fi
+
+  if [[ "$stage" != "all" ]]; then
+    local in_stage=0
+    local step_stage=0
+    if [[ "$num" -ge 1 && "$num" -le 7 ]]; then step_stage=1
+    elif [[ "$num" -ge 8 && "$num" -le 13 ]]; then step_stage=2
+    elif [[ "$num" -ge 14 && "$num" -le 20 ]]; then step_stage=3
+    fi
+
+    IFS=',' read -ra STAGES <<< "$stage"
+    for s in "${STAGES[@]}"; do
+      s=$(echo "$s" | tr -d ' ')
+      if [[ "$s" == "$step_stage" ]]; then
+        in_stage=1
+        break
+      fi
+    done
+    [[ "$in_stage" -eq 0 ]] && return 1
+  fi
 
   if [[ "$TARGET_STEP" == "all" ]]; then
     if [[ "$num" -ge "$FROM_STEP" ]]; then return 0; else return 1; fi
@@ -274,6 +341,7 @@ step_should_run() {
     return 1
   fi
 }
+
 
 run_step() {
   local num="$1"
@@ -815,9 +883,72 @@ if [[ "${RUN_CONTINUOUS_BATCHING:-0}" == "1" ]] || step_should_run 17; then
     "
   fi
 fi
+# ------------------------------------------------------------------------------
+# STEP 18: Open-Loop Poisson Arrival Rate Sweep (V8 Parity - Deep Profile)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_POISSON_SWEEPS:-0}" == "1" ]] || [[ "$TARGET_STEP" == "18" ]]; then
+  POISSON_DIR="$MASTER_ROOT/step18_poisson_sweep"
+  run_step 18 "open_loop_poisson_sweep" bash -c "
+    mkdir -p '$POISSON_DIR'
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_open_loop_poisson_sweep --out '$POISSON_DIR' --port 8090
+    python3 '$VLLM_DIR/15_summarize_vllm.py' '$POISSON_DIR' --out '$POISSON_DIR/summary'
+  "
+fi
+
+# ------------------------------------------------------------------------------
+# STEP 19: Scheduler max_num_seqs Sensitivity Sweep (V8 Parity - Deep Profile)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_SCHEDULER_SWEEPS:-0}" == "1" ]] || [[ "$TARGET_STEP" == "19" ]]; then
+  SCHED_DIR="$MASTER_ROOT/step19_scheduler_sweep"
+  run_step 19 "scheduler_max_seqs_sweep" bash -c "
+    mkdir -p '$SCHED_DIR'
+    for seq_case in tp4_scheduler_max_seqs_sweep tp4_scheduler_max_seqs_16 tp4_scheduler_max_seqs_64 tp4_scheduler_max_seqs_128; do
+      echo \"Running scheduler sweep case: \$seq_case\"
+      python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case \"\$seq_case\" --out '$SCHED_DIR' --port 8091
+      # Kill vLLM between scheduler cases to prevent config leakage
+      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+    done
+    python3 '$VLLM_DIR/15_summarize_vllm.py' '$SCHED_DIR' --out '$SCHED_DIR/summary'
+  "
+fi
+
+# ------------------------------------------------------------------------------
+# STEP 20: Observability Overhead Test (Minimal vs Full Telemetry - Deep Profile)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_OBSERVER_OVERHEAD:-0}" == "1" ]] || [[ "$TARGET_STEP" == "20" ]]; then
+  OBS_DIR="$MASTER_ROOT/step20_observer_overhead"
+  run_step 20 "observer_overhead_test" bash -c "
+    mkdir -p '$OBS_DIR/minimal' '$OBS_DIR/full'
+    # Run with minimal observability (no kv-cache-metrics, no MFU metrics)
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_observer_overhead_test --out '$OBS_DIR/minimal' --port 8092
+    pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+    # Run the same workload against baseline case with full observability for comparison
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_short_prompts --out '$OBS_DIR/full' --port 8093
+    python3 '$VLLM_DIR/15_summarize_vllm.py' '$OBS_DIR' --out '$OBS_DIR/summary'
+
+    # Compare overhead
+    python3 - <<'PY' \"\$OBS_DIR\"
+import json, sys
+from pathlib import Path
+root = Path(sys.argv[1])
+result = {}
+for label in ('minimal', 'full'):
+    d = root / label
+    for f in d.rglob('*.json'):
+        if f.name in ('summary.json', 'case_manifest.json', 'vllm_surrogate_manifest.json', 'resolved_models.json'): continue
+        try:
+            data = json.load(open(f))
+            if 'mean_tpot_ms' in data:
+                result[f'{label}_{f.stem}'] = {'mean_tpot_ms': data.get('mean_tpot_ms'), 'mean_ttft_ms': data.get('mean_ttft_ms'), 'output_throughput': data.get('output_throughput')}
+        except Exception: pass
+(root / 'OBSERVER_OVERHEAD_COMPARISON.json').write_text(json.dumps(result, indent=2))
+print('Observer Overhead Comparison:', json.dumps(result, indent=2))
+PY
+  "
+fi
 
 echo ""
 echo "================================================================================"
-echo "  MASTER BENCHMARK CAMPAIGN EXECUTION COMPLETE!"
+echo "  ALL STEPS COMPLETE (including deep-profile extensions if enabled)"
 echo "  Telemetry & Logs Vault: $MASTER_ROOT"
 echo "================================================================================"

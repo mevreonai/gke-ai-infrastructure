@@ -14,27 +14,40 @@ The platform provides mathematically verified, reproducible ground truth regardi
 
 | Manual / Guide | File Link | Focus Area & Description |
 |:---|:---|:---|
+| **Run Coverage Matrix** | [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md) | **Comprehensive coverage reference:** All 20 steps, 4 run profiles, profiling tools, concurrency grid ($c=1..64$), context lengths ($1K..1M$), cold/warm cache isolation methodology. |
 | **Master Results & Benchmarks Compendium** | [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md) | **Exhaustive empirical results:** TTFT, TPOT, throughput, continuous batching blocks 1–7, step-cost linear fits, wave & stall telemetry, 1M context limits, and NUMA deltas. |
 | **Scripts & Configuration Guide** | [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md) | **Script-by-script operations:** How to configure `RUN_CONFIG.env` or CLI flags, select specific topologies/stages, and what exact files and metrics are written. |
 | **Operations Runbook (New VM Setup)** | [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md) | Step-by-step instructions from taking a fresh GCP VM, installing CUDA/PyTorch/vLLM, running the smoke test, and executing benchmarks. |
 | **Setup & Operations Manual** | [`README_SETUP_AND_OPERATIONS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_SETUP_AND_OPERATIONS.md) | Exhaustive systems operations: host specs, NUMA pinning, Ray cluster orchestration, 100G VPC traffic control, and troubleshooting. |
-| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 17-step characterization matrix. |
+| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 20-step characterization matrix. |
 | **Execution Scripts Guide** | [`scripts/README.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/README.md) | Command-line options, flag syntax, environment variables, and module documentation. |
 
 ---
 
-## ⏱️ Comprehensive Execution Timelines & Time Budgets
+## ⏱️ Comprehensive Execution Timelines & Run Profiles
 
-The unified benchmark runner consolidates all empirical characterization into a single sequential workflow with zero skips or failures.
+The unified benchmark runner consolidates all systems characterization into reproducible workflows with zero skips or failures.
+
+### Execution Profiles
+
+| Profile | CLI Flag | Approx. Duration | Steps Executed | Primary Objective |
+|:---|:---|:---:|:---:|:---|
+| **Smoke** | `--profile smoke` | **~10 min** | Steps 00–01 (TP4 1k/8k c=1 only) | Quick sanity check on cluster hardware & serving stack |
+| **Fast Dashboard** | `--profile fast-dashboard` | **~2h** | Steps 00–13 (Stage 1 + 2) | Minimum dataset required to populate the characterization dashboard |
+| **Default** | `--profile default` (or `--all`) | **~9h** | Steps 00–17 (All Standard Stages) | Full characterization with strict cold/warm cache isolation |
+| **Deep Profile** | `--profile deep-profile` | **~14h** | Steps 00–20 (All + Deep Sweeps) | V8 parity: adds Poisson RPS sweeps, scheduler sensitivity, observer overhead, heavy Nsys |
+
+### Step-by-Step Breakdown
 
 | Stage / Component | Steps Included | Key Workloads & Focus Areas | Wall-Clock Estimate |
 |:---|:---|:---|:---:|
 | **Sanity Smoke Test** | Checks 1 – 10 | Toolchain, PyTorch/vLLM stack, Cutlass MoE flags, Cases JSON, Linux utils, Wave trimming, Synthetic benchmark, Master runner dry-run | **~3 – 5 min** |
 | **Stage 1: Quick Wins & Baselines** | Steps 00 – 07 | 8.4K chunk budget A/B test, PyTorch batched profiles (c8, c32), NCCL socket tuning, TP8 host NUMA pinning, Sub-8K short prompts, 128K context knee repeats, R1 continuous context curve, KV pool audit | **~1h 10m** |
 | **Stage 2: Scale-Out Concurrency** | Steps 08 – 13 | FP8 quantization evaluation, DDR5 CPU offload reuse, R2 agentic decay, Multi-node concurrency under load (c=1..8 across TP16, TP8+PP2, TP4+PP4), 15/12 asymmetric PP split (+27.58% speedup), R3 network resilience (Native, 100G, 20G, 0.05% loss), TP16 512K context serving | **~3h 30m** |
-| **Stage 3: Deep Profiling & Sweeps** | Steps 14 – 15 | B1 CUDA Graphs-ON Nsight Systems decode trace (~4.47ms target), Single-node Nsys trace, PyTorch Chrome batched traces, B11 multi-node decode trace, Canonical telemetry compilation & 72-rule invariant audit | **~2h 30m** |
-| **Stage 4: Waves, Stalls & Batching** | Steps 16 – 17 | `pip_waves` & `pip_scan` stall detection, decode silence detection, Continuous Batching Blocks 1–7 (step budget sweeps, chunk caps, request caps, mixed traffic, KV memory pressure, steady arrivals) | **~1h 45m** |
-| **Total Full Campaign** | **Steps 00 – 17** | **Complete end-to-end systems characterization across single-node and multi-node** | **~8h 55m** |
+| **Stage 3: Deep Profiling & Sweeps** | Steps 14 – 17 | B1 CUDA Graphs-ON Nsight Systems decode trace (~4.47ms target), Single-node Nsys trace, PyTorch Chrome batched traces, B11 multi-node decode trace, Canonical telemetry compilation & 72-rule invariant audit, Waves & stalls audit, Continuous Batching Blocks 1–7 | **~4h 15m** |
+| **Stage 3 Deep Extensions** | Steps 18 – 20 | Step 18: Open-Loop Poisson Arrival Rate Sweep (RPS=1,2,4,8,∞), Step 19: Scheduler `max_num_seqs` Sensitivity (8, 16, 64, 128), Step 20: Observability Overhead Test (Minimal vs Full Prometheus) | **~1h 10m** |
+| **Total Full Campaign (Default)** | **Steps 00 – 17** | **Standard production characterization across single-node and multi-node** | **~8h 55m** |
+| **Total Deep Profile Campaign** | **Steps 00 – 20** | **Complete V8 parity with all deep sweeps and heavy profiler traces** | **~14h 00m** |
 
 ---
 
@@ -48,13 +61,18 @@ bash scripts/run_master_benchmark.sh [OPTIONS]
 
 ### Supported CLI Flags
 
+* `--profile <name>`: Select a predefined run profile:
+  - `smoke`: Quick ~10 min sanity check (TP4 1k/8k $c=1$ only)
+  - `fast-dashboard`: ~2h fast build (Stages 1+2, minimum dataset for dashboard)
+  - `default`: ~9h full characterization across all topologies and contexts (Steps 00–17)
+  - `deep-profile`: ~14h exhaustive V8-parity deep characterization (Steps 00–20)
 * `--model <hf_id_or_path>`: Target HuggingFace model or local path (Default: `moonshotai/Kimi-Linear-48B-A3B-Instruct`).
 * `--revision <git_sha>`: Exact model commit hash for provenance verification.
 * `--stage <1|2|3|all>`: Filter execution to a specific characterization stage:
   - `1`: Stage 1 Quick Wins & Single-Node (Steps 1–7: ~1h 10m)
   - `2`: Stage 2 Scale-Out Concurrency & Asymmetric PP (Steps 8–13: ~3h 30m)
-  - `3`: Stage 3 Deep Profiling & Canonical Telemetry (Steps 14–15: ~2h 30m)
-  - `all`: Full characterization (~8h 55m)
+  - `3`: Stage 3 Deep Profiling & Continuous Batching (Steps 14–17: ~4h 15m; Steps 14–20 with deep extensions)
+  - `all`: Full campaign (Steps 00–17 default, or 00–20 with deep-profile)
 * `--topologies <list|all>`: Comma-separated list of target topologies to execute:
   - `tp4_pp1`: Single-node 4-GPU baseline
   - `tp8_pp1`: Single-node 8-GPU baseline (NUMA pinning, continuous context)
@@ -63,6 +81,8 @@ bash scripts/run_master_benchmark.sh [OPTIONS]
   - `tp4_pp4`: Dual-node 16-GPU deep pipeline parallel configuration
   - `tp16_pp1`: Dual-node 16-GPU distributed tensor parallel configuration
   - `all`: Runs all topologies defined in the cases manifest
+* `--contexts <list|all>`: Comma-separated list of context lengths (e.g. `1k,8k,128k,512k,1m` or `all`).
+* `--concurrencies <list|all>`: Comma-separated list of concurrencies (e.g. `1,2,4,8,16,32` or `all`).
 * `--bandwidth <list|all>`: Comma-separated list of network modes for Step 12 resilience testing:
   - `native`: Uncapped GCP Andromeda VPC (100 Gbps line rate)
   - `100g`: Shaped 100 Gbps via Linux `tc` HTB
@@ -72,9 +92,25 @@ bash scripts/run_master_benchmark.sh [OPTIONS]
 * `--continuous-batching` (`-cb`): Executes Step 17 continuous batching characterization suite.
 * `--cb-blocks <list|all>`: Selects specific continuous batching blocks (e.g. `1,2,4` or `all`).
 * `--dry-run`: Validates all script workflows, flags, argument parsing, directory creations, and environment setups without launching heavy GPU workloads.
-* `--step <N>`: Executes a single target step (0 to 17).
+* `--step <N>`: Executes a single target step (0 to 20).
 * `--from-step <N>`: Resumes execution starting at step N.
 * `--new-run`: Generates a fresh run directory without reading previous resume markers.
+
+---
+
+## 🧊 Cold vs. Warm Cache Isolation Methodology
+
+In production LLM serving systems, prefix caching (e.g., vLLM's automatic prefix caching) can introduce substantial measurement bias: if multiple concurrency levels or prompt lengths are benchmarked against the same long-running `vllm serve` instance, subsequent requests reuse KV blocks from earlier requests, creating artificially low Time-To-First-Token (TTFT) readings (e.g., showing <15 ms when true cold TTFT is >1.2 s).
+
+To eliminate this bias, PIP v2.0 enforces **Strict Cold/Warm Cache Isolation**:
+
+1. **Process-Level Server Restart:** Between each concurrency level within a benchmark case, the `vllm serve` process (and any lingering Ray workers) is cleanly terminated (`SIGTERM` followed by `pkill -9`).
+2. **VRAM Drain Barrier:** A post-kill VRAM drain barrier waits for all GPU memory allocations to drop to zero and releases OS file descriptors.
+3. **Fresh vLLM Boot:** The server is booted afresh for each concurrency level, ensuring a completely empty KV cache pool.
+4. **Explicit Cold vs. Warm Separation:**
+   - **Cold Pass:** Conducted on the fresh server instance with 0 prefix cache hits. Reflects real-world initial request latency.
+   - **Warm Pass:** Conducted with controlled prefix cache warming passes to evaluate multi-turn prefix caching dynamics (e.g., in Step 09 R2 agentic decay).
+   - **Metrics Attribution:** Every result JSON payload explicitly stamps `cache_state: "cold"` or `cache_state: "warm"` in its metadata ledger.
 
 ---
 
@@ -114,6 +150,7 @@ export NCCL_BUFFSIZE="4194304"  # 4 MB socket buffer
 ```text
 Performance_Intelligence_Platform/
 ├── README.md                                  <- Master Platform Overview & Timelines (This File)
+├── RUN_COVERAGE.md                            <- Comprehensive Run Coverage Reference Matrix (All 20 Steps)
 ├── PIP_MASTER_RESULTS_AND_BENCHMARKS.md       <- Definitive Ground-Truth Benchmark Results Compendium
 ├── SCRIPTS_AND_RESULTS_GUIDE.md               <- Script-by-Script Operations & Results Manual
 ├── RUNBOOK_NEW_VM_SETUP.md                    <- Complete End-to-End Runbook for Fresh VM Provisioning
@@ -122,7 +159,7 @@ Performance_Intelligence_Platform/
 │
 ├── scripts/                                   <- EXECUTABLE BENCHMARK AUTOMATION SUITE
 │   ├── run_smoke_test.sh                      <- 10-Check Automated Sanity Smoke Test (~3-5 min)
-│   ├── run_master_benchmark.sh               <- Unified Master Benchmark Runner (Steps 00-17: ~8h 55m)
+│   ├── run_master_benchmark.sh               <- Unified Master Benchmark Runner (Steps 00-20, 4 Profiles)
 │   ├── run_continuous_batching.sh / .py      <- Continuous Batching Suite Runner (Blocks 1-7)
 │   ├── pip_waves.py                           <- Request Wave Decomposition & Stall Reference Tool
 │   ├── pip_scan.py                            <- Recursive Directory Pause & Stall Scanner
@@ -166,16 +203,20 @@ nano RUN_CONFIG.env
 # 3. Execute Automated Smoke Test (~3-5 min)
 bash run_smoke_test.sh
 
-# 4. Launch Benchmark Selections
-# Dry run check:
+# 4. Launch Benchmark via Profiles:
+# Dry run verification:
 bash run_master_benchmark.sh --dry-run
 
-# Stage 1 Quick Wins (~1h 10m):
-bash run_master_benchmark.sh --stage 1
+# Smoke Profile (~10 min): TP4 1k/8k c=1 sanity check
+bash run_master_benchmark.sh --profile smoke
 
-# Continuous batching blocks 1 & 2 only:
-bash run_master_benchmark.sh --continuous-batching --cb-blocks 1,2
+# Fast Dashboard Profile (~2h): Stage 1+2 data for dashboard
+bash run_master_benchmark.sh --profile fast-dashboard
 
-# Full 17-Step Campaign (~8h 55m):
-bash run_master_benchmark.sh --all
+# Default Full Campaign (~9h): Steps 00-17 with cold/warm cache isolation
+bash run_master_benchmark.sh --profile default
+# (or simply: bash run_master_benchmark.sh --all)
+
+# Deep Profile (~14h): Steps 00-20 with Poisson, scheduler sweeps, and observer overhead
+bash run_master_benchmark.sh --profile deep-profile
 ```
