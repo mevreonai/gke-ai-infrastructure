@@ -114,18 +114,29 @@ export NETWORK_BANDWIDTH_SELECTION="20g"
 export TOPOLOGY_SELECTION="tp4_pp4"
 EOF
 
-# 4. Launch the 20-Minute Master Campaign
-echo "--> [4/4] Launching Master Campaign Orchestrator..."
-echo "    Live Log File: tail -f \$HOME/platform_benchmark_runs/\$(cat \$HOME/platform_benchmark_runs/latest_run_id.txt 2>/dev/null || echo '<run_id>')/logs/MASTER_BENCHMARK_RUN.log"
+# 4. Launch the 20-Minute Distributed TP4/PP4 Campaign on Ray Cluster
+echo "--> [4/4] Launching Distributed TP4/PP4 20G Suite (16 GPUs across 2 Nodes)..."
+RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+OUT_DIR="$HOME/platform_benchmark_runs/tp4_pp4_20g_${RUN_TIMESTAMP}"
+mkdir -p "$OUT_DIR" "$HOME/platform_benchmark_runs"
+echo "$RUN_TIMESTAMP" > "$HOME/platform_benchmark_runs/latest_run_id.txt"
+echo "    Output Directory: $OUT_DIR"
+echo "    Live Server Log : tail -f $OUT_DIR/tp4_pp4_dist/tp4_pp4_dist/server.log"
 echo "================================================================================"
+
+# Pre-flight cleanup
+echo "    Purging any lingering Ray / vLLM workers across cluster..."
+ray stop -f 2>/dev/null || true
+ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "ray stop -f 2>/dev/null || true; pkill -9 -f 'vllm' 2>/dev/null || true" 2>/dev/null || true
+pkill -9 -f 'vllm' 2>/dev/null || true
+sleep 3
 
 START_TIME=$(date +%s)
 
-bash "$SCRIPT_DIR/run_master_benchmark.sh" \
-  --topologies tp4_pp4 \
-  --bandwidth 20g \
-  --contexts all \
-  --concurrencies all
+cd "$SCRIPT_DIR/04_scaleout_distributed_network"
+export OUT_ROOT="$OUT_DIR"
+export CASES_FILE="$SCRIPT_DIR/04_scaleout_distributed_network/10b_vllm_multi_node_cases.json"
+bash ./12_run_vllm_multi_node.sh --case tp4_pp4_dist
 
 END_TIME=$(date +%s)
 TOTAL_DURATION=$((END_TIME - START_TIME))
@@ -136,29 +147,11 @@ echo ""
 echo "================================================================================"
 echo "  ✅ TP4/PP4 20G CAMPAIGN COMPLETE!"
 echo "  Total Wall-Clock Time: ${TOTAL_MIN}m ${TOTAL_SEC}s"
+echo "  Results Directory: $OUT_DIR"
 echo "================================================================================"
 
 # Display Summary
-LATEST_RUN_ID=$(cat "$HOME/platform_benchmark_runs/latest_run_id.txt" 2>/dev/null || echo "")
-if [[ -n "$LATEST_RUN_ID" && -d "$HOME/platform_benchmark_runs/$LATEST_RUN_ID" ]]; then
-  RUN_DIR="$HOME/platform_benchmark_runs/$LATEST_RUN_ID"
-  echo ""
-  echo "--- STEP EXECUTION STATUS ---"
-  if [[ -f "$RUN_DIR/master_step_status.jsonl" ]]; then
-    python3 - << PY "$RUN_DIR/master_step_status.jsonl"
-import json, sys
-for line in open(sys.argv[1]):
-    if line.strip():
-        s = json.loads(line)
-        status = "✅ PASS" if s.get("rc") == 0 else f"❌ FAIL (rc={s.get('rc')})"
-        dur = s.get("end", 0) - s.get("start", 0)
-        print(f"  Step {s.get('step_num'):02d} ({s.get('step_name'):<30}) : {status} [{dur}s]")
-PY
-  fi
+echo ""
+echo "--- BENCHMARK RESULTS TABLE (TTFT, TPOT & METRICS) ---"
+python3 "$SCRIPT_DIR/bench_summary.py" "$OUT_DIR" || true
 
-  echo ""
-  echo "--- BENCHMARK RESULTS TABLE (TTFT & TPOT METRICS) ---"
-  if [[ -d "$RUN_DIR/step10_multi_node_load/tp4_pp4_dist_load" ]]; then
-    python3 "$SCRIPT_DIR/bench_summary.py" "$RUN_DIR/step10_multi_node_load/tp4_pp4_dist_load" || true
-  fi
-fi
