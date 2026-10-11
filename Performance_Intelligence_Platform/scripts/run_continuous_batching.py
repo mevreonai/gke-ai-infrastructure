@@ -37,6 +37,8 @@ def main():
     ap.add_argument("--port", type=int, default=8000)
     ap.add_argument("--startup-timeout", type=int, default=3600)
     ap.add_argument("--seed-base", type=int, default=6000)
+    ap.add_argument("--contexts", default=os.environ.get("CONTEXT_SELECTION", "all"), help="Filter context sizes (e.g. 1k,8k,128k,512k,1m or all)")
+    ap.add_argument("--concurrencies", default=os.environ.get("CONCURRENCY_SELECTION", "all"), help="Filter concurrencies (e.g. 1,8,32 or all)")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
 
@@ -93,7 +95,7 @@ def main():
         print(f"\n[{ci+1}/{len(cases_to_run)}] Case: {case['name']} (Block {case.get('block')})")
         print(f"  Purpose: {case.get('purpose')}")
 
-        server_cmd = build_server_cmd(vllm, serve_help, cfg, case, model, args.port, distributed=(case.get("pp", 1) > 1))
+        server_cmd = build_server_cmd(vllm, serve_help, cfg, case, model, args.port, distributed=(case.get("pp", 1) > 1 or case.get("tp", 1) > 8))
         # Add chunk cap if specified
         if case.get("long_prefill_token_threshold"):
             add_if_supported(server_cmd, serve_help, "--long-prefill-token-threshold", str(case["long_prefill_token_threshold"]))
@@ -114,8 +116,13 @@ def main():
             "benchmarks": []
         }
 
+        benchmarks_to_run = filter_case_benchmarks(case.get("benchmarks", []), args.contexts, args.concurrencies)
+        if not benchmarks_to_run:
+            print(f"Skipping continuous batching case {case['name']}: no benchmarks match contexts='{args.contexts}' and concurrencies='{args.concurrencies}'")
+            continue
+
         if args.dry_run:
-            for b in case.get("benchmarks", []):
+            for b in benchmarks_to_run:
                 case_rec["benchmarks"].append({**b, "status": "DRY_RUN_PLANNED"})
             top_manifest["cases"].append(case_rec)
             continue
@@ -129,7 +136,7 @@ def main():
             case_rec["server_ready"] = time.time()
             (cdir / "resolved_models.json").write_text(json.dumps(models, indent=2))
 
-            for bi, b in enumerate(case["benchmarks"]):
+            for bi, b in enumerate(benchmarks_to_run):
                 bdir = cdir / b["name"]
                 bdir.mkdir(exist_ok=True)
                 

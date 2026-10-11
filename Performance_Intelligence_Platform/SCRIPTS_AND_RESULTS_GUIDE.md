@@ -77,7 +77,19 @@ export TOPOLOGY_SELECTION="tp4_pp1,tp4_pp2"
 export NETWORK_BANDWIDTH_SELECTION="native,100g"
 
 # ------------------------------------------------------------------------------
-# 5. Characterization Stages: Choose one or 'all'
+# 5. Context Ladder Selection: Choose contexts or 'all'
+# Options: all | 1k | 8k | 128k | 512k | 1m | comma-separated list (e.g. 1k,8k or 1m)
+# ------------------------------------------------------------------------------
+export CONTEXT_SELECTION="1k,8k,128k,512k,1m"
+
+# ------------------------------------------------------------------------------
+# 6. Concurrency Grid Selection: Choose concurrencies or 'all'
+# Options: all | 1 | 2 | 4 | 8 | 16 | 32 | comma-separated list (e.g. 1,8 or 1)
+# ------------------------------------------------------------------------------
+export CONCURRENCY_SELECTION="1,8,32"
+
+# ------------------------------------------------------------------------------
+# 7. Characterization Stages: Choose one or 'all'
 # Options:
 #   1   -> Stage 1: Quick Wins & Single-Node (Steps 1-7: ~1h 10m)
 #   2   -> Stage 2: Scale-Out Concurrency & Asymmetric PP (Steps 8-13: ~3h 30m)
@@ -87,7 +99,7 @@ export NETWORK_BANDWIDTH_SELECTION="native,100g"
 export STAGE_SELECTION="1"
 
 # ------------------------------------------------------------------------------
-# 6. Continuous Batching Sweep Blocks: Choose blocks (1 to 7) or 'all'
+# 8. Continuous Batching Sweep Blocks: Choose blocks (1 to 7) or 'all'
 # Options: all | 1 | 2 | 3 | 4 | 5 | 6 | 7 | comma-separated list (e.g. 1,2,4)
 # ------------------------------------------------------------------------------
 export CB_BLOCKS="1,2"
@@ -108,6 +120,12 @@ Every configuration can also be overridden directly on the command line without 
 ```bash
 # Run only TP4 single-node and dual-node topologies on Stage 1
 bash run_master_benchmark.sh --topologies tp4_pp1,tp4_pp2 --stage 1
+
+# Selectively run only short contexts (1K, 8K) at light and medium concurrency (1, 8)
+bash run_master_benchmark.sh --contexts 1k,8k --concurrencies 1,8
+
+# Isolate frontier 1M and 512K context lone read performance at c=1 across all topologies
+bash run_master_benchmark.sh --contexts 512k,1m --concurrencies 1
 
 # Run with a custom model and specific network bandwidth
 bash run_master_benchmark.sh --model meta-llama/Llama-3.1-70B-Instruct --bandwidth native
@@ -135,6 +153,18 @@ bash run_master_benchmark.sh --dry-run
 | | `tp4_pp4` | Multi-node: TP4 with 4 pipeline stages |
 | | `tp16_pp1` | Cross-node pure tensor parallelism across 16 GPUs (NCCL over TCP/Socket) |
 | | `all` | Runs all valid topologies defined in the case catalog |
+| `CONTEXT_SELECTION` | `1k` | Sub-8K short prompt latency baseline (ISL=1024, OSL=128) |
+| | `8k` | Standard conversational chunk baseline (ISL=8192, OSL=256) |
+| | `128k` | Ultra-long context baseline (ISL=131072, OSL=64) |
+| | `512k` | Extreme context evaluation (ISL=524288, OSL=32) |
+| | `1m` | Frontier 1M token lone read & capacity test (ISL=1000000, OSL=32) |
+| | `all` | Evaluates all 5 points of the Context Ladder across all tiers |
+| `CONCURRENCY_SELECTION` | `1` | Uncontended lone read baseline ($c=1$) |
+| | `2` | Light dual-stream capacity ($c=2$) |
+| | `4` | Moderate queue saturation ($c=4$) |
+| | `8` | Medium enterprise concurrency ($c=8$) |
+| | `16`, `32` | High saturation & stress concurrency ($c=16, 32$) |
+| | `all` | Evaluates all configured concurrencies across ladder |
 | `NETWORK_BANDWIDTH_SELECTION` | `native` | Full unthrottled VPC interconnect (~100 Gbps native on GCP) |
 | | `100g` | Traffic control (`tc`) HTB rate-limited to 100 Gbit/s |
 | | `20g` | Traffic control (`tc`) HTB rate-limited to 20 Gbit/s |
@@ -510,6 +540,7 @@ bash run_master_benchmark.sh --dry-run
 | `14_run_vllm_nsys_profile.sh` | Captures Nsight Systems profile (`.nsys-rep`) for kernel execution | `profile.nsys-rep`, `timeline.sqlite` |
 | `14b_run_vllm_torch_profile.sh` | Captures PyTorch profiler single-request traces | `torch_trace.json` |
 | `14c_run_vllm_torch_profile_batched.sh`| Captures PyTorch profiler traces under batched load (c=8, c=32) | `torch_trace_batched.json` |
+| `14d_run_vllm_torch_profile_multi_node.sh`| Captures distributed 16-GPU (TP4+PP4, TP8+PP2, TP16) and 8-GPU PyTorch traces | Multi-rank `node0` & `node1` Chrome traces |
 | `16_analyze_vllm_profiles.py` | Parses trace outputs and calculates kernel duration breakdowns | Kernel summary tables |
 | `18_run_vllm_multi_node_profiles.sh` | Captures distributed multi-rank Nsight profiles across both nodes | Multi-rank trace archives |
 | `19_postprocess_nsys.py` | Converts `.nsys-rep` files into summary tables and GPU timeline events | `nsys_summary.json` |

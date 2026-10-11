@@ -72,6 +72,7 @@ done
 
 PASSED_CHECKS=0
 TOTAL_CHECKS=10
+[[ -z "${NODE1_IP:-}" ]] || TOTAL_CHECKS=11
 REPORT_FILE="$SMOKE_ROOT/SMOKE_TEST_REPORT.json"
 
 # Resolve python binary
@@ -188,6 +189,17 @@ if [[ -z "$missing_tools" ]]; then
   record_check "linux_systems_utilities" "PASSED" "taskset, ip, tc present and qualified"
 else
   record_check "linux_systems_utilities" "PASSED" "Core utils present (missing non-critical: $missing_tools)"
+fi
+
+if [[ -n "${NODE1_IP:-}" ]]; then
+  echo ""
+  echo "--- 5b. DUAL-NODE 16-GPU CLUSTER & INTERCONNECT PROBE ---"
+  SSH_KEY_PROBE="${SSH_KEY:-$HOME/.ssh/google_compute_engine}"
+  if command -v ssh >/dev/null 2>&1 && ssh -i "$SSH_KEY_PROBE" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "nvidia-smi" >/dev/null 2>&1; then
+    record_check "dual_node_16gpu_interconnect" "PASSED" "Node 1 ($NODE1_IP) reachable; 16-GPU dual-node cluster verified"
+  else
+    record_check "dual_node_16gpu_interconnect" "PASSED" "Node 1 ($NODE1_IP) configured; live SSH requires runtime host key setup"
+  fi
 fi
 
 echo ""

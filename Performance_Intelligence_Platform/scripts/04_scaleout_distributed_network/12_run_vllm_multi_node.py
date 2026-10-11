@@ -46,6 +46,8 @@ def main():
     ap.add_argument("--node1-ip",default=os.environ.get("NODE1_IP"))
     ap.add_argument("--ssh-key",default=os.environ.get("SSH_KEY",str(Path.home()/".ssh/google_compute_engine")))
     ap.add_argument("--remote-sampler",default="/tmp/v5_metrics_sampler.py")
+    ap.add_argument("--contexts",default=os.environ.get("CONTEXT_SELECTION","all"),help="Filter context sizes (e.g. 1k,8k,128k,512k,1m or all)")
+    ap.add_argument("--concurrencies",default=os.environ.get("CONCURRENCY_SELECTION","all"),help="Filter concurrencies (e.g. 1,8,32 or all)")
     ap.add_argument("--dry-run",action="store_true")
     args=ap.parse_args()
     if not args.node1_ip: raise SystemExit("NODE1_IP not set. Source RUN_CONFIG.env or pass --node1-ip.")
@@ -65,6 +67,10 @@ def main():
          "started":time.time(),"environment":environment_manifest(vllm),"cases":[]}
 
     for ci,case in enumerate(cases):
+        benchmarks_to_run = filter_case_benchmarks(case.get("benchmarks", []), args.contexts, args.concurrencies)
+        if not benchmarks_to_run:
+            print(f"Skipping multi-node case {case['name']}: no benchmarks match contexts='{args.contexts}' and concurrencies='{args.concurrencies}'")
+            continue
         cdir=out/case["name"]; cdir.mkdir(parents=True,exist_ok=True)
         ray_snapshot(cdir,"before_server")
         gpus=case.get("gpu_indices",list(range(int(case.get("ray_gpus_per_node",8)))))
@@ -82,6 +88,11 @@ def main():
              "pp_layer_partition":os.environ.get("VLLM_PP_LAYER_PARTITION", "default_14_13"),
              "server_command":server_cmd,"benchmarks":[]}
         if args.dry_run:
+            for bi,b in enumerate(benchmarks_to_run):
+                bdir=cdir/b["name"]; bdir.mkdir(exist_ok=True)
+                cmd=build_bench_cmd(vllm,bench_help,model,args.port,b,bdir,f"{b['name']}.json",args.seed_base+ci*100+bi,True)
+                (bdir/"COMMAND.txt").write_text(q(cmd)+"\n")
+                rec["benchmarks"].append({**b,"planned_command":cmd,"dry_run":True})
             top["cases"].append(rec); continue
         server_proc=None; local_sampler=None; remote_pid=None; remote_out=None
         try:
@@ -89,7 +100,7 @@ def main():
             models=wait_ready(f"http://127.0.0.1:{args.port}",server_proc,args.startup_timeout)
             rec["server_ready"]=time.time(); rec["models_endpoint"]=models; ray_snapshot(cdir,"server_ready")
             observations={}
-            for bi,b in enumerate(case["benchmarks"]):
+            for bi,b in enumerate(benchmarks_to_run):
                 bdir=cdir/b["name"]; bdir.mkdir(exist_ok=True)
                 allow,reason=gate_allows(b.get("gate"),observations)
                 if not allow:

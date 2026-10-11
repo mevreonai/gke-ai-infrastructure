@@ -37,11 +37,83 @@
       "offload_gib": 0,
       "benchmarks": [
         {
+          "name": "1k_c1",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 20,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c8",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c32",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 160,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        },
+        {
           "name": "128k_c1",
           "input": 131072,
           "output": 64,
           "concurrency": 1,
           "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
           "warmups": 1
         },
         {
@@ -53,17 +125,44 @@
           "warmups": 0
         },
         {
+          "name": "512k_c2",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c4",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 0
+        },
+        {
           "name": "1m_c1",
           "input": 1000000,
           "output": 32,
           "concurrency": 1,
-          "prompts": 1,
-          "warmups": 0,
-          "gate": {
-            "after": "512k_c1",
-            "max_peak_kv_usage": 0.85,
-            "max_preemptions": 0
-          }
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
         }
       ]
     },
@@ -94,11 +193,83 @@
       "offload_gib": 0,
       "benchmarks": [
         {
+          "name": "1k_c1",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 20,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c8",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c32",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 160,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        },
+        {
           "name": "128k_c1",
           "input": 131072,
           "output": 64,
           "concurrency": 1,
           "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
           "warmups": 1
         },
         {
@@ -110,17 +281,44 @@
           "warmups": 0
         },
         {
+          "name": "512k_c2",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c4",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 0
+        },
+        {
           "name": "1m_c1",
           "input": 1000000,
           "output": 32,
           "concurrency": 1,
-          "prompts": 1,
-          "warmups": 0,
-          "gate": {
-            "after": "512k_c1",
-            "max_peak_kv_usage": 0.85,
-            "max_preemptions": 0
-          }
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
         }
       ]
     },
@@ -151,11 +349,83 @@
       "offload_gib": 0,
       "benchmarks": [
         {
+          "name": "1k_c1",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 20,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c8",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c32",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 160,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        },
+        {
           "name": "128k_c1",
           "input": 131072,
           "output": 64,
           "concurrency": 1,
           "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
           "warmups": 1
         },
         {
@@ -167,17 +437,44 @@
           "warmups": 0
         },
         {
+          "name": "512k_c2",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c4",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 0
+        },
+        {
           "name": "1m_c1",
           "input": 1000000,
           "output": 32,
           "concurrency": 1,
-          "prompts": 1,
-          "warmups": 0,
-          "gate": {
-            "after": "512k_c1",
-            "max_peak_kv_usage": 0.85,
-            "max_preemptions": 0
-          }
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
         }
       ]
     },
@@ -209,38 +506,132 @@
       "offload_gib": 0,
       "benchmarks": [
         {
+          "name": "1k_c1",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 1,
+          "prompts": 20,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c8",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "1k_c32",
+          "input": 1024,
+          "output": 128,
+          "concurrency": 32,
+          "prompts": 160,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c1",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 1,
+          "prompts": 12,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 32,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        },
+        {
           "name": "128k_c1",
           "input": 131072,
           "output": 64,
           "concurrency": 1,
-          "prompts": 3,
-          "warmups": 0
+          "prompts": 4,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c2",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 2,
+          "prompts": 10,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 4,
+          "prompts": 20,
+          "warmups": 1
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 64,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 1
         },
         {
           "name": "512k_c1",
           "input": 524288,
           "output": 32,
           "concurrency": 1,
-          "prompts": 1,
-          "warmups": 0,
-          "gate": {
-            "after": "128k_c1",
-            "max_peak_kv_usage": 0.85,
-            "max_preemptions": 0
-          }
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c2",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 4,
+          "warmups": 0
+        },
+        {
+          "name": "512k_c4",
+          "input": 524288,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 0
         },
         {
           "name": "1m_c1",
           "input": 1000000,
           "output": 32,
           "concurrency": 1,
-          "prompts": 1,
-          "warmups": 0,
-          "gate": {
-            "after": "512k_c1",
-            "max_peak_kv_usage": 0.85,
-            "max_preemptions": 0
-          }
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 0
+        },
+        {
+          "name": "1m_c4",
+          "input": 1000000,
+          "output": 32,
+          "concurrency": 4,
+          "prompts": 4,
+          "warmups": 0
         }
       ]
     }

@@ -75,6 +75,60 @@ def choose_cases(cfg, names, groups, run_all=False):
     if unknown: raise SystemExit(f"Unknown case(s): {sorted(unknown)}")
     return out
 
+def parse_selection_set(val: str | None) -> set[str] | None:
+    if not val or val.strip().lower() in ("all", "*", ""):
+        return None
+    return {x.strip().lower() for x in val.split(",") if x.strip()}
+
+def benchmark_context_tag(b: dict) -> str:
+    """Extract canonical context tag (1k, 2k, 8k, 16k, 32k, 64k, 128k, 256k, 512k, 1m) from benchmark dict."""
+    name = b.get("name", "").lower()
+    inp = b.get("input")
+    if inp is not None:
+        try:
+            inp = int(inp)
+            if inp >= 1000000: return "1m"
+            if inp >= 524288: return "512k"
+            if inp >= 262144: return "256k"
+            if inp >= 131072: return "128k"
+            if inp >= 65536: return "64k"
+            if inp >= 32768: return "32k"
+            if inp >= 16384: return "16k"
+            if inp >= 8192: return "8k"
+            if inp >= 2048: return "2k"
+            if inp >= 1024: return "1k"
+        except (ValueError, TypeError):
+            pass
+    for tag in ("1m", "512k", "256k", "128k", "64k", "32k", "16k", "8k", "2k", "1k"):
+        if tag in name:
+            return tag
+    return "other"
+
+def benchmark_matches_filter(b: dict, context_filter: set[str] | None = None, concurrency_filter: set[str] | None = None) -> bool:
+    """Checks whether a benchmark matches the active CONTEXT_SELECTION and CONCURRENCY_SELECTION."""
+    if context_filter is not None:
+        tag = benchmark_context_tag(b)
+        if tag != "other" and tag not in context_filter:
+            if not any(ctx in b.get("name", "").lower() for ctx in context_filter):
+                return False
+        elif tag == "other":
+            matched = any(ctx in b.get("name", "").lower() for ctx in context_filter)
+            if not matched:
+                return False
+    if concurrency_filter is not None:
+        c = str(b.get("concurrency", 1))
+        if c not in concurrency_filter and f"c{c}" not in concurrency_filter:
+            return False
+    return True
+
+def filter_case_benchmarks(benchmarks: list[dict], contexts: str | None = None, concurrencies: str | None = None) -> list[dict]:
+    """Filter list of benchmarks based on context and concurrency selection strings."""
+    ctx_sel = contexts if contexts is not None else os.environ.get("CONTEXT_SELECTION", "all")
+    cnc_sel = concurrencies if concurrencies is not None else os.environ.get("CONCURRENCY_SELECTION", "all")
+    ctx_set = parse_selection_set(ctx_sel)
+    cnc_set = parse_selection_set(cnc_sel)
+    return [b for b in benchmarks if benchmark_matches_filter(b, ctx_set, cnc_set)]
+
 def resolved(case, cfg, key, default=None):
     if key in case: return case[key]
     return cfg.get("server_defaults",{}).get(key,default)

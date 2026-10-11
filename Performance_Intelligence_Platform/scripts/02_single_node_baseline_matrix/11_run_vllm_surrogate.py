@@ -26,6 +26,8 @@ def main():
     ap.add_argument("--port",type=int,default=8000)
     ap.add_argument("--startup-timeout",type=int,default=3600)
     ap.add_argument("--seed-base",type=int,default=1000)
+    ap.add_argument("--contexts",default=os.environ.get("CONTEXT_SELECTION","all"),help="Filter context sizes (e.g. 1k,8k,128k,512k,1m or all)")
+    ap.add_argument("--concurrencies",default=os.environ.get("CONCURRENCY_SELECTION","all"),help="Filter concurrencies (e.g. 1,8,32 or all)")
     ap.add_argument("--dry-run",action="store_true")
     args=ap.parse_args()
 
@@ -44,6 +46,10 @@ def main():
          "environment":environment_manifest(vllm),"cases":[]}
 
     for ci,case in enumerate(cases):
+        benchmarks_to_run = filter_case_benchmarks(case.get("benchmarks", []), args.contexts, args.concurrencies)
+        if not benchmarks_to_run:
+            print(f"Skipping case {case['name']}: no benchmarks match contexts='{args.contexts}' and concurrencies='{args.concurrencies}'")
+            continue
         cdir=out/case["name"]; cdir.mkdir(parents=True,exist_ok=True)
         gpus=case.get("gpu_indices",list(range(int(case["tp"]))))
         gpu_csv=",".join(map(str,gpus))
@@ -61,7 +67,7 @@ def main():
         if case.get("offload_gib"):
             case_rec["offload_gib_per_tp_rank_derived"] = float(case["offload_gib"])/int(case["tp"])
         if args.dry_run:
-            for bi,b in enumerate(case["benchmarks"]):
+            for bi,b in enumerate(benchmarks_to_run):
                 bdir=cdir/b["name"]; bdir.mkdir(exist_ok=True)
                 cmd=build_bench_cmd(vllm,bench_help,model,args.port,b,bdir,f"{b['name']}.json",args.seed_base+ci*100+bi,True)
                 (bdir/"COMMAND.txt").write_text(q(cmd)+"\n")
@@ -86,7 +92,7 @@ def main():
             except Exception: pass
             (cdir/"resolved_models.json").write_text(json.dumps(models,indent=2))
 
-            for bi,b in enumerate(case["benchmarks"]):
+            for bi,b in enumerate(benchmarks_to_run):
                 bdir=cdir/b["name"]; bdir.mkdir(exist_ok=True)
                 allow,reason=gate_allows(b.get("gate"),observations)
                 if not allow:

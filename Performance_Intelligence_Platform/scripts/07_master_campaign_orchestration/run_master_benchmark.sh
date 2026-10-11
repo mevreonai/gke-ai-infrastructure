@@ -177,8 +177,34 @@ if step_should_run 2; then
   TORCH_DIR="$MASTER_ROOT/step02_torch_profiles_batched"
   run_step 2 "torch_profiles_batched" bash -c "
     mkdir -p '$TORCH_DIR/tp4_8k_c8' '$TORCH_DIR/tp4_8k_c32'
-    env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8021 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh'
-    env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8022 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh'
+    if topology_matches 'tp4' || topology_matches 'all'; then
+      echo 'Capturing single-node TP4 PyTorch profiles...'
+      env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8021 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+      env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8022 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+    fi
+    if topology_matches 'tp8' || topology_matches 'all'; then
+      echo 'Capturing single-node TP8 PyTorch profiles...'
+      mkdir -p '$TORCH_DIR/tp8_8k_c8' '$TORCH_DIR/tp8_8k_c32'
+      env TP=8 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8023 PROFILE_ROOT='$TORCH_DIR/tp8_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+      env TP=8 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8024 PROFILE_ROOT='$TORCH_DIR/tp8_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+    fi
+    if [[ -n \"\${NODE1_IP:-}\" ]]; then
+      if topology_matches 'tp4_pp4' || topology_matches 'pp4' || topology_matches 'all'; then
+        echo 'Capturing distributed 16-GPU TP4 PP4 PyTorch profile...'
+        mkdir -p '$TORCH_DIR/tp4_pp4_8k_c8'
+        env TOPOLOGY=tp4_pp4_dist CONCURRENCY=8 PORT=8025 PROFILE_ROOT='$TORCH_DIR/tp4_pp4_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
+      fi
+      if topology_matches 'tp8_pp2' || topology_matches 'pp2' || topology_matches 'all'; then
+        echo 'Capturing distributed 16-GPU TP8 PP2 PyTorch profile...'
+        mkdir -p '$TORCH_DIR/tp8_pp2_8k_c8'
+        env TOPOLOGY=tp8_pp2_dist CONCURRENCY=8 PORT=8026 PROFILE_ROOT='$TORCH_DIR/tp8_pp2_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
+      fi
+      if topology_matches 'tp16_pp1' || topology_matches 'tp16' || topology_matches 'all'; then
+        echo 'Capturing distributed 16-GPU TP16 PP1 PyTorch profile...'
+        mkdir -p '$TORCH_DIR/tp16_pp1_8k_c8'
+        env TOPOLOGY=tp16_pp1_dist CONCURRENCY=8 PORT=8027 PROFILE_ROOT='$TORCH_DIR/tp16_pp1_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
+      fi
+    fi
   "
 fi
 
@@ -516,15 +542,31 @@ if step_should_run 14; then
       '$PROF_DIR/14_run_vllm_nsys_profile.sh' || true
 
     # 2. Standard single-node Nsys Profile
-    OUT_ROOT='$TIMELINE_DIR/single_node' '$PROF_DIR/14_run_vllm_nsys_profile.sh' || true
+    if topology_matches 'tp4' || topology_matches 'all'; then
+      OUT_ROOT='$TIMELINE_DIR/single_node/tp4' TP=4 '$PROF_DIR/14_run_vllm_nsys_profile.sh' || true
+    fi
+    if topology_matches 'tp8' || topology_matches 'all'; then
+      echo 'Capturing single-node TP8 Nsys profile...'
+      OUT_ROOT='$TIMELINE_DIR/single_node/tp8' TP=8 PORT=8081 '$PROF_DIR/14_run_vllm_nsys_profile.sh' || true
+    fi
 
-    # 3. PyTorch Batched Chrome Traces
+    # 3. PyTorch Batched Chrome Traces (single-node)
     OUT_ROOT='$TIMELINE_DIR/torch_batched' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
 
     # 4. Multi-node Nsight decode profiles (B11) if dual node configured
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
       env OUT_ROOT='$TIMELINE_DIR/multi_node_b11' PROFILE_MODE_FILTER=decode RUN_HEAVY_PROFILE=1 \
         '$PROF_DIR/18_run_vllm_multi_node_profiles.sh' || true
+
+      # 5. Multi-node PyTorch decode traces for 16-GPU Tier 1 configurations
+      echo 'Capturing multi-node PyTorch decode traces across 16-GPU topologies...'
+      for topo in tp4_pp4_dist tp8_pp2_dist tp16_pp1_dist; do
+        if topology_matches \"\$topo\" || topology_matches 'all'; then
+          echo \"Capturing multi-node PyTorch trace for \$topo...\"
+          env TOPOLOGY=\"\$topo\" CONCURRENCY=8 PORT=8082 PROFILE_ROOT=\"$TIMELINE_DIR/multi_node_torch/\$topo\" \
+            \"$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh\" || true
+        fi
+      done
     fi
 
     python3 '$PROF_DIR/19_postprocess_nsys.py' '$TIMELINE_DIR' || true
