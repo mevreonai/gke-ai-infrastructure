@@ -264,7 +264,7 @@ else
 fi
 
 echo ""
-echo "--- 8. MASTER RUNNER DRY-RUN VALIDATION (00-15 STEPS) ---"
+echo "--- 8. MASTER RUNNER DRY-RUN VALIDATION (00-20 STEPS) ---"
 DRY_RUN_OUT="$SMOKE_ROOT/results/dry_run_validation"
 mkdir -p "$DRY_RUN_OUT"
 if bash "$SCRIPT_DIR/run_master_benchmark.sh" --dry-run --out-root "$DRY_RUN_OUT" > "$DRY_RUN_OUT/dry_run.log" 2>&1; then

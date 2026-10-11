@@ -177,66 +177,86 @@ cd ~/Performance_Intelligence_Platform/scripts
 bash run_smoke_test.sh
 ```
 
-### What the Smoke Test Validates:
+### What the Smoke Test Validates (Up to 11 Automated Checks):
 1. **Host Environment:** Python 3.10+, NVIDIA GPU drivers, and system dependencies.
 2. **AI Framework Stack:** PyTorch CUDA availability and vLLM module initialization.
 3. **MoE Kernel Invariants:** Checks `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `VLLM_MOE_BACKEND=triton`, `VLLM_FLASHINFER_AUTOTUNE=1`, and `VLLM_PP_LAYER_PARTITION=15,12`.
-4. **Cases Schema:** Validates `master_benchmark_cases.json` integrity across all 15 steps.
+4. **Cases Schema:** Validates `master_benchmark_cases.json` integrity across all 20 steps (27 cases).
 5. **Linux Systems Utilities:** Qualifies `taskset`, `ip`, `tc`, and `numactl`.
-6. **Wave Trimming Engine:** Mathematically tests pilot wave outlier removal.
-7. **Micro-Benchmark Pipeline:** Emulates telemetry generation and validates JSON schema.
-8. **Master Runner Dry-Run:** Executes `run_master_benchmark.sh --dry-run` to prove zero syntax errors across steps 00–15.
-9. **Report Emission:** Generates a unified JSON verdict in `SMOKE_TEST_REPORT.json`.
+6. **Dual-Node 16-GPU Interconnect Probe:** (When `NODE1_IP` is configured) Tests SSH connectivity, remote GPU detection, and inter-node readiness.
+7. **Wave Trimming Engine:** Mathematically tests pilot wave outlier removal.
+8. **Micro-Benchmark Pipeline:** Emulates telemetry generation and validates JSON schema.
+9. **Master Runner Dry-Run:** Executes `run_master_benchmark.sh --dry-run` to prove zero syntax errors across steps 00–20.
+10. **Wave & Stall Engine Verification:** Verifies decode pause and stall algorithms.
+11. **Report Emission:** Generates a unified JSON verdict in `SMOKE_TEST_REPORT.json`.
 
 Expected terminal output:
 ```text
 ================================================================================
-  ✅ SMOKE TEST PASSED (9 / 9 CHECKS VERIFIED)
+  ✅ SMOKE TEST PASSED (11 / 11 CHECKS VERIFIED)
   Platform is 100% READY to execute full benchmark suites!
 ================================================================================
 ```
 
 ---
 
-## STEP 6: Executing the Benchmark Suite
+## STEP 6: Model Weights Configuration (GCS Buckets & HuggingFace)
 
-### Option A: Dry-Run Verification (0 seconds GPU compute, verifies entire flow)
+The platform is model-agnostic. You can serve models directly from HuggingFace or from pre-staged Google Cloud Storage (GCS) buckets:
+
+### 6.1 Kimi-Linear 48B (`moonshotai/Kimi-Linear-48B-A3B-Instruct`)
+* **Option A: Direct HuggingFace:**
+  ```bash
+  export MODEL="moonshotai/Kimi-Linear-48B-A3B-Instruct"
+  ```
+* **Option B: Pre-staged GCS Bucket (Recommended for fast local loading):**
+  ```bash
+  # Sync weights from GCS bucket to high-speed NVMe:
+  sudo mkdir -p /data/models/kimi-linear-48b
+  sudo chown -R $USER:$USER /data/models
+  gcloud storage rsync -r gs://mevreon-kimi-k3-weights/moonshotai/Kimi-K3 /data/models/kimi-linear-48b/
+  
+  export MODEL="/data/models/kimi-linear-48b"
+  ```
+
+### 6.2 DeepSeek V4.1 (`deepseek-ai/DeepSeek-V4.1-Flash`)
+* **Pre-staged GCS Bucket:**
+  ```bash
+  # Sync weights from GCS bucket to high-speed NVMe:
+  sudo mkdir -p /data/models/deepseek-v4.1-flash
+  sudo chown -R $USER:$USER /data/models
+  gcloud storage rsync -r gs://mevreon-deepseek-models/deepseek-ai/DeepSeek-V4.1-Flash /data/models/deepseek-v4.1-flash/
+  
+  export MODEL="/data/models/deepseek-v4.1-flash"
+  ```
+
+---
+
+## STEP 7: Executing the Benchmark Suite
+
+### Profile-Based Execution
+
 ```bash
-bash run_master_benchmark.sh --dry-run
+# 1. Quick Smoke Profile (~10 min): TP4 1k/8k c=1 sanity check on actual GPU weights
+bash run_master_benchmark.sh --profile smoke --model "$MODEL"
+
+# 2. Fast Dashboard Profile (~2h): Stages 1 & 2 (Minimum dataset for dashboard build)
+bash run_master_benchmark.sh --profile fast-dashboard --model "$MODEL"
+
+# 3. Default Full Campaign (~9h): Steps 00-17 across all topologies with cold/warm cache isolation
+bash run_master_benchmark.sh --profile default --model "$MODEL"
+
+# 4. Deep Profile Campaign (~14h): Steps 00-20 with Poisson sweeps, scheduler sweeps, and observer overhead
+bash run_master_benchmark.sh --profile deep-profile --model "$MODEL"
 ```
 
-### Option B: Stage 1 Quick Wins (~1h 10m)
-Executes Steps 1 to 7 (8.4K chunk budget A/B test, PyTorch batched profiles, NCCL socket tuning, TP8 NUMA pinning, sub-8K short prompts, 128K knee repeats, KV trace trimming):
+### Targeted Custom Execution
 ```bash
-bash run_master_benchmark.sh --stage 1
-```
+# Filter by topology and stage:
+bash run_master_benchmark.sh --model "$MODEL" --topologies tp4_pp1,tp8_pp1 --stage 1
 
-### Option C: Stage 2 Scale-Out Concurrency & Asymmetric PP (~3h 30m)
-Executes Steps 8 to 13 (FP8 quantization, DDR5 offload reuse, Multi-node concurrency under load $c=1..8$, PP2 15/12 layer partition, network capped resilience, TP16 512K context serving):
-```bash
-bash run_master_benchmark.sh --stage 2
-```
-
-### Option D: Stage 3 Deep Kernel Profiling & Telemetry Aggregation (~2h 30m)
-Executes Steps 14 and 15 (B1 CUDA Graphs-ON Nsight Systems decode trace, batched PyTorch traces, B11 multi-node trace, canonical telemetry compilation & invariant audit):
-```bash
-bash run_master_benchmark.sh --stage 3
-```
-
-### Option E: Full 15-Step Master Campaign (~7h 10m)
-Executes the complete end-to-end benchmark campaign:
-```bash
-bash run_master_benchmark.sh --all
-```
-
-### Option F: Targeted Custom Execution with Model, Topology & Bandwidth Selection
-```bash
-# Run with custom model, filtered topologies, and selected bandwidth modes:
-bash run_master_benchmark.sh \
-  --model "meta-llama/Meta-Llama-3-70B-Instruct" \
-  --topologies "tp4_pp1,tp8_pp1,tp8_pp2,tp16_pp1" \
-  --bandwidth "native,100g" \
-  --stage 2
+# Filter by context and concurrency:
+bash run_master_benchmark.sh --model "$MODEL" --contexts 1k,8k --concurrencies 1,8
 ```
 
 ---
