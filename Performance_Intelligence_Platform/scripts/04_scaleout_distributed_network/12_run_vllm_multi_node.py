@@ -75,6 +75,7 @@ def main():
         ray_snapshot(cdir,"before_server")
         gpus=case.get("gpu_indices",list(range(int(case.get("ray_gpus_per_node",8)))))
         gpu_csv=",".join(map(str,gpus)); env=os.environ.copy(); env["CUDA_VISIBLE_DEVICES"]=gpu_csv
+        env["VLLM_DISABLE_PYNCCL"]="1"
         server_cmd=build_server_cmd(vllm,serve_help,cfg,case,model,args.port,distributed=True)
         (cdir/"SERVER_COMMAND.txt").write_text(q(server_cmd)+"\n")
         rec={"name":case["name"],"groups":case.get("groups",[]),"purpose":case.get("purpose"),"tp":case["tp"],"pp":case.get("pp",1),

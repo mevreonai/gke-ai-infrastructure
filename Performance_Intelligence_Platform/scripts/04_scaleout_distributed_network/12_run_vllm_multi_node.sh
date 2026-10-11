@@ -20,6 +20,7 @@ source "$VENV_DIR/bin/activate"
 
 # Export FlashInfer autotune skips to prevent Triton MoE hang
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
+export VLLM_DISABLE_PYNCCL="1"
 
 # Preserve cross-node Socket-network workaround, protect local P2P/SHM within each node
 nccl_multi_node_v6_aligned_env
@@ -30,7 +31,7 @@ if [[ -z "${NCCL_SOCKET_IFNAME:-}" ]]; then
   export NCCL_SOCKET_IFNAME="=$_local_if"
 fi
 nccl_capture_env "$OUT_ROOT/NCCL_ENV_BEFORE_MULTI_NODE.txt"
-REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports) export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=\"trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2\";"
+REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports) export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=\"trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2\"; export VLLM_DISABLE_PYNCCL=\"1\";"
 
 SELECT_MODE="qualification"
 if [[ ${1:-} == "--all" ]]; then SELECT_MODE="all"; shift; fi
