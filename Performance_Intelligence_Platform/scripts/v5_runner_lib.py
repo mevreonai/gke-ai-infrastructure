@@ -186,7 +186,16 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
         cfg_val = case["attention_config"]
         if isinstance(cfg_val, dict):
             cfg_val = json.dumps(cfg_val)
-        cmd += ["--attention-config", cfg_val]
+    moe_b = os.environ.get("VLLM_MOE_BACKEND", resolved(case, cfg, "moe_backend"))
+    if moe_b and "--moe-backend" in serve_help:
+        cmd += ["--moe-backend", str(moe_b)]
+
+    if os.environ.get("VLLM_NO_FLASHINFER_AUTOTUNE") == "1" or resolved(case, cfg, "no_enable_flashinfer_autotune", False):
+        if "--no-enable-flashinfer-autotune" in serve_help:
+            cmd += ["--no-enable-flashinfer-autotune"]
+    elif "--enable-flashinfer-autotune" in serve_help and os.environ.get("VLLM_FLASHINFER_AUTOTUNE") == "1":
+        cmd += ["--enable-flashinfer-autotune"]
+
     if case.get("extra_server_args"):
         cmd.extend(case["extra_server_args"])
     return cmd

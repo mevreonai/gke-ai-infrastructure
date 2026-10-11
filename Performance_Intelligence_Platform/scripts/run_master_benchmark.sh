@@ -489,7 +489,7 @@ if step_should_run 4; then
     vllm serve \"\$model_name\" --revision \"\$rev_id\" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port \"\$local_port\" \
       --tensor-parallel-size 8 --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32 \
       --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
-      --no-enable-prefix-caching > \"\$TP8_DIR/server.log\" 2>&1 & local PID=\$!
+      --no-enable-prefix-caching \${VLLM_MOE_BACKEND:+--moe-backend \"\$VLLM_MOE_BACKEND\"} > \"\$TP8_DIR/server.log\" 2>&1 & local PID=\$!
 
     cleanup_tp8(){
       echo \"Stopping TP8 server PID \$PID...\"

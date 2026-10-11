@@ -142,15 +142,17 @@ echo "--- 3. CUTLASS & TRITON MOE EXECUTION ENVIRONMENT CONTROLS ---"
 export CUDA_DEVICE_ORDER="PCI_BUS_ID"
 export VLLM_MOE_BACKEND="triton"
 export VLLM_FLASHINFER_AUTOTUNE="1"
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 export VLLM_PP_LAYER_PARTITION="15,12"
 
 moe_env_ok=1
 [[ "${CUDA_DEVICE_ORDER:-}" == "PCI_BUS_ID" ]] || moe_env_ok=0
 [[ "${VLLM_MOE_BACKEND:-}" == "triton" ]] || moe_env_ok=0
 [[ "${VLLM_FLASHINFER_AUTOTUNE:-}" == "1" ]] || moe_env_ok=0
+[[ "${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS:-}" == *"trtllm::fused_moe::gemm1"* ]] || moe_env_ok=0
 
 if [[ "$moe_env_ok" == 1 ]]; then
-  record_check "moe_cutlass_env_flags" "PASSED" "CUDA_DEVICE_ORDER=PCI_BUS_ID, VLLM_MOE_BACKEND=triton, FLASHINFER=1, PP_SPLIT=15,12"
+  record_check "moe_cutlass_env_flags" "PASSED" "CUDA_DEVICE_ORDER=PCI_BUS_ID, VLLM_MOE_BACKEND=triton, FLASHINFER=1, SKIP_OPS set, PP_SPLIT=15,12"
 else
   record_check "moe_cutlass_env_flags" "FAILED" "Kernel execution flags misconfigured"
 fi
