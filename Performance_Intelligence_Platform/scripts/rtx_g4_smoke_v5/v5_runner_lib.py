@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Unified runner library for Performance Intelligence Platform.
 Supports arbitrary model architectures, single-node and multi-node execution,
-and robust JSON/CLI flag generation with strict error boundaries.
+robust JSON/CLI flag generation with strict error boundaries,
+and cold/warm cache isolation for unbiased latency measurement.
 """
 from __future__ import annotations
 import json, math, os, platform, shlex, shutil, signal, subprocess, sys, time
@@ -74,6 +75,60 @@ def choose_cases(cfg, names, groups, run_all=False):
     unknown=names-{c["name"] for c in raw_cases}
     if unknown: raise SystemExit(f"Unknown case(s): {sorted(unknown)}")
     return out
+
+def parse_selection_set(val: str | None) -> set[str] | None:
+    if not val or val.strip().lower() in ("all", "*", ""):
+        return None
+    return {x.strip().lower() for x in val.split(",") if x.strip()}
+
+def benchmark_context_tag(b: dict) -> str:
+    """Extract canonical context tag (1k, 2k, 8k, 16k, 32k, 64k, 128k, 256k, 512k, 1m) from benchmark dict."""
+    name = b.get("name", "").lower()
+    inp = b.get("input")
+    if inp is not None:
+        try:
+            inp = int(inp)
+            if inp >= 1000000: return "1m"
+            if inp >= 524288: return "512k"
+            if inp >= 262144: return "256k"
+            if inp >= 131072: return "128k"
+            if inp >= 65536: return "64k"
+            if inp >= 32768: return "32k"
+            if inp >= 16384: return "16k"
+            if inp >= 8192: return "8k"
+            if inp >= 2048: return "2k"
+            if inp >= 1024: return "1k"
+        except (ValueError, TypeError):
+            pass
+    for tag in ("1m", "512k", "256k", "128k", "64k", "32k", "16k", "8k", "2k", "1k"):
+        if tag in name:
+            return tag
+    return "other"
+
+def benchmark_matches_filter(b: dict, context_filter: set[str] | None = None, concurrency_filter: set[str] | None = None) -> bool:
+    """Checks whether a benchmark matches the active CONTEXT_SELECTION and CONCURRENCY_SELECTION."""
+    if context_filter is not None:
+        tag = benchmark_context_tag(b)
+        if tag != "other" and tag not in context_filter:
+            if not any(ctx in b.get("name", "").lower() for ctx in context_filter):
+                return False
+        elif tag == "other":
+            matched = any(ctx in b.get("name", "").lower() for ctx in context_filter)
+            if not matched:
+                return False
+    if concurrency_filter is not None:
+        c = str(b.get("concurrency", 1))
+        if c not in concurrency_filter and f"c{c}" not in concurrency_filter:
+            return False
+    return True
+
+def filter_case_benchmarks(benchmarks: list[dict], contexts: str | None = None, concurrencies: str | None = None) -> list[dict]:
+    """Filter list of benchmarks based on context and concurrency selection strings."""
+    ctx_sel = contexts if contexts is not None else os.environ.get("CONTEXT_SELECTION", "all")
+    cnc_sel = concurrencies if concurrencies is not None else os.environ.get("CONCURRENCY_SELECTION", "all")
+    ctx_set = parse_selection_set(ctx_sel)
+    cnc_set = parse_selection_set(cnc_sel)
+    return [b for b in benchmarks if benchmark_matches_filter(b, ctx_set, cnc_set)]
 
 def resolved(case, cfg, key, default=None):
     if key in case: return case[key]
@@ -176,6 +231,26 @@ def build_bench_cmd(vllm, bench_help, model, port, b, outdir, result_file, seed,
             cmd += ["--metadata"] + [f"{k}={v}" for k,v in metadata.items()]
     return cmd
 
+# ---------------------------------------------------------------------------
+# Run profile constants for --profile flag
+# ---------------------------------------------------------------------------
+RUN_PROFILES = {
+    "smoke":          {"description": "Quick 10-min sanity check: TP4 1k/8k c=1 only",
+                       "stages": ["0","1"],
+                       "contexts": "1k,8k", "concurrencies": "1"},
+    "fast-dashboard":  {"description": "~2h fast dashboard build: Stage 1+2, skip deep profiling",
+                       "stages": ["0","1","2"],
+                       "contexts": "all", "concurrencies": "1,8,32"},
+    "default":         {"description": "~9h full characterization: All stages including cold/warm",
+                       "stages": ["all"],
+                       "contexts": "all", "concurrencies": "all"},
+    "deep-profile":    {"description": "~14h deep profiling: All stages + heavy Nsys 512K/1M + Poisson sweeps",
+                       "stages": ["all"],
+                       "contexts": "all", "concurrencies": "all",
+                       "extra_env": {"RUN_HEAVY_PROFILE": "1", "RUN_POISSON_SWEEPS": "1",
+                                     "RUN_OBSERVER_OVERHEAD": "1", "RUN_SCHEDULER_SWEEPS": "1"}},
+}
+
 def run_warmup(vllm, bench_help, model, port, b, bdir, seed, env):
     n=int(b.get("warmups",0) or 0)
     if n<=0: return {"ran":False}
@@ -186,6 +261,38 @@ def run_warmup(vllm, bench_help, model, port, b, bdir, seed, env):
     t0=time.time()
     with (bdir/"warmup_stdout.log").open("w") as log: rc=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT,env=env)
     return {"ran":True,"command":cmd,"start":t0,"end":time.time(),"exit_code":rc,"warmup_prompts":prompts_cnt,"warmup_concurrency":c}
+
+def drain_vram_barrier(timeout=15):
+    """Kill all vLLM processes and drain VRAM to ensure cold-cache measurement.
+    This is the critical isolation barrier between concurrency levels.
+    """
+    import signal as _sig
+    t0 = time.time()
+    # 1. SIGKILL all vllm processes
+    try:
+        subprocess.run(["pkill", "-9", "-f", "vllm"], capture_output=True, timeout=10)
+    except Exception:
+        pass
+    # 2. Wait for GPU memory release
+    time.sleep(3)
+    # 3. Verify VRAM is drained via nvidia-smi
+    try:
+        result = subprocess.run(
+            ["nvidia-smi", "--query-compute-apps=pid", "--format=csv,noheader"],
+            capture_output=True, text=True, timeout=10
+        )
+        remaining_pids = [p.strip() for p in result.stdout.strip().split("\n") if p.strip()]
+        if remaining_pids:
+            for pid in remaining_pids:
+                try:
+                    os.kill(int(pid), _sig.SIGKILL)
+                except (ProcessLookupError, ValueError):
+                    pass
+            time.sleep(2)
+    except Exception:
+        pass
+    elapsed = time.time() - t0
+    return {"barrier_type": "vram_drain", "elapsed_s": round(elapsed, 2), "timestamp": time.time()}
 
 def parse_result(path:Path):
     if not path.exists(): return {}
@@ -276,3 +383,15 @@ def package_run_evidence(cdir: Path, bdir: Path, bench_name: str):
     except Exception:
         pass
     return archive_path
+
+def classify_thermal_state(b: dict, warmup_rec: dict) -> str:
+    """Classify whether a benchmark measurement represents cold or warm cache state.
+    Returns 'cold' if no warmups were run (warmups=0 or warmup failed),
+    'warm' if warmups ran successfully.
+    """
+    n = int(b.get("warmups", 0) or 0)
+    if n <= 0:
+        return "cold"
+    if warmup_rec.get("ran") and warmup_rec.get("exit_code") == 0:
+        return "warm"
+    return "cold"
