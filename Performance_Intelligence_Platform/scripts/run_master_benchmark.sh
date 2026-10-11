@@ -265,11 +265,10 @@ if [[ -d "/tmp/clean_nccl_libs" ]]; then
 fi
 export NCCL_SOCKET_IFNAME="${NCCL_SOCKET_IFNAME:-ens3}"
 export NCCL_NET="${NCCL_NET:-Socket}"
-export NCCL_CROSS_NIC="${NCCL_CROSS_NIC:-1}"
-export NCCL_ALGO="${NCCL_ALGO:-Tree}"
-export NCCL_PROTO="${NCCL_PROTO:-Simple}"
 export NCCL_BUFFSIZE="${NCCL_BUFFSIZE:-4194304}"
 export GLOO_SOCKET_IFNAME="${GLOO_SOCKET_IFNAME:-ens3}"
+export VLLM_DISABLE_PYNCCL="${VLLM_DISABLE_PYNCCL:-1}"
+unset NCCL_ALGO NCCL_PROTO || true
 
 if [[ -f "$VENV_DIR/bin/activate" ]]; then
   source "$VENV_DIR/bin/activate"

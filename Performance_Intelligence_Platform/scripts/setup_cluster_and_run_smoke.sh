@@ -139,6 +139,7 @@ export MOE_BACKEND="flashinfer_cutlass"
 export VLLM_FLASHINFER_AUTOTUNE="1"
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 export VLLM_PP_LAYER_PARTITION="7,7,7,6"
+export VLLM_DISABLE_PYNCCL="1"
 
 # Network Transport & Provenance
 export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:\${LD_LIBRARY_PATH:-}"
@@ -147,8 +148,7 @@ export GLOO_SOCKET_IFNAME="ens3"
 export NCCL_NET="Socket"
 export NCCL_CROSS_NIC="1"
 export NCCL_BUFFSIZE="4194304"
-export NCCL_ALGO="Tree"
-export NCCL_PROTO="Simple"
+unset NCCL_ALGO NCCL_PROTO || true
 export V8_VLLM_NETWORK_CAP_GBPS="$([[ "$SKIP_20G" == 1 ]] && echo '0' || echo '20')"
 export NETWORK_BANDWIDTH_SELECTION="$([[ "$SKIP_20G" == 1 ]] && echo 'native' || echo '20g')"
 export TOPOLOGY_SELECTION="tp4_pp4"
