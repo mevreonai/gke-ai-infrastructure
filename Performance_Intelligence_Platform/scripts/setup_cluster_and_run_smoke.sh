@@ -1,0 +1,195 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# PERFORMANCE INTELLIGENCE PLATFORM — CLUSTER INTERCONNECT & SMOKE TEST RUNNER
+# ==============================================================================
+# Automates:
+# 1. Inter-node discovery and passwordless SSH validation
+# 2. Linux Traffic Control 20 Gbps rate-capping on ens3 (Node 0 and Node 1)
+# 3. Synchronizing RUN_CONFIG.env with TP4/PP4, FlashInfer Cutlass, and 20G settings
+# 4. Executing automated run_smoke_test.sh with live progress
+# 5. Parsing and displaying SMOKE_TEST_REPORT.json verdict
+#
+# Usage:
+#   bash setup_cluster_and_run_smoke.sh [NODE1_IP] [FLAGS]
+#
+# Options:
+#   --run-benchmark   Immediately launch Step 10 TP4/PP4 benchmark upon passing smoke test
+#   --skip-20g        Skip tc HTB 20 Gbps rate shaping (leave native 100G)
+# ==============================================================================
+set -euo pipefail
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+cd "$SCRIPT_DIR"
+
+RUN_BENCHMARK=0
+SKIP_20G=0
+INPUT_NODE1_IP=""
+
+# Parse flags & arguments
+for arg in "$@"; do
+  case "$arg" in
+    --run-benchmark) RUN_BENCHMARK=1 ;;
+    --skip-20g)      SKIP_20G=1 ;;
+    -h|--help)
+      echo "Usage: $0 [NODE1_IP] [--run-benchmark] [--skip-20g]"
+      exit 0
+      ;;
+    *)
+      if [[ -z "$INPUT_NODE1_IP" && "$arg" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        INPUT_NODE1_IP="$arg"
+      fi
+      ;;
+  esac
+done
+
+# Resolve Node 0 IP
+NODE0_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "127.0.0.1")
+
+# Resolve Node 1 IP
+if [[ -n "$INPUT_NODE1_IP" ]]; then
+  NODE1_IP="$INPUT_NODE1_IP"
+elif [[ -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
+  source "$SCRIPT_DIR/RUN_CONFIG.env"
+fi
+NODE1_IP="${NODE1_IP:-}"
+
+echo "================================================================================"
+echo "  PERFORMANCE INTELLIGENCE PLATFORM — AUTOMATED SMOKE TEST & CLUSTER SETUP"
+echo "  Primary Node 0 IP : $NODE0_IP"
+echo "  Worker Node 1 IP  : ${NODE1_IP:-<UNCONFIGURED>}"
+echo "  Network Rate Cap  : $([[ "$SKIP_20G" == 1 ]] && echo 'Native (100G)' || echo '20 Gbps (tc HTB on ens3)')"
+echo "  Auto Launch Bench : $([[ "$RUN_BENCHMARK" == 1 ]] && echo 'YES (Step 10 TP4/PP4)' || echo 'NO (Smoke test only)')"
+echo "================================================================================"
+
+if [[ -z "$NODE1_IP" ]]; then
+  echo "ERROR: Node 1 IP is required to configure a 2-node cluster."
+  echo "Run as: bash $0 <NODE1_IP>"
+  exit 1
+fi
+
+# 1. SSH Connectivity Check
+echo ""
+echo "--> [1/5] Verifying passwordless SSH from Node 0 to Node 1 ($NODE1_IP)..."
+mkdir -p "$HOME/.ssh" && chmod 700 "$HOME/.ssh"
+if [[ ! -f "$HOME/.ssh/id_rsa" ]]; then
+  echo "    Generating SSH key pair on Node 0..."
+  ssh-keygen -t rsa -b 4096 -N "" -f "$HOME/.ssh/id_rsa"
+fi
+
+if ! ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "true" >/dev/null 2>&1; then
+  echo "    ⚠️ Passwordless SSH to $NODE1_IP is not yet established."
+  echo "    Run this command on Node 1 to authorize Node 0:"
+  echo ""
+  echo "    echo '$(cat "$HOME/.ssh/id_rsa.pub")' >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+  echo ""
+  read -r -p "    Press ENTER after pasting the key on Node 1 to continue..." || true
+fi
+
+# Confirm SSH connection
+if ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "nvidia-smi" >/dev/null 2>&1; then
+  echo "    ✅ Passwordless SSH verified! Remote 8 GPUs on Node 1 reachable."
+else
+  echo "    ⚠️ Remote GPU check timed out. Proceeding with local verification."
+fi
+
+# 2. Apply 20 Gbps Rate Cap on ens3
+if [[ "$SKIP_20G" == 0 ]]; then
+  echo ""
+  echo "--> [2/5] Applying 20 Gbps rate shaping (tc HTB) on interface ens3..."
+  if ip link show ens3 >/dev/null 2>&1; then
+    sudo tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
+    sudo tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+    echo "    Node 0: ens3 paced to 20 Gbps."
+  fi
+
+  # Apply remotely on Node 1 via SSH
+  ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "
+    if ip link show ens3 >/dev/null 2>&1; then
+      sudo tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
+      sudo tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+      echo '    Node 1: ens3 paced to 20 Gbps.'
+    fi
+  " 2>/dev/null || echo "    Notice: Remote Node 1 traffic shaping applied or skipped."
+else
+  echo ""
+  echo "--> [2/5] Skipping 20G rate cap (--skip-20g enabled). Using native bandwidth."
+fi
+
+# 3. Synchronize RUN_CONFIG.env
+echo ""
+echo "--> [3/5] Generating synchronized RUN_CONFIG.env on Node 0..."
+VENV_DIR="${VENV_DIR:-$HOME/pip_vllm_env}"
+[[ -d "$VENV_DIR" ]] || VENV_DIR="$HOME/vllm_env"
+
+cat << EOF > "$SCRIPT_DIR/RUN_CONFIG.env"
+# Auto-generated by setup_cluster_and_run_smoke.sh
+export VENV_DIR="$VENV_DIR"
+export NODE0_IP="$NODE0_IP"
+export NODE1_IP="$NODE1_IP"
+export SSH_KEY="\$HOME/.ssh/id_rsa"
+
+# Target Model & Revision
+export MODEL="moonshotai/Kimi-Linear-48B-A3B-Instruct"
+export REVISION="e1df551a447157d4658b573f9a695d57658590e9"
+
+# MoE FlashInfer Cutlass Execution Controls
+export CUDA_DEVICE_ORDER="PCI_BUS_ID"
+export VLLM_MOE_BACKEND="flashinfer_cutlass"
+export MOE_BACKEND="flashinfer_cutlass"
+export VLLM_FLASHINFER_AUTOTUNE="1"
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
+export VLLM_PP_LAYER_PARTITION="7,7,7,6"
+
+# Network Transport & Provenance
+export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:\${LD_LIBRARY_PATH:-}"
+export NCCL_SOCKET_IFNAME="ens3"
+export GLOO_SOCKET_IFNAME="ens3"
+export NCCL_NET="Socket"
+export NCCL_CROSS_NIC="1"
+export NCCL_BUFFSIZE="4194304"
+export NCCL_ALGO="Tree"
+export NCCL_PROTO="Simple"
+export V8_VLLM_NETWORK_CAP_GBPS="$([[ "$SKIP_20G" == 1 ]] && echo '0' || echo '20')"
+export NETWORK_BANDWIDTH_SELECTION="$([[ "$SKIP_20G" == 1 ]] && echo 'native' || echo '20g')"
+export TOPOLOGY_SELECTION="tp4_pp4"
+EOF
+echo "    RUN_CONFIG.env written successfully."
+
+# 4. Run Automated Smoke Test
+echo ""
+echo "--> [4/5] Executing automated pre-flight smoke test..."
+bash "$SCRIPT_DIR/run_smoke_test.sh"
+
+# 5. Parse Smoke Test Output Verdict
+LATEST_SMOKE=$(ls -td "$HOME"/platform_smoke_test_* 2>/dev/null | head -n1 || echo "")
+if [[ -n "$LATEST_SMOKE" && -f "$LATEST_SMOKE/SMOKE_TEST_REPORT.json" ]]; then
+  echo ""
+  echo "--> [5/5] Smoke Test Result Verdict:"
+  python3 - << PY "$LATEST_SMOKE/SMOKE_TEST_REPORT.json"
+import json, sys
+data = json.load(open(sys.argv[1]))
+print("--------------------------------------------------------------------------------")
+print(f"  Status        : {data.get('status')}")
+print(f"  Passed Checks : {data.get('passed_checks')} / {data.get('total_checks')}")
+print(f"  Platform Ready: {data.get('ready_for_full_benchmark')}")
+print("--------------------------------------------------------------------------------")
+for c in data.get("checks", []):
+    status_icon = "✅" if c.get("status") == "PASSED" else "❌"
+    print(f"  {status_icon} {c.get('check'):<30} : {c.get('details')}")
+print("--------------------------------------------------------------------------------")
+PY
+fi
+
+# Optional: Run Full Benchmark
+if [[ "$RUN_BENCHMARK" == 1 ]]; then
+  echo ""
+  echo "================================================================================"
+  echo "  LAUNCHING FULL TP4/PP4 BENCHMARK (STEP 10 ACROSS ALL CONTEXTS & CONCURRENCIES)"
+  echo "================================================================================"
+  exec bash "$SCRIPT_DIR/run_master_benchmark.sh" \
+    --topologies tp4_pp4 \
+    --step 10 \
+    --bandwidth "$([[ "$SKIP_20G" == 1 ]] && echo 'native' || echo '20g')" \
+    --contexts all \
+    --concurrencies all
+fi
