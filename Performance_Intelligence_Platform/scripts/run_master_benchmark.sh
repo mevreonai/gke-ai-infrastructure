@@ -342,31 +342,49 @@ if step_should_run 2; then
   run_step 2 "torch_profiles_batched" bash -c "
     mkdir -p '$TORCH_DIR/tp4_8k_c8' '$TORCH_DIR/tp4_8k_c32'
     if topology_matches 'tp4' || topology_matches 'all'; then
-      echo 'Capturing single-node TP4 PyTorch profiles...'
+      echo 'Capturing single-node TP4 PyTorch profile (cold-cache c=8)...'
       env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8021 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+      echo 'Forcing complete vLLM process kill and VRAM purge between concurrencies for cold-cache isolation...'
+      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+      echo 'Capturing single-node TP4 PyTorch profile (cold-cache c=32)...'
       env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8022 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
     fi
     if topology_matches 'tp8' || topology_matches 'all'; then
-      echo 'Capturing single-node TP8 PyTorch profiles...'
+      echo 'Capturing single-node TP8 PyTorch profile (cold-cache c=8)...'
       mkdir -p '$TORCH_DIR/tp8_8k_c8' '$TORCH_DIR/tp8_8k_c32'
       env TP=8 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8023 PROFILE_ROOT='$TORCH_DIR/tp8_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+      echo 'Forcing complete vLLM process kill and VRAM purge between concurrencies for cold-cache isolation...'
+      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+      echo 'Capturing single-node TP8 PyTorch profile (cold-cache c=32)...'
       env TP=8 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8024 PROFILE_ROOT='$TORCH_DIR/tp8_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
+      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
     fi
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
+      SSH_CMD=(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\")
       if topology_matches 'tp4_pp4' || topology_matches 'pp4' || topology_matches 'all'; then
-        echo 'Capturing distributed 16-GPU TP4 PP4 PyTorch profile...'
+        echo 'Capturing distributed 16-GPU TP4 PP4 PyTorch profile (cold-cache c=8)...'
         mkdir -p '$TORCH_DIR/tp4_pp4_8k_c8'
         env TOPOLOGY=tp4_pp4_dist CONCURRENCY=8 PORT=8025 PROFILE_ROOT='$TORCH_DIR/tp4_pp4_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
+        pkill -9 -f 'vllm' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true
+        \"\${SSH_CMD[@]}\" 'pkill -9 -f vllm 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true' || true
+        sleep 3
       fi
       if topology_matches 'tp8_pp2' || topology_matches 'pp2' || topology_matches 'all'; then
-        echo 'Capturing distributed 16-GPU TP8 PP2 PyTorch profile...'
+        echo 'Capturing distributed 16-GPU TP8 PP2 PyTorch profile (cold-cache c=8)...'
         mkdir -p '$TORCH_DIR/tp8_pp2_8k_c8'
         env TOPOLOGY=tp8_pp2_dist CONCURRENCY=8 PORT=8026 PROFILE_ROOT='$TORCH_DIR/tp8_pp2_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
+        pkill -9 -f 'vllm' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true
+        \"\${SSH_CMD[@]}\" 'pkill -9 -f vllm 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true' || true
+        sleep 3
       fi
       if topology_matches 'tp16_pp1' || topology_matches 'tp16' || topology_matches 'all'; then
-        echo 'Capturing distributed 16-GPU TP16 PP1 PyTorch profile...'
+        echo 'Capturing distributed 16-GPU TP16 PP1 PyTorch profile (cold-cache c=8)...'
         mkdir -p '$TORCH_DIR/tp16_pp1_8k_c8'
         env TOPOLOGY=tp16_pp1_dist CONCURRENCY=8 PORT=8027 PROFILE_ROOT='$TORCH_DIR/tp16_pp1_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
+        pkill -9 -f 'vllm' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true
+        \"\${SSH_CMD[@]}\" 'pkill -9 -f vllm 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true' || true
+        sleep 3
       fi
     fi
   "

@@ -30,14 +30,31 @@ print(json.dumps({
 PY
 )
 
-echo "Starting vLLM server with full serving optimization flags..."
+echo "Pre-flight cold cache purge: ensuring no stale vLLM processes exist on port $PORT..."
+pkill -9 -f "vllm.*port.*$PORT" 2>/dev/null || true
+sleep 2
+
+echo "Starting fresh cold-cache vLLM server with full serving optimization flags..."
 vllm serve "$MODEL" --revision "$REVISION" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port "$PORT" \
   --tensor-parallel-size "$TP" --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 64 \
   --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
   --no-enable-prefix-caching --enable-logging-iteration-details --profiler-config "$PROF_JSON" \
   > "$PROFILE_ROOT/server.log" 2>&1 & PID=$!
 
-cleanup(){ kill "$PID" 2>/dev/null || true; wait "$PID" 2>/dev/null || true; }
+cleanup(){
+  echo "Terminating vLLM server (PID=$PID) and draining GPU memory for cold cache isolation..."
+  kill "$PID" 2>/dev/null || true
+  sleep 2
+  pkill -9 -f "vllm.*port.*$PORT" 2>/dev/null || true
+  pkill -9 -P "$PID" 2>/dev/null || true
+  wait "$PID" 2>/dev/null || true
+  for _ in $(seq 1 30); do
+    used_vram=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
+    if [[ "$used_vram" -lt 2500 ]]; then break; fi
+    sleep 1
+  done
+  echo "GPU memory drained; cold cache state restored."
+}
 trap cleanup EXIT
 
 for _ in $(seq 1 1800); do

@@ -50,8 +50,17 @@ PYG
 )
 
 stop_ray_both(){
+  echo "Terminating Ray and vLLM processes on Node 0 and Node 1 for cold cache isolation..."
+  kill "${SERVER_PID:-}" 2>/dev/null || true
+  pkill -9 -f "vllm" 2>/dev/null || true
   ray stop -f >/dev/null 2>&1 || true
-  "${SSH[@]}" "$NODE1_IP" "source '$VENV_DIR/bin/activate' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true" || true
+  "${SSH[@]}" "$NODE1_IP" "pkill -9 -f 'vllm' 2>/dev/null || true; source '$VENV_DIR/bin/activate' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true" || true
+  sleep 3
+  for _ in $(seq 1 30); do
+    used_vram=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
+    if [[ "$used_vram" -lt 2500 ]]; then break; fi
+    sleep 1
+  done
 }
 trap stop_ray_both EXIT
 
