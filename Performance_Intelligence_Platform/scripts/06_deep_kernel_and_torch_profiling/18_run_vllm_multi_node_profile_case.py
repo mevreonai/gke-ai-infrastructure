@@ -72,8 +72,11 @@ def main():
     env=os.environ.copy(); gpu_csv=','.join(map(str,case['gpu_indices'])); env['CUDA_VISIBLE_DEVICES']=gpu_csv
     env['VLLM_WORKER_MULTIPROC_METHOD']='spawn'
     server_cmd=build_server_cmd(vllm,serve_help,cfg,case,model,args.port,distributed=True)
-    if '--enforce-eager' in serve_help: server_cmd += ['--enforce-eager']
-    if '--enable-layerwise-nvtx-tracing' in serve_help: server_cmd += ['--enable-layerwise-nvtx-tracing']
+    enforce_eager = os.environ.get('ENFORCE_EAGER', '1') == '1'
+    if enforce_eager and '--enforce-eager' in serve_help:
+        server_cmd += ['--enforce-eager']
+        if '--enable-layerwise-nvtx-tracing' in serve_help:
+            server_cmd += ['--enable-layerwise-nvtx-tracing']
     server_cmd += ['--ray-workers-use-nsight']
     # Existing V6 profiler path used nested profiler config successfully. Preserve that behavior.
     if '--profiler-config.profiler' in serve_help or '--profiler-config' in serve_help:
@@ -110,7 +113,8 @@ def main():
         manifest['bench_start']=t0; manifest['bench_end']=time.time(); manifest['bench_exit_code']=rc
         result=parse_result(out/'bench.json'); manifest.update(validate_result_lengths(result,profile_bench))
         manifest.update(quick_metrics(out/'metrics_node0.jsonl'))
-        manifest['status']='COMPLETED' if rc==0 else 'FAILED'
+        bench_ok = (rc == 0) and is_benchmark_success(result, profile_bench, rc)
+        manifest['status']='COMPLETED' if bench_ok else 'FAILED'
     except Exception as e:
         manifest['status']='FAILED'; manifest['error']=repr(e)
     finally:

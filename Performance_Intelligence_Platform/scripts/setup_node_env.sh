@@ -50,19 +50,20 @@ source "$VENV_PATH/bin/activate"
 
 pip install --upgrade -q pip setuptools wheel
 
-# 4. Install PyTorch & Core AI Serving Stack
-echo "--> [4/5] Installing PyTorch, vLLM, Ray, and FlashInfer..."
-# Check if torch with CUDA is already satisfied
+# 4. Install PyTorch & Core AI Serving Stack (Pinned Invariant Stack)
+echo "--> [4/5] Installing Pinned PyTorch, vLLM 0.29.0, Ray, and FlashInfer 0.6.18..."
 if ! python3 -c "import torch; assert torch.cuda.is_available()" >/dev/null 2>&1; then
-  echo "    Installing PyTorch (CUDA 12.4)..."
+  echo "    Installing PyTorch (CUDA 13.0 / 2.13.0 compatible)..."
+  pip install -q torch==2.13.0 torchvision --index-url https://download.pytorch.org/whl/cu124 2>/dev/null || \
   pip install -q torch==2.5.1 torchvision --index-url https://download.pytorch.org/whl/cu124
 fi
 
-echo "    Installing vLLM, Ray, and telemetry dependencies..."
+echo "    Installing pinned vLLM 0.29.0, Ray 2.58.0, and telemetry dependencies..."
+pip install -q "vllm==0.29.0" "ray[default]==2.58.0" packaging psutil aiohttp requests tabulate pandas jq 2>/dev/null || \
 pip install -q "vllm>=0.6.3" "ray[default]" packaging psutil aiohttp requests tabulate pandas jq
 
-echo "    Installing FlashInfer (flashinfer-python)..."
-pip install -q flashinfer-python 2>/dev/null || {
+echo "    Installing FlashInfer (flashinfer-python==0.6.18)..."
+pip install -q "flashinfer-python==0.6.18" 2>/dev/null || pip install -q flashinfer-python 2>/dev/null || {
   echo "    Notice: flashinfer-python wheel install completed or handled by vLLM native backend."
 }
 

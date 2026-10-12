@@ -126,7 +126,8 @@ def main():
                 result_path=bdir/result_file; result=parse_result(result_path); qm=quick_metrics(bdir/"metrics_gpu.jsonl")
                 lens=validate_result_lengths(result,b)
                 package_run_evidence(cdir, bdir, b["name"])
-                rec={**b,"status":"COMPLETED" if rc==0 else "FAILED","command":bench_cmd,"start":t0,"end":t1,"exit_code":rc,
+                bench_ok = (rc == 0) and is_benchmark_success(result, b, rc)
+                rec={**b,"status":"COMPLETED" if bench_ok else "FAILED","command":bench_cmd,"start":t0,"end":t1,"exit_code":rc,
                      "result_json":str(result_path),"stdout":str(bdir/"bench_stdout.log"),"warmup_separate":True,
                      "clock_wall":clock_wall,"clock_mono":clock_mono,"rank_in_session":bi,
                      "server_start":case_rec["server_start"],"server_ready":case_rec["server_ready"],

@@ -75,9 +75,9 @@ def main():
         ray_snapshot(cdir,"before_server")
         gpus=case.get("gpu_indices",list(range(int(case.get("ray_gpus_per_node",8)))))
         gpu_csv=",".join(map(str,gpus)); env=os.environ.copy(); env["CUDA_VISIBLE_DEVICES"]=gpu_csv
-        env["VLLM_DISABLE_PYNCCL"]="1"
         server_cmd=build_server_cmd(vllm,serve_help,cfg,case,model,args.port,distributed=True)
         (cdir/"SERVER_COMMAND.txt").write_text(q(server_cmd)+"\n")
+        pp_split_rec = os.environ.get("VLLM_PP_LAYER_PARTITION", "default_14_13" if case.get("pp", 1) == 2 else ("default_7_7_7_6" if case.get("pp", 1) == 4 else "default_none"))
         rec={"name":case["name"],"groups":case.get("groups",[]),"purpose":case.get("purpose"),"tp":case["tp"],"pp":case.get("pp",1),
              "ray_gpus_per_node":case.get("ray_gpus_per_node"),"physical_gpu_indices_each_node":gpus,
              "max_num_batched_tokens":case["max_num_batched_tokens"],"max_num_seqs":case.get("max_num_seqs"),
@@ -86,7 +86,7 @@ def main():
              "configured_network_cap_gbps":os.environ.get("V8_VLLM_NETWORK_CAP_GBPS","0"),
              "network_mode":os.environ.get("V8_VLLM_NETWORK_MODE",os.environ.get("PLATFORM_VLLM_NETWORK_MODE","native")),
              "nccl_transport_provenance":os.environ.get("NCCL_TRANSPORT_PROVENANCE","UNSPECIFIED"),
-             "pp_layer_partition":os.environ.get("VLLM_PP_LAYER_PARTITION", "default_14_13"),
+             "pp_layer_partition":pp_split_rec,
              "server_command":server_cmd,"benchmarks":[]}
         if args.dry_run:
             for bi,b in enumerate(benchmarks_to_run):
@@ -130,7 +130,8 @@ def main():
                 stop_remote_sampler(args.ssh_key,args.node1_ip,remote_pid,remote_out,bdir/"metrics_node1.jsonl"); remote_pid=None
                 result=parse_result(bdir/result_file); qm=quick_metrics(bdir/"metrics_node0.jsonl"); lens=validate_result_lengths(result,b)
                 package_run_evidence(cdir, bdir, b["name"])
-                brec={**b,"status":"COMPLETED" if rc==0 else "FAILED","command":bench_cmd,"start":t0,"end":t1,"exit_code":rc,
+                bench_ok = (rc == 0) and is_benchmark_success(result, b, rc)
+                brec={**b,"status":"COMPLETED" if bench_ok else "FAILED","command":bench_cmd,"start":t0,"end":t1,"exit_code":rc,
                       "result_json":str(bdir/result_file),"remote_sampler_error":remote_err,"warmup_separate":True,
                       "clock_wall":clock_wall,"clock_mono":clock_mono,"rank_in_session":bi,
                       "server_start":rec["server_start"],"server_ready":rec["server_ready"],

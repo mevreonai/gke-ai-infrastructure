@@ -1885,6 +1885,42 @@
         }
       ]
     },
+    "tp4_observer_overhead_full": {
+      "name": "tp4_observer_overhead_full",
+      "groups": [
+        "stage3",
+        "observer_overhead",
+        "single_node",
+        "deep_profile"
+      ],
+      "purpose": "Measures observability overhead: runs identical 8K workload with full metrics to compare against minimal metrics.",
+      "tp": 4,
+      "pp": 1,
+      "gpu_indices": [0, 1, 2, 3],
+      "max_num_batched_tokens": 8192,
+      "max_num_seqs": 64,
+      "prefix_caching": false,
+      "offload_gib": 0,
+      "observability_profile": "full",
+      "benchmarks": [
+        {
+          "name": "8k_c8_obs_full",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 40,
+          "warmups": 2
+        },
+        {
+          "name": "8k_c32_obs_full",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 128,
+          "warmups": 2
+        }
+      ]
+    },
     "tp4_r1_continuous_context_curve": {
       "name": "tp4_r1_continuous_context_curve",
       "groups": [

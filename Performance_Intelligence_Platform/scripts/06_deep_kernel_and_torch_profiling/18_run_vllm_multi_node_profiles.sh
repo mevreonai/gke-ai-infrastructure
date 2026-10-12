@@ -5,8 +5,9 @@
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "$SCRIPT_DIR/20_nccl_policy.sh"
-PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE=${PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE:-}
+CALLER_RUN_HEAVY="${RUN_HEAVY_PROFILE:-}"
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
+if [[ -n "$CALLER_RUN_HEAVY" ]]; then export RUN_HEAVY_PROFILE="$CALLER_RUN_HEAVY"; fi
 if [[ -n "$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK_PROVENANCE="$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE"; fi
 : "${NODE0_IP:?NODE0_IP missing}"
 : "${NODE1_IP:?NODE1_IP missing}"
@@ -50,8 +51,12 @@ m=json.load(open(sys.argv[1])); heavy=sys.argv[2]=='1'
 topo=os.environ.get('PROFILE_TOPOLOGY_FILTER','').strip(); mode=os.environ.get('PROFILE_MODE_FILTER','').strip()
 for p in m['profiles']:
     if p.get('optional_heavy') and not heavy: continue
-    if topo and p['topology'] != topo: continue
-    if mode and p['mode'] != mode: continue
+    if topo:
+        topos = [x.strip() for x in topo.split(",") if x.strip()]
+        if p['topology'] not in topos: continue
+    if mode:
+        modes = [x.strip() for x in mode.split(",") if x.strip()]
+        if p['mode'] not in modes: continue
     print('|'.join(map(str,[p['topology'],p['tp'],p['pp'],p['ray_gpus_per_node'],p['mode'],p['input'],p['output'],p['concurrency'],p['prompts']])))
 PYM
 )

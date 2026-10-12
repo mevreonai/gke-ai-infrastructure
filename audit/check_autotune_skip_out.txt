@@ -1,0 +1,205 @@
+
+==================== pilot
+config (run records)
+   vLLM version label (records): {'0.29.0': 15}
+   packages in pip freeze (records listing each): {('flashinfer-python', '0.6.18'): 15, ('nvidia-cuda-nvcc', '13.4.92'): 15}
+   CUDA_HOME set in 0 of 15
+   VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS set in 0 of 15
+   VLLM_MOE_BACKEND set in 0 of 15
+   VLLM_PP_LAYER_PARTITION set in 0 of 15
+   VLLM_DISABLE_PYNCCL set in 0 of 15
+   saved server commands: {'--enforce-eager': 17, 'commands': 61}
+   Ray workers audited: {'clean folder on the path': 58}
+C1 MoE backend start-up lines (logged once per node): {'TRITON': 17}
+C2 logs with 'Running FlashInfer autotune': 0; with 'autotune because it is disabled': 0; backend line but neither (FlashInfer not usable): 17 of 17; skip list applied ('Skipping FlashInfer autotuning for ops'): in no saved log; autotune cache file named (rank 0): 0 logs
+C2b workers that ran the autotune step, per capture: all or none tuned the two GEMMs in 0 of 0 (the skip-list line itself is logged once per node)
+C3 operations tuned (logs naming each): none; read from a cache file ('Config cache hit'): none; no tuned config covers: none
+C4 autotuning per worker: no worker log with both autotuner marks
+C5 worker logs that reached the autotune step: 0; with nothing logged after it: 0; worker logs that start but end before 'Kernel JIT monitor activated': 0 of 120
+C6 start-up (server start -> ready) per layout in launch order; S = skip list in the run's environment; L = server log kept
+   TP16/PP1  09-22 03:37 110s (autotune level default) | 09-22 03:55 48s (autotune level default) | 09-22 04:13 52s (autotune level default)
+   TP4/PP1   09-21 23:07 192s (autotune level default) | 09-21 23:18 138s (autotune level default) | 09-21 23:33 142s (autotune level default) | 09-21 23:42 150s (autotune level default) | 09-21 23:47 140s (autotune level default) | 09-21 23:55 138s (autotune level default) | 09-22 00:03 142s (autotune level default) | 09-22 00:10 144s (autotune level default) | 09-22 00:17 140s (autotune level default) | 09-22 00:27 134s (autotune level default) | 09-22 00:38 134s (autotune level default) | 09-22 00:49 134s (autotune level default) | 09-22 00:56 128s (autotune level default) | 09-22 01:02 136s (autotune level default) | 09-22 01:09 136s (autotune level default) | 09-22 01:12 132s (autotune level default) | 09-22 01:20 138s (autotune level default) | 09-22 01:24 138s (autotune level default) | 09-22 01:29 136s (autotune level default) | 09-22 01:57 132s (autotune level default) | 09-22 02:05 134s (autotune level default) | 09-22 02:14 140s (autotune level default) | 09-22 02:25 134s (autotune level default) | 09-22 02:32 140s (autotune level default) | 09-22 02:44 140s (autotune level default) | 09-22 03:11 138s (autotune level default)
+   TP4/PP2   09-22 03:23 142s (autotune level default) | 09-22 03:43 44s (autotune level default) | 09-22 04:01 48s (autotune level default)
+   TP4/PP4   09-22 03:33 44s (autotune level default) | 09-22 03:52 50s (autotune level default) | 09-22 04:10 44s (autotune level default)
+   TP8/PP1   09-21 23:14 50s (autotune level default) | 09-21 23:28 44s (autotune level default) | 09-22 01:45 44s (autotune level default)
+   TP8/PP2   09-22 03:29 46s (autotune level default) | 09-22 03:47 46s (autotune level default) | 09-22 04:05 50s (autotune level default)
+   serving starts that became ready: 41; with a server log kept: 0
+   never ready: TP4/PP1 09-22 01:16 ended after 132 s: RuntimeError('server exited rc=1') (real_data/vllm_single_node_v6_matrix/tp4_fp8_kv)
+   never ready: TP4/PP1 09-22 01:18 ended after 126 s: RuntimeError('server exited rc=1') (real_data/vllm_single_node_v6_matrix/tp4_native_offload_pressure)
+   never ready: TP4/PP1 09-22 02:23 ended after 134 s: RuntimeError('server exited rc=1') (real_data/…/tp4_fp8_kv_1m)
+C7 MoE kernels per call in each capture (Nsight, eager):
+   profiles/tp4_pp2_dist/prefill_128k                             [Triton] Triton fused_moe_kernel: 378.1 us/call (5824 calls, 1 variants)
+   profiles/tp4_pp4_dist/prefill_128k                             [Triton] Triton fused_moe_kernel: 378.6 us/call (5824 calls, 1 variants)
+   profiles/tp8_pp2_dist/prefill_128k                             [Triton] Triton fused_moe_kernel: 378.9 us/call (10920 calls, 1 variants)
+   profiles_multi_node_native/tp16_pp1_dist/long_prefill_512k     [Triton] Triton fused_moe_kernel: 532.9 us/call (3952 calls, 1 variants)
+   profiles_multi_node_native/tp16_pp1_dist/prefill_128k          [Triton] Triton fused_moe_kernel: 383.5 us/call (17472 calls, 1 variants)
+   profiles_multi_node_native/tp4_pp2_dist/decode_8k              [Triton] Triton fused_moe_kernel: 14.9 us/call (26884 calls, 1 variants)
+   profiles_multi_node_native/tp4_pp2_dist/prefill_128k           [Triton] Triton fused_moe_kernel: 378.7 us/call (5824 calls, 1 variants)
+   profiles_multi_node_native/tp4_pp4_dist/decode_8k              [Triton] Triton fused_moe_kernel: 14.8 us/call (14476 calls, 1 variants)
+   profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k      [Triton] Triton fused_moe_kernel: 529.6 us/call (15808 calls, 1 variants)
+   profiles_multi_node_native/tp4_pp4_dist/prefill_128k           [Triton] Triton fused_moe_kernel: 378.4 us/call (5824 calls, 1 variants)
+   profiles_multi_node_native/tp8_pp2_dist/prefill_128k           [Triton] Triton fused_moe_kernel: 379.0 us/call (10920 calls, 1 variants)
+   real_data/profiles_single_node/tp4_batched_decode              [Triton] Triton fused_moe_kernel: 69.5 us/call (108160 calls, 1 variants)
+   real_data/profiles_single_node/tp4_decode                      [Triton] Triton fused_moe_kernel: 14.0 us/call (106496 calls, 1 variants)
+   real_data/profiles_single_node/tp4_prefill                     [Triton] Triton fused_moe_kernel: 434.0 us/call (4784 calls, 1 variants)
+   real_data/profiles_single_node/tp8_batched_decode              [Triton] Triton fused_moe_kernel: 65.3 us/call (216320 calls, 1 variants)
+   real_data/profiles_single_node/tp8_decode                      [Triton] Triton fused_moe_kernel: 13.8 us/call (212992 calls, 1 variants)
+   real_data/profiles_single_node/tp8_prefill                     [Triton] Triton fused_moe_kernel: 438.6 us/call (9568 calls, 1 variants)
+C8 worker start-up phases per capture (worker logs with vLLM's init and JIT-monitor lines):
+   profiles/tp4_pp2_dist/prefill_128k/node1_capture                         09-22 06:00 · 4 workers · start-up 12-12 s · weights 2.43-2.43 s · autotune none
+   profiles/tp4_pp4_dist/prefill_128k/node1_capture                         09-22 06:06 · 8 workers · start-up 17-18 s · weights 1.69-1.69 s · autotune none
+   profiles/tp8_pp2_dist/prefill_128k/node1_capture                         09-22 06:03 · 8 workers · start-up 13-14 s · weights 2.37-2.37 s · autotune none
+   profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node1_capture 09-22 05:51 · 8 workers · start-up 14-14 s · weights 3.49-3.49 s · autotune none
+   profiles_multi_node_native/tp16_pp1_dist/decode_8k/node1_capture         09-22 05:49 · 8 workers · start-up 14-15 s · weights 3.84-3.84 s · autotune none
+   profiles_multi_node_native/tp16_pp1_dist/long_prefill_512k/node1_capture 09-22 05:57 · 8 workers · start-up 14-16 s · weights 3.81-3.81 s · autotune none
+   profiles_multi_node_native/tp16_pp1_dist/prefill_128k/node1_capture      09-22 05:46 · 8 workers · start-up 14-15 s · weights 3.75-3.75 s · autotune none
+   profiles_multi_node_native/tp4_pp2_dist/batched_decode_8k_c8/node1_capture 09-22 05:27 · 4 workers · start-up 11-12 s · weights 2.88-2.88 s · autotune none
+   profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture          09-22 05:25 · 4 workers · start-up 12-12 s · weights 2.90-2.90 s · autotune none
+   profiles_multi_node_native/tp4_pp2_dist/prefill_128k/node1_capture       09-22 05:22 · 4 workers · start-up 11-12 s · weights 2.44-2.44 s · autotune none
+   profiles_multi_node_native/tp4_pp4_dist/batched_decode_8k_c8/node1_capture 09-22 05:43 · 8 workers · start-up 13-13 s · weights 1.99-1.99 s · autotune none
+   profiles_multi_node_native/tp4_pp4_dist/decode_8k/node1_capture          09-22 05:41 · 8 workers · start-up 13-14 s · weights 1.68-1.68 s · autotune none
+   profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture  09-22 05:54 · 8 workers · start-up 13-14 s · weights 1.93-1.93 s · autotune none
+   profiles_multi_node_native/tp4_pp4_dist/prefill_128k/node1_capture       09-22 05:38 · 8 workers · start-up 14-15 s · weights 1.95-1.95 s · autotune none
+   profiles_multi_node_native/tp8_pp2_dist/batched_decode_8k_c8/node1_capture 09-22 05:35 · 8 workers · start-up 13-14 s · weights 2.88-2.88 s · autotune none
+   profiles_multi_node_native/tp8_pp2_dist/decode_8k/node1_capture          09-22 05:33 · 8 workers · start-up 14-15 s · weights 2.82-2.82 s · autotune none
+   profiles_multi_node_native/tp8_pp2_dist/prefill_128k/node1_capture       09-22 05:30 · 8 workers · start-up 13-14 s · weights 2.81-2.81 s · autotune none
+
+==================== stage1
+config (run records)
+   vLLM version label (records): {'0.29.0': 5}
+   packages in pip freeze (records listing each): {('flashinfer-python', '0.6.18'): 5, ('nvidia-cuda-nvcc', '13.4.92'): 5}
+   CUDA_HOME set in 5 of 5  ['/usr/local/cuda']
+   VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS set in 0 of 5
+   VLLM_MOE_BACKEND set in 0 of 5
+   VLLM_PP_LAYER_PARTITION set in 0 of 5
+   VLLM_DISABLE_PYNCCL set in 0 of 5
+   saved server commands: {'--no-enable-flashinfer-autotune': 3, 'commands': 5}
+   Ray workers audited: no audits
+C1 MoE backend start-up lines (logged once per node): none
+C2 logs with 'Running FlashInfer autotune': 0; with 'autotune because it is disabled': 0; backend line but neither (FlashInfer not usable): 0 of 0; skip list applied ('Skipping FlashInfer autotuning for ops'): in no saved log; autotune cache file named (rank 0): 0 logs
+C2b workers that ran the autotune step, per capture: all or none tuned the two GEMMs in 0 of 0 (the skip-list line itself is logged once per node)
+C3 operations tuned (logs naming each): none; read from a cache file ('Config cache hit'): none; no tuned config covers: none
+C4 autotuning per worker: no worker log with both autotuner marks
+C5 worker logs that reached the autotune step: 0; with nothing logged after it: 0; worker logs that start but end before 'Kernel JIT monitor activated': 0 of 0
+C6 start-up (server start -> ready) per layout in launch order; S = skip list in the run's environment; L = server log kept
+   TP4/PP1   10-05 21:08 410s (autotune level default) | 10-05 21:17 124s (autotune level default) | 10-06 00:38 124s (autotune off) | 10-06 00:44 116s (autotune off) | 10-06 00:49 122s (autotune off)
+   serving starts that became ready: 5; with a server log kept: 0
+C7 MoE kernels per call in each capture (Nsight, eager):
+C8 worker start-up phases per capture (worker logs with vLLM's init and JIT-monitor lines):
+
+==================== stage2
+config (run records)
+   vLLM version label (records): {'0.29.0': 10}
+   packages in pip freeze (records listing each): {('flashinfer-python', '0.6.18'): 10, ('nvidia-cuda-nvcc', '13.4.92'): 10}
+   CUDA_HOME set in 10 of 10  ['/usr/local/cuda']
+   VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS set in 0 of 10
+   VLLM_MOE_BACKEND set in 0 of 10
+   VLLM_PP_LAYER_PARTITION set in 2 of 10  ['15,12']
+   VLLM_DISABLE_PYNCCL set in 0 of 10
+   saved server commands: {'--no-enable-flashinfer-autotune': 19, 'commands': 19, '--enforce-eager': 9}
+   Ray workers audited: {'clean folder on the path': 34}
+C1 MoE backend start-up lines (logged once per node): {'FlashInfer CUTLASS': 9}
+C2 logs with 'Running FlashInfer autotune': 0; with 'autotune because it is disabled': 9; backend line but neither (FlashInfer not usable): 0 of 9; skip list applied ('Skipping FlashInfer autotuning for ops'): in no saved log; autotune cache file named (rank 0): 0 logs
+C2b workers that ran the autotune step, per capture: all or none tuned the two GEMMs in 0 of 0 (the skip-list line itself is logged once per node)
+C3 operations tuned (logs naming each): none; read from a cache file ('Config cache hit'): none; no tuned config covers: none
+C4 autotuning per worker: no worker log with both autotuner marks
+C5 worker logs that reached the autotune step: 0; with nothing logged after it: 0; worker logs that start but end before 'Kernel JIT monitor activated': 0 of 64
+C6 start-up (server start -> ready) per layout in launch order; S = skip list in the run's environment; L = server log kept
+   TP16/PP1  10-06 12:33 128s (autotune off)
+   TP4/PP1   10-06 11:20 124s (autotune off)
+   TP4/PP2   10-06 11:51 386s (autotune off) | 10-06 12:54 40s (autotune off) | 10-06 13:01 40s (autotune off)
+   TP4/PP4   10-06 12:24 42s (autotune off)
+   TP8/PP2   10-06 12:10 68s (autotune off) | 10-06 12:58 42s (autotune off) | 10-06 13:04 42s (autotune off)
+   serving starts that became ready: 9; with a server log kept: 0
+   never ready: TP4/PP1 10-06 11:17 ended after 184 s: RuntimeError('server exited rc=1') (stage2/01_fp8_kv_rerun/tp4_fp8_kv_fixed)
+C7 MoE kernels per call in each capture (Nsight, eager):
+   06_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k           [autotune off] fused MoE: 851.6 us/call (31616 calls, 1 variants) · MoE FC GEMM: 490.6 us/call (31616 calls, 1 variants)
+   GCP_CAPPED_100G/profiles/tp16_pp1_dist/prefill_128k            [autotune off] fused MoE: 623.4 us/call (11648 calls, 1 variants) · MoE FC GEMM: 354.7 us/call (11648 calls, 1 variants)
+   GCP_CAPPED_100G/profiles/tp4_pp2_dist/prefill_128k             [autotune off] fused MoE: 613.7 us/call (2912 calls, 1 variants) · MoE FC GEMM: 351.3 us/call (2912 calls, 1 variants)
+   GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k             [autotune off] fused MoE: 613.3 us/call (2912 calls, 1 variants) · MoE FC GEMM: 350.2 us/call (2912 calls, 1 variants)
+   GCP_CAPPED_100G/profiles/tp8_pp2_dist/prefill_128k             [autotune off] fused MoE: 614.5 us/call (5824 calls, 1 variants) · MoE FC GEMM: 350.6 us/call (5824 calls, 1 variants)
+   GCP_CAPPED_20G/profiles/tp16_pp1_dist/prefill_128k             [autotune off] fused MoE: 632.0 us/call (11648 calls, 1 variants) · MoE FC GEMM: 358.0 us/call (11648 calls, 1 variants)
+   GCP_CAPPED_20G/profiles/tp4_pp2_dist/prefill_128k              [autotune off] fused MoE: 621.8 us/call (2912 calls, 1 variants) · MoE FC GEMM: 354.1 us/call (2912 calls, 1 variants)
+   GCP_CAPPED_20G/profiles/tp4_pp4_dist/prefill_128k              [autotune off] fused MoE: 622.9 us/call (2912 calls, 1 variants) · MoE FC GEMM: 353.5 us/call (2912 calls, 1 variants)
+   GCP_CAPPED_20G/profiles/tp8_pp2_dist/prefill_128k              [autotune off] fused MoE: 626.1 us/call (5824 calls, 1 variants) · MoE FC GEMM: 355.0 us/call (5824 calls, 1 variants)
+SPLIT the same-session layer-split A/B: 15/12 against the default (requests; mean first token ms; mean token time ms)
+   tp4_pp2_split_eval   128k_c1  default n=4 2763.4 / 6.036 · 15/12 n=4 2847.9 / 5.965 · first token +3.06% · token time -1.18%
+   tp4_pp2_split_eval   512k_c1  default n=2 18437.0 / 8.426 · 15/12 n=2 18089.1 / 8.393 · first token -1.89% · token time -0.39%
+   tp8_pp2_split_eval   128k_c1  default n=4 3485.0 / 8.051 · 15/12 n=4 3291.1 / 8.036 · first token -5.56% · token time -0.19%
+   tp8_pp2_split_eval   512k_c1  default n=2 18479.0 / 10.387 · 15/12 n=2 17693.3 / 10.354 · first token -4.25% · token time -0.32%
+C8 worker start-up phases per capture (worker logs with vLLM's init and JIT-monitor lines):
+   06_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k/node1_capture       10-06 13:35 · 8 workers · start-up 19-20 s · weights 3.55-3.55 s · autotune none
+   GCP_CAPPED_100G/profiles/tp16_pp1_dist/prefill_128k/node1_capture        10-06 13:18 · 8 workers · start-up 15-16 s · weights 3.49-3.49 s · autotune none
+   GCP_CAPPED_100G/profiles/tp4_pp2_dist/prefill_128k/node1_capture         10-06 13:08 · 4 workers · start-up 13-14 s · weights 2.43-2.43 s · autotune none
+   GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture         10-06 13:14 · 8 workers · start-up 14-15 s · weights 1.93-1.93 s · autotune none
+   GCP_CAPPED_100G/profiles/tp8_pp2_dist/prefill_128k/node1_capture         10-06 13:11 · 8 workers · start-up 14-15 s · weights 2.35-2.35 s · autotune none
+   GCP_CAPPED_20G/profiles/tp16_pp1_dist/prefill_128k/node1_capture         10-06 13:31 · 8 workers · start-up 16-17 s · weights 3.52-3.52 s · autotune none
+   GCP_CAPPED_20G/profiles/tp4_pp2_dist/prefill_128k/node1_capture          10-06 13:22 · 4 workers · start-up 12-12 s · weights 2.46-2.46 s · autotune none
+   GCP_CAPPED_20G/profiles/tp4_pp4_dist/prefill_128k/node1_capture          10-06 13:28 · 8 workers · start-up 17-18 s · weights 1.67-1.67 s · autotune none
+   GCP_CAPPED_20G/profiles/tp8_pp2_dist/prefill_128k/node1_capture          10-06 13:24 · 8 workers · start-up 18-18 s · weights 2.87-2.87 s · autotune none
+
+==================== stage3
+config (run records)
+   vLLM version label (records): {'0.29.0': 11}
+   packages in pip freeze (records listing each): {('flashinfer-python', '0.6.18'): 11, ('nvidia-cuda-nvcc', '13.4.92'): 11}
+   CUDA_HOME set in 11 of 11  ['/usr/local/cuda']
+   VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS set in 6 of 11  ['trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2']
+   VLLM_MOE_BACKEND set in 11 of 11  ['triton']
+   VLLM_PP_LAYER_PARTITION set in 0 of 11
+   VLLM_DISABLE_PYNCCL set in 0 of 11
+   saved server commands: {'commands': 12, '--enforce-eager': 1}
+   Ray workers audited: {'no clean folder': 18}
+C1 MoE backend start-up lines (logged once per node): {'FlashInfer CUTLASS': 1}
+C2 logs with 'Running FlashInfer autotune': 8; with 'autotune because it is disabled': 0; backend line but neither (FlashInfer not usable): 0 of 1; skip list applied ('Skipping FlashInfer autotuning for ops'): in no saved log; autotune cache file named (rank 0): 0 logs
+C2b workers that ran the autotune step, per capture: all or none tuned the two GEMMs in 1 of 1 [8 of 8 tuned] (the skip-list line itself is logged once per node)
+C3 operations tuned (logs naming each): {'trtllm::fused_moe::gemm1': 8, 'trtllm::fused_moe::gemm2': 8}; read from a cache file ('Config cache hit'): none; no tuned config covers: none
+C4 autotuning per worker: 8 workers, 4.20-4.21 s (median 4.21)
+C5 worker logs that reached the autotune step: 8; with nothing logged after it: 0; worker logs that start but end before 'Kernel JIT monitor activated': 0 of 8
+C6 start-up (server start -> ready) per layout in launch order; S = skip list in the run's environment; L = server log kept
+   TP16/PP1  10-09 11:53 72s (autotune level default) | 10-09 13:05 58s S (autotune level default) | 10-09 13:17 56s S (autotune level default) | 10-09 13:35 62s S (autotune level default)
+   TP4/PP1   10-09 10:52 206s (autotune level default)
+   TP4/PP4   10-09 11:59 90s (autotune level default) | 10-09 13:14 48s S (autotune level default) | 10-09 13:31 46s S (autotune level default) | 10-09 13:51 50s S (autotune level default)
+   TP8/PP1   10-09 10:47 132s (autotune level default)
+   serving starts that became ready: 10; with a server log kept: 0
+   never ready: TP4/PP1 10-09 10:58 ended after 2013 s: RuntimeError('server exited rc=1') (stage3/04_r4_streaming_jitter/tp4_r4_streaming_itl_jitter)
+   starts with the skip list in the run's environment: TP16/PP1 capped_100g/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16; TP4/PP4 capped_100g/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4; TP16/PP1 capped_20g/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16; TP4/PP4 capped_20g/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4; TP16/PP1 impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16; TP4/PP4 impaired_005pct_loss/stage3_r3_network_jitter_pp4/stage3_r3_network_jitter_pp4
+C7 MoE kernels per call in each capture (Nsight, eager):
+   06_b6_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k        [autotune ran] fused MoE: 720.4 us/call (31824 calls, 6 variants) · MoE FC GEMM: 444.4 us/call (31408 calls, 8 variants)
+   stage3/01_b1_graphs_on_decode                                  [no autotune line] fused MoE: 18.7 us/call (53144 calls, 2 variants) · MoE FC GEMM: 10.7 us/call (53144 calls, 2 variants)
+C8 worker start-up phases per capture (worker logs with vLLM's init and JIT-monitor lines):
+   06_b6_tp16_512k_prefill/tp16_pp1_dist/long_prefill_512k/node1_capture    10-09 11:44 · 8 workers · start-up 272-275 s · weights 230.82-230.82 s · autotune 4.2-4.2 s
+
+==================== across sets
+C7 x  the same layout and prompt in several sets: CUTLASS captures whose autotune ran against those where it did not (us per call)
+   tp16_pp1_dist/long_prefill_512k: stage3 [autotune ran] against stage2 [autotune off]: fused MoE 720.4 against 851.6 (-15.4%); MoE FC GEMM 444.4 against 490.6 (-9.4%); per layer (both kernels) 1164.8 against 1342.2 (-13.2%)
+C7 x  Triton against untuned CUTLASS, same layout and prompt, per MoE layer (Triton calls its kernel twice per layer: gate-up and down); only pairs whose captures hold the same layers (Triton calls = 2 x CUTLASS calls)
+   tp4_pp2_dist/prefill_128k: pilot profiles/tp4_pp2_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_100G/profiles/tp4_pp2_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 756.3 against 965.1 us (+27.6% for CUTLASS)
+   tp4_pp2_dist/prefill_128k: pilot profiles/tp4_pp2_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_20G/profiles/tp4_pp2_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 756.3 against 975.8 us (+29.0% for CUTLASS)
+   tp4_pp2_dist/prefill_128k: pilot profiles_multi_node_native/tp4_pp2_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_100G/profiles/tp4_pp2_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 757.5 against 965.1 us (+27.4% for CUTLASS)
+   tp4_pp2_dist/prefill_128k: pilot profiles_multi_node_native/tp4_pp2_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_20G/profiles/tp4_pp2_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 757.5 against 975.8 us (+28.8% for CUTLASS)
+   tp4_pp4_dist/prefill_128k: pilot profiles/tp4_pp4_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 757.3 against 963.5 us (+27.2% for CUTLASS)
+   tp4_pp4_dist/prefill_128k: pilot profiles/tp4_pp4_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_20G/profiles/tp4_pp4_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 757.3 against 976.3 us (+28.9% for CUTLASS)
+   tp4_pp4_dist/prefill_128k: pilot profiles_multi_node_native/tp4_pp4_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 756.8 against 963.5 us (+27.3% for CUTLASS)
+   tp4_pp4_dist/prefill_128k: pilot profiles_multi_node_native/tp4_pp4_dist/prefill_128k [Triton] against stage2 GCP_CAPPED_20G/profiles/tp4_pp4_dist/prefill_128k [autotune off]: calls 5824 against 2912 (ratio 2.00); per layer 756.8 against 976.3 us (+29.0% for CUTLASS)
+   (7 pairs left out: their captures hold different numbers of layer calls)
+BUILD log messages two sets both print, and how many come from other source lines (a different build under the same version label):
+   pilot and stage2: 33 messages in both; 15 from other source lines, in 8 files
+   pilot and stage3: 28 messages in both; 14 from other source lines, in 7 files
+   stage2 and stage3: 31 messages in both; 0 from other source lines, in 0 files
+C6 x  first start of each layout against its later starts (s):
+   pilot     TP16/PP1  first 110 · later 48-52 (median 50, 2 starts)
+   pilot     TP4/PP1   first 192 · later 128-150 (median 138, 25 starts)
+   pilot     TP4/PP2   first 142 · later 44-48 (median 46, 2 starts)
+   pilot     TP4/PP4   first 44 · later 44-50 (median 47, 2 starts)
+   pilot     TP8/PP1   first 50 · later 44-44 (median 44, 2 starts)
+   pilot     TP8/PP2   first 46 · later 46-50 (median 48, 2 starts)
+   stage1    TP4/PP1   first 410 · later 116-124 (median 123, 4 starts)
+   stage2    TP16/PP1  first 128 · no later start
+   stage2    TP4/PP1   first 124 · no later start
+   stage2    TP4/PP2   first 386 · later 40-40 (median 40, 2 starts)
+   stage2    TP4/PP4   first 42 · no later start
+   stage2    TP8/PP2   first 68 · later 42-42 (median 42, 2 starts)
+   stage3    TP16/PP1  first 72 · later 56-62 (median 58, 3 starts, skip list on 3)
+   stage3    TP4/PP1   first 206 · no later start
+   stage3    TP4/PP4   first 90 · later 46-50 (median 48, 3 starts, skip list on 3)
+   stage3    TP8/PP1   first 132 · no later start

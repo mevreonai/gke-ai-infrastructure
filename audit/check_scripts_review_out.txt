@@ -1,0 +1,133 @@
+ok   setup_node_env.sh installs an unpinned vLLM (vllm>=0.6.3) beside torch 2.5.1 · lines [62] and [58]
+ok   the runbook gives the same unpinned install; the setup manual pins vllm==0.29.0 with other companions
+ok   step 00 records vLLM's version string on node 0 only (node 1: nvidia-smi and env)
+ok   the runners' environment record keeps `vllm --version` and pip freeze; its env filter leaves out LD_LIBRARY_PATH
+ok   vLLM 0.29.0 never reads VLLM_MOE_BACKEND · set at run_master_benchmark.sh:[251]
+ok   vLLM 0.29.0 never reads MOE_BACKEND · set at run_master_benchmark.sh:[252]
+ok   vLLM 0.29.0 never reads VLLM_FLASHINFER_AUTOTUNE · set at run_master_benchmark.sh:[253]
+ok   vLLM 0.29.0 does read VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS and VLLM_PP_LAYER_PARTITION
+ok   the runner library passes --moe-backend only if the help text lists it (silently skipped otherwise), default flashinfer_cutlass
+ok   the profile scripts launch `vllm serve` without --moe-backend (B1 decode, torch batched, two-server torch)
+ok   step 04 (TP8 pinning) launches `vllm serve` without --moe-backend
+ok   with the backend left at auto, vLLM 0.29.0 tries FlashInfer TRT-LLM, then FlashInfer CUTLASS, then Triton (Hopper excepted), so the pick depends on the FlashInfer installed; setup installs flashinfer-python unpinned
+ok   autotune: --enable-flashinfer-autotune exists in 0.29.0 and no script passes it; by default it follows the optimization level (off at O0, on at O1-O3; default O2)
+ok   VLLM_DISABLE_PYNCCL=1 is set (master, multi-node runner, RUN_CONFIG example) and turns vLLM's own NCCL communicator off · pynccl.py line 93: if self.world_size == 1 or envs.VLLM_DISABLE_PYNCCL:
+ok   the master exports VLLM_PP_LAYER_PARTITION=15,12 for every run unless set; the RUN_CONFIG example and the smoke test set 15,12; the cluster setup writes 7,7,7,6
+ok   vLLM 0.29.0's own get_pp_indices with 15,12: one-stage and four-stage servers raise ValueError, two-stage runs · len(partitions)=2 does not match pp_size=1.
+ok   and with 7,7,7,6 only four-stage servers start
+ok   the model builds its layers with make_layers, which calls get_pp_indices for every pipeline size
+ok   step 11's 'default' control run does not clear the partition, so it also runs 15,12
+ok   the master calls `pkill -9 -f vllm` inside its `bash -c` steps (2, 19, 20) and in the remote clean-ups · lines [425, 428, 435, 438, 446, 447, 454, 455, 462, 463, 918, 933]
+ok   14d's clean-up runs `pkill -9 -f "vllm"` and is called at start-up (its own path contains vllm)
+ok   experiment: a `bash -c` whose text holds the pattern is SIGKILLed by its own pkill -f · exit -9
+ok   experiment: the master's run_step under set -euo pipefail ends the whole run on the first failed step · exit 137
+ok   the remote interface lookup prints `$i+1` (the field plus one) in steps 10, 11 and 12; the local lookup prints `$(i+1)` · lines [657, 689, 724]
+ok   replayed on a typical `ip route get` line: node 1's interface comes out as 1, node 0's as ens3 · remote program {for(i=1;i<=NF;i++) if($i=="dev"){print $i+1; exit}} -> '1'
+ok   steps 10-12: all 18 tc commands silence their errors; no `tc -s qdisc show` and no iperf3 · 18 tc commands, 18 silenced
+ok   the suite's own network matrix does it right (node 1's interface by $(i+1), tc errors not silenced, iperf3 both ways validated); the master does not call it
+ok   step 12 sets the network-mode label but not the cap variable the multi-node runner records
+ok   the clean NCCL folder: the master makes it on node 0 only; node 1 gets it only from the init script when V5_FORCE_NCCL_SOCKET=1; the path is propagated
+ok   no script records the NCCL library each worker mapped or the NCCL version
+ok   the README lists NCCL_ALGO=Tree and NCCL_PROTO=Simple as enforced; the master unsets both; NCCL_CROSS_NIC=1 stays in the RUN_CONFIG example
+ok   the NCCL test sweeps socket-thread settings at a 16 KiB AllReduce and a 256 MiB SendRecv; no library-path arm
+ok   expert parallel: --enable-expert-parallel exists in 0.29.0; no script or case uses it
+ok   no Nsight Compute capture anywhere
+ok   master cases: arrival-rate runs only in the TP4/PP1 Poisson sweep
+ok   batching block 7 holds arrival-rate runs on all four two-server layouts · [(4, 2), (4, 4), (8, 2), (16, 1)]
+ok   the batching runner asks for the Ray backend (pp > 1 or tp > 8) but never forms a two-node Ray cluster
+ok   step 17 (batching) is skipped unless CB_BLOCKS, --cb-blocks or -cb is given
+ok   two-server load cases: TP4/PP2, TP8/PP2, TP4/PP4, TP16/PP1, each with 1K and 8K one at a time and 1K-1M up to 32 in flight
+ok   admission caps differ: two-server load cases max_num_seqs 16, one-server baselines 32 · {"tp4_pp2_dist_load": 16, "tp8_pp2_dist_load": 16, "tp4_pp4_dist_load": 16, "tp16_pp1_dist_load": 16, "tp8_pp1_baseline": 32, "tp4_pp1_baseline": 32}
+ok   two-server decode profiles are written for all four layouts: the Nsight ones add --enforce-eager, the torch ones (14d) keep graphs on
+ok   step 14 asks the Nsight profile script for mode 'decode', which matches no profile exactly (decode_8k, batched_decode_8k_c8)
+ok   repeats: only the knee case repeats a benchmark (three times each at 8K c16 and 128K c4)
+ok   the R2 case uses 1K-4K prefixes on TP4/PP1: no 1M first-repeat arms, no retention interval
+ok   the one-server runner starts one server per case and runs every benchmark on it; the drain barrier is defined but never called
+ok   warm-up and measured run share a seed for the first benchmark of every case (bi*10 against bi)
+ok   the smoke test's end-to-end check writes a mock result (no server) and its runner check is a dry run, in which run_step executes nothing
+ok   step 15 runs tools/compile_canonical_data.py and tools/run_v1_4_verification.py, which the folder does not hold
+ok   step 20 sets the minimal-telemetry case (8K) against the short-prompt case (1K/2K): different workloads
+ok   two master runners with different case files (scripts/ and 07_master_campaign_orchestration/)
+ok   the two-server serving runner brings back node 1's GPU telemetry only; the two-server profile script keeps Ray worker logs
+ok   warm-ups: 49 of 158 benchmarks have none, and every server's first measured run is warmed up except the offload case (128K first) and R2 (cold by design) · ['tp4_native_offload_reuse_test', 'tp4_r2_agentic_prefix_cache_decay']
+ok   the pause and stall screen runs over the whole campaign (step 16); it reads the per-request bench files, so it does not need the telemetry sampler
+ok   topology_matches is a master-shell function, never exported, and steps 2 and 14 call it inside their `bash -c` bodies · calls at [421, 430, 442, 450, 458, 822, 825, 841]
+ok   experiment: inside `bash -c` the unexported function is not found, the capture is skipped and the step exits 0 (marked done)
+ok   step 04 starts its server with `& local PID=$!` in a `bash -c` body, outside any function
+ok   experiment: `local` outside a function fails, PID stays empty, and the readiness loop's `kill -0` fails at once (step 04 exits 3)
+ok   step 03's NCCL test runs under `set -euo pipefail` and returns 1 when nccl-tests is not built, so the master stops there
+ok   the two-server group runner stops at its first failed case (`set -euo pipefail`, the Python runner raises), skipping later cases and its `ray stop`
+ok   the two-server runner re-reads RUN_CONFIG.env after taking the step's labels, and the example config sets them to native: every condition is recorded as native
+ok   the four scripts the master calls directly that read RUN_CONFIG.env re-read it themselves (two-server runner, both two-server profile drivers, the NCCL test), so the 15,12 split must also come out of the config, not only the master · {'04_scaleout_distributed_network/12_run_vllm_multi_node.sh': True, '06_deep_kernel_and_torch_profiling/14d_run_vllm_torch_profile_multi_node.sh': True, '06_deep_kernel_and_torch_profiling/18_run_vllm_multi_node_profiles.sh': True, '04_scaleout_distributed_network/23_run_nccl_socket_tuning.sh': True, 'run_continuous_batching.sh': True}
+ok   the cluster set-up caps both nodes at 20 Gbit/s by default (SKIP_20G=0) and never removes the cap
+ok   the suite's network matrix validates only the forward iperf3 run, has no loss mode, and runs every case (--all)
+ok   22_readiness.py already gates exact versions (vllm 0.29.0, torch 2.13.0, flashinfer-python 0.6.18, ray 2.58.0, triton 3.7.1, nvidia-nccl-cu13 2.29.7) and exits 2 on a mismatch; nothing calls it
+ok   the 0.29.0 wheel pins torch==2.13.0 and flashinfer-python==0.6.18 and needs transformers>=5.10.4, safetensors>=0.6.2; the setup manual pins transformers 4.44.2 and safetensors 0.4.4, so its recipe cannot install
+ok   two more install paths: the runbook adds FlashInfer from a torch-2.5 index, run_demo_setup.sh installs nightly torch and an unpinned vLLM; three venv paths
+ok   on these GPUs (SM120) auto skips FlashInfer TRT-LLM (SM100 family only) and takes FlashInfer CUTLASS when its fused-MoE kernel imports, else Triton
+ok   vLLM 0.29.0 warns 'Unknown vLLM environment variable detected' for VLLM_* names it does not know (a quick check in server.log)
+ok   the preflight network sweep already runs iperf3 both ways, SendRecv 16K-256M, cross-node AllReduce for TP2/TP8/TP16 from 16 KiB to 256 MiB, and records qdiscs on both nodes; the master does not call it
+ok   an unused 1M prefix case exists: 999,744-token prefix + 256 suffix, i.e. 576 tokens past the last whole block (the pilot's miss again); no whole-block arm, no retention arm; nothing runs the file
+ok   the RUN_CONFIG example sets CB_BLOCKS=all, so step 17 runs with the documented config
+ok   blocker 1 also stops the batching cases on one and four stages · 20 of 28 cases
+ok   the smoke test records PASSED on fallbacks (no GPUs, framework not loaded, tools missing, node 1 not reached)
+ok   with 15,12 only two-stage servers start: steps 1, 5, 6, 8, 9, 18, 19 and 20 use one-stage cases only; step 12's group is TP16/PP1 then TP4/PP4; step 10's group runs TP4/PP2, TP8/PP2, then TP4/PP4, which fails and stops the group before TP16/PP1; step 11 is PP2 only · {"1": [[4, 1]], "5": [[4, 1]], "6": [[4, 1], [8, 1]], "8": [[4, 1]], "9": [[4, 1]], "18": [[4, 1]], "20": [[4, 1]], "19": [[4, 1]]}
+ok   step 14's B1 decode and torch batched profiles are one-stage TP4 servers too (the scripts default TP to 4 and nothing clears the split)
+ok   step 1 is marked done even when both chunk servers fail: its `bash -c` body has no `set -e` and ends with the summarizer, which writes empty files and exits 0 when no case ran
+ok   experiment: a `bash -c` body without `set -e` reports only its last command's status · exit 0
+ok   resume is on by default and reuses the latest run id, a dry run marks every step it passes as done, and the profiles leave both alone; the README runs `--dry-run` first, so the real runs after it skip those steps
+ok   two helpers overwrite scripts/RUN_CONFIG.env with the 7,7,7,6 split, a 20G network label and a TP4/PP4-only topology selection; the master and five scripts read that file, and the master's defaults do not override it
+ok   the shared warm-up seed is harmless today: no case with prefix caching on warms up its first benchmark · []
+ok   the README promises a server restart between concurrency levels, which the runner does not do
+ok   the setup manual's ray 2.35.0 and triton 3.0.0 also disagree with the readiness gate (ray 2.58.0, triton 3.7.1)
+ok   batching blocks 1-4 (two long prompts, step budget, request cap, mixed traffic) go beyond TP4/PP1; block 7 runs 8K and 128K arrival rates
+ok   both helper-written configs also set NCCL_CROSS_NIC=1
+ok   the runner library's server builder adds --moe-backend (case value, then MOE_BACKEND, then VLLM_MOE_BACKEND); the two-server runner, the two-server Nsight profiles and the batching runner all build their servers with it
+ok   no Python file acts on VLLM_FLASHINFER_AUTOTUNE (only the SKIP_OPS variable is read)
+ok   in the zip as shared, no .sh file has an exec bit (made on a Unix-like system, so the modes are recorded) · 48 .sh files
+ok   the master calls the subfolder .sh scripts directly, not through bash (steps 2, 3, 10-14); the setup manual's chmod lines cover scripts/, 01/, 02/ and 07/, never 04/ or 06/, which hold every script the master calls directly · ['scripts', 'scripts/01_preflight_and_diagnostics', 'scripts/02_single_node_baseline_matrix', 'scripts/07_master_campaign_orchestration']
+ok   these master variables are plain assignments, never exported, yet steps 4, 12 and 20 use them escaped (`\$VAR`) inside `bash -c`, so the child sees them empty: TP8_DIR (step 4), NET_DIR, CASES_FILE and CAPPED_DIR (step 12), OBS_DIR (step 20) · {"TP8_DIR": [501, 526, 527, 538, 546, 547, 552], "NET_DIR": [730, 736, 743, 751], "CASES_FILE": [730, 736, 743, 751], "CAPPED_DIR": [730, 736, 743, 751, 759], "OBS_DIR": [939]}
+ok   experiment: a plain (unexported) variable is empty inside a child `bash -c` when escaped · []
+ok   so step 12 calls `/12_run_vllm_multi_node.sh` under every condition (not found) while still applying and removing caps on node 0, and ends with a report that exits 0: marked done with no case run
+ok   the main suite's single-node runner looks for 09_metrics_sampler.py beside itself, which its folder lacks, and sends the sampler's output to /dev/null: its runs record no samples, nothing fails, and only the summary's Metrics column says NOT_CAPTURED (the batching runner finds scripts/09_metrics_sampler.py)
+ok   the two-server profile driver sources 20_nccl_policy.sh from its own folder at line 7 under `set -euo pipefail`; that folder also lacks 20_ray_nccl_env_audit.py, 09_metrics_sampler.py and 10b_vllm_multi_node_cases.json
+ok   experiment: under `set -euo pipefail`, `source` of a missing file ends the script (so step 13, called directly, stops the run) · exit 1
+ok   batching block 4: every mixed-traffic stream lacks the `concurrency` field the bench builder reads, so all six cases raise KeyError before sending a request
+ok   the master parses --profile before it sources RUN_CONFIG.env, and the example resets the deep-profile switches to 0, so --profile deep-profile runs no step 18-20
+ok   the two-server profile driver re-reads the config (line 9) before defaulting RUN_HEAVY_PROFILE (line 17), and the example sets it to 0; step 13's only profile is a heavy one, so it would be filtered out
+ok   admission caps: the two-server load cases run up to 32 in flight with max_num_seqs 16 (so 16 queue); in the main case file the one-server cases run at 32 cap at 64, in the batching suite at 256; the 32-capped baselines are used by no step · main [64], batching [256]
+ok   warm-ups outside the main suite: 10 of the 28 batching servers (blocks 4 and 7) start cold, and the profile runs send no warm-up
+ok   the two-server torch profile (14d) is called for three layouts only (no TP4/PP2) · ['tp16_pp1_dist', 'tp4_pp4_dist', 'tp8_pp2_dist']
+ok   with VLLM_DISABLE_PYNCCL=1, vLLM's reduce-scatter still calls its own communicator, which returns without writing (uninitialised output, no error); its only user here would be the compile-time sequence-parallel pass, off for every model (IS_DENSE is the constant False)
+ok   data-parallel expert parallelism (the default all-gather/reduce-scatter all-to-all) and this model's own sequence parallelism (expert parallel with DP>1) dispatch through all_gatherv, which asserts the communicator is on: with pynccl disabled they stop on their first forward pass instead of computing garbage
+ok   with pynccl disabled: all-reduce, all-gather and send/receive fall back to torch.distributed; broadcast, all-gatherv and batched send/receive raise; reduce-scatter and reduce-scatterv go silent · {"all_reduce": "falls back", "all_gather": "falls back", "reduce_scatter": "silent", "reduce_scatterv": "silent", "send": "falls back", "recv": "falls back", "broadcast": "raises", "all_gatherv": "raises", "batch_isend_irecv": "raises"}
+ok   the pause screen treats any path containing 'profile' as a profiler capture and never counts its pauses; step 12 writes to step12_capped_profiles, so its runs would be skipped
+ok   the two-server runner records the split as 'default_14_13' whenever the variable is unset, but vLLM's own default for 27 layers is 14/13 only at PP2 (7,7,7,6 at PP4, one stage at PP1); vLLM logs an uneven default split at start-up · {"1": [27], "2": [14, 13], "4": [7, 7, 7, 6]}
+ok   the summarizer's rows carry neither the result folder nor the layer split, so step 11's two arms (same cases, two folders, one summary) come out as identically labelled pairs
+ok   v1.2 the skip list (FlashInfer's two CUTLASS MoE GEMMs) is set unconditionally in seven places, exported again for node 1 after the policy exports (two-server runner line 34), and injected by the single-node runner when unset (line 58); the comments say 'to prevent Triton MoE hang'
+ok   v1.2 the NCCL policy exports the skip list, the split and VLLM_DISABLE_PYNCCL to node 1 whenever they are set, empty included (20_nccl_policy.sh lines 75-79)
+ok   v1.2 the docs give the skip list as avoiding 'warmup hangs' (README_SETUP_AND_OPERATIONS.md line 1401) and a '45-minute JIT freeze' in Triton MoE warm-up (PIP_MASTER_RESULTS_AND_BENCHMARKS.md line 36), and 15,12 as '+27.58% TTFT' (line 1402)
+ok   v1.2 vLLM reads the skip list as comma-separated names: unset, it skips fp4_gemm only with the CuTe-DSL NVFP4 linear kernel; set but empty, it skips nothing (envs.py 1712-1723)
+ok   v1.2 vLLM runs FlashInfer autotune only when it is enabled, FlashInfer is usable and the GPU is SM90 or newer; otherwise it logs that it is disabled, or nothing (kernel_warmup.py 189-196)
+ok   v1.2 a set skip list replaces vLLM's own choice; vLLM logs 'Skipping FlashInfer autotuning for ops' and passes it to FlashInfer's autotune (kernel_warmup.py 231-247, 299-305, 332)
+ok   v1.2 the autotune cache: rank 0 names and reads the file, broadcasts it, every rank loads it before tuning, rank 0 saves it after (kernel_warmup.py 307-341); the file is VLLM_FLASHINFER_AUTOTUNE_CACHE_DIR or the vLLM cache folder's flashinfer_autotune_cache, under a hash of the compile key (flashinfer_autotune_cache.py 19-41), which leaves out both autotune variables (envs.py 2257-2302)
+ok   v1.2 vLLM counts FlashInfer as usable only with the flashinfer-cubin package or nvcc on PATH (flashinfer.py 68-83)
+ok   v1.2 the oracle moves both FlashInfer MoE kernels back on Hopper (unquantized.py 75-79) and CUTLASS also when data parallelism is above 1 (84-85); an explicit --moe-backend that cannot run stops the start with ValueError instead of falling back (271-297); the start-up line reads 'Using <backend> Unquantized MoE backend' (251-256)
+ok   v1.2 FlashInfer CUTLASS MoE runs only on SM90, SM100 or SM120 with FlashInfer usable (flashinfer_cutlass_moe.py 129-140, flashinfer.py 283-289 and 355-372); otherwise the oracle's support check fails, which with an explicit --moe-backend stops the start
+ok   v1.2 vLLM copies every registered vLLM variable that is set on node 0 to all Ray workers and logs each overwrite; a variable unset on node 0 is not copied, so a worker keeps its own value (ray_executor.py 326-343, ray_env.py 88-98, system_utils.py 34-44)
+ok   v1.2 FlashInfer 0.6.18: trtllm::fused_moe::gemm1 and gemm2 are the two GEMMs its CUTLASS fused MoE tunes (fused_moe/core.py 891, 960-988)
+ok   v1.2 FlashInfer: a skipped operation is not profiled and gets the heuristic fallback tactic, and the skip applies only inside the tuning context (autotuner.py 1609-1621, 938-944, 988-992)
+ok   v1.2 FlashInfer: tuned results loaded from the cache file are used in serving and logged as 'Config cache hit', and tuning checks the cache before profiling (autotuner.py 1430-1491, 1737-1744)
+ok   v1.2 FlashInfer: every rank must tune the same operations against the same starting cache, since each tactic's time is all-reduced across ranks; a skip list that differs between ranks deadlocks the reduction (autotuner.py 1066-1072, 2187-2201); it logs 'Autotuning process starts' and 'ends' (972, 995)
+ok   v1.2 FlashInfer builds its SM120 CUTLASS MoE module with nvcc on first use, unless a prebuilt copy loads, and keeps it in ~/.cache/flashinfer/<version>/<arch>/cached_ops (jit/core.py 300-321, jit/env.py 62 and 161-162, jit/fused_moe.py 63)
+ok   v1.2 the split elsewhere: the 20-minute script writes 7,7,7,6 (line 104), 07's example sets 15,12 (line 30), and the smoke test reports 'PP_SPLIT=15,12' as PASSED without testing the variable (lines 149-155); the two-server runner passes a set split to node 1 (lines 70-71)
+ok   v1.2 VLLM_DISABLE_PYNCCL=1 is also set by both helpers (cluster set-up line 142, 20-minute script line 101), 07's example (line 31), the two-server runner for node 0 (line 23) and again for node 1 (line 34), so leaving it unset on node 0 alone would leave node 1's workers with 1
+ok   v1.2 vLLM's info_once lines (the backend line, 'autotune because it is disabled', the skip-list line) log once per node: the default scope is 'local', the node's first rank (logger.py 102-105 and 127-134, parallel_state.py 2437-2445); 'Running FlashInfer autotune' is a plain info line on every rank
+ok   v1.2 start-up order: the memory profiling run (the model's first forward) comes before the kernel warm-up that runs autotune (engine core.py 308, 343, 345; gpu_worker.py 513-557, 750-784)
+ok   v1.2 FlashInfer builds the SM120 CUTLASS MoE module on the first call (fused_moe/core.py 585-598) and pipes the build output unless verbose, so the build logs nothing (jit/cpp_ext.py 353-377)
+ok   v1.2 without nvcc on PATH, vLLM counts FlashInfer as usable only with the flashinfer-cubin package or VLLM_HAS_FLASHINFER_CUBIN=1 (flashinfer.py 56-64); FlashInfer's prebuilt modules come from the flashinfer-jit-cache package (jit/env.py 113-145)
+ok   v1.2 the oracle's other demotions do not apply here: FlashInfer kernels go back for the SWIGLUOAI activation (unquantized.py 87-93), LoRA takes its own path (222-236); this model's activation is SiLU (model provenance file)
+ok   v1.2 full-attention layers per pipeline stage, from the model provenance file in 01_preflight_and_diagnostics (27 layers; full attention at 4, 8, 12, 16, 20, 24 and 27, counted from 1): 3/4 at 14/13, 3/4 at 15/12, 1/2/2/2 at 7/7/7/6 · {"14/13": [3, 4], "15/12": [3, 4], "7/7/7/6": [1, 2, 2, 2]}
+ok   v1.2 vLLM logs 'Hidden layers were unevenly partitioned' only for its own default and only when uneven, so a set split leaves no line (utils.py 143-167)
+ok   v1.2 the two helpers write their settings into RUN_CONFIG.env through an unquoted heredoc (cluster set-up 124-155, 20-minute script 91-115), so a ${...} there expands when the helper runs
+132 of 132

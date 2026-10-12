@@ -37,6 +37,8 @@ def manifest_for(path, root):
 def is_profile(rel):
     """A profiler capture: its path names a profile, or the bench ran as the workload of a capture."""
     rl = rel.lower().replace("\\", "/")
+    if "step12_capped_profiles" in rl or "capped_profiles" in rl or "network_resilience" in rl:
+        return False
     return "profile" in rl or "/workload/" in rl
 
 

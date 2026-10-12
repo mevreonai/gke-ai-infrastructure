@@ -137,18 +137,16 @@ export CUDA_DEVICE_ORDER="PCI_BUS_ID"
 export VLLM_MOE_BACKEND="flashinfer_cutlass"
 export MOE_BACKEND="flashinfer_cutlass"
 export VLLM_FLASHINFER_AUTOTUNE="1"
-export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
-export VLLM_PP_LAYER_PARTITION="7,7,7,6"
-export VLLM_DISABLE_PYNCCL="1"
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="\${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
+unset VLLM_PP_LAYER_PARTITION VLLM_DISABLE_PYNCCL || true
 
 # Network Transport & Provenance
 export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:\${LD_LIBRARY_PATH:-}"
 export NCCL_SOCKET_IFNAME="ens3"
 export GLOO_SOCKET_IFNAME="ens3"
 export NCCL_NET="Socket"
-export NCCL_CROSS_NIC="1"
+unset NCCL_CROSS_NIC NCCL_ALGO NCCL_PROTO || true
 export NCCL_BUFFSIZE="4194304"
-unset NCCL_ALGO NCCL_PROTO || true
 export V8_VLLM_NETWORK_CAP_GBPS="$([[ "$SKIP_20G" == 1 ]] && echo '0' || echo '20')"
 export NETWORK_BANDWIDTH_SELECTION="$([[ "$SKIP_20G" == 1 ]] && echo 'native' || echo '20g')"
 export TOPOLOGY_SELECTION="tp4_pp4"
@@ -192,4 +190,8 @@ if [[ "$RUN_BENCHMARK" == 1 ]]; then
     --bandwidth "$([[ "$SKIP_20G" == 1 ]] && echo 'native' || echo '20g')" \
     --contexts all \
     --concurrencies all
+else
+  # Ensure rate limits on both nodes are cleaned up so cluster remains native
+  sudo -n tc qdisc del dev ens3 root 2>/dev/null || true
+  ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
 fi

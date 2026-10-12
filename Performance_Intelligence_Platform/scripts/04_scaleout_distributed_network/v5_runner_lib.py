@@ -169,6 +169,8 @@ def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False
     moe_backend = case.get("moe_backend") or os.environ.get("MOE_BACKEND") or os.environ.get("VLLM_MOE_BACKEND", "flashinfer_cutlass")
     if moe_backend:
         add_if_supported(cmd, serve_help, "--moe-backend", str(moe_backend))
+    if "--enable-flashinfer-autotune" in serve_help:
+        cmd += ["--enable-flashinfer-autotune"]
 
     if case.get("prefix_caching",False):
         require_flag(serve_help,"--enable-prefix-caching","vllm serve"); cmd += ["--enable-prefix-caching"]
@@ -215,7 +217,8 @@ def build_bench_cmd(vllm, bench_help, model, port, b, outdir, result_file, seed,
                 "--prefix-repetition-num-prefixes",str(b.get("num_prefixes",1)),"--prefix-repetition-output-len",str(b["output"])]
     else:
         cmd += ["--random-input-len",str(b["input"]),"--random-output-len",str(b["output"]),"--random-range-ratio","0"]
-    cmd += ["--num-prompts",str(b["prompts"]),"--max-concurrency",str(b["concurrency"]),"--ignore-eos","--num-warmups","0",
+    concurrency_val = b.get("concurrency") if b.get("concurrency") is not None else (b.get("max_concurrency") if b.get("max_concurrency") is not None else 1)
+    cmd += ["--num-prompts",str(b["prompts"]),"--max-concurrency",str(concurrency_val),"--ignore-eos","--num-warmups","0",
             "--percentile-metrics","ttft,tpot,itl,e2el","--metric-percentiles","50,95,99,100","--seed",str(seed)]
     if b.get("request_rate") is not None:
         require_flag(bench_help,"--request-rate","vllm bench serve"); cmd += ["--request-rate",str(b["request_rate"])]
@@ -270,7 +273,7 @@ def drain_vram_barrier(timeout=15):
     t0 = time.time()
     # 1. SIGKILL all vllm processes
     try:
-        subprocess.run(["pkill", "-9", "-f", "vllm"], capture_output=True, timeout=10)
+        subprocess.run(["pkill", "-9", "-f", "vllm.entrypoints|vllm serve"], capture_output=True, timeout=10)
     except Exception:
         pass
     # 2. Wait for GPU memory release
@@ -298,6 +301,23 @@ def parse_result(path:Path):
     if not path.exists(): return {}
     try: return json.loads(path.read_text())
     except Exception: return {}
+
+def is_benchmark_success(result: dict, b: dict, exit_code: int) -> bool:
+    """Verifies that benchmark truly completed without request failures or drops."""
+    if exit_code != 0:
+        return False
+    if not isinstance(result, dict) or not result:
+        return False
+    failed = result.get("failed", 0)
+    if failed is not None and failed > 0:
+        return False
+    completed = result.get("completed")
+    if completed is not None and completed == 0:
+        return False
+    num_prompts = b.get("prompts") or b.get("num_prompts")
+    if num_prompts is not None and completed is not None and completed < int(num_prompts):
+        return False
+    return True
 
 def quick_metrics(path:Path):
     peak_kv=None; pre0=None; pre1=None; samples=0

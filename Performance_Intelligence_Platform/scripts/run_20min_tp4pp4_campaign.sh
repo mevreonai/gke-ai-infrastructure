@@ -98,17 +98,15 @@ export REVISION="e1df551a447157d4658b573f9a695d57658590e9"
 export CUDA_DEVICE_ORDER="PCI_BUS_ID"
 export VLLM_MOE_BACKEND="flashinfer_cutlass"
 export MOE_BACKEND="flashinfer_cutlass"
-export VLLM_DISABLE_PYNCCL="1"
 export VLLM_FLASHINFER_AUTOTUNE="1"
-export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
-export VLLM_PP_LAYER_PARTITION="7,7,7,6"
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="\${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
+unset VLLM_PP_LAYER_PARTITION VLLM_DISABLE_PYNCCL || true
 export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:\${LD_LIBRARY_PATH:-}"
 export NCCL_SOCKET_IFNAME="ens3"
 export GLOO_SOCKET_IFNAME="ens3"
 export NCCL_NET="Socket"
-export NCCL_CROSS_NIC="1"
+unset NCCL_CROSS_NIC NCCL_ALGO NCCL_PROTO || true
 export NCCL_BUFFSIZE="4194304"
-unset NCCL_ALGO NCCL_PROTO || true
 export V8_VLLM_NETWORK_CAP_GBPS="20"
 export NETWORK_BANDWIDTH_SELECTION="20g"
 export TOPOLOGY_SELECTION="tp4_pp4"
@@ -127,8 +125,8 @@ echo "==========================================================================
 # Pre-flight cleanup
 echo "    Purging any lingering Ray / vLLM workers across cluster..."
 ray stop -f 2>/dev/null || true
-ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "ray stop -f 2>/dev/null || true; pkill -9 -f 'vllm' 2>/dev/null || true" 2>/dev/null || true
-pkill -9 -f 'vllm' 2>/dev/null || true
+ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "ray stop -f 2>/dev/null || true; pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true" 2>/dev/null || true
+pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true
 sleep 3
 
 START_TIME=$(date +%s)

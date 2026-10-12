@@ -129,7 +129,25 @@ def main():
 
         server_proc = None
         metrics_proc = None
+        is_dist = (case.get("pp", 1) > 1 or case.get("tp", 1) > 8)
+        node1_ip = os.environ.get("NODE1_IP")
+        node0_ip = os.environ.get("NODE0_IP", "127.0.0.1")
+        ssh_key = os.environ.get("SSH_KEY", str(Path.home() / ".ssh" / "google_compute_engine"))
         try:
+            if is_dist and node1_ip:
+                print(f"  Forming dual-node Ray cluster for distributed case {case['name']} (TP={case['tp']}, PP={case.get('pp', 1)})...")
+                subprocess.run(["ray", "stop", "-f"], capture_output=True)
+                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip, "ray stop -f"], capture_output=True)
+                time.sleep(2)
+                gpus_per_node = case.get("ray_gpus_per_node", 8)
+                gpu_list = ",".join(str(i) for i in range(gpus_per_node))
+                h_env = os.environ.copy()
+                h_env["CUDA_VISIBLE_DEVICES"] = gpu_list
+                subprocess.run(["ray", "start", "--head", f"--node-ip-address={node0_ip}", "--port=6379", f"--num-gpus={gpus_per_node}"], env=h_env, check=True)
+                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip,
+                                f"source $HOME/vllm_env/bin/activate 2>/dev/null || true; CUDA_VISIBLE_DEVICES='{gpu_list}' ray start --address='{node0_ip}:6379' --num-gpus={gpus_per_node}"], check=True)
+                time.sleep(5)
+
             case_rec["server_start"] = time.time()
             server_proc = start_server_with_timestamp_logging(server_cmd, cdir / "server.log", os.environ.copy())
             models = wait_ready(f"http://127.0.0.1:{args.port}", server_proc, args.startup_timeout)
@@ -160,7 +178,12 @@ def main():
                     # Run mixed traffic analysis
                     mt_script = str(Path(__file__).with_name("pip_mixed_traffic.py"))
                     subprocess.call([py, mt_script, "--short", str(bdir / "short_stream.json"), "--long", str(bdir / "long_stream.json"), "--json", str(bdir / "mixed_analysis.json")])
-                    case_rec["benchmarks"].append({**b, "status": "COMPLETED", "clock_wall": s_wall, "clock_mono": s_mono})
+                    s_res = parse_result(bdir / "short_stream.json")
+                    l_res = parse_result(bdir / "long_stream.json")
+                    mt_ok = (p_short.returncode == 0 and p_long.returncode == 0 and
+                             is_benchmark_success(s_res, b["short_stream"], p_short.returncode) and
+                             is_benchmark_success(l_res, b["long_stream"], p_long.returncode))
+                    case_rec["benchmarks"].append({**b, "status": "COMPLETED" if mt_ok else "FAILED", "clock_wall": s_wall, "clock_mono": s_mono})
                     continue
 
                 # Standard single-stream benchmark execution
@@ -190,10 +213,11 @@ def main():
                 package_run_evidence(cdir, bdir, b["name"])
                 res_path = bdir / result_file
                 result_data = parse_result(res_path)
+                bench_ok = (rc == 0) and is_benchmark_success(result_data, b, rc)
                 
                 brec = {
                     **b,
-                    "status": "COMPLETED" if rc == 0 else "FAILED",
+                    "status": "COMPLETED" if bench_ok else "FAILED",
                     "exit_code": rc,
                     "start": t0,
                     "end": t1,
@@ -213,6 +237,9 @@ def main():
             case_rec["server_end"] = time.time()
             if metrics_proc: stop_proc(metrics_proc)
             kill_process_group(server_proc)
+            if is_dist and node1_ip:
+                subprocess.run(["ray", "stop", "-f"], capture_output=True)
+                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip, "ray stop -f"], capture_output=True)
             (cdir / "case_manifest.json").write_text(json.dumps(case_rec, indent=2))
             top_manifest["cases"].append(case_rec)
 

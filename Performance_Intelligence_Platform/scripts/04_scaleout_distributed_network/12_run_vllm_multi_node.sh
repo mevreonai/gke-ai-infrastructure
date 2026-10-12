@@ -18,9 +18,8 @@ if [[ -n "$V8_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK_PROVE
 mkdir -p "$OUT_ROOT"
 source "$VENV_DIR/bin/activate"
 
-# Export FlashInfer autotune skips to prevent Triton MoE hang
-export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
-export VLLM_DISABLE_PYNCCL="1"
+# Export FlashInfer autotune skips to prevent Triton MoE hang (empty value skips nothing)
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
 
 # Preserve cross-node Socket-network workaround, protect local P2P/SHM within each node
 nccl_multi_node_v6_aligned_env
@@ -31,7 +30,7 @@ if [[ -z "${NCCL_SOCKET_IFNAME:-}" ]]; then
   export NCCL_SOCKET_IFNAME="=$_local_if"
 fi
 nccl_capture_env "$OUT_ROOT/NCCL_ENV_BEFORE_MULTI_NODE.txt"
-REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports) export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS=\"trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2\"; export VLLM_DISABLE_PYNCCL=\"1\";"
+REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports)"
 
 SELECT_MODE="qualification"
 if [[ ${1:-} == "--all" ]]; then SELECT_MODE="all"; shift; fi
@@ -54,6 +53,14 @@ PY
 # Ensure the remote worker has the exact metrics sampler used by this bundle.
 scp -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$SCRIPT_DIR/09_metrics_sampler.py" "$NODE1_IP:/tmp/v5_metrics_sampler.py"
 
+stop_ray_both() {
+  ray stop -f >/dev/null 2>&1 || true
+  ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; ray stop -f >/dev/null 2>&1 || true" || true
+}
+trap stop_ray_both EXIT INT TERM
+
+FAILED_CASES=()
+
 for row in "${CASE_ROWS[@]}"; do
   IFS='|' read -r CASE GPUS <<<"$row"
   echo "==== CASE=$CASE ray_gpus_per_node=$GPUS ===="
@@ -62,8 +69,7 @@ print(','.join(str(i) for i in range(int('$GPUS'))))
 PY
 )
   # Stop Ray cleanly and allow port 6379 to clear TIME_WAIT
-  ray stop -f || true
-  ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; ray stop -f || true"
+  stop_ray_both
   sleep 4
 
   PP_EXPORT=""
@@ -83,10 +89,21 @@ PY
     > "$OUT_ROOT/${CASE}_NCCL_ENV_NODE1_SHELL_BEFORE_RAY_WORKERS.txt"
   python3 "$SCRIPT_DIR/20_ray_nccl_env_audit.py" --out "$OUT_ROOT/${CASE}_RAY_NCCL_ENV_AUDIT.json" --expected-nodes 2
   export CUDA_VISIBLE_DEVICES="$GPU_LIST"
-  python3 "$SCRIPT_DIR/12_run_vllm_multi_node.py" --cases "$CASES_FILE" --out "$OUT_ROOT/$CASE" --case "$CASE" --node1-ip "$NODE1_IP" --ssh-key "$SSH_KEY"
 
-  ray stop -f || true
-  ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null "$NODE1_IP" "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; ray stop -f || true"
+  set +e
+  python3 "$SCRIPT_DIR/12_run_vllm_multi_node.py" --cases "$CASES_FILE" --out "$OUT_ROOT/$CASE" --case "$CASE" --node1-ip "$NODE1_IP" --ssh-key "$SSH_KEY"
+  CASE_RC=$?
+  set -e
+  if [[ $CASE_RC -ne 0 ]]; then
+    echo "WARNING: Multi-node case $CASE failed with rc=$CASE_RC; recording failure and continuing..."
+    FAILED_CASES+=("$CASE")
+  fi
+
+  stop_ray_both
 done
 
 echo "Multi-node results: $OUT_ROOT"
+if [[ ${#FAILED_CASES[@]} -gt 0 ]]; then
+  echo "ERROR: Failed multi-node cases: ${FAILED_CASES[*]}" >&2
+  exit 1
+fi

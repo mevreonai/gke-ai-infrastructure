@@ -6,6 +6,13 @@
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
+if [[ -f "$SCRIPT_DIR/20_nccl_policy.sh" ]]; then
+  source "$SCRIPT_DIR/20_nccl_policy.sh"
+  nccl_multi_node_v6_aligned_env
+  REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports)"
+else
+  REMOTE_V6_ENV=""
+fi
 
 : "${MODEL:=moonshotai/Kimi-Linear-48B-A3B-Instruct}"
 : "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
@@ -52,9 +59,9 @@ PYG
 stop_ray_both(){
   echo "Terminating Ray and vLLM processes on Node 0 and Node 1 for cold cache isolation..."
   kill "${SERVER_PID:-}" 2>/dev/null || true
-  pkill -9 -f "vllm" 2>/dev/null || true
+  pkill -9 -f "vllm.entrypoints|vllm serve|ray::RayWorkerProc" 2>/dev/null || true
   ray stop -f >/dev/null 2>&1 || true
-  "${SSH[@]}" "$NODE1_IP" "pkill -9 -f 'vllm' 2>/dev/null || true; source '$VENV_DIR/bin/activate' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true" || true
+  "${SSH[@]}" "$NODE1_IP" "$REMOTE_V6_ENV pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; source '$VENV_DIR/bin/activate' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true" || true
   sleep 3
   for _ in $(seq 1 30); do
     used_vram=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)
@@ -76,7 +83,7 @@ echo "Starting Ray head on node0 ($NODE0_IP) with $GPUS GPUs..."
 CUDA_VISIBLE_DEVICES="$GPU_LIST" ray start --head --node-ip-address="$NODE0_IP" --port=6379 --num-gpus="$GPUS" > "$PROFILE_ROOT/ray_start_node0.log" 2>&1
 
 echo "Starting Ray worker on node1 ($NODE1_IP) with $GPUS GPUs..."
-"${SSH[@]}" "$NODE1_IP" "source '$VENV_DIR/bin/activate'; CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --address='$NODE0_IP:6379' --num-gpus='$GPUS'" > "$PROFILE_ROOT/ray_start_node1.log" 2>&1
+"${SSH[@]}" "$NODE1_IP" "$REMOTE_V6_ENV source '$VENV_DIR/bin/activate'; CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --address='$NODE0_IP:6379' --num-gpus='$GPUS'" > "$PROFILE_ROOT/ray_start_node1.log" 2>&1
 sleep 6
 
 ray status > "$PROFILE_ROOT/ray_status.log" 2>&1 || { echo "Ray status failed"; exit 3; }

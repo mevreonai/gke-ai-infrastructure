@@ -30,8 +30,22 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "1m_c2", "input": 1048576, "output": 256, "concurrency": 2, "prompts": 2, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 4}
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 4
+        }
       ]
     },
     {
@@ -44,8 +58,22 @@
       "long_prefill_token_threshold": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "1m_c2", "input": 1048576, "output": 256, "concurrency": 2, "prompts": 2, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 4}
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 4
+        }
       ]
     },
     {
@@ -57,8 +85,22 @@
       "max_num_batched_tokens": 16384,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "1m_c2", "input": 1048576, "output": 256, "concurrency": 2, "prompts": 2, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 4}
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 4
+        }
       ]
     },
     {
@@ -71,8 +113,22 @@
       "long_prefill_token_threshold": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "1m_c2", "input": 1048576, "output": 256, "concurrency": 2, "prompts": 2, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 4}
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 4
+        }
       ]
     },
     {
@@ -85,8 +141,22 @@
       "long_prefill_token_threshold": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "1m_c2", "input": 1048576, "output": 256, "concurrency": 2, "prompts": 2, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 4}
+        {
+          "name": "1m_c2",
+          "input": 1000000,
+          "output": 256,
+          "concurrency": 2,
+          "prompts": 2,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 4
+        }
       ]
     },
     {
@@ -98,10 +168,38 @@
       "max_num_batched_tokens": 4096,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 4},
-        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 8, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -113,10 +211,38 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 4},
-        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 8, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -128,10 +254,38 @@
       "max_num_batched_tokens": 16384,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 4},
-        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 8, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -143,10 +297,38 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 4},
-        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 8, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -158,10 +340,38 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 4},
-        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 8, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -173,10 +383,38 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_c8", "input": 8192, "output": 256, "concurrency": 8, "prompts": 16, "warmups": 4},
-        {"name": "8k_c32", "input": 8192, "output": 256, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c4", "input": 131072, "output": 256, "concurrency": 4, "prompts": 8, "warmups": 2},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c8",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_c32",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c4",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 4,
+          "prompts": 8,
+          "warmups": 2
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -188,8 +426,22 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 16,
       "benchmarks": [
-        {"name": "1k_c64", "input": 1024, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8},
-        {"name": "8k_c64", "input": 8192, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8}
+        {
+          "name": "1k_c64",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        },
+        {
+          "name": "8k_c64",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        }
       ]
     },
     {
@@ -201,8 +453,22 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 32,
       "benchmarks": [
-        {"name": "1k_c64", "input": 1024, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8},
-        {"name": "8k_c64", "input": 8192, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8}
+        {
+          "name": "1k_c64",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        },
+        {
+          "name": "8k_c64",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        }
       ]
     },
     {
@@ -214,8 +480,22 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "benchmarks": [
-        {"name": "1k_c64", "input": 1024, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8},
-        {"name": "8k_c64", "input": 8192, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8}
+        {
+          "name": "1k_c64",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        },
+        {
+          "name": "8k_c64",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        }
       ]
     },
     {
@@ -227,8 +507,22 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "benchmarks": [
-        {"name": "1k_c64", "input": 1024, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8},
-        {"name": "8k_c64", "input": 8192, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8}
+        {
+          "name": "1k_c64",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        },
+        {
+          "name": "8k_c64",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        }
       ]
     },
     {
@@ -240,8 +534,22 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "benchmarks": [
-        {"name": "1k_c64", "input": 1024, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8},
-        {"name": "8k_c64", "input": 8192, "output": 256, "concurrency": 64, "prompts": 64, "warmups": 8}
+        {
+          "name": "1k_c64",
+          "input": 1024,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        },
+        {
+          "name": "8k_c64",
+          "input": 8192,
+          "output": 256,
+          "concurrency": 64,
+          "prompts": 64,
+          "warmups": 8
+        }
       ]
     },
     {
@@ -256,8 +564,20 @@
       "benchmarks": [
         {
           "name": "mixed_short_and_long",
-          "short_stream": {"input": 1024, "output": 128, "request_rate": 2.0, "prompts": 100},
-          "long_stream": {"input": 131072, "output": 256, "request_rate": 0.06, "prompts": 20}
+          "short_stream": {
+            "input": 1024,
+            "output": 128,
+            "request_rate": 2.0,
+            "prompts": 100,
+            "concurrency": 4
+          },
+          "long_stream": {
+            "input": 131072,
+            "output": 256,
+            "request_rate": 0.06,
+            "prompts": 20,
+            "concurrency": 1
+          }
         }
       ]
     },
@@ -274,8 +594,20 @@
       "benchmarks": [
         {
           "name": "mixed_short_and_long",
-          "short_stream": {"input": 1024, "output": 128, "request_rate": 2.0, "prompts": 100},
-          "long_stream": {"input": 131072, "output": 256, "request_rate": 0.06, "prompts": 20}
+          "short_stream": {
+            "input": 1024,
+            "output": 128,
+            "request_rate": 2.0,
+            "prompts": 100,
+            "concurrency": 4
+          },
+          "long_stream": {
+            "input": 131072,
+            "output": 256,
+            "request_rate": 0.06,
+            "prompts": 20,
+            "concurrency": 1
+          }
         }
       ]
     },
@@ -291,8 +623,20 @@
       "benchmarks": [
         {
           "name": "mixed_short_and_long",
-          "short_stream": {"input": 1024, "output": 128, "request_rate": 4.0, "prompts": 150},
-          "long_stream": {"input": 131072, "output": 256, "request_rate": 0.12, "prompts": 30}
+          "short_stream": {
+            "input": 1024,
+            "output": 128,
+            "request_rate": 4.0,
+            "prompts": 150,
+            "concurrency": 4
+          },
+          "long_stream": {
+            "input": 131072,
+            "output": 256,
+            "request_rate": 0.12,
+            "prompts": 30,
+            "concurrency": 1
+          }
         }
       ]
     },
@@ -308,8 +652,20 @@
       "benchmarks": [
         {
           "name": "mixed_short_and_long",
-          "short_stream": {"input": 1024, "output": 128, "request_rate": 3.0, "prompts": 120},
-          "long_stream": {"input": 131072, "output": 256, "request_rate": 0.08, "prompts": 24}
+          "short_stream": {
+            "input": 1024,
+            "output": 128,
+            "request_rate": 3.0,
+            "prompts": 120,
+            "concurrency": 4
+          },
+          "long_stream": {
+            "input": 131072,
+            "output": 256,
+            "request_rate": 0.08,
+            "prompts": 24,
+            "concurrency": 1
+          }
         }
       ]
     },
@@ -325,8 +681,20 @@
       "benchmarks": [
         {
           "name": "mixed_short_and_long",
-          "short_stream": {"input": 1024, "output": 128, "request_rate": 3.0, "prompts": 120},
-          "long_stream": {"input": 131072, "output": 256, "request_rate": 0.08, "prompts": 24}
+          "short_stream": {
+            "input": 1024,
+            "output": 128,
+            "request_rate": 3.0,
+            "prompts": 120,
+            "concurrency": 4
+          },
+          "long_stream": {
+            "input": 131072,
+            "output": 256,
+            "request_rate": 0.08,
+            "prompts": 24,
+            "concurrency": 1
+          }
         }
       ]
     },
@@ -342,8 +710,20 @@
       "benchmarks": [
         {
           "name": "mixed_short_and_long",
-          "short_stream": {"input": 1024, "output": 128, "request_rate": 2.5, "prompts": 100},
-          "long_stream": {"input": 131072, "output": 256, "request_rate": 0.07, "prompts": 20}
+          "short_stream": {
+            "input": 1024,
+            "output": 128,
+            "request_rate": 2.5,
+            "prompts": 100,
+            "concurrency": 4
+          },
+          "long_stream": {
+            "input": 131072,
+            "output": 256,
+            "request_rate": 0.07,
+            "prompts": 20,
+            "concurrency": 1
+          }
         }
       ]
     },
@@ -357,8 +737,22 @@
       "max_num_seqs": 256,
       "kv_cache_memory_bytes": 10737418240,
       "benchmarks": [
-        {"name": "8k_c32_longans", "input": 8192, "output": 1024, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "128k_c8", "input": 131072, "output": 256, "concurrency": 8, "prompts": 8, "warmups": 2}
+        {
+          "name": "8k_c32_longans",
+          "input": 8192,
+          "output": 1024,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "128k_c8",
+          "input": 131072,
+          "output": 256,
+          "concurrency": 8,
+          "prompts": 8,
+          "warmups": 2
+        }
       ]
     },
     {
@@ -370,10 +764,38 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_ans1024_c16", "input": 8192, "output": 1024, "concurrency": 16, "prompts": 16, "warmups": 4},
-        {"name": "8k_ans1024_c32", "input": 8192, "output": 1024, "concurrency": 32, "prompts": 32, "warmups": 4},
-        {"name": "8k_ans2048_c16", "input": 8192, "output": 2048, "concurrency": 16, "prompts": 16, "warmups": 4},
-        {"name": "8k_ans2048_c32", "input": 8192, "output": 2048, "concurrency": 32, "prompts": 32, "warmups": 4}
+        {
+          "name": "8k_ans1024_c16",
+          "input": 8192,
+          "output": 1024,
+          "concurrency": 16,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_ans1024_c32",
+          "input": 8192,
+          "output": 1024,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        },
+        {
+          "name": "8k_ans2048_c16",
+          "input": 8192,
+          "output": 2048,
+          "concurrency": 16,
+          "prompts": 16,
+          "warmups": 4
+        },
+        {
+          "name": "8k_ans2048_c32",
+          "input": 8192,
+          "output": 2048,
+          "concurrency": 32,
+          "prompts": 32,
+          "warmups": 4
+        }
       ]
     },
     {
@@ -385,13 +807,69 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_rate_050", "input": 8192, "output": 256, "request_rate": 1.7, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_075", "input": 8192, "output": 256, "request_rate": 2.55, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_090", "input": 8192, "output": 256, "request_rate": 3.06, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_100", "input": 8192, "output": 256, "request_rate": 3.4, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "128k_rate_050", "input": 131072, "output": 256, "request_rate": 0.1, "burstiness": 1.0, "prompts": 60, "concurrency": 64},
-        {"name": "128k_rate_075", "input": 131072, "output": 256, "request_rate": 0.15, "burstiness": 1.0, "prompts": 60, "concurrency": 64},
-        {"name": "128k_rate_090", "input": 131072, "output": 256, "request_rate": 0.18, "burstiness": 1.0, "prompts": 60, "concurrency": 64}
+        {
+          "name": "8k_rate_050",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 1.7,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_075",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 2.55,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_090",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 3.06,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_100",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 3.4,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "128k_rate_050",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.1,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        },
+        {
+          "name": "128k_rate_075",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.15,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        },
+        {
+          "name": "128k_rate_090",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.18,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        }
       ]
     },
     {
@@ -403,13 +881,69 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_rate_050", "input": 8192, "output": 256, "request_rate": 3.0, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_075", "input": 8192, "output": 256, "request_rate": 4.5, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_090", "input": 8192, "output": 256, "request_rate": 5.4, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_100", "input": 8192, "output": 256, "request_rate": 6.0, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "128k_rate_050", "input": 131072, "output": 256, "request_rate": 0.2, "burstiness": 1.0, "prompts": 60, "concurrency": 64},
-        {"name": "128k_rate_075", "input": 131072, "output": 256, "request_rate": 0.3, "burstiness": 1.0, "prompts": 60, "concurrency": 64},
-        {"name": "128k_rate_090", "input": 131072, "output": 256, "request_rate": 0.36, "burstiness": 1.0, "prompts": 60, "concurrency": 64}
+        {
+          "name": "8k_rate_050",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 3.0,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_075",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 4.5,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_090",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 5.4,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_100",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 6.0,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "128k_rate_050",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.2,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        },
+        {
+          "name": "128k_rate_075",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.3,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        },
+        {
+          "name": "128k_rate_090",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.36,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        }
       ]
     },
     {
@@ -421,10 +955,42 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_rate_050", "input": 8192, "output": 256, "request_rate": 1.5, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_075", "input": 8192, "output": 256, "request_rate": 2.25, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_090", "input": 8192, "output": 256, "request_rate": 2.7, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "128k_rate_050", "input": 131072, "output": 256, "request_rate": 0.1, "burstiness": 1.0, "prompts": 60, "concurrency": 64}
+        {
+          "name": "8k_rate_050",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 1.5,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_075",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 2.25,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_090",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 2.7,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "128k_rate_050",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.1,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        }
       ]
     },
     {
@@ -436,9 +1002,33 @@
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
-        {"name": "8k_rate_050", "input": 8192, "output": 256, "request_rate": 2.0, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "8k_rate_075", "input": 8192, "output": 256, "request_rate": 3.0, "burstiness": 1.0, "prompts": 200, "concurrency": 128},
-        {"name": "128k_rate_050", "input": 131072, "output": 256, "request_rate": 0.12, "burstiness": 1.0, "prompts": 60, "concurrency": 64}
+        {
+          "name": "8k_rate_050",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 2.0,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "8k_rate_075",
+          "input": 8192,
+          "output": 256,
+          "request_rate": 3.0,
+          "burstiness": 1.0,
+          "prompts": 200,
+          "concurrency": 128
+        },
+        {
+          "name": "128k_rate_050",
+          "input": 131072,
+          "output": 256,
+          "request_rate": 0.12,
+          "burstiness": 1.0,
+          "prompts": 60,
+          "concurrency": 64
+        }
       ]
     }
   ]

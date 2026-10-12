@@ -115,7 +115,11 @@ if [[ "$gpu_count" -ge 1 ]]; then
   gpu_name=$(nvidia-smi --query-gpu=name --format=csv,noheader 2>/dev/null | head -n1)
   record_check "gpu_hardware" "PASSED" "$gpu_count x $gpu_name detected"
 else
-  record_check "gpu_hardware" "PASSED" "CPU surrogate fallback mode (0 GPUs detected)"
+  if [[ "$(uname -s)" == "Linux" && "${ALLOW_SURROGATE:-0}" != "1" ]]; then
+    record_check "gpu_hardware" "FAILED" "No NVIDIA GPUs detected on Linux cluster node"
+  else
+    record_check "gpu_hardware" "WARNING" "CPU surrogate fallback mode (0 GPUs detected)"
+  fi
 fi
 
 echo ""
@@ -124,15 +128,24 @@ stack_status=$("$PYTHON_BIN" -c '
 try:
     import torch
     import vllm
-    print(f"PyTorch {torch.__version__} | CUDA: {torch.cuda.is_available()} | vLLM {vllm.__version__}")
+    cuda_ok = torch.cuda.is_available()
+    print(f"PyTorch {torch.__version__} | CUDA: {cuda_ok} | vLLM {vllm.__version__}")
 except Exception as e:
     print(f"SURROGATE_MODE: {e}")
 ' 2>&1 || echo "ERROR")
 
 if [[ "$stack_status" == *"PyTorch"* ]]; then
-  record_check "ai_framework_stack" "PASSED" "$stack_status"
+  if [[ "$stack_status" == *"CUDA: False"* && "$gpu_count" -ge 1 ]]; then
+    record_check "ai_framework_stack" "FAILED" "PyTorch detected but CUDA is NOT available: $stack_status"
+  else
+    record_check "ai_framework_stack" "PASSED" "$stack_status"
+  fi
 elif [[ "$stack_status" == *"SURROGATE_MODE"* ]]; then
-  record_check "ai_framework_stack" "PASSED" "Surrogate verified (Target GPU venv will load in cloud)"
+  if [[ "$(uname -s)" == "Linux" && "${ALLOW_SURROGATE:-0}" != "1" ]]; then
+    record_check "ai_framework_stack" "FAILED" "AI framework stack missing on Linux node: $stack_status"
+  else
+    record_check "ai_framework_stack" "WARNING" "Surrogate verified (Target GPU venv will load in cloud: $stack_status)"
+  fi
 else
   record_check "ai_framework_stack" "FAILED" "Python execution error: $stack_status"
 fi
@@ -143,8 +156,8 @@ export CUDA_DEVICE_ORDER="PCI_BUS_ID"
 export VLLM_MOE_BACKEND="${VLLM_MOE_BACKEND:-flashinfer_cutlass}"
 export MOE_BACKEND="${MOE_BACKEND:-flashinfer_cutlass}"
 export VLLM_FLASHINFER_AUTOTUNE="1"
-export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
-export VLLM_PP_LAYER_PARTITION="15,12"
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
+unset VLLM_PP_LAYER_PARTITION || true
 
 moe_env_ok=1
 [[ "${CUDA_DEVICE_ORDER:-}" == "PCI_BUS_ID" ]] || moe_env_ok=0
@@ -152,7 +165,7 @@ moe_env_ok=1
 [[ "${VLLM_FLASHINFER_AUTOTUNE:-}" == "1" ]] || moe_env_ok=0
 
 if [[ "$moe_env_ok" == 1 ]]; then
-  record_check "moe_cutlass_env_flags" "PASSED" "CUDA_DEVICE_ORDER=PCI_BUS_ID, MOE_BACKEND=${VLLM_MOE_BACKEND}, FLASHINFER=1, PP_SPLIT=15,12"
+  record_check "moe_cutlass_env_flags" "PASSED" "CUDA_DEVICE_ORDER=PCI_BUS_ID, MOE_BACKEND=${VLLM_MOE_BACKEND}, FLASHINFER=1, PP_SPLIT=vLLM_default"
 else
   record_check "moe_cutlass_env_flags" "FAILED" "Kernel execution flags misconfigured"
 fi
@@ -190,7 +203,11 @@ done
 if [[ -z "$missing_tools" ]]; then
   record_check "linux_systems_utilities" "PASSED" "taskset, ip, tc present and qualified"
 else
-  record_check "linux_systems_utilities" "PASSED" "Core utils present (missing non-critical: $missing_tools)"
+  if [[ "$(uname -s)" == "Linux" && "${ALLOW_SURROGATE:-0}" != "1" ]]; then
+    record_check "linux_systems_utilities" "FAILED" "Required Linux network/CPU utilities missing: $missing_tools"
+  else
+    record_check "linux_systems_utilities" "WARNING" "Utilities missing in local surrogate mode: $missing_tools"
+  fi
 fi
 
 if [[ -n "${NODE1_IP:-}" ]]; then
@@ -200,7 +217,11 @@ if [[ -n "${NODE1_IP:-}" ]]; then
   if command -v ssh >/dev/null 2>&1 && ssh -i "$SSH_KEY_PROBE" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "nvidia-smi" >/dev/null 2>&1; then
     record_check "dual_node_16gpu_interconnect" "PASSED" "Node 1 ($NODE1_IP) reachable; 16-GPU dual-node cluster verified"
   else
-    record_check "dual_node_16gpu_interconnect" "PASSED" "Node 1 ($NODE1_IP) configured; live SSH requires runtime host key setup"
+    if [[ "$(uname -s)" == "Linux" && "${ALLOW_SURROGATE:-0}" != "1" ]]; then
+      record_check "dual_node_16gpu_interconnect" "FAILED" "Node 1 ($NODE1_IP) unreachable via SSH"
+    else
+      record_check "dual_node_16gpu_interconnect" "WARNING" "Node 1 ($NODE1_IP) configured; SSH unreachable in local surrogate mode"
+    fi
   fi
 fi
 

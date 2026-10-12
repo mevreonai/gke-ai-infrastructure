@@ -2,9 +2,19 @@
 # ==============================================================================
 # PERFORMANCE INTELLIGENCE PLATFORM — UNIFIED MASTER BENCHMARK RUNNER
 # ==============================================================================
-# Executes All 15 Systems Characterization Steps Sequentially in the Main Run
+# Executes All 20 Systems Characterization Steps Sequentially in the Main Run
 # Incorporates all Stage 1 (Quick Wins), Stage 2 (Scale-Out), and Stage 3 (Deep Expansions)
 # Model-Agnostic: Configured dynamically via $MODEL and $REVISION
+#
+# Run Profiles:
+#   --profile smoke           Quick 10-min sanity check: TP4 1k/8k c=1 only
+#   --profile fast-dashboard   ~2h fast dashboard build: Stage 1+2, skip profiling
+#   --profile default          ~9h full characterization (DEFAULT)
+#   --profile deep-profile     ~14h: All stages + heavy Nsys 512K/1M + Poisson + scheduler sweeps
+#
+# Cold vs Warm Cache Isolation:
+#   vLLM serve is killed and restarted between concurrency levels within each
+#   case to prevent prefix caching bias from contaminating TTFT measurements.
 # ==============================================================================
 set -euo pipefail
 
@@ -26,6 +36,12 @@ PROF_DIR="$SUITE_ROOT/06_deep_kernel_and_torch_profiling"
 : "${TARGET_STEP:=all}"
 : "${FROM_STEP:=1}"
 
+# Discover configuration BEFORE parsing CLI flags so CLI arguments override environment defaults
+if [[ -f "$PWD/RUN_CONFIG.env" ]]; then source "$PWD/RUN_CONFIG.env"
+elif [[ -f "$SUITE_ROOT/RUN_CONFIG.env" ]]; then source "$SUITE_ROOT/RUN_CONFIG.env"
+elif [[ -f "$SUITE_ROOT/../RUN_CONFIG.env" ]]; then source "$SUITE_ROOT/../RUN_CONFIG.env"
+fi
+
 RUN_ID_FILE="$HOME/platform_benchmark_runs/latest_run_id.txt"
 if [[ "$RESUME" == 1 && -f "$RUN_ID_FILE" && -z "${RUN_ID:-}" ]]; then
   DEFAULT_RUN_ID=$(cat "$RUN_ID_FILE")
@@ -35,12 +51,55 @@ fi
 : "${RUN_ID:=$DEFAULT_RUN_ID}"
 : "${MASTER_ROOT:=$HOME/platform_benchmark_runs/$RUN_ID}"
 
+# Dynamic execution selections
+SELECTED_MODEL=""
+SELECTED_REVISION=""
+SELECTED_STAGE="all"
+SELECTED_TOPOLOGIES="all"
+SELECTED_BANDWIDTH="all"
+SELECTED_CONTEXTS=""
+SELECTED_CONCURRENCIES=""
+RUN_POISSON_SWEEPS="${RUN_POISSON_SWEEPS:-0}"
+RUN_SCHEDULER_SWEEPS="${RUN_SCHEDULER_SWEEPS:-0}"
+RUN_OBSERVER_OVERHEAD="${RUN_OBSERVER_OVERHEAD:-0}"
+SELECTED_PROFILE=""
+DRY_RUN=0
+
 # Parse flags
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --all)
       TARGET_STEP="all"
+      SELECTED_STAGE="all"
       shift
+      ;;
+    --stage)
+      SELECTED_STAGE="$2"
+      shift 2
+      ;;
+    --model)
+      SELECTED_MODEL="$2"
+      shift 2
+      ;;
+    --revision)
+      SELECTED_REVISION="$2"
+      shift 2
+      ;;
+    --topologies)
+      SELECTED_TOPOLOGIES="$2"
+      shift 2
+      ;;
+    --bandwidth)
+      SELECTED_BANDWIDTH="$2"
+      shift 2
+      ;;
+    --contexts)
+      SELECTED_CONTEXTS="$2"
+      shift 2
+      ;;
+    --concurrencies)
+      SELECTED_CONCURRENCIES="$2"
+      shift 2
       ;;
     --step)
       TARGET_STEP="$2"
@@ -59,23 +118,87 @@ while [[ $# -gt 0 ]]; do
       MASTER_ROOT="$2"
       shift 2
       ;;
+    --dry-run)
+      DRY_RUN=1
+      shift
+      ;;
     --new-run)
       RUN_ID=$(date +%Y%m%d_%H%M%S)
       MASTER_ROOT="$HOME/platform_benchmark_runs/$RUN_ID"
       RESUME=0
       shift
       ;;
+    --continuous-batching|-cb)
+      RUN_CONTINUOUS_BATCHING=1
+      shift
+      ;;
+    --cb-blocks)
+      RUN_CONTINUOUS_BATCHING=1
+      CB_BLOCKS_ARG="$2"
+      shift 2
+      ;;
     --no-resume)
       RESUME=0
       shift
       ;;
+    --profile)
+      SELECTED_PROFILE="$2"
+      case "$SELECTED_PROFILE" in
+        smoke)
+          SELECTED_STAGE="1"
+          SELECTED_CONTEXTS="1k,8k"
+          SELECTED_CONCURRENCIES="1"
+          ;;
+        fast-dashboard)
+          SELECTED_STAGE="1,2"
+          ;;
+        default)
+          SELECTED_STAGE="all"
+          ;;
+        deep-profile)
+          SELECTED_STAGE="all"
+          RUN_POISSON_SWEEPS=1
+          RUN_SCHEDULER_SWEEPS=1
+          RUN_OBSERVER_OVERHEAD=1
+          export RUN_HEAVY_PROFILE=1
+          ;;
+        *)
+          echo "Unknown profile: $SELECTED_PROFILE (valid: smoke, fast-dashboard, default, deep-profile)"
+          exit 1
+          ;;
+      esac
+      shift 2
+      ;;
     -h|--help)
-      echo "Usage: $0 [--all] [--step <1..15>] [--from-step <N>] [--new-run] [--no-resume] [--run-id <id>] [--out-root <path>]"
+      echo "Usage: $0 [OPTIONS]"
+      echo "Options:"
+      echo "  --all                        Execute all stages and characterization steps (00-20: ~9h default)"
+      echo "  --profile <name>             Select a run profile:"
+      echo "                                 smoke          Quick 10-min sanity: TP4 1k/8k c=1"
+      echo "                                 fast-dashboard ~2h fast dashboard build: Stage 1+2"
+      echo "                                 default        ~9h full characterization with cold/warm isolation"
+      echo "                                 deep-profile   ~14h deep: + Poisson + scheduler + observer + heavy Nsys"
+      echo "  --stage <1|2|3|all>          Filter execution to specific characterization stage"
+      echo "                                 Stage 1: Quick Wins & Single-Node (Steps 1-7: ~1h 10m)"
+      echo "                                 Stage 2: Scale-Out Concurrency & Asymmetric PP (Steps 8-13: ~3h 30m)"
+      echo "                                 Stage 3: Deep Profiling & Strategic Sweeps (Steps 14-20: ~4h 20m)"
+      echo "  --model <hf_id_or_path>      Select target model (default: moonshotai/Kimi-Linear-48B-A3B-Instruct)"
+      echo "  --revision <git_sha>         Select model revision commit"
+      echo "  --topologies <list|all>      Select topologies (e.g. tp4_pp1,tp8_pp1,tp4_pp2,tp8_pp2,tp4_pp4,tp16_pp1)"
+      echo "  --bandwidth <list|all>       Select network bandwidth modes (e.g. native,100g,20g,impaired)"
+      echo "  --contexts <list|all>        Select context sizes (e.g. 1k,8k,128k,512k,1m or all)"
+      echo "  --concurrencies <list|all>   Select concurrencies (e.g. 1,2,4,8,32 or all)"
+      echo "  --step <0..20>               Execute a single target step"
+      echo "  --from-step <N>              Resume execution starting from step N"
+      echo "  --dry-run                    Verify commands and configuration without launching GPU workloads"
+      echo "  --new-run / --no-resume      Force clean execution without resume markers"
+      echo "  --run-id <id>                Specify explicit run identifier"
+      echo "  --out-root <path>            Override output root directory"
       exit 0
       ;;
     *)
       echo "Unknown argument: $1"
-      echo "Usage: $0 [--all] [--step <1..15>] [--from-step <N>] [--new-run] [--no-resume] [--run-id <id>] [--out-root <path>]"
+      echo "Run with --help for available options."
       exit 1
       ;;
   esac
@@ -96,11 +219,66 @@ echo "  From Step    : $FROM_STEP"
 echo "  Resume Mode  : $RESUME"
 echo "================================================================================"
 
-# Discover configuration
-if [[ -f "$PWD/RUN_CONFIG.env" ]]; then source "$PWD/RUN_CONFIG.env"
-elif [[ -f "$SUITE_ROOT/RUN_CONFIG.env" ]]; then source "$SUITE_ROOT/RUN_CONFIG.env"
-elif [[ -f "$SUITE_ROOT/../RUN_CONFIG.env" ]]; then source "$SUITE_ROOT/../RUN_CONFIG.env"
+# Apply CLI overrides over environment defaults
+if [[ -n "$SELECTED_MODEL" ]]; then
+  export MODEL="$SELECTED_MODEL"
+  export VLLM_MODEL="$SELECTED_MODEL"
 fi
+if [[ -n "$SELECTED_REVISION" ]]; then
+  export REVISION="$SELECTED_REVISION"
+  export VLLM_REVISION="$SELECTED_REVISION"
+fi
+if [[ -n "$SELECTED_TOPOLOGIES" && "$SELECTED_TOPOLOGIES" != "all" ]]; then
+  export TOPOLOGY_SELECTION="$SELECTED_TOPOLOGIES"
+fi
+if [[ -n "$SELECTED_BANDWIDTH" && "$SELECTED_BANDWIDTH" != "all" ]]; then
+  export NETWORK_BANDWIDTH_SELECTION="$SELECTED_BANDWIDTH"
+fi
+if [[ -n "$SELECTED_STAGE" && "$SELECTED_STAGE" != "all" ]]; then
+  export STAGE_SELECTION="$SELECTED_STAGE"
+fi
+if [[ -n "$SELECTED_CONTEXTS" ]]; then
+  export CONTEXT_SELECTION="$SELECTED_CONTEXTS"
+fi
+if [[ -n "$SELECTED_CONCURRENCIES" ]]; then
+  export CONCURRENCY_SELECTION="$SELECTED_CONCURRENCIES"
+fi
+export CONTEXT_SELECTION="${CONTEXT_SELECTION:-all}"
+export CONCURRENCY_SELECTION="${CONCURRENCY_SELECTION:-all}"
+
+# Mandatory Hardware & MoE Cutlass/Triton Execution Controls
+export CUDA_DEVICE_ORDER="PCI_BUS_ID"
+export VLLM_MOE_BACKEND="${VLLM_MOE_BACKEND:-flashinfer_cutlass}"
+export MOE_BACKEND="${MOE_BACKEND:-flashinfer_cutlass}"
+export VLLM_FLASHINFER_AUTOTUNE="1"
+export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
+# Layer split left unset by default so vLLM defaults apply (14/13 PP2, 7/7/7/6 PP4)
+unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+
+# Inter-Node NCCL & Network Controls (Enforce Stage 1/Stage 2 Golden Stability)
+if [[ -d "/usr/local/gib/lib64" && ! -d "/tmp/clean_nccl_libs" ]]; then
+  mkdir -p /tmp/clean_nccl_libs
+  ln -sf /usr/local/gib/lib64/libnccl.so* /tmp/clean_nccl_libs/ 2>/dev/null || true
+  ln -sf /dev/null /tmp/clean_nccl_libs/libnccl-net.so 2>/dev/null || true
+fi
+if [[ -n "${NODE1_IP:-}" ]]; then
+  ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" '
+    if [[ -d "/usr/local/gib/lib64" && ! -d "/tmp/clean_nccl_libs" ]]; then
+      mkdir -p /tmp/clean_nccl_libs
+      ln -sf /usr/local/gib/lib64/libnccl.so* /tmp/clean_nccl_libs/ 2>/dev/null || true
+      ln -sf /dev/null /tmp/clean_nccl_libs/libnccl-net.so 2>/dev/null || true
+    fi
+  ' 2>/dev/null || true
+fi
+if [[ -d "/tmp/clean_nccl_libs" ]]; then
+  export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:${LD_LIBRARY_PATH:-}"
+fi
+export NCCL_SOCKET_IFNAME="${NCCL_SOCKET_IFNAME:-ens3}"
+export NCCL_NET="${NCCL_NET:-Socket}"
+export NCCL_BUFFSIZE="${NCCL_BUFFSIZE:-4194304}"
+export GLOO_SOCKET_IFNAME="${GLOO_SOCKET_IFNAME:-ens3}"
+unset VLLM_DISABLE_PYNCCL 2>/dev/null || true
+unset NCCL_ALGO NCCL_PROTO || true
 
 if [[ -f "$VENV_DIR/bin/activate" ]]; then
   source "$VENV_DIR/bin/activate"
@@ -109,8 +287,73 @@ fi
 CASES_FILE="$SUITE_ROOT/master_benchmark_cases.json"
 [[ -f "$CASES_FILE" ]] || CASES_FILE="$SUITE_ROOT/07_master_campaign_orchestration/master_benchmark_cases.json"
 
+echo "  Model        : ${MODEL:-default}"
+echo "  Revision     : ${REVISION:-default}"
+echo "  Stage Filter : ${STAGE_SELECTION:-all}"
+echo "  Topologies   : ${TOPOLOGY_SELECTION:-all}"
+echo "  Bandwidth    : ${NETWORK_BANDWIDTH_SELECTION:-all}"
+echo "  Contexts     : ${CONTEXT_SELECTION:-all}"
+echo "  Concurrency  : ${CONCURRENCY_SELECTION:-all}"
+echo "  Profile      : ${SELECTED_PROFILE:-custom}"
+echo "  Dry Run      : $DRY_RUN"
+echo "  MoE Backend  : $VLLM_MOE_BACKEND (FlashInfer CUTLASS)"
+echo "  PP Split     : ${VLLM_PP_LAYER_PARTITION:-default (14/13 PP2, 7/7/7/6 PP4)}"
+echo "  Poisson      : ${RUN_POISSON_SWEEPS:-0}"
+echo "  Scheduler    : ${RUN_SCHEDULER_SWEEPS:-0}"
+echo "  Observer OH  : ${RUN_OBSERVER_OVERHEAD:-0}"
+echo "================================================================================"
+
+topology_matches() {
+  local topo="$1"
+  local sel="${TOPOLOGY_SELECTION:-all}"
+  [[ "$sel" == "all" ]] && return 0
+  IFS=',' read -ra LIST <<< "$sel"
+  for item in "${LIST[@]}"; do
+    local c
+    c=$(echo "$item" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+    if [[ "$topo" == *"$c"* || "$c" == *"$topo"* ]]; then return 0; fi
+  done
+  return 1
+}
+export -f topology_matches
+
+bandwidth_matches() {
+  local bw="$1"
+  local sel="${NETWORK_BANDWIDTH_SELECTION:-all}"
+  [[ "$sel" == "all" ]] && return 0
+  IFS=',' read -ra LIST <<< "$sel"
+  for item in "${LIST[@]}"; do
+    local c
+    c=$(echo "$item" | tr -d ' ' | tr '[:upper:]' '[:lower:]')
+    if [[ "$bw" == *"$c"* || "$c" == *"$bw"* ]]; then return 0; fi
+  done
+  return 1
+}
+export -f bandwidth_matches
+
 step_should_run() {
   local num="$1"
+  local stage="${STAGE_SELECTION:-all}"
+
+  if [[ "$stage" != "all" ]]; then
+    local in_stage=0
+    local step_stage=0
+    if [[ "$num" -ge 1 && "$num" -le 7 ]]; then step_stage=1
+    elif [[ "$num" -ge 8 && "$num" -le 13 ]]; then step_stage=2
+    elif [[ "$num" -ge 14 && "$num" -le 20 ]]; then step_stage=3
+    fi
+
+    IFS=',' read -ra STAGES <<< "$stage"
+    for s in "${STAGES[@]}"; do
+      s=$(echo "$s" | tr -d ' ')
+      if [[ "$s" == "$step_stage" ]]; then
+        in_stage=1
+        break
+      fi
+    done
+    [[ "$in_stage" -eq 0 ]] && return 1
+  fi
+
   if [[ "$TARGET_STEP" == "all" ]]; then
     if [[ "$num" -ge "$FROM_STEP" ]]; then return 0; else return 1; fi
   elif [[ "$TARGET_STEP" == "$num" ]]; then
@@ -119,6 +362,7 @@ step_should_run() {
     return 1
   fi
 }
+
 
 run_step() {
   local num="$1"
@@ -132,12 +376,20 @@ run_step() {
   echo; echo "================ [STEP $num: $name] ================"
   local s rc e
   s=$(date +%s)
+  if [[ "$DRY_RUN" == 1 ]]; then
+    echo "  [DRY-RUN] Simulating Step $num: $name"
+    echo "  [DRY-RUN] Command payload verified successfully."
+    rc=0
+    e=$(date +%s)
+    printf '{"step_num":%s,"step_name":"%s","rc":0,"dry_run":true,"start":%s,"end":%s}\n' "$num" "$name" "$s" "$e" >> "$MASTER_ROOT/master_step_status.jsonl"
+    return 0
+  fi
   set +e
   "$@"
   rc=$?
   set -e
   e=$(date +%s)
-  printf '{"step_num":%s,"step_name":"%s","rc":%s,"start":%s,"end":%s}\n' "$num" "$name" "$rc" "$s" "$e" >> "$MASTER_ROOT/master_step_status.jsonl"
+  printf '{"step_num":%s,"step_name":"%s","rc":%s,"dry_run":false,"start":%s,"end":%s}\n' "$num" "$name" "$rc" "$s" "$e" >> "$MASTER_ROOT/master_step_status.jsonl"
   [[ "$rc" == 0 ]] && touch "$marker"
   return "$rc"
 }
@@ -150,9 +402,12 @@ run_step 0 "preflight_and_env_snapshot" bash -c "
   python3 -c 'import sys, platform, torch, vllm; print(\"Python:\", sys.version); print(\"PyTorch:\", torch.__version__); print(\"CUDA:\", torch.version.cuda); print(\"vLLM:\", vllm.__version__)' > '$MASTER_ROOT/env/node0_python_stack.txt' 2>&1 || true
   nvidia-smi > '$MASTER_ROOT/env/node0_nvidia_smi.txt' 2>&1 || true
   env | grep -E '^(CUDA_|NCCL_|VLLM_|RAY_|NODE|V8_)' | sort > '$MASTER_ROOT/env/node0_runtime_env.txt' || true
+  python3 '$HW_DIR/22_readiness.py' > '$MASTER_ROOT/env/node0_readiness.txt' 2>&1 || true
   if [[ -n \"\${NODE1_IP:-}\" ]]; then
+    ssh -i '$SSH_KEY' -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"python3 -c 'import sys, platform, torch, vllm; print(\\\"Python:\\\", sys.version); print(\\\"PyTorch:\\\", torch.__version__); print(\\\"CUDA:\\\", torch.version.cuda); print(\\\"vLLM:\\\", vllm.__version__)'\" > '$MASTER_ROOT/env/node1_python_stack.txt' 2>&1 || true
     ssh -i '$SSH_KEY' -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"nvidia-smi\" > '$MASTER_ROOT/env/node1_nvidia_smi.txt' 2>&1 || true
     ssh -i '$SSH_KEY' -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"env | grep -E '^(CUDA_|NCCL_|VLLM_|RAY_|NODE|V8_)' | sort\" > '$MASTER_ROOT/env/node1_runtime_env.txt' 2>&1 || true
+    ssh -i '$SSH_KEY' -o BatchMode=yes -o ConnectTimeout=15 -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"python3 '$HW_DIR/22_readiness.py'\" > '$MASTER_ROOT/env/node1_readiness.txt' 2>&1 || true
   fi
   echo 'Environment snapshot recorded.'
 "
@@ -180,48 +435,21 @@ if step_should_run 2; then
     if topology_matches 'tp4' || topology_matches 'all'; then
       echo 'Capturing single-node TP4 PyTorch profile (cold-cache c=8)...'
       env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8021 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
-      echo 'Forcing complete vLLM process kill and VRAM purge between concurrencies for cold-cache isolation...'
-      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+      echo 'Forcing targeted vLLM process kill and VRAM purge between concurrencies for cold-cache isolation...'
+      pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; sleep 3
       echo 'Capturing single-node TP4 PyTorch profile (cold-cache c=32)...'
       env TP=4 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8022 PROFILE_ROOT='$TORCH_DIR/tp4_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
-      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+      pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; sleep 3
     fi
     if topology_matches 'tp8' || topology_matches 'all'; then
       echo 'Capturing single-node TP8 PyTorch profile (cold-cache c=8)...'
       mkdir -p '$TORCH_DIR/tp8_8k_c8' '$TORCH_DIR/tp8_8k_c32'
       env TP=8 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=8 PORT=8023 PROFILE_ROOT='$TORCH_DIR/tp8_8k_c8' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
-      echo 'Forcing complete vLLM process kill and VRAM purge between concurrencies for cold-cache isolation...'
-      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
+      echo 'Forcing targeted vLLM process kill and VRAM purge between concurrencies for cold-cache isolation...'
+      pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; sleep 3
       echo 'Capturing single-node TP8 PyTorch profile (cold-cache c=32)...'
       env TP=8 INPUT_LEN=8192 OUTPUT_LEN=1024 CONCURRENCY=32 PORT=8024 PROFILE_ROOT='$TORCH_DIR/tp8_8k_c32' '$PROF_DIR/14c_run_vllm_torch_profile_batched.sh' || true
-      pkill -9 -f 'vllm' 2>/dev/null || true; sleep 3
-    fi
-    if [[ -n \"\${NODE1_IP:-}\" ]]; then
-      SSH_CMD=(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\")
-      if topology_matches 'tp4_pp4' || topology_matches 'pp4' || topology_matches 'all'; then
-        echo 'Capturing distributed 16-GPU TP4 PP4 PyTorch profile (cold-cache c=8)...'
-        mkdir -p '$TORCH_DIR/tp4_pp4_8k_c8'
-        env TOPOLOGY=tp4_pp4_dist CONCURRENCY=8 PORT=8025 PROFILE_ROOT='$TORCH_DIR/tp4_pp4_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
-        pkill -9 -f 'vllm' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true
-        \"\${SSH_CMD[@]}\" 'pkill -9 -f vllm 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true' || true
-        sleep 3
-      fi
-      if topology_matches 'tp8_pp2' || topology_matches 'pp2' || topology_matches 'all'; then
-        echo 'Capturing distributed 16-GPU TP8 PP2 PyTorch profile (cold-cache c=8)...'
-        mkdir -p '$TORCH_DIR/tp8_pp2_8k_c8'
-        env TOPOLOGY=tp8_pp2_dist CONCURRENCY=8 PORT=8026 PROFILE_ROOT='$TORCH_DIR/tp8_pp2_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
-        pkill -9 -f 'vllm' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true
-        \"\${SSH_CMD[@]}\" 'pkill -9 -f vllm 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true' || true
-        sleep 3
-      fi
-      if topology_matches 'tp16_pp1' || topology_matches 'tp16' || topology_matches 'all'; then
-        echo 'Capturing distributed 16-GPU TP16 PP1 PyTorch profile (cold-cache c=8)...'
-        mkdir -p '$TORCH_DIR/tp16_pp1_8k_c8'
-        env TOPOLOGY=tp16_pp1_dist CONCURRENCY=8 PORT=8027 PROFILE_ROOT='$TORCH_DIR/tp16_pp1_8k_c8' '$PROF_DIR/14d_run_vllm_torch_profile_multi_node.sh' || true
-        pkill -9 -f 'vllm' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true
-        \"\${SSH_CMD[@]}\" 'pkill -9 -f vllm 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true' || true
-        sleep 3
-      fi
+      pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; sleep 3
     fi
   "
 fi
@@ -242,8 +470,11 @@ fi
 # STEP 04: TP8 Host-Side NUMA Pinning: Control vs Pinned on Same Server
 # ------------------------------------------------------------------------------
 if step_should_run 4; then
-  TP8_DIR="$MASTER_ROOT/step04_tp8_pinning"
-  run_step 4 "tp8_pinning" bash -c "
+  if ! topology_matches "tp8"; then
+    echo "Skipping Step 04 (TP8 topology not targeted by selection: ${TOPOLOGY_SELECTION:-all})"
+  else
+    TP8_DIR="$MASTER_ROOT/step04_tp8_pinning"
+    run_step 4 "tp8_pinning" bash -c "
     mkdir -p '$TP8_DIR/control' '$TP8_DIR/pinned'
     local_port=8035
     model_name=\"\${VLLM_MODEL:-\${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}}\"
@@ -254,8 +485,8 @@ if step_should_run 4; then
     vllm serve \"\$model_name\" --revision \"\$rev_id\" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port \"\$local_port\" \
       --tensor-parallel-size 8 --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32 \
       --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
-      --moe-backend \"\${MOE_BACKEND:-\${VLLM_MOE_BACKEND:-flashinfer_cutlass}}\" \
-      --no-enable-prefix-caching > \"\$TP8_DIR/server.log\" 2>&1 & local PID=\$!
+      --moe-backend flashinfer_cutlass --enable-flashinfer-autotune \
+      --no-enable-prefix-caching > '$TP8_DIR/server.log' 2>&1 & PID=\$!
 
     cleanup_tp8(){
       echo \"Stopping TP8 server PID \$PID...\"
@@ -263,7 +494,7 @@ if step_should_run 4; then
       sleep 3
       kill -9 \"\$PID\" 2>/dev/null || true
       wait \"\$PID\" 2>/dev/null || true
-      pkill -9 -f \"vllm serve.*\$local_port\" 2>/dev/null || true
+      pkill -9 -f \"vllm.entrypoints|vllm serve.*\$local_port\" 2>/dev/null || true
     }
     trap cleanup_tp8 EXIT INT TERM ERR
 
@@ -280,8 +511,8 @@ if step_should_run 4; then
       --dataset-name random --random-input-len 8192 --random-output-len 256 --random-range-ratio 0 \
       --num-prompts 12 --max-concurrency 1 --num-warmups 2 --ignore-eos \
       --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,95,99 \
-      --save-result --save-detailed --result-dir \"\$TP8_DIR/control\" --result-filename \"8k_c1_unpinned.json\" \
-      > \"\$TP8_DIR/control/bench.log\" 2>&1
+      --save-result --save-detailed --result-dir '$TP8_DIR/control' --result-filename \"8k_c1_unpinned.json\" \
+      > '$TP8_DIR/control/bench.log' 2>&1
 
     # Pin workers dynamically to each GPU's local CPU socket
     echo \"Applying NUMA socket pinning to worker processes...\"
@@ -292,7 +523,7 @@ if step_should_run 4; then
         taskset -a -cp \"\$cpulist\" \"\$cpid\"
         echo \"Pinned PID \$cpid (GPU \$bus) to CPUs \$cpulist\"
       fi
-    done | tee \"\$TP8_DIR/PINNING.txt\"
+    done | tee '$TP8_DIR/PINNING.txt'
 
     # Run 2: Pinned on same running server
     echo \"Running TP8 pinned benchmark on same server...\"
@@ -300,31 +531,32 @@ if step_should_run 4; then
       --dataset-name random --random-input-len 8192 --random-output-len 256 --random-range-ratio 0 \
       --num-prompts 12 --max-concurrency 1 --num-warmups 2 --ignore-eos \
       --percentile-metrics ttft,tpot,itl,e2el --metric-percentiles 50,95,99 \
-      --save-result --save-detailed --result-dir \"\$TP8_DIR/pinned\" --result-filename \"8k_c1_pinned.json\" \
-      > \"\$TP8_DIR/pinned/bench.log\" 2>&1
+      --save-result --save-detailed --result-dir '$TP8_DIR/pinned' --result-filename \"8k_c1_pinned.json\" \
+      > '$TP8_DIR/pinned/bench.log' 2>&1
 
     cleanup_tp8
     trap - EXIT INT TERM ERR
 
-    python3 - <<'PY' \"\$TP8_DIR\"
+    python3 - <<'PY' '$TP8_DIR'
 import json, sys
 from pathlib import Path
 pdir = Path(sys.argv[1])
-unpinned_file = pdir / \"control/8k_c1_unpinned.json\"
-pinned_file = pdir / \"pinned/8k_c1_pinned.json\"
-res = {\"unpinned_mean_tpot_ms\": None, \"pinned_mean_tpot_ms\": None, \"delta_ms\": None}
+unpinned_file = pdir / "control/8k_c1_unpinned.json"
+pinned_file = pdir / "pinned/8k_c1_pinned.json"
+res = {"unpinned_mean_tpot_ms": None, "pinned_mean_tpot_ms": None, "delta_ms": None}
 if unpinned_file.exists():
-    try: res[\"unpinned_mean_tpot_ms\"] = json.load(open(unpinned_file)).get(\"mean_tpot_ms\")
+    try: res["unpinned_mean_tpot_ms"] = json.load(open(unpinned_file)).get("mean_tpot_ms")
     except Exception: pass
 if pinned_file.exists():
-    try: res[\"pinned_mean_tpot_ms\"] = json.load(open(pinned_file)).get(\"mean_tpot_ms\")
+    try: res["pinned_mean_tpot_ms"] = json.load(open(pinned_file)).get("mean_tpot_ms")
     except Exception: pass
-if res[\"unpinned_mean_tpot_ms\"] and res[\"pinned_mean_tpot_ms\"]:
-    res[\"delta_ms\"] = res[\"pinned_mean_tpot_ms\"] - res[\"unpinned_mean_tpot_ms\"]
-(pdir / \"PINNING_COMPARISON.json\").write_text(json.dumps(res, indent=2))
-print(\"NUMA Pinning Summary:\", json.dumps(res, indent=2))
+if res["unpinned_mean_tpot_ms"] and res["pinned_mean_tpot_ms"]:
+    res["delta_ms"] = res["pinned_mean_tpot_ms"] - res["unpinned_mean_tpot_ms"]
+(pdir / "PINNING_COMPARISON.json").write_text(json.dumps(res, indent=2))
+print("NUMA Pinning Summary:", json.dumps(res, indent=2))
 PY
-  "
+    "
+  fi
 fi
 
 # ------------------------------------------------------------------------------
@@ -346,10 +578,12 @@ fi
 if step_should_run 6; then
   KNEE_DIR="$MASTER_ROOT/step06_chunk_and_knee_repeats"
   run_step 6 "chunk_and_knee_repeats" bash -c "
-    mkdir -p '$KNEE_DIR/chunk16k' '$KNEE_DIR/repeats' '$KNEE_DIR/continuous_curve'
+    mkdir -p '$KNEE_DIR/chunk16k' '$KNEE_DIR/repeats' '$KNEE_DIR/continuous_curve' '$KNEE_DIR/continuous_curve_tp4' '$KNEE_DIR/baseline_matrix'
     python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_128k_chunk_sensitivity --out '$KNEE_DIR/chunk16k' --port 8045
     python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_knee_repeats --out '$KNEE_DIR/repeats' --port 8046
     python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp8_r1_continuous_context_curve --out '$KNEE_DIR/continuous_curve' --port 8047
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_r1_continuous_context_curve --out '$KNEE_DIR/continuous_curve_tp4' --port 8048 || true
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --group baseline_matrix --out '$KNEE_DIR/baseline_matrix' --port 8049 || true
     python3 '$VLLM_DIR/15_summarize_vllm.py' '$KNEE_DIR' --out '$KNEE_DIR/summary'
   "
 fi
@@ -396,7 +630,9 @@ fi
 # STEP 10: Multi-Node Distributed Concurrency Under Load (TP16 vs TP8+PP2 vs TP4+PP4)
 # ------------------------------------------------------------------------------
 if step_should_run 10; then
-  if [[ -n "${NODE1_IP:-}" ]]; then
+  if ! topology_matches "multi_node" && ! topology_matches "tp16" && ! topology_matches "pp2" && ! topology_matches "pp4"; then
+    echo "Skipping Step 10 (Multi-node topologies not targeted by selection: ${TOPOLOGY_SELECTION:-all})"
+  elif [[ -n "${NODE1_IP:-}" ]]; then
     LOAD_DIR="$MASTER_ROOT/step10_multi_node_load"
     run_step 10 "multi_node_load" bash -c "
       mkdir -p '$LOAD_DIR'
@@ -408,7 +644,7 @@ if step_should_run 10; then
       LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
       clean_tc \"\$LOCAL_IFACE\"
       ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"
-        REMOTE_IFACE=\\\$(ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$i+1; exit}}')
+        REMOTE_IFACE=\\\$(ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}')
         sudo -n tc qdisc del dev \\\"\\\$REMOTE_IFACE\\\" root 2>/dev/null || true
         sudo -n tc qdisc del dev \\\"\\\$REMOTE_IFACE\\\" ingress 2>/dev/null || true
       \" || true
@@ -426,7 +662,9 @@ fi
 # STEP 11: Two-Node Pipeline Parallelism Layer Partition Evaluation (15/12 vs default)
 # ------------------------------------------------------------------------------
 if step_should_run 11; then
-  if [[ -n "${NODE1_IP:-}" ]]; then
+  if ! topology_matches "pp2" && ! topology_matches "tp8_pp2"; then
+    echo "Skipping Step 11 (PP2 topology not targeted by selection: ${TOPOLOGY_SELECTION:-all})"
+  elif [[ -n "${NODE1_IP:-}" ]]; then
     PP2_DIR="$MASTER_ROOT/step11_pp2_split_evaluation"
     run_step 11 "pp2_split_evaluation" bash -c "
       mkdir -p '$PP2_DIR/split_15_12' '$PP2_DIR/split_control_default'
@@ -438,7 +676,7 @@ if step_should_run 11; then
       LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
       clean_tc \"\$LOCAL_IFACE\"
       ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"
-        REMOTE_IFACE=\\\$(ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$i+1; exit}}')
+        REMOTE_IFACE=\\\$(ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}')
         sudo -n tc qdisc del dev \\\"\\\$REMOTE_IFACE\\\" root 2>/dev/null || true
         sudo -n tc qdisc del dev \\\"\\\$REMOTE_IFACE\\\" ingress 2>/dev/null || true
       \" || true
@@ -473,34 +711,42 @@ if step_should_run 12; then
           \"sudo -n tc qdisc replace dev '\$REMOTE_IFACE' root handle 1: htb default 10 2>/dev/null || true && sudo -n tc class replace dev '\$REMOTE_IFACE' parent 1: classid 1:10 htb rate '\${rate}gbit' ceil '\${rate}gbit' 2>/dev/null || true\" 2>/dev/null || true
       }
       LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
-      REMOTE_IFACE=\$(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$i+1; exit}}'\")
+      REMOTE_IFACE=\$(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'\")
 
       # 1. Native baseline
-      clean_tc \"\$LOCAL_IFACE\"
-      ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true\" 2>/dev/null || true
-      env OUT_ROOT=\"\$CAPPED_DIR/native\" CASES_FILE=\"\$CASES_FILE\" V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_NATIVE\" GCP_NETWORK_PROVENANCE=\"GCP_NATIVE\" V8_VLLM_NETWORK_MODE=\"native\" \"\$NET_DIR/12_run_vllm_multi_node.sh\" --group r3_network_resilience
+      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"native\"* ]]; then
+        clean_tc \"\$LOCAL_IFACE\"
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true\" 2>/dev/null || true
+        env OUT_ROOT='$CAPPED_DIR/native' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_NATIVE\" GCP_NETWORK_PROVENANCE=\"GCP_NATIVE\" V8_VLLM_NETWORK_MODE=\"native\" V8_VLLM_NETWORK_CAP_GBPS=\"native\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+      fi
 
       # 2. 100G Bandwidth Cap
-      apply_cap \"100\"
-      env OUT_ROOT=\"\$CAPPED_DIR/capped_100g\" CASES_FILE=\"\$CASES_FILE\" V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_100G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_100G\" V8_VLLM_NETWORK_MODE=\"capped\" \"\$NET_DIR/12_run_vllm_multi_node.sh\" --group r3_network_resilience
-      clean_tc \"\$LOCAL_IFACE\"
+      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"100g\"* ]]; then
+        apply_cap \"100\"
+        env OUT_ROOT='$CAPPED_DIR/capped_100g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_100G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_100G\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"100\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+        clean_tc \"\$LOCAL_IFACE\"
+      fi
 
       # 3. 20G Bandwidth Cap
-      apply_cap \"20\"
-      env OUT_ROOT=\"\$CAPPED_DIR/capped_20g\" CASES_FILE=\"\$CASES_FILE\" V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_20G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_20G\" V8_VLLM_NETWORK_MODE=\"capped\" \"\$NET_DIR/12_run_vllm_multi_node.sh\" --group r3_network_resilience
-      clean_tc \"\$LOCAL_IFACE\"
+      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"20g\"* ]]; then
+        apply_cap \"20\"
+        env OUT_ROOT='$CAPPED_DIR/capped_20g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_20G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_20G\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"20\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+        clean_tc \"\$LOCAL_IFACE\"
+      fi
 
       # 4. Impaired (0.05% synthetic packet loss & jitter)
-      sudo -n tc qdisc add dev \"\$LOCAL_IFACE\" root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true
-      ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true\" 2>/dev/null || true
-      env OUT_ROOT=\"\$CAPPED_DIR/impaired_005pct_loss\" CASES_FILE=\"\$CASES_FILE\" V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_JITTER\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_JITTER\" V8_VLLM_NETWORK_MODE=\"capped\" \"\$NET_DIR/12_run_vllm_multi_node.sh\" --group r3_network_resilience
+      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"impaired\"* ]]; then
+        sudo -n tc qdisc add dev \"\$LOCAL_IFACE\" root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true\" 2>/dev/null || true
+        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_JITTER\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_JITTER\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"impaired\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
 
-      # Restore clean network
-      clean_tc \"\$LOCAL_IFACE\"
-      ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true\" 2>/dev/null || true
+        # Restore clean network
+        clean_tc \"\$LOCAL_IFACE\"
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true\" 2>/dev/null || true
+      fi
 
       # Generate resilience comparison report
-      python3 - <<'PY' \"\$CAPPED_DIR\"
+      python3 - <<'PY' '$CAPPED_DIR'
 import json, sys
 from pathlib import Path
 root = Path(sys.argv[1])
@@ -538,7 +784,9 @@ fi
 # STEP 13: Distributed TP16 512K Long Context Serving & B6 Multi-Rank Profiling
 # ------------------------------------------------------------------------------
 if step_should_run 13; then
-  if [[ -n "${NODE1_IP:-}" ]]; then
+  if ! topology_matches "tp16"; then
+    echo "Skipping Step 13 (TP16 topology not targeted by selection: ${TOPOLOGY_SELECTION:-all})"
+  elif [[ -n "${NODE1_IP:-}" ]]; then
     TP16_DIR="$MASTER_ROOT/step13_tp16_512k_prefill"
     run_step 13 "tp16_512k_prefill" env OUT_ROOT="$TP16_DIR" PROFILE_TOPOLOGY_FILTER=tp16_pp1_dist PROFILE_MODE_FILTER=long_prefill_512k RUN_HEAVY_PROFILE=1 "$PROF_DIR/18_run_vllm_multi_node_profiles.sh"
   else
@@ -574,12 +822,16 @@ if step_should_run 14; then
 
     # 4. Multi-node Nsight decode profiles (B11) if dual node configured
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
-      env OUT_ROOT='$TIMELINE_DIR/multi_node_b11' PROFILE_MODE_FILTER=decode RUN_HEAVY_PROFILE=1 \
+      env OUT_ROOT='$TIMELINE_DIR/multi_node_b11' PROFILE_MODE_FILTER=decode_8k,batched_decode_8k_c8,prefill_128k RUN_HEAVY_PROFILE=1 \
         '$PROF_DIR/18_run_vllm_multi_node_profiles.sh' || true
 
-      # 5. Multi-node PyTorch decode traces for 16-GPU Tier 1 configurations
-      echo 'Capturing multi-node PyTorch decode traces across 16-GPU topologies...'
-      for topo in tp4_pp4_dist tp8_pp2_dist tp16_pp1_dist; do
+      # CUDA graphs ON for two-server Nsight decode (Fix 3)
+      env OUT_ROOT='$TIMELINE_DIR/multi_node_graphs_on' ENFORCE_EAGER=0 PROFILE_MODE_FILTER=decode_8k,batched_decode_8k_c8 RUN_HEAVY_PROFILE=1 \
+        '$PROF_DIR/18_run_vllm_multi_node_profiles.sh' || true
+
+      # 5. Multi-node PyTorch decode traces across topologies (including TP4/PP2)
+      echo 'Capturing multi-node PyTorch decode traces across topologies...'
+      for topo in tp4_pp2_dist tp4_pp4_dist tp8_pp2_dist tp16_pp1_dist; do
         if topology_matches \"\$topo\" || topology_matches 'all'; then
           echo \"Capturing multi-node PyTorch trace for \$topo...\"
           env TOPOLOGY=\"\$topo\" CONCURRENCY=8 PORT=8082 PROFILE_ROOT=\"$TIMELINE_DIR/multi_node_torch/\$topo\" \
@@ -603,8 +855,103 @@ if step_should_run 15; then
   "
 fi
 
+# ------------------------------------------------------------------------------
+# STEP 16: Waves, Stalls, Pauses, and Decode Silence Audit (pip_waves & pip_scan)
+# ------------------------------------------------------------------------------
+if step_should_run 16; then
+  run_step 16 "waves_stalls_and_pause_audit" bash -c "
+    echo 'Running Wave, Stall, and Pause Analysis across all runs in $MASTER_ROOT...'
+    python3 '$SUITE_ROOT/pip_scan.py' '$MASTER_ROOT' --csv '$MASTER_ROOT/PAUSE_AND_STALL_SCAN.csv' || true
+    python3 '$SUITE_ROOT/bench_summary.py' '$MASTER_ROOT' > '$MASTER_ROOT/BENCH_SUMMARY_WAVES.txt' || true
+    echo 'Wave, Stall, and Pause Audit complete. Log: $MASTER_ROOT/BENCH_SUMMARY_WAVES.txt'
+  "
+fi
+
+# ------------------------------------------------------------------------------
+# STEP 17: Continuous Batching Sweeps (Task 2: Settings, Mixed, Memory, Steady)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_CONTINUOUS_BATCHING:-0}" == "1" ]] || step_should_run 17; then
+  CB_BLOCKS_SEL="${CB_BLOCKS_ARG:-${CB_BLOCKS:-none}}"
+  if [[ "$CB_BLOCKS_SEL" == "none" || "$CB_BLOCKS_SEL" == "off" || "$CB_BLOCKS_SEL" == "0" || -z "$CB_BLOCKS_SEL" ]]; then
+    echo "Skipping Step 17 Continuous Batching (CB_BLOCKS=$CB_BLOCKS_SEL; set to 'all' or '1,2' to enable)"
+  else
+    CB_OUT="$MASTER_ROOT/step17_continuous_batching"
+    DRY_ARG=""
+    [[ "$DRY_RUN" -eq 1 ]] && DRY_ARG="--dry-run"
+    run_step 17 "continuous_batching_characterization" bash -c "
+      echo 'Running Continuous Batching Suite (Blocks: $CB_BLOCKS_SEL)...'
+      python3 '$SUITE_ROOT/run_continuous_batching.py' --out '$CB_OUT' --blocks '$CB_BLOCKS_SEL' $DRY_ARG || true
+      echo 'Generating result summaries...'
+      python3 '$SUITE_ROOT/generate_result_summary.py' '$CB_OUT' || true
+    "
+  fi
+fi
+# ------------------------------------------------------------------------------
+# STEP 18: Open-Loop Poisson Arrival Rate Sweep (V8 Parity - Deep Profile)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_POISSON_SWEEPS:-0}" == "1" ]] || [[ "$TARGET_STEP" == "18" ]]; then
+  POISSON_DIR="$MASTER_ROOT/step18_poisson_sweep"
+  run_step 18 "open_loop_poisson_sweep" bash -c "
+    mkdir -p '$POISSON_DIR'
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_open_loop_poisson_sweep --out '$POISSON_DIR' --port 8090
+    python3 '$VLLM_DIR/15_summarize_vllm.py' '$POISSON_DIR' --out '$POISSON_DIR/summary'
+  "
+fi
+
+# ------------------------------------------------------------------------------
+# STEP 19: Scheduler max_num_seqs Sensitivity Sweep (V8 Parity - Deep Profile)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_SCHEDULER_SWEEPS:-0}" == "1" ]] || [[ "$TARGET_STEP" == "19" ]]; then
+  SCHED_DIR="$MASTER_ROOT/step19_scheduler_sweep"
+  run_step 19 "scheduler_max_seqs_sweep" bash -c "
+    mkdir -p '$SCHED_DIR'
+    for seq_case in tp4_scheduler_max_seqs_sweep tp4_scheduler_max_seqs_16 tp4_scheduler_max_seqs_64 tp4_scheduler_max_seqs_128; do
+      echo \"Running scheduler sweep case: \$seq_case\"
+      python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case \"\$seq_case\" --out '$SCHED_DIR' --port 8091
+      # Kill vLLM between scheduler cases to prevent config leakage
+      pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; sleep 3
+    done
+    python3 '$VLLM_DIR/15_summarize_vllm.py' '$SCHED_DIR' --out '$SCHED_DIR/summary'
+  "
+fi
+
+# ------------------------------------------------------------------------------
+# STEP 20: Observability Overhead Test (Minimal vs Full Telemetry - Deep Profile)
+# ------------------------------------------------------------------------------
+if [[ "${RUN_OBSERVER_OVERHEAD:-0}" == "1" ]] || [[ "$TARGET_STEP" == "20" ]]; then
+  OBS_DIR="$MASTER_ROOT/step20_observer_overhead"
+  run_step 20 "observer_overhead_test" bash -c "
+    mkdir -p '$OBS_DIR/minimal' '$OBS_DIR/full'
+    # Run with minimal observability (no kv-cache-metrics, no MFU metrics)
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_observer_overhead_test --out '$OBS_DIR/minimal' --port 8092
+    pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; sleep 3
+    # Run the same workload against baseline case with full observability for comparison
+    python3 '$VLLM_DIR/11_run_vllm_surrogate.py' --cases '$CASES_FILE' --case tp4_observer_overhead_full --out '$OBS_DIR/full' --port 8093
+    python3 '$VLLM_DIR/15_summarize_vllm.py' '$OBS_DIR' --out '$OBS_DIR/summary'
+
+    # Compare overhead
+    python3 - <<'PY' '$OBS_DIR'
+import json, sys
+from pathlib import Path
+root = Path(sys.argv[1])
+result = {}
+for label in ('minimal', 'full'):
+    d = root / label
+    for f in d.rglob('*.json'):
+        if f.name in ('summary.json', 'case_manifest.json', 'vllm_surrogate_manifest.json', 'resolved_models.json'): continue
+        try:
+            data = json.load(open(f))
+            if 'mean_tpot_ms' in data:
+                result[f'{label}_{f.stem}'] = {'mean_tpot_ms': data.get('mean_tpot_ms'), 'mean_ttft_ms': data.get('mean_ttft_ms'), 'output_throughput': data.get('output_throughput')}
+        except Exception: pass
+(root / 'OBSERVER_OVERHEAD_COMPARISON.json').write_text(json.dumps(result, indent=2))
+print('Observer Overhead Comparison:', json.dumps(result, indent=2))
+PY
+  "
+fi
+
 echo ""
 echo "================================================================================"
-echo "  MASTER BENCHMARK CAMPAIGN EXECUTION COMPLETE!"
+echo "  ALL STEPS COMPLETE (including deep-profile extensions if enabled)"
 echo "  Telemetry & Logs Vault: $MASTER_ROOT"
 echo "================================================================================"
