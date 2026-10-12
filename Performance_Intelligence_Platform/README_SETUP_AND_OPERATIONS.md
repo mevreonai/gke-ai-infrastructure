@@ -1399,10 +1399,10 @@ The runner strictly enforces the following MoE and NCCL environment invariants:
 - `MOE_BACKEND="flashinfer_cutlass"` (FlashInfer CUTLASS MoE kernel; ~29% faster on Blackwell/Ada, use `triton` for A/B tests)
 - `VLLM_FLASHINFER_AUTOTUNE="1"` (JIT autotuning)
 - `VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"` (skips problematic operations to avoid warmup hangs)
-- `VLLM_PP_LAYER_PARTITION="15,12"` (+27.58% TTFT speedup on 27-layer models)
-- `LD_LIBRARY_PATH="/tmp/clean_nccl_libs:${LD_LIBRARY_PATH:-}"` (clean isolated NCCL library without buggy network plugins)
-- `NCCL_NET="Socket"`, `NCCL_CROSS_NIC="1"`
-- `NCCL_ALGO="Tree"`, `NCCL_PROTO="Simple"`
+- `VLLM_PP_LAYER_PARTITION` left unset by default to use native vLLM defaults (14/13 PP2, 7/7/7/6 PP4)
+- `LD_LIBRARY_PATH="/tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"` (clean isolated NCCL library without buggy network plugins)
+- `NCCL_NET="Socket"`, `NCCL_CROSS_NIC` dropped (single NIC on Blackwell VM)
+- `NCCL_ALGO` and `NCCL_PROTO` unset (avoids AllGather protocol mismatch errors on PP4 multi-node)
 
 ### 4.5 External Visual Dashboard Integration
 The Performance Intelligence Platform repository is dedicated strictly to executable benchmarking, hardware diagnostics, and raw telemetry aggregation. 

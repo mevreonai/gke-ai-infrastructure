@@ -180,7 +180,7 @@ bash run_smoke_test.sh
 ### What the Smoke Test Validates (Up to 11 Automated Checks):
 1. **Host Environment:** Python 3.10+, NVIDIA GPU drivers, and system dependencies.
 2. **AI Framework Stack:** PyTorch CUDA availability and vLLM module initialization.
-3. **MoE Kernel Invariants:** Checks `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, and `VLLM_PP_LAYER_PARTITION=15,12`.
+3. **MoE Kernel Invariants:** Checks `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, and confirms `VLLM_PP_LAYER_PARTITION` is unset to use vLLM native defaults.
 4. **Cases Schema:** Validates `master_benchmark_cases.json` integrity across all 20 steps (27 cases).
 5. **Linux Systems Utilities:** Qualifies `taskset`, `ip`, `tc`, and `numactl`.
 6. **Dual-Node 16-GPU Interconnect Probe:** (When `NODE1_IP` is configured) Tests SSH connectivity, remote GPU detection, and inter-node readiness.

@@ -25,7 +25,7 @@ Evaluates multi-node distributed serving across dual 8-GPU nodes interconnected 
   ```
 
 ### 3. `20_nccl_policy.sh`
-* **Purpose:** Enforces kernel socket buffers and NCCL environment policies (`NCCL_BUFFSIZE=4194304`, `NCCL_NET=Socket`, `NCCL_ALGO=Tree`, `NCCL_CROSS_NIC=0`).
+* **Purpose:** Enforces kernel socket buffers and NCCL environment policies (`NCCL_BUFFSIZE=4194304`, `NCCL_NET=Socket`, `NCCL_ALGO`/`NCCL_PROTO` unset to prevent AllGather protocol mismatch).
 
 ### 4. `23_run_nccl_socket_tuning.sh`
 * **Purpose:** Evaluates TCP socket performance using `nccl-tests` (AllReduce & SendRecv) over the VPC interconnect.

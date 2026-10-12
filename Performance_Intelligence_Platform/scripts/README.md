@@ -117,19 +117,17 @@ export VLLM_FLASHINFER_AUTOTUNE="1"
 # 4. Critical FlashInfer Skip-Ops (Eliminates 30-min TRTLLM MoE Warmup Hang)
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 
-# 5. Pipeline Parallel Layer Partition (15/12 Split for 27-Layer Architectures)
-export VLLM_PP_LAYER_PARTITION="15,12"
+# 5. Pipeline Parallel Layer Partition (Left unset so vLLM native defaults apply: 14/13 PP2, 7/7/7/6 PP4)
+unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
 
 # 6. NCCL Inter-Node Transport Tuning (Stage 1/Stage 2 clean isolation)
-export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:${LD_LIBRARY_PATH:-}"
+export LD_LIBRARY_PATH="/tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export NCCL_SOCKET_IFNAME="ens3"
 export NCCL_NET="Socket"
-export NCCL_CROSS_NIC="1"
 export NCCL_BUFFSIZE="4194304"
 export GLOO_SOCKET_IFNAME="ens3"
-export NCCL_ALGO="Tree"         # High-efficiency multi-node collective tree
-export NCCL_PROTO="Simple"      # Stable streaming protocol
-export NCCL_BUFFSIZE="4194304"  # 4 MB socket buffer
+unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL 2>/dev/null || true
+# NCCL_CROSS_NIC dropped (single NIC on Blackwell VM)
 ```
 
 ---
