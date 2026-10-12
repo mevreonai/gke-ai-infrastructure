@@ -133,20 +133,37 @@ def main():
         node1_ip = os.environ.get("NODE1_IP")
         node0_ip = os.environ.get("NODE0_IP", "127.0.0.1")
         ssh_key = os.environ.get("SSH_KEY", str(Path.home() / ".ssh" / "google_compute_engine"))
+        venv_dir = os.environ.get("VENV_DIR", str(Path.home() / "vllm_env"))
         try:
             if is_dist and node1_ip:
                 print(f"  Forming dual-node Ray cluster for distributed case {case['name']} (TP={case['tp']}, PP={case.get('pp', 1)})...")
                 subprocess.run(["ray", "stop", "-f"], capture_output=True)
-                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip, "ray stop -f"], capture_output=True)
+                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip,
+                                f"source {venv_dir}/bin/activate 2>/dev/null || true; ray stop -f"], capture_output=True)
                 time.sleep(2)
-                gpus_per_node = case.get("ray_gpus_per_node", 8)
+                gpus_per_node = case.get("ray_gpus_per_node")
+                if not gpus_per_node:
+                    if case.get("tp") == 4 and case.get("pp") == 2:
+                        gpus_per_node = 4
+                    else:
+                        gpus_per_node = 8
                 gpu_list = ",".join(str(i) for i in range(gpus_per_node))
                 h_env = os.environ.copy()
                 h_env["CUDA_VISIBLE_DEVICES"] = gpu_list
+                if Path("/tmp/clean_nccl_libs").exists():
+                    curr_ld = h_env.get("LD_LIBRARY_PATH", "")
+                    h_env["LD_LIBRARY_PATH"] = f"/tmp/clean_nccl_libs:{curr_ld}" if curr_ld else "/tmp/clean_nccl_libs"
                 subprocess.run(["ray", "start", "--head", f"--node-ip-address={node0_ip}", "--port=6379", f"--num-gpus={gpus_per_node}"], env=h_env, check=True)
-                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip,
-                                f"source $HOME/vllm_env/bin/activate 2>/dev/null || true; CUDA_VISIBLE_DEVICES='{gpu_list}' ray start --address='{node0_ip}:6379' --num-gpus={gpus_per_node}"], check=True)
+                remote_start_cmd = (
+                    f"source {venv_dir}/bin/activate 2>/dev/null || true; "
+                    f"export LD_LIBRARY_PATH=/tmp/clean_nccl_libs${{LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}}; "
+                    f"unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true; "
+                    f"CUDA_VISIBLE_DEVICES='{gpu_list}' ray start --address='{node0_ip}:6379' --num-gpus={gpus_per_node}"
+                )
+                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip, remote_start_cmd], check=True)
                 time.sleep(5)
+                case_rec["ray_nodes"] = [node0_ip, node1_ip]
+                case_rec["ray_gpus_per_node"] = gpus_per_node
 
             case_rec["server_start"] = time.time()
             server_proc = start_server_with_timestamp_logging(server_cmd, cdir / "server.log", os.environ.copy())
@@ -239,7 +256,8 @@ def main():
             kill_process_group(server_proc)
             if is_dist and node1_ip:
                 subprocess.run(["ray", "stop", "-f"], capture_output=True)
-                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip, "ray stop -f"], capture_output=True)
+                subprocess.run(["ssh", "-i", ssh_key, "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=no", node1_ip,
+                                f"source {venv_dir}/bin/activate 2>/dev/null || true; ray stop -f"], capture_output=True)
             (cdir / "case_manifest.json").write_text(json.dumps(case_rec, indent=2))
             top_manifest["cases"].append(case_rec)
 

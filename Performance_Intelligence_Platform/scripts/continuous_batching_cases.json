@@ -337,6 +337,7 @@
       "purpose": "Block 2: Step budget 8192 on TP4/PP2 (8 GPUs Distributed)",
       "tp": 4,
       "pp": 2,
+      "ray_gpus_per_node": 4,
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [
@@ -704,6 +705,7 @@
       "purpose": "Block 4: Mixed traffic concurrent streams on 8-GPU Distributed (TP4/PP2)",
       "tp": 4,
       "pp": 2,
+      "ray_gpus_per_node": 4,
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "mixed_traffic": true,
@@ -804,6 +806,7 @@
       "purpose": "Block 7: Steady Poisson arrivals at 0.5, 0.75, 0.9, 1.0 capacity on TP4/PP2 (8 GPUs)",
       "tp": 4,
       "pp": 2,
+      "ray_gpus_per_node": 4,
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 256,
       "benchmarks": [

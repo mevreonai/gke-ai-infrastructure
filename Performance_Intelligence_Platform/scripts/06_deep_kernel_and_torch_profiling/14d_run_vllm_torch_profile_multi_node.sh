@@ -6,6 +6,7 @@
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
+unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true
 if [[ -f "$SCRIPT_DIR/20_nccl_policy.sh" ]]; then
   source "$SCRIPT_DIR/20_nccl_policy.sh"
   nccl_multi_node_v6_aligned_env
@@ -59,9 +60,8 @@ PYG
 stop_ray_both(){
   echo "Terminating Ray and vLLM processes on Node 0 and Node 1 for cold cache isolation..."
   kill "${SERVER_PID:-}" 2>/dev/null || true
-  pkill -9 -f "vllm.entrypoints|vllm serve|ray::RayWorkerProc" 2>/dev/null || true
   ray stop -f >/dev/null 2>&1 || true
-  "${SSH[@]}" "$NODE1_IP" "$REMOTE_V6_ENV pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true; source '$VENV_DIR/bin/activate' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true" || true
+  "${SSH[@]}" "$NODE1_IP" "$REMOTE_V6_ENV source '$VENV_DIR/bin/activate' 2>/dev/null || true; ray stop -f >/dev/null 2>&1 || true" || true
   sleep 3
   for _ in $(seq 1 30); do
     used_vram=$(nvidia-smi --query-gpu=memory.used --format=csv,noheader,nounits 2>/dev/null | awk '{s+=$1} END {print s}' || echo 0)

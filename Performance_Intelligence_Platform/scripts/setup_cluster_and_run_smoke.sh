@@ -45,13 +45,25 @@ done
 # Resolve Node 0 IP
 NODE0_IP=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "127.0.0.1")
 
-# Resolve Node 1 IP
-if [[ -n "$INPUT_NODE1_IP" ]]; then
-  NODE1_IP="$INPUT_NODE1_IP"
-elif [[ -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
+# Resolve Node 1 IP & configuration
+if [[ -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
   source "$SCRIPT_DIR/RUN_CONFIG.env"
 fi
+if [[ -n "$INPUT_NODE1_IP" ]]; then
+  NODE1_IP="$INPUT_NODE1_IP"
+fi
 NODE1_IP="${NODE1_IP:-}"
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/google_compute_engine}"
+[[ -f "$SSH_KEY" ]] || SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_rsa}"
+
+cleanup_caps() {
+  echo "--> Draining and resetting traffic control rate caps on both nodes..."
+  sudo -n tc qdisc del dev ens3 root 2>/dev/null || true
+  if [[ -n "${NODE1_IP:-}" ]]; then
+    ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
+  fi
+}
+trap cleanup_caps EXIT
 
 echo "================================================================================"
 echo "  PERFORMANCE INTELLIGENCE PLATFORM — AUTOMATED SMOKE TEST & CLUSTER SETUP"
@@ -165,6 +177,7 @@ if [[ "$RUN_BENCHMARK" == 1 ]]; then
   echo "================================================================================"
   echo "  LAUNCHING FULL TP4/PP4 BENCHMARK (STEP 10 ACROSS ALL CONTEXTS & CONCURRENCIES)"
   echo "================================================================================"
+  trap - EXIT
   exec bash "$SCRIPT_DIR/run_master_benchmark.sh" \
     --topologies tp4_pp4 \
     --step 10 \
@@ -172,7 +185,6 @@ if [[ "$RUN_BENCHMARK" == 1 ]]; then
     --contexts all \
     --concurrencies all
 else
-  # Ensure rate limits on both nodes are cleaned up so cluster remains native
-  sudo -n tc qdisc del dev ens3 root 2>/dev/null || true
-  ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
+  cleanup_caps
+  trap - EXIT
 fi

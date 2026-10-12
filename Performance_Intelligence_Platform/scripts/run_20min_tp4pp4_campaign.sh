@@ -61,9 +61,21 @@ echo "  Worker Node 1     : $NODE1_IP"
 echo "  Expected Runtime  : ~20 to 22 minutes"
 echo "================================================================================"
 
+: "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
+[[ -f "$SSH_KEY" ]] || SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_rsa}"
+
+cleanup_caps() {
+  echo "--> Draining and resetting traffic control rate caps on both nodes..."
+  sudo -n tc qdisc del dev ens3 root 2>/dev/null || true
+  if [[ -n "${NODE1_IP:-}" ]]; then
+    ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
+  fi
+}
+trap cleanup_caps EXIT
+
 # 1. Verify Inter-Node Passwordless SSH
 echo "--> [1/4] Verifying inter-node passwordless SSH connectivity..."
-if ! ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "nvidia-smi" >/dev/null 2>&1; then
+if ! ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "nvidia-smi" >/dev/null 2>&1; then
   echo "ERROR: Passwordless SSH to Node 1 ($NODE1_IP) failed."
   echo "Please verify ~/.ssh/authorized_keys on Node 1 before starting."
   exit 2
@@ -73,15 +85,15 @@ echo "    ✅ Dual-node cluster verified. 16 GPUs accessible."
 # 2. Enforce 20 Gbps Traffic Control on ens3 (Both Nodes)
 echo "--> [2/4] Applying 20 Gbps rate shaping (tc HTB) on ens3 across both nodes..."
 if ip link show ens3 >/dev/null 2>&1; then
-  sudo tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
-  sudo tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+  sudo -n tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
+  sudo -n tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
   echo "    Node 0: ens3 configured at 20 Gbps."
 fi
 
-ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "
+ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "
   if ip link show ens3 >/dev/null 2>&1; then
-    sudo tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
-    sudo tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+    sudo -n tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
+    sudo -n tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
     echo '    Node 1: ens3 configured at 20 Gbps.'
   fi
 " 2>/dev/null || true
@@ -94,12 +106,14 @@ if [[ ! -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
 export VENV_DIR="$VENV_DIR"
 export NODE0_IP="$NODE0_IP"
 export NODE1_IP="$NODE1_IP"
-export SSH_KEY="\$HOME/.ssh/id_rsa"
+export SSH_KEY="$SSH_KEY"
 EOF
   echo "    Initial RUN_CONFIG.env created with node topology."
 else
   echo "    Existing RUN_CONFIG.env preserved without clobbering."
 fi
+source "$SCRIPT_DIR/RUN_CONFIG.env" 2>/dev/null || true
+unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true
 
 # 4. Launch the 20-Minute Distributed TP4/PP4 Campaign on Ray Cluster
 echo "--> [4/4] Launching Distributed TP4/PP4 20G Suite (16 GPUs across 2 Nodes)..."
@@ -114,8 +128,7 @@ echo "==========================================================================
 # Pre-flight cleanup
 echo "    Purging any lingering Ray / vLLM workers across cluster..."
 ray stop -f 2>/dev/null || true
-ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "ray stop -f 2>/dev/null || true; pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true" 2>/dev/null || true
-pkill -9 -f 'vllm.entrypoints|vllm serve|ray::RayWorkerProc' 2>/dev/null || true
+ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "ray stop -f 2>/dev/null || true" 2>/dev/null || true
 sleep 3
 
 START_TIME=$(date +%s)

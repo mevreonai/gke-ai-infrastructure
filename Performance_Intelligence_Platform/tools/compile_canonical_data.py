@@ -6,14 +6,22 @@ import glob
 import pandas as pd
 import numpy as np
 
-def build_canonical_dataset():
+def build_canonical_dataset(run_dir=None):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    csv_path = os.path.join(base_dir, "data", "results", "real_data", "combined_vllm_runs.csv")
     out_json = os.path.join(base_dir, "dashboard", "DASHBOARD_CANONICAL_DATA.json")
+    
+    csv_path = None
+    if run_dir and os.path.exists(run_dir):
+        run_csvs = glob.glob(os.path.join(run_dir, "**", "*.csv"), recursive=True)
+        if run_csvs:
+            csv_path = run_csvs[0]
+            
+    if not csv_path:
+        csv_path = os.path.join(base_dir, "data", "results", "real_data", "combined_vllm_runs.csv")
     
     if not os.path.exists(csv_path):
         # Fall back to any csv found in results
-        csv_candidates = glob.glob(os.path.join(base_dir, "data", "results", "*.csv"))
+        csv_candidates = glob.glob(os.path.join(base_dir, "data", "results", "**", "*.csv"), recursive=True)
         if csv_candidates:
             csv_path = csv_candidates[0]
         else:
@@ -72,8 +80,20 @@ def build_canonical_dataset():
     os.makedirs(os.path.dirname(out_json), exist_ok=True)
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump(canonical_payload, f, indent=2)
+    if run_dir and os.path.exists(run_dir):
+        run_out = os.path.join(run_dir, "DASHBOARD_CANONICAL_DATA.json")
+        with open(run_out, "w", encoding="utf-8") as f:
+            json.dump(canonical_payload, f, indent=2)
         
     print(f"Successfully compiled canonical dataset to {out_json} ({os.path.getsize(out_json)} bytes).")
 
 if __name__ == "__main__":
-    build_canonical_dataset()
+    target_dir = None
+    if len(sys.argv) > 1:
+        if sys.argv[1].startswith("--run-dir="):
+            target_dir = sys.argv[1].split("=", 1)[1]
+        elif sys.argv[1] == "--run-dir" and len(sys.argv) > 2:
+            target_dir = sys.argv[2]
+        else:
+            target_dir = sys.argv[1]
+    build_canonical_dataset(target_dir)

@@ -50,19 +50,20 @@ nccl_multi_node_v6_aligned_env() {
   # Preserve V6 network-specific settings such as NCCL_NET=Socket / NCCL_SOCKET_IFNAME
   # if RUN_CONFIG.env provides them, but guarantee local GPU IPC paths are not disabled.
   nccl_clear_local_forcing_only
+  unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true
   nccl_assert_no_local_forcing
 }
 
 # Emit shell exports that can be prepended to an SSH command before starting a
 # remote Ray process.  All currently configured NCCL_* variables are propagated
-# except the three local-transport forcing variables, which are always omitted.
+# except local-transport forcing variables and Tree/Simple overrides.
 # LD_LIBRARY_PATH is propagated because the proven GCP/V6 Socket workaround uses
 # /tmp/clean_nccl_libs on both hosts.
 nccl_remote_v6_aligned_exports() {
   local v value q
   for v in $(compgen -v | grep '^NCCL_' | LC_ALL=C sort || true); do
     case "$v" in
-      NCCL_P2P_DISABLE|NCCL_SHM_DISABLE|NCCL_P2P_LEVEL) continue ;;
+      NCCL_P2P_DISABLE|NCCL_SHM_DISABLE|NCCL_P2P_LEVEL|NCCL_ALGO|NCCL_PROTO) continue ;;
     esac
     value=${!v}
     printf -v q '%q' "$value"
@@ -72,7 +73,7 @@ nccl_remote_v6_aligned_exports() {
     printf -v q '%q' "$LD_LIBRARY_PATH"
     printf 'export LD_LIBRARY_PATH=%s; ' "$q"
   fi
-  for var in CUDA_DEVICE_ORDER MODEL REVISION VLLM_MODEL VLLM_REVISION VLLM_MOE_BACKEND VLLM_FLASHINFER_AUTOTUNE VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS VLLM_PP_LAYER_PARTITION VLLM_DISABLE_PYNCCL; do
+  for var in CUDA_DEVICE_ORDER MODEL REVISION VLLM_MODEL VLLM_REVISION VLLM_MOE_BACKEND VLLM_FLASHINFER_AUTOTUNE VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS VLLM_PP_LAYER_PARTITION; do
     if [[ -n "${!var+x}" ]]; then
       printf -v q '%q' "${!var}"
       printf 'export %s=%s; ' "$var" "$q"
