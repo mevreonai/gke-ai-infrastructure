@@ -11,7 +11,7 @@
 # ==============================================================================
 set -euo pipefail
 
-VENV_PATH="${1:-$HOME/pip_vllm_env}"
+VENV_PATH="${1:-${VENV_DIR:-$HOME/vllm_env}}"
 
 echo "================================================================================"
 echo "  PERFORMANCE INTELLIGENCE PLATFORM — AUTOMATED NODE BOOTSTRAP"
@@ -48,6 +48,13 @@ if [[ ! -d "$VENV_PATH" ]]; then
 fi
 source "$VENV_PATH/bin/activate"
 
+# Symlink harmonization (Blocker 10 / N9: eliminate dual-name vllm_env vs pip_vllm_env drift)
+if [[ "$VENV_PATH" == *"/vllm_env" && ! -e "$HOME/pip_vllm_env" ]]; then
+  ln -sfn "$VENV_PATH" "$HOME/pip_vllm_env" 2>/dev/null || true
+elif [[ "$VENV_PATH" == *"/pip_vllm_env" && ! -e "$HOME/vllm_env" ]]; then
+  ln -sfn "$VENV_PATH" "$HOME/vllm_env" 2>/dev/null || true
+fi
+
 pip install --upgrade -q pip setuptools wheel
 
 # 4. Install PyTorch & Core AI Serving Stack (Pinned Invariant Stack)
@@ -66,6 +73,9 @@ echo "    Installing FlashInfer (flashinfer-python==0.6.18)..."
 pip install -q "flashinfer-python==0.6.18" 2>/dev/null || pip install -q flashinfer-python 2>/dev/null || {
   echo "    Notice: flashinfer-python wheel install completed or handled by vLLM native backend."
 }
+
+# Snapshot package dependencies manifest (Blocker 10 / N9)
+pip freeze > "$VENV_PATH/PIP_FREEZE.txt"
 
 # 5. Sanity check GPU and software stack
 echo "--> [5/5] Verifying installed software stack..."

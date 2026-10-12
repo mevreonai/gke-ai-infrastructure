@@ -256,14 +256,27 @@ RUN_PROFILES = {
 
 def run_warmup(vllm, bench_help, model, port, b, bdir, seed, env):
     n=int(b.get("warmups",0) or 0)
-    if n<=0: return {"ran":False}
+    if n<=0: return {"ran":False,"success":True}
     c=int(b.get("concurrency",1))
     prompts_cnt=max(n, 2*c)
     wb=dict(b); wb["prompts"]=prompts_cnt; wb["concurrency"]=c
-    cmd=build_bench_cmd(vllm,bench_help,model,port,wb,bdir,"unused.json",seed,measured=False)
+    warmup_seed = (int(seed) + 9999) % 100000
+    cmd=build_bench_cmd(vllm,bench_help,model,port,wb,bdir,"unused.json",warmup_seed,measured=False)
     t0=time.time()
-    with (bdir/"warmup_stdout.log").open("w") as log: rc=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT,env=env)
-    return {"ran":True,"command":cmd,"start":t0,"end":time.time(),"exit_code":rc,"warmup_prompts":prompts_cnt,"warmup_concurrency":c}
+    warmup_log = bdir / "warmup_stdout.log"
+    with warmup_log.open("w") as log:
+        rc=subprocess.call(cmd,stdout=log,stderr=subprocess.STDOUT,env=env)
+    warmup_ok = (rc == 0)
+    if warmup_ok and warmup_log.exists():
+        try:
+            content = warmup_log.read_text(errors="ignore")
+            if "All requests failed" in content or "Zero completed requests" in content:
+                warmup_ok = False
+            elif "failed_requests" in content and "successful_requests: 0" in content:
+                warmup_ok = False
+        except Exception:
+            pass
+    return {"ran":True,"success":warmup_ok,"command":cmd,"start":t0,"end":time.time(),"exit_code":rc,"seed":warmup_seed,"warmup_prompts":prompts_cnt,"warmup_concurrency":c}
 
 def drain_vram_barrier(timeout=15):
     """Kill all vLLM processes and drain VRAM to ensure cold-cache measurement.

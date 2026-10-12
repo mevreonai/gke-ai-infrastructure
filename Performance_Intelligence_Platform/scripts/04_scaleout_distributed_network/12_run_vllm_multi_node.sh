@@ -6,9 +6,29 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 source "$SCRIPT_DIR/20_nccl_policy.sh"
 PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE=${PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE:-}
 V8_GCP_NETWORK_PROVENANCE_OVERRIDE=${V8_GCP_NETWORK_PROVENANCE_OVERRIDE:-$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE}
+CALLER_TOPO="${TOPOLOGY_SELECTION:-}"
+CALLER_BW="${NETWORK_BANDWIDTH_SELECTION:-}"
+CALLER_NET_MODE="${V8_VLLM_NETWORK_MODE:-}"
+CALLER_NET_CAP="${V8_VLLM_NETWORK_CAP_GBPS:-}"
+CALLER_PROV="${V8_GCP_NETWORK_PROVENANCE_OVERRIDE:-$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE}"
+CALLER_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-}"
+CALLER_CASES="${CASES_FILE:-}"
+CALLER_OUT_ROOT="${OUT_ROOT:-}"
+
 CONFIG_CANDIDATES=("$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env" "$HOME/v8_additional_runs_suite/RUN_CONFIG.env")
 for f in "${CONFIG_CANDIDATES[@]}"; do if [[ -f "$f" ]]; then source "$f"; break; fi; done
-unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true
+
+# Caller overrides and clean environment invariants take precedence over sourced defaults
+[[ -n "$CALLER_TOPO" ]] && export TOPOLOGY_SELECTION="$CALLER_TOPO"
+[[ -n "$CALLER_BW" ]] && export NETWORK_BANDWIDTH_SELECTION="$CALLER_BW"
+[[ -n "$CALLER_NET_MODE" ]] && export V8_VLLM_NETWORK_MODE="$CALLER_NET_MODE"
+[[ -n "$CALLER_NET_CAP" ]] && export V8_VLLM_NETWORK_CAP_GBPS="$CALLER_NET_CAP"
+[[ -n "$CALLER_PROV" ]] && export V8_GCP_NETWORK_PROVENANCE_OVERRIDE="$CALLER_PROV"
+[[ -n "$CALLER_SKIP_OPS" ]] && export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="$CALLER_SKIP_OPS"
+[[ -n "$CALLER_CASES" ]] && export CASES_FILE="$CALLER_CASES"
+[[ -n "$CALLER_OUT_ROOT" ]] && export OUT_ROOT="$CALLER_OUT_ROOT"
+unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+
 if [[ -n "$V8_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK_PROVENANCE="$V8_GCP_NETWORK_PROVENANCE_OVERRIDE"; fi
 : "${NODE0_IP:?NODE0_IP missing; run 00_init_gcp_config.sh or provide RUN_CONFIG.env}"
 : "${NODE1_IP:?NODE1_IP missing; multi-node run requires node1}"
@@ -39,14 +59,22 @@ if [[ ${1:-} == "--group" ]]; then SELECT_MODE="$2"; shift 2; fi
 if [[ ${1:-} == "--case" ]]; then SELECT_MODE="case:$2"; shift 2; fi
 
 mapfile -t CASE_ROWS < <(python3 - "$CASES_FILE" "$SELECT_MODE" <<'PY'
-import json,sys
+import json,sys,os
 cfg=json.load(open(sys.argv[1])); sel=sys.argv[2]
 raw_cases = cfg['cases']
 if isinstance(raw_cases, dict):
     raw_cases = list(raw_cases.values())
+topo_sel = os.environ.get('TOPOLOGY_SELECTION', 'all')
+topos = [t.strip().lower() for t in topo_sel.split(',')] if (topo_sel and topo_sel != 'all') else []
 for c in raw_cases:
     ok = sel=='all' or (sel.startswith('case:') and c['name']==sel.split(':',1)[1]) or (not sel.startswith('case:') and sel in c.get('groups',[]))
-    if ok: print(f"{c['name']}|{c.get('ray_gpus_per_node',8)}")
+    if not ok:
+        continue
+    if topos:
+        c_str = (str(c.get('topology', '')) + ' ' + str(c.get('name', ''))).lower()
+        if not any(t in c_str for t in topos):
+            continue
+    print(f"{c['name']}|{c.get('ray_gpus_per_node',8)}")
 PY
 )
 [[ ${#CASE_ROWS[@]} -gt 0 ]] || { echo "No multi-node cases selected"; exit 2; }

@@ -7,6 +7,7 @@
 # - Multi-node GCP may retain the V6 Socket net-plugin workaround (NCCL_NET=Socket),
 #   but must never disable local P2P or SHM inside a node.
 set -o pipefail
+unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL 2>/dev/null || true
 
 nccl_clear_all_for_single_node() {
   local v

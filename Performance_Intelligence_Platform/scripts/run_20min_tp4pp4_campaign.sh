@@ -71,7 +71,7 @@ cleanup_caps() {
     ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
   fi
 }
-trap cleanup_caps EXIT
+trap cleanup_caps EXIT INT TERM ERR
 
 # 1. Verify Inter-Node Passwordless SSH
 echo "--> [1/4] Verifying inter-node passwordless SSH connectivity..."
@@ -87,6 +87,7 @@ echo "--> [2/4] Applying 20 Gbps rate shaping (tc HTB) on ens3 across both nodes
 if ip link show ens3 >/dev/null 2>&1; then
   sudo -n tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
   sudo -n tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+  sudo -n tc -s qdisc show dev ens3 > "$OUT_DIR/node0_tc_qdisc_active.txt" 2>/dev/null || true
   echo "    Node 0: ens3 configured at 20 Gbps."
 fi
 
@@ -94,9 +95,11 @@ ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=
   if ip link show ens3 >/dev/null 2>&1; then
     sudo -n tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
     sudo -n tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+    sudo -n tc -s qdisc show dev ens3 > /tmp/node1_tc_qdisc_active.txt 2>/dev/null || true
     echo '    Node 1: ens3 configured at 20 Gbps.'
   fi
 " 2>/dev/null || true
+scp -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP:/tmp/node1_tc_qdisc_active.txt" "$OUT_DIR/node1_tc_qdisc_active.txt" 2>/dev/null || true
 
 # 3. Synchronize RUN_CONFIG.env
 echo "--> [3/4] Exporting execution environment and kernel parameters..."
@@ -135,8 +138,14 @@ START_TIME=$(date +%s)
 
 cd "$SCRIPT_DIR/04_scaleout_distributed_network"
 export OUT_ROOT="$OUT_DIR"
-export CASES_FILE="$SCRIPT_DIR/04_scaleout_distributed_network/10b_vllm_multi_node_cases.json"
-bash ./12_run_vllm_multi_node.sh --case tp4_pp4_dist
+if [[ -f "$SCRIPT_DIR/master_benchmark_cases.json" ]]; then
+  export CASES_FILE="$SCRIPT_DIR/master_benchmark_cases.json"
+  TARGET_CASE="tp4_pp4_dist_load"
+else
+  export CASES_FILE="$SCRIPT_DIR/04_scaleout_distributed_network/10b_vllm_multi_node_cases.json"
+  TARGET_CASE="tp4_pp4_dist"
+fi
+bash ./12_run_vllm_multi_node.sh --case "$TARGET_CASE"
 
 END_TIME=$(date +%s)
 TOTAL_DURATION=$((END_TIME - START_TIME))

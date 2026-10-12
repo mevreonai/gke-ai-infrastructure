@@ -5,8 +5,28 @@
 # Automatically collects Chrome traces (*.pt.trace.json) from Node 0 and Node 1 via SCP.
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+CALLER_MODEL="${MODEL:-}"
+CALLER_REVISION="${REVISION:-}"
+CALLER_TOPOLOGY="${TOPOLOGY:-}"
+CALLER_INPUT_LEN="${INPUT_LEN:-}"
+CALLER_OUTPUT_LEN="${OUTPUT_LEN:-}"
+CALLER_CONCURRENCY="${CONCURRENCY:-}"
+CALLER_PORT="${PORT:-}"
+CALLER_PROFILE_ROOT="${PROFILE_ROOT:-}"
+CALLER_OUT_ROOT="${OUT_ROOT:-}"
+
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
-unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true
+
+[[ -n "$CALLER_MODEL" ]] && export MODEL="$CALLER_MODEL"
+[[ -n "$CALLER_REVISION" ]] && export REVISION="$CALLER_REVISION"
+[[ -n "$CALLER_TOPOLOGY" ]] && export TOPOLOGY="$CALLER_TOPOLOGY"
+[[ -n "$CALLER_INPUT_LEN" ]] && export INPUT_LEN="$CALLER_INPUT_LEN"
+[[ -n "$CALLER_OUTPUT_LEN" ]] && export OUTPUT_LEN="$CALLER_OUTPUT_LEN"
+[[ -n "$CALLER_CONCURRENCY" ]] && export CONCURRENCY="$CALLER_CONCURRENCY"
+[[ -n "$CALLER_PORT" ]] && export PORT="$CALLER_PORT"
+[[ -n "$CALLER_PROFILE_ROOT" ]] && export PROFILE_ROOT="$CALLER_PROFILE_ROOT"
+[[ -n "$CALLER_OUT_ROOT" ]] && export OUT_ROOT="$CALLER_OUT_ROOT"
+unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL VLLM_PP_LAYER_PARTITION 2>/dev/null || true
 if [[ -f "$SCRIPT_DIR/20_nccl_policy.sh" ]]; then
   source "$SCRIPT_DIR/20_nccl_policy.sh"
   nccl_multi_node_v6_aligned_env

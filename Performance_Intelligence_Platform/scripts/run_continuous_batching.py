@@ -206,6 +206,9 @@ def main():
                 # Standard single-stream benchmark execution
                 warm = run_warmup(vllm, bench_help, model, args.port, b, bdir, args.seed_base + ci * 1000 + bi * 10, os.environ.copy())
                 (bdir / "warmup_manifest.json").write_text(json.dumps(warm, indent=2))
+                if warm.get("ran") and (warm.get("exit_code") != 0 or not warm.get("success", True)):
+                    case_rec["benchmarks"].append({**b, "status": "WARMUP_FAILED", "exit_code": warm.get("exit_code")})
+                    continue
                 
                 # Metrics sampler
                 metrics_cmd = [py, sampler, "--url", f"http://127.0.0.1:{args.port}/metrics", "--interval", "0.5",

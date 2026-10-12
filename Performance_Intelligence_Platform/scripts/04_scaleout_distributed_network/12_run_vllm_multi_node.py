@@ -111,7 +111,7 @@ def main():
                     continue
                 warm=run_warmup(vllm,bench_help,model,args.port,b,bdir,args.seed_base+ci*1000+bi*10,env)
                 (bdir/"warmup_manifest.json").write_text(json.dumps(warm,indent=2))
-                if warm.get("ran") and warm.get("exit_code")!=0:
+                if warm.get("ran") and (warm.get("exit_code")!=0 or not warm.get("success",True)):
                     brec={**b,"status":"WARMUP_FAILED","exit_code":warm.get("exit_code")}
                     rec["benchmarks"].append(brec); observations[b["name"]]=brec; continue
                 interval=float(case.get("metrics_interval_s",cfg["server_defaults"].get("metrics_interval_s",0.5)))

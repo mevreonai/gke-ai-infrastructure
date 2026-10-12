@@ -102,7 +102,7 @@ def main():
 
                 warm=run_warmup(vllm,bench_help,model,args.port,b,bdir,args.seed_base+ci*1000+bi*10,env)
                 (bdir/"warmup_manifest.json").write_text(json.dumps(warm,indent=2))
-                if warm.get("ran") and warm.get("exit_code")!=0:
+                if warm.get("ran") and (warm.get("exit_code")!=0 or not warm.get("success",True)):
                     rec={**b,"status":"WARMUP_FAILED","exit_code":warm.get("exit_code")}
                     case_rec["benchmarks"].append(rec); observations[b["name"]]=rec; continue
                 time.sleep(1)

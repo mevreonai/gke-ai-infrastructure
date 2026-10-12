@@ -29,6 +29,14 @@ HW_DIR="$SUITE_ROOT/01_preflight_and_diagnostics"
 NET_DIR="$SUITE_ROOT/04_scaleout_distributed_network"
 PROF_DIR="$SUITE_ROOT/06_deep_kernel_and_torch_profiling"
 
+if command -v python3 >/dev/null 2>&1 && ! python3 --version 2>&1 | grep -q "WindowsApps\|Microsoft Store"; then
+  PYTHON_EXEC="python3"
+elif command -v python >/dev/null 2>&1; then
+  PYTHON_EXEC="python"
+else
+  PYTHON_EXEC="python3"
+fi
+
 : "${VENV_DIR:=$HOME/vllm_env}"
 : "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
 : "${RESUME:=1}"
@@ -98,6 +106,22 @@ while [[ $# -gt 0 ]]; do
       ;;
     --concurrencies)
       SELECTED_CONCURRENCIES="$2"
+      shift 2
+      ;;
+    --node0-ip)
+      NODE0_IP="$2"
+      shift 2
+      ;;
+    --node1-ip)
+      NODE1_IP="$2"
+      shift 2
+      ;;
+    --ssh-key)
+      SSH_KEY="$2"
+      shift 2
+      ;;
+    --venv-dir)
+      VENV_DIR="$2"
       shift 2
       ;;
     --step)
@@ -219,6 +243,13 @@ echo "  Resume Mode  : $RESUME"
 echo "================================================================================"
 
 # Apply CLI overrides over environment defaults
+: "${NODE0_IP:=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "127.0.0.1")}"
+: "${NODE1_IP:=}"
+: "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
+: "${VENV_DIR:=$HOME/vllm_env}"
+
+export NODE0_IP NODE1_IP SSH_KEY VENV_DIR MASTER_ROOT SUITE_ROOT RUN_ID DRY_RUN RESUME
+
 if [[ -n "$SELECTED_MODEL" ]]; then
   export MODEL="$SELECTED_MODEL"
   export VLLM_MODEL="$SELECTED_MODEL"
@@ -371,6 +402,8 @@ step_should_run() {
 }
 
 
+FAILED_STEPS=()
+
 run_step() {
   local num="$1"
   local name="$2"
@@ -397,8 +430,13 @@ run_step() {
   set -e
   e=$(date +%s)
   printf '{"step_num":%s,"step_name":"%s","rc":%s,"dry_run":false,"start":%s,"end":%s}\n' "$num" "$name" "$rc" "$s" "$e" >> "$MASTER_ROOT/master_step_status.jsonl"
-  [[ "$rc" == 0 ]] && touch "$marker"
-  return "$rc"
+  if [[ "$rc" == 0 ]]; then
+    touch "$marker"
+  else
+    echo "  [WARN] Step $num ($name) exited with code $rc. Campaign continues without early termination."
+    FAILED_STEPS+=("step_${num}_${name}")
+  fi
+  return 0
 }
 
 # ------------------------------------------------------------------------------
@@ -919,6 +957,90 @@ fi
 
 echo ""
 echo "================================================================================"
+echo "  AUDITING CAMPAIGN CASE MANIFESTS ACROSS ALL STEPS (BLOCKER 7)"
+echo "================================================================================"
+if [[ "$DRY_RUN" == 1 ]]; then
+  echo "  [DRY-RUN] Campaign dry-run completed successfully across all simulated steps."
+  AUDIT_RC=0
+else
+  "$PYTHON_EXEC" - << 'PY' "$MASTER_ROOT" "${FAILED_STEPS[@]}"
+import json, sys
+from pathlib import Path
+
+master_root = Path(sys.argv[1])
+failed_steps = sys.argv[2:] if len(sys.argv) > 2 else []
+
+total_cases = 0
+completed_cases = 0
+failed_cases = 0
+skipped_cases = 0
+failure_details = []
+
+for manifest in sorted(master_root.rglob("*manifest*.json")):
+    if manifest.name in ("vllm_surrogate_manifest.json", "master_step_status.jsonl"):
+        continue
+    try:
+        data = json.loads(manifest.read_text(encoding="utf-8"))
+    except Exception:
+        continue
+
+    if "case" in data or "name" in data:
+        cname = data.get("case") or data.get("name")
+        status = data.get("status")
+        err = data.get("error")
+        total_cases += 1
+        if status == "COMPLETED":
+            completed_cases += 1
+        elif status in ("SKIPPED", "SKIPPED_BY_SAFETY_GATE"):
+            skipped_cases += 1
+        elif status == "FAILED" or err:
+            failed_cases += 1
+            failure_details.append(f"{manifest.relative_to(master_root)}: {cname} failed ({err or status})")
+        else:
+            benchmarks = data.get("benchmarks", [])
+            if benchmarks:
+                b_failed = [b for b in benchmarks if b.get("status") == "FAILED"]
+                if b_failed:
+                    failed_cases += 1
+                    failure_details.append(f"{manifest.relative_to(master_root)}: {len(b_failed)} benchmarks failed")
+                else:
+                    completed_cases += 1
+
+summary_payload = {
+    "total_cases_evaluated": total_cases,
+    "completed_cases": completed_cases,
+    "failed_cases": failed_cases,
+    "skipped_cases": skipped_cases,
+    "failed_steps_count": len(failed_steps),
+    "failed_steps": failed_steps,
+    "failure_details": failure_details,
+    "campaign_overall_status": "FAILED" if (failed_cases > 0 or len(failed_steps) > 0) else "PASSED"
+}
+
+summary_path = master_root / "CAMPAIGN_SUMMARY.json"
+summary_path.write_text(json.dumps(summary_payload, indent=2), encoding="utf-8")
+print(f"  Campaign Manifest Audit Summary ({summary_path}):")
+print(f"    Total Cases Evaluated : {total_cases}")
+print(f"    Completed Successfully: {completed_cases}")
+print(f"    Failed Cases          : {failed_cases}")
+print(f"    Skipped (Safety Gate) : {skipped_cases}")
+print(f"    Failed Steps Recorded : {len(failed_steps)}")
+if failure_details:
+    print("  Failed Case Details:")
+    for fd in failure_details[:10]:
+        print(f"    * {fd}")
+if summary_payload["campaign_overall_status"] == "FAILED":
+    print("  [ALERT] Campaign recorded failures. Exiting non-zero per Blocker 7.")
+    sys.exit(1)
+else:
+    print("  [OK] All evaluated cases and steps completed with zero failures.")
+PY
+  AUDIT_RC=$?
+fi
+
+echo ""
+echo "================================================================================"
 echo "  ALL STEPS COMPLETE (including deep-profile extensions if enabled)"
 echo "  Telemetry & Logs Vault: $MASTER_ROOT"
 echo "================================================================================"
+exit "$AUDIT_RC"
