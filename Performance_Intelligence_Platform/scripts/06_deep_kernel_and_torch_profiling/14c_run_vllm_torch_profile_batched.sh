@@ -38,6 +38,7 @@ echo "Starting fresh cold-cache vLLM server with full serving optimization flags
 vllm serve "$MODEL" --revision "$REVISION" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port "$PORT" \
   --tensor-parallel-size "$TP" --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 64 \
   --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
+  --moe-backend flashinfer_cutlass --enable-flashinfer-autotune \
   --no-enable-prefix-caching --enable-logging-iteration-details --profiler-config "$PROF_JSON" \
   > "$PROFILE_ROOT/server.log" 2>&1 & PID=$!
 

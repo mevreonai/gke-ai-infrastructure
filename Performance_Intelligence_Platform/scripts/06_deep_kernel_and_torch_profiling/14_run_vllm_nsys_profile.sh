@@ -28,6 +28,7 @@ export VLLM_WORKER_MULTIPROC_METHOD=spawn
 : "${ENFORCE_EAGER:=0}"
 SERVER_CMD=(vllm serve "$MODEL" --revision "$REVISION" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port "$PORT"
   --tensor-parallel-size "$TP" --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32
+  --moe-backend flashinfer_cutlass --enable-flashinfer-autotune
   --no-enable-prefix-caching --enable-layerwise-nvtx-tracing --enable-logging-iteration-details
   --profiler-config.profiler cuda)
 

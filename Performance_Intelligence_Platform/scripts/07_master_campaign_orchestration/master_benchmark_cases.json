@@ -291,7 +291,7 @@
         3
       ],
       "max_num_batched_tokens": 8192,
-      "max_num_seqs": 16,
+      "max_num_seqs": 32,
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
@@ -447,7 +447,7 @@
         7
       ],
       "max_num_batched_tokens": 8192,
-      "max_num_seqs": 16,
+      "max_num_seqs": 32,
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
@@ -603,7 +603,7 @@
         7
       ],
       "max_num_batched_tokens": 8192,
-      "max_num_seqs": 16,
+      "max_num_seqs": 32,
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
@@ -759,7 +759,7 @@
         7
       ],
       "max_num_batched_tokens": 8192,
-      "max_num_seqs": 16,
+      "max_num_seqs": 32,
       "prefix_caching": false,
       "offload_gib": 0,
       "benchmarks": [
@@ -1689,7 +1689,12 @@
       "purpose": "Open-loop Poisson arrival rate sweep at 8K context: measures throughput-latency trade-off under realistic arrival patterns (V8 parity: request_rate=1,2,4,8,inf).",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "prefix_caching": false,
@@ -1752,7 +1757,12 @@
       "purpose": "Scheduler max_num_seqs sensitivity sweep: measures impact of admission cap (8,16,32,64,128) on throughput and tail latency at 8K c=32.",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 8,
       "prefix_caching": false,
@@ -1779,7 +1789,12 @@
       "purpose": "Scheduler max_num_seqs=16 evaluation point.",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 16,
       "prefix_caching": false,
@@ -1806,7 +1821,12 @@
       "purpose": "Scheduler max_num_seqs=64 evaluation point (baseline comparison).",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "prefix_caching": false,
@@ -1833,7 +1853,12 @@
       "purpose": "Scheduler max_num_seqs=128 evaluation point (over-admission stress test).",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 128,
       "prefix_caching": false,
@@ -1860,7 +1885,12 @@
       "purpose": "Measures observability overhead: runs identical 8K c=8 workload with full metrics vs minimal metrics to quantify Prometheus/kv-cache-metrics telemetry cost.",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "prefix_caching": false,
@@ -1896,7 +1926,12 @@
       "purpose": "Measures observability overhead: runs identical 8K workload with full metrics to compare against minimal metrics.",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 8192,
       "max_num_seqs": 64,
       "prefix_caching": false,
@@ -1931,7 +1966,12 @@
       "purpose": "R1: Continuous long-context power-law curve for TP4 (16K, 32K, 64K, 256K) to map the cache inflection on 4-GPU sub-cluster (V8 parity: had TP8 only, adding TP4).",
       "tp": 4,
       "pp": 1,
-      "gpu_indices": [0, 1, 2, 3],
+      "gpu_indices": [
+        0,
+        1,
+        2,
+        3
+      ],
       "max_num_batched_tokens": 16384,
       "max_num_seqs": 16,
       "prefix_caching": false,

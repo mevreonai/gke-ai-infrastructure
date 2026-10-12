@@ -1,0 +1,61 @@
+PERFORMANCE INTELLIGENCE PLATFORM — AUDIT VERIFICATION REPORT
+Total: 29 | Passed: 29 | Failed: 0 | Rate: 100.0%
+
+[PASS] Blocker 01 - All .sh scripts committed with executable mode (100755) in git index
+      Details: 49 total scripts checked, 0 non-executable
+[PASS] Blocker 02 - Master exports topology_matches, quotes sub-shell paths, and avoids illegal local in bash -c
+      Details: export -f topology_matches present, $TP8_DIR quoted, PID=$! assigned outside function
+[PASS] Blocker 03 - All shared dependencies present in 02/ and 06/ folders (sampler, nccl_policy, ray_audit, cases)
+      Details: All 5 required shared files exist in their target directories
+[PASS] Blocker 04 - VLLM_PP_LAYER_PARTITION left unset by default across master, configs, smoke, and helpers
+      Details: Unset everywhere so vLLM defaults apply (14/13 PP2, 7/7/7/6 PP4)
+[PASS] Blocker 05 - Blind 'pkill -9 -f vllm' replaced with targeted regex matching (vllm.entrypoints|vllm serve|RayWorkerProc)
+      Details: Prevents script and bash -c self-termination on cleanups
+[PASS] Blocker 06 - Two-server runner carries on across case failures and stops Ray in an EXIT trap
+      Details: Individual case error does not abort remaining cases; Ray stopped reliably
+[PASS] Blocker 07 - Dry runs do not create .done markers, --new-run supported, and results require completed benchmarks
+      Details: Guards resume mechanics from prematurely skipping real benchmarks
+[PASS] Blocker 08 - RUN_CONFIG.env is sourced BEFORE CLI flags and helper scripts do not clobber config
+      Details: CLI flags override environment defaults; helpers create local configs safely
+[PASS] Blocker 09 - Remote interface lookup uses $(i+1), qdisc show is recorded, and uncap cleans both nodes
+      Details: tc commands target actual ens3 interface on node 1 rather than interface '1'
+[PASS] Blocker 10 - Setup pins exact vLLM 0.29.0 / Torch 2.13.0 / FlashInfer 0.6.18 stack and Step 0 invokes readiness gate
+      Details: Exact binary stack pinned and gated on both nodes before execution
+[PASS] Blocker 11 - Continuous batching supports distributed multi-node Ray and Block 4 streams define concurrency
+      Details: Eliminates KeyError on mixed-traffic benchmarks and supports two-server layouts
+[PASS] Blocker 12 - Smoke test eliminates fake hardcoded 48.9 ms mock result and validates genuine server startup
+      Details: Ensures real end-to-end benchmark verification instead of false-positive passes
+[PASS] Blocker 13 - 1M prompt points safely clamped to 1,000,000 tokens so prompt + output fits context limit
+      Details: Prevents vLLM from silently rejecting requests with 'All requests failed'
+[PASS] Invariant S4.1 - --moe-backend flashinfer_cutlass explicitly passed on Step 4 and profile server launches
+      Details: Ensures FlashInfer CUTLASS is used across all profiles rather than auto falling back
+[PASS] Invariant S4.2 - --enable-flashinfer-autotune passed explicitly on vLLM server launches
+      Details: Explicitly enables FlashInfer kernel autotuning
+[PASS] Invariant S4.3 - VLLM_DISABLE_PYNCCL left unset so vLLM native NCCL communicator operates
+      Details: Preserves vLLM custom communicator for all-reduce and sequence parallelism
+[PASS] Invariant S4.4 - /tmp/clean_nccl_libs initialized on both Node 0 and Node 1
+      Details: Guarantees identical patched NCCL binaries across all inter-node workers
+[PASS] Invariant S4.5 - Multi-node profile script (14d) sources 20_nccl_policy.sh to propagate environment to Node 1
+      Details: Aligns Node 1 Ray workers with Node 0 library paths and network variables
+[PASS] Invariant S4.6 - Two-server load cases have max_num_seqs raised to 32 (matching concurrency 32)
+      Details: Prevents artificial queuing of requests at concurrency 32
+[PASS] Autotune S5.1 - VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS parameterization uses '-' instead of ':-'
+      Details: Ensures set-but-empty variable (Arm B) is respected and not clobbered
+[PASS] Autotune S5.2 - Multi-node runner does not hardcode skip list override for Node 1 export
+      Details: Allows both nodes to participate in identical autotune A/B arms without desync
+[PASS] Coverage S6.1 - Master benchmark executes baseline_matrix group and tp4 continuous context curve
+      Details: Fills baseline data points on TP8/PP1 and TP4/PP1
+[PASS] Coverage S6.2 - Step 14 profile filter uses comma-separated exact names matching profile matrix
+      Details: Selects all defined 2-node decode and prefill profiles
+[PASS] Coverage S6.3 - Multi-node profile case supports ENFORCE_EAGER switch for CUDA graph evaluation
+      Details: Enables both eager comparisons and graph-accelerated traces
+[PASS] Coverage S6.4 - TP4/PP2 layout included in two-server torch profile runner (14d)
+      Details: Ensures all four distributed layouts receive torch kernel profiling
+[PASS] Tools S8.1 - tools/compile_canonical_data.py exists and is syntactically valid
+      Details: C:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\tools\compile_canonical_data.py
+[PASS] Tools S8.2 - tools/run_v1_4_verification.py exists and is syntactically valid
+      Details: C:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\tools\run_v1_4_verification.py
+[PASS] Integrity S9.1 - All Python files (64) compile cleanly without SyntaxError
+      Details: 64 files compiled successfully
+[PASS] Integrity S9.2 - All JSON configurations (54) parse cleanly without JSONDecodeError
+      Details: 54 files validated successfully

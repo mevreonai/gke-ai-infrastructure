@@ -88,29 +88,18 @@ ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP"
 
 # 3. Synchronize RUN_CONFIG.env
 echo "--> [3/4] Exporting execution environment and kernel parameters..."
-cat << EOF > "$SCRIPT_DIR/RUN_CONFIG.env"
+if [[ ! -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
+  cat << EOF > "$SCRIPT_DIR/RUN_CONFIG.env"
+# Machine addresses and environment paths (Blocker 8 compliance: only paths/addresses)
 export VENV_DIR="$VENV_DIR"
 export NODE0_IP="$NODE0_IP"
 export NODE1_IP="$NODE1_IP"
 export SSH_KEY="\$HOME/.ssh/id_rsa"
-export MODEL="moonshotai/Kimi-Linear-48B-A3B-Instruct"
-export REVISION="e1df551a447157d4658b573f9a695d57658590e9"
-export CUDA_DEVICE_ORDER="PCI_BUS_ID"
-export VLLM_MOE_BACKEND="flashinfer_cutlass"
-export MOE_BACKEND="flashinfer_cutlass"
-export VLLM_FLASHINFER_AUTOTUNE="1"
-export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="\${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
-unset VLLM_PP_LAYER_PARTITION VLLM_DISABLE_PYNCCL || true
-export LD_LIBRARY_PATH="/tmp/clean_nccl_libs:\${LD_LIBRARY_PATH:-}"
-export NCCL_SOCKET_IFNAME="ens3"
-export GLOO_SOCKET_IFNAME="ens3"
-export NCCL_NET="Socket"
-unset NCCL_CROSS_NIC NCCL_ALGO NCCL_PROTO || true
-export NCCL_BUFFSIZE="4194304"
-export V8_VLLM_NETWORK_CAP_GBPS="20"
-export NETWORK_BANDWIDTH_SELECTION="20g"
-export TOPOLOGY_SELECTION="tp4_pp4"
 EOF
+  echo "    Initial RUN_CONFIG.env created with node topology."
+else
+  echo "    Existing RUN_CONFIG.env preserved without clobbering."
+fi
 
 # 4. Launch the 20-Minute Distributed TP4/PP4 Campaign on Ray Cluster
 echo "--> [4/4] Launching Distributed TP4/PP4 20G Suite (16 GPUs across 2 Nodes)..."

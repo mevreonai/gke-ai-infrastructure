@@ -698,10 +698,13 @@ if step_should_run 12; then
   run_step 12 "capped_and_resilience_profiles" bash -c "
     mkdir -p '$CAPPED_DIR'
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
-      clean_tc() {
-        local iface=\"\$1\"
-        sudo -n tc qdisc del dev \"\$iface\" root 2>/dev/null || true
-        sudo -n tc qdisc del dev \"\$iface\" ingress 2>/dev/null || true
+      clean_tc_both() {
+        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" root 2>/dev/null || true
+        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" ingress 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
+          \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '\$REMOTE_IFACE' ingress 2>/dev/null || true\" 2>/dev/null || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE' 2>/dev/null || true\" 2>/dev/null || true
       }
       apply_cap() {
         local rate=\$1
@@ -709,14 +712,15 @@ if step_should_run 12; then
         sudo -n tc class replace dev \"\$LOCAL_IFACE\" parent 1: classid 1:10 htb rate \"\${rate}gbit\" ceil \"\${rate}gbit\" 2>/dev/null || true
         ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
           \"sudo -n tc qdisc replace dev '\$REMOTE_IFACE' root handle 1: htb default 10 2>/dev/null || true && sudo -n tc class replace dev '\$REMOTE_IFACE' parent 1: classid 1:10 htb rate '\${rate}gbit' ceil '\${rate}gbit' 2>/dev/null || true\" 2>/dev/null || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE' 2>/dev/null || true\" 2>/dev/null || true
       }
       LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
       REMOTE_IFACE=\$(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'\")
 
       # 1. Native baseline
       if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"native\"* ]]; then
-        clean_tc \"\$LOCAL_IFACE\"
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true\" 2>/dev/null || true
+        clean_tc_both
         env OUT_ROOT='$CAPPED_DIR/native' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_NATIVE\" GCP_NETWORK_PROVENANCE=\"GCP_NATIVE\" V8_VLLM_NETWORK_MODE=\"native\" V8_VLLM_NETWORK_CAP_GBPS=\"native\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
       fi
 
@@ -724,25 +728,26 @@ if step_should_run 12; then
       if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"100g\"* ]]; then
         apply_cap \"100\"
         env OUT_ROOT='$CAPPED_DIR/capped_100g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_100G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_100G\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"100\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
-        clean_tc \"\$LOCAL_IFACE\"
+        clean_tc_both
       fi
 
       # 3. 20G Bandwidth Cap
       if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"20g\"* ]]; then
         apply_cap \"20\"
         env OUT_ROOT='$CAPPED_DIR/capped_20g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_20G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_20G\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"20\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
-        clean_tc \"\$LOCAL_IFACE\"
+        clean_tc_both
       fi
 
       # 4. Impaired (0.05% synthetic packet loss & jitter)
       if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"impaired\"* ]]; then
         sudo -n tc qdisc add dev \"\$LOCAL_IFACE\" root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true
         ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true\" 2>/dev/null || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE' 2>/dev/null || true\" 2>/dev/null || true
         env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_JITTER\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_JITTER\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"impaired\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
 
         # Restore clean network
-        clean_tc \"\$LOCAL_IFACE\"
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true\" 2>/dev/null || true
+        clean_tc_both
       fi
 
       # Generate resilience comparison report
