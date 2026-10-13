@@ -23,17 +23,17 @@ This directory contains operational tools required to qualify accelerator nodes,
   ```
 
 ### 3. `08_validate_kimi_linear.py`
-* **Purpose:** Validates model weights, config, and 27-layer architecture definition for Kimi-Linear before launch.
+* **Purpose:** Validates model weights, config, and architecture definition for Kimi-Linear (27 layers) and DeepSeek-V4.1-Flash (40 layers MLA KV-sharing) before launch.
 * **Usage:**
   ```bash
   python3 08_validate_kimi_linear.py
   ```
 
 ### 4. `22_readiness.py`
-* **Purpose:** Validates vLLM worker process initialization, tensor parallel rank spawning, and Ray head/worker connectivity.
+* **Purpose:** Validates vLLM worker process initialization, tensor parallel rank spawning, and Ray head/worker connectivity across `kimi-node-0` and `kimi-node-1`.
 * **Usage:**
   ```bash
-  python3 22_readiness.py --head-ip 10.128.0.43 --worker-ip 10.128.0.44 --num-gpus 16
+  python3 22_readiness.py --head-ip 10.128.0.39 --worker-ip 10.128.0.40 --num-gpus 16
   ```
 
 ### 5. `20_ray_nccl_env_audit.py`

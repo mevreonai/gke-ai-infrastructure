@@ -26,8 +26,10 @@ if [[ -f "$VENV_DIR/bin/activate" ]]; then
   source "$VENV_DIR/bin/activate"
 fi
 
-RUN_ID="${RUN_ID:-$(date +%Y%m%d_%H%M%S)}"
-OUT_ROOT="${OUT_ROOT:-$HOME/platform_benchmark_runs/$RUN_ID/continuous_batching}"
+: "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"
+CLI_RUN_ID="${RUN_ID:-}"
+CLI_RUN_TAG="${RUN_TAG:-}"
+CLI_OUT_ROOT="${OUT_ROOT:-}"
 BLOCKS="${CB_BLOCKS:-all}"
 DRY_RUN=""
 
@@ -41,8 +43,16 @@ while [[ $# -gt 0 ]]; do
       BLOCKS="$2"
       shift 2
       ;;
+    --run-id)
+      CLI_RUN_ID="$2"
+      shift 2
+      ;;
+    --run-tag|--tag)
+      CLI_RUN_TAG="$2"
+      shift 2
+      ;;
     --out-root|--out)
-      OUT_ROOT="$2"
+      CLI_OUT_ROOT="$2"
       shift 2
       ;;
     --model)
@@ -57,7 +67,9 @@ while [[ $# -gt 0 ]]; do
       echo "Usage: $0 [OPTIONS]"
       echo "  --blocks <1,2...>   Select continuous batching blocks (1-7 or all, default: all)"
       echo "  --block <N>         Select single block"
-      echo "  --out-root <dir>    Output directory"
+      echo "  --run-id <id>       Specify explicit run identifier"
+      echo "  --run-tag <tag>     Custom model/run tag for directory naming"
+      echo "  --out-root <dir>    Output directory (defaults to \$HOME/PIP_Benchmark_Data/<tag>_<timestamp>/continuous_batching)"
       echo "  --model <id>        Target model override"
       echo "  --dry-run           Plan cases without launching server or GPUs"
       exit 0
@@ -67,6 +79,14 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+RAW_MODEL="${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}"
+MODEL_TAG=$(basename "$RAW_MODEL" | tr '/' '_' | tr -cd '[:alnum:]_.-')
+USER_TAG="${CLI_RUN_TAG:-$MODEL_TAG}"
+RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+DEFAULT_RUN_ID="${USER_TAG}_${RUN_TIMESTAMP}"
+RUN_ID="${CLI_RUN_ID:-$DEFAULT_RUN_ID}"
+OUT_ROOT="${CLI_OUT_ROOT:-$PIP_DATA_ROOT/$RUN_ID/continuous_batching}"
 
 # Resolve python binary
 PYTHON_BIN=""

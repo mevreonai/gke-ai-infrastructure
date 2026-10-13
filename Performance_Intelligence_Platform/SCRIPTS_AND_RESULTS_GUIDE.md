@@ -55,14 +55,20 @@ Open [`RUN_CONFIG.env`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_
 # ------------------------------------------------------------------------------
 # 1. Cluster Hardware & IPs
 # ------------------------------------------------------------------------------
-export NODE0_IP="10.128.0.43"
-export NODE1_IP="10.128.0.44"
+export NODE0_IP="10.128.0.39"             # kimi-node-0 (GCP us-central1-b)
+export NODE1_IP="10.128.0.40"             # kimi-node-1 (GCP us-central1-b)
+export GPU_NODE0_NAME="kimi-node-0"
+export GPU_NODE1_NAME="kimi-node-1"
 
 # ------------------------------------------------------------------------------
 # 2. Model Selection (Model-Agnostic: Point to any HuggingFace ID or local path)
 # ------------------------------------------------------------------------------
+# Example A: Kimi-Linear 48B
 export MODEL="moonshotai/Kimi-Linear-48B-A3B-Instruct"
 export REVISION="e1df551a447157d4658b573f9a695d57658590e9"
+# Example B: DeepSeek V4.1 Flash (Requires VLLM_PP_LAYER_PARTITION="8,6,6,20" for PP4)
+# export MODEL="deepseek-ai/DeepSeek-V4.1-Flash"
+# export VLLM_PP_LAYER_PARTITION="8,6,6,20"
 
 # ------------------------------------------------------------------------------
 # 3. Topology Filter: Choose one, multiple, or 'all'
@@ -86,7 +92,9 @@ export CONTEXT_SELECTION="1k,8k,128k,512k,1m"
 # 6. Concurrency Grid Selection: Choose concurrencies or 'all'
 # Options: all | 1 | 2 | 4 | 8 | 16 | 32 | comma-separated list (e.g. 1,8 or 1)
 # ------------------------------------------------------------------------------
-export CONCURRENCY_SELECTION="1,8,32"# ------------------------------------------------------------------------------
+export CONCURRENCY_SELECTION="1,8,32"
+
+# ------------------------------------------------------------------------------
 # 7. Characterization Stages & Run Profiles
 # Options:
 #   smoke          -> Steps 00-01 (TP4 1k/8k c=1 sanity check: ~10m)
@@ -201,7 +209,7 @@ bash run_master_benchmark.sh --dry-run
   - Resume-aware: tracks completed steps in `$MASTER_ROOT/.done/` so interrupted campaigns can resume without re-running earlier steps.
 - **Exact Results & Outputs:**
   ```
-  $HOME/platform_benchmark_runs/<RUN_ID>/
+  $HOME/PIP_Benchmark_Data/<MODEL_TAG>_<TIMESTAMP>/    # e.g., Kimi-Linear-48B-A3B-Instruct_20261014_023000
   ├── logs/
   │   └── MASTER_BENCHMARK_RUN.log          # Master execution log with stdout/stderr
   ├── env/
@@ -245,7 +253,7 @@ bash run_master_benchmark.sh --dry-run
       ├── minimal/                          # Minimal telemetry run
       ├── full/                             # Full telemetry run
       └── OBSERVER_OVERHEAD_COMPARISON.json # Delta in mean TPOT/TTFT caused by Prometheus
-  ```�─ step17_continuous_batching/           # Step 17 Continuous batching suite
+  ```─ step17_continuous_batching/           # Step 17 Continuous batching suite
       ├── continuous_batching_manifest.json
       ├── pause_scan.csv
       ├── RESULT_SUMMARY.md
@@ -262,7 +270,7 @@ bash run_master_benchmark.sh --dry-run
   - Reads `RUN_CONFIG.env` if present.
 - **Exact Results & Outputs:**
   ```
-  $HOME/platform_smoke_test_<TIMESTAMP>/
+  $HOME/PIP_Benchmark_Data/smoke_test_<MODEL_TAG>_<TIMESTAMP>/   # e.g., smoke_test_DeepSeek-V4.1-Flash_20261014_023000
   ├── logs/
   │   └── SMOKE_TEST.log                    # Complete check log
   ├── results/
@@ -626,3 +634,44 @@ Continuous background scrape of vLLM's internal metrics:
 ### 5. Profiling Traces (`.nsys-rep` and Chrome Traces)
 - `*.nsys-rep`: NVIDIA Nsight Systems capture with CUDA kernel execution, memory copies, and NCCL communication events.
 - `torch_trace_*.json`: Chrome-compatible trace viewable at `chrome://tracing` or Perfetto, displaying CPU op dispatch and CUDA runtime events.
+
+---
+
+## 6. Directory Vault Organization: Canonical Results vs. Raw Staging
+
+The repository separates canonical, model-specific results from temporal staging runs:
+
+### 1. Canonical Results Vault (`data/results/<model_org>_<model_name>/`)
+All official, reproducible benchmark measurements are organized hierarchically by model:
+- `moonshotai_Kimi-Linear-48B-A3B-Instruct/`:
+  - `tp4_pp4_20g_20261011_214919/`: Full 16-case benchmark execution tree.
+  - `tp4_pp4_20g_benchmark_results.json` & `.csv`: Consolidated 16-case metrics.
+  - `extracted_dashboard_metrics.json`: Dashboard feed.
+  - `FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md`: Comprehensive engineering report.
+- `deepseek-ai_DeepSeek-V4.1-Flash/`:
+  - `RUNBOOK.md`: Step-by-step verified execution runbook.
+  - `smoke_test/`: Verified smoke test run artifacts (`smoke_test.json`, `bench_stdout.log`, `COMMAND.txt`).
+  - `tp4_pp4_20g/`: Full 16-case distributed matrix results.
+
+### 2. Intermediate Staging Vault (`data/raw_runs/`)
+Reserved for intermediate pipeline execution logs, background runner stdout streams (`master_campaign_stdout.log`), master step status streams (`master_step_status.jsonl`), and temporary uncurated downloads prior to validation.
+
+---
+
+## 7. Cluster Execution Directory Scheme (`$HOME/PIP_Benchmark_Data/`)
+
+When running automated smoke tests or master benchmark suites on remote GPU cluster nodes, results land under `$HOME/PIP_Benchmark_Data/` using transparent, model-tagged directories:
+
+| Execution Type | Directory Naming Convention | Example Directory Path |
+| :--- | :--- | :--- |
+| **Full Master Campaign** | `$HOME/PIP_Benchmark_Data/<MODEL_TAG>_<TIMESTAMP>/` | `~/PIP_Benchmark_Data/Kimi-Linear-48B-A3B-Instruct_20261014_023000/` |
+| **Pre-Flight Smoke Test** | `$HOME/PIP_Benchmark_Data/smoke_test_<MODEL_TAG>_<TIMESTAMP>/` | `~/PIP_Benchmark_Data/smoke_test_DeepSeek-V4.1-Flash_20261014_023500/` |
+| **20-Min Dedicated Campaign** | `$HOME/PIP_Benchmark_Data/tp4_pp4_20g_<MODEL_TAG>_<TIMESTAMP>/` | `~/PIP_Benchmark_Data/tp4_pp4_20g_Kimi-Linear-48B-A3B-Instruct_20261014_024000/` |
+| **Continuous Batching** | `$HOME/PIP_Benchmark_Data/<MODEL_TAG>_<TIMESTAMP>/continuous_batching/` | `~/PIP_Benchmark_Data/Kimi-Linear-48B-A3B-Instruct_20261014_023000/continuous_batching/` |
+
+### Customizing Run Tag & Directory Paths (User Preferences)
+* **Default Behavior:** The platform automatically extracts the clean model name (e.g., `Kimi-Linear-48B-A3B-Instruct` or `DeepSeek-V4.1-Flash`) from `$MODEL` and appends it to the timestamp.
+* **Custom User Tag:** Pass `--run-tag <custom_tag>` via CLI or set `export RUN_TAG="custom_tag"` in `RUN_CONFIG.env` to substitute `<MODEL_TAG>` with your preferred identifier.
+* **Explicit Output Directory:** Pass `--out-root <path>` (or `--smoke-root <path>`) to write directly to any custom filesystem location.
+* **Explicit Run ID:** Pass `--run-id <custom_id>` to override the entire run subfolder name.
+

@@ -115,42 +115,24 @@ Performance_Intelligence_Platform/
 │       └── check_nvml_power.py                <- NVML Power Limit, SM Frequency & Thermal Throttling Monitor
 │
 ├── data/                                      <- [PILLAR 2] IMMUTABLE EMPIRICAL DATA REPOSITORY
-│   ├── RUNS_INDEX.json                        <- Master JSON Registry of All Executed Benchmark Steps
-│   ├── master_step_status.jsonl               <- Real-Time Line-Delimited Telemetry Stream of Master Run
-│   ├── release_specs/                         <- Hardware, Network & Software Bill of Materials
-│   │   ├── cluster_hardware_spec.json         <- Host CPU, NUMA, DDR5 Memory & GPU Hardware Specifications
-│   │   ├── network_topology_spec.json         <- GCP Andromeda VPC, MTU 1460 & tc HTB Pacing Configuration
-│   │   └── software_bill_of_materials.json    <- Pinned OS, Driver, CUDA, PyTorch, vLLM & Ray Versions
-│   ├── raw_runs/                              <- Pristine Unmodified Execution Logs & Stream Dumps
-│   │   ├── stage1/                            <- Raw Directory Trees for Steps 1 through 8
-│   │   │   ├── step01_chunk_512/              <- Step 1: Chunked Prefill 512 vs 2048 stdout/stderr/traces
-│   │   │   ├── step02_torch_prof_c8_c32/      <- Step 2: PyTorch Profiler Concurrency 8 & 32 Dilation Traces
-│   │   │   ├── step03_nccl_tuning/            <- Step 3: NCCL Buffer & Tree Topology Tuning Logs
-│   │   │   ├── step04_numa_pinning/           <- Step 4: NUMA CPU Core & Memory Node Pinning Telemetry
-│   │   │   ├── step05_short_prompt/           <- Step 5: Short Prompt vs Long Decode Scaling Logs
-│   │   │   ├── step06_128k_chunk/             <- Step 6: 128K Ultra-Long Context Execution Traces
-│   │   │   ├── step07_kv_trace_trim/          <- Step 7: KV-Cache Memory Utilization Trim Telemetry
-│   │   │   └── step08_prefix_eviction/        <- Step 8: Automatic Prefix Caching Hit/Eviction Dumps
-│   │   └── stage2/                            <- Raw Directory Trees for Steps 9 through 15
-│   │       ├── step09_fp8_rca/                <- Step 9: FP8 Quantization Root Cause Analysis Traces
-│   │       ├── step10_cpu_offload/            <- Step 10: Host CPU KV-Cache Offloading Latency Traces
-│   │       ├── step11_1m_concurrency/         <- Step 11: 1,000,000 Concurrency Extreme Stress Dumps
-│   │       ├── step12_pp15_12_rebalance/      <- Step 12: Pipeline Parallelism Layer Rebalancing Telemetry
-│   │       ├── step13_capped_profiles/        <- Step 13: Low-Overhead Capped Profiler Traces
-│   │       ├── step14_tp16_512k/              <- Step 14: Multi-Node TP16 512K Distributed Run Traces
-│   │       └── step15_timeline_profiles/      <- Step 15: Full Timeline Nsight Systems Hardware Repositories
-│   └── results/                               <- Aggregated Tabular Data, Sensor Logs & Profiler Traces
-│       ├── real_data/                         <- Normalized Performance Metrics
-│       │   ├── combined_vllm_runs.csv         <- Master 32-Column Empirical CSV Dataset
-│       │   ├── stage1_summary_metrics.json    <- Stage 1 Statistical Rollup & Percentile Arrays
-│       │   ├── stage2_summary_metrics.json    <- Stage 2 Statistical Rollup & Percentile Arrays
-│       │   └── invariant_verification_log.json<- 72/72 Formal Verification Rule Audit Records
-│       └── hardware_raw/                      <- Hardware Sensor Snapshots & Low-Level Profiler Traces
-│           ├── nvml_telemetry_master.csv      <- High-Frequency (100ms) GPU Power, Temp & Clock Records
-│           ├── numa_stat_snapshots.csv        <- Host CPU Socket Memory Page Allocation & Miss Records
-│           ├── pcie_bandwidth_traces.csv      <- PCIe Gen5 Host-to-Device Throughput Counters
-│           ├── nsys_reports/                  <- NVIDIA Nsight Systems Hardware Traces (*.nsys-rep)
-│           └── torch_profiles/                <- PyTorch Profiler Chrome Trace Archives (*.json.gz)
+│   ├── README.md                              <- Vault Architecture & Data Hierarchy Manual
+│   ├── raw_runs/                              <- Intermediate Staging & Execution Scratch Vault
+│   │   ├── README.md                          <- Detailed Guide on Staging vs. Canonical Results
+│   │   ├── master_step_status.jsonl           <- Real-Time Line-Delimited Telemetry Stream of Master Run
+│   │   └── master_campaign_stdout.log         <- Orchestrator Background Execution Log
+│   └── results/                               <- Canonical Model-Centric Benchmark Results Vault
+│       ├── moonshotai_Kimi-Linear-48B-A3B-Instruct/
+│       │   ├── tp4_pp4_20g_20261011_214919/   <- Complete Raw Benchmark Execution Tree
+│       │   │   ├── tp4_pp4_dist/              <- Per-case manifests, latency JSONs, server logs
+│       │   │   └── summary_v6/                <- Aggregated CSVs and Markdown summaries
+│       │   ├── tp4_pp4_20g_benchmark_results.json <- Consolidated 16-Case Machine-Readable Metrics
+│       │   ├── tp4_pp4_20g_benchmark_results.csv  <- Consolidated Tabular CSV Summary
+│       │   ├── extracted_dashboard_metrics.json   <- Extracted Metrics Feeding Dashboard UI
+│       │   └── FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md <- Master Analytical Benchmark Report
+│       └── deepseek-ai_DeepSeek-V4.1-Flash/
+│           ├── RUNBOOK.md                     <- Reproducible CLI Commands & MLA KV-Sharing Invariants
+│           ├── smoke_test/                    <- Verified Smoke Test Artifacts (smoke_test.json, COMMAND.txt)
+│           └── tp4_pp4_20g/                   <- Full 16-Case Benchmark Campaign Results
 │
 └── dashboard/                                 <- [PILLAR 3] CLIENT-SIDE VISUAL ANALYTICS ENGINE
     ├── MASTER_CHARACTERIZATION_DASHBOARD.html <- Standalone Interactive Visual Analytics UI
@@ -250,41 +232,46 @@ The platform enforces robust operational safeguards across all benchmark phases:
 The `data/` pillar represents the complete, immutable empirical ground truth of the platform from top to bottom. Containing over 40 gigabytes of pristine telemetry, traces, and metrics across all 36,498 cluster artifacts, it documents the real-world performance of LLM serving infrastructure from preflight verification all the way through multi-node scale-out.
 
 ### 4.1 Data Provenance, Integrity & Immutability Guarantee
-Every single file in `data/` is subject to strict immutability rules. No telemetry file has been syntheticized, smoothed, or edited. All raw execution streams (`stdout`, `stderr`, engine diagnostic logs) are preserved exactly as captured during the live benchmark campaign.
+Every single file in `data/` is subject to strict immutability rules. No telemetry file has been syntheticized, smoothed, or edited. All raw execution streams (`stdout`, `stderr`, engine diagnostic logs) are preserved exactly as captured during the live benchmark campaign across `kimi-node-0` and `kimi-node-1`.
 
 ```text
 +-----------------------------------------------------------------------------------------+
 |                  TOP-TO-BOTTOM DATA PROVENANCE PIPELINE ARCHITECTURE                     |
 +-----------------------------------------------------------------------------------------+
-| [1. Node Preflight]     -> PCIe/NUMA/P2P  -> data/results/logs/preflight_node0/ & node1 |
-| [2. Engine Readiness]   -> Ray/vLLM Sanity-> data/results/logs/readiness_node0/ & node1 |
-| [3. Baseline Matrix]    -> c1..c64 Sweeps -> data/results/real_data/vllm_single_node... |
-| [4. Open-Loop Engine]   -> Poisson Queues -> data/results/real_data/vllm_open_loop/     |
-| [5. Scaleout Sweeps]    -> VPC 100G/tc    -> data/results/real_data/vllm_scaleout...    |
-| [6. 1M Context Sweeps]  -> 128K..1M Stress-> data/results/real_data/vllm_single_node... |
-| [7. Kernel Profilers]   -> Nsys / PyTorch -> data/results/real_data/profiles_...        |
-| [8. Hardware Daemons]   -> NVML Telemetry -> data/results/real_data/hardware_raw/       |
-| [9. Stage 1 Quick Wins] -> Steps 01 to 08 -> data/raw_runs/step01_.../                      |
-| [10. Stage 2 Scaleout]  -> Steps 09 to 15 -> data/raw_runs/step08_.../                      |
-| [11. Final Validation]  -> 32-Col Matrix  -> data/combined_vllm_runs.csv                |
-| [12. Visual Dashboards] -> Static Engines -> dashboard/v4 & v5                          |
+| [1. Live Node Execution] -> kimi-node-0 (10.128.0.39) + kimi-node-1 (10.128.0.40)        |
+| [2. Scratch & Staging]   -> data/raw_runs/ (master_step_status.jsonl, logs)             |
+| [3. Model-Centric Vault] -> data/results/<model_org>_<model_name>/                      |
+|                             ├── moonshotai_Kimi-Linear-48B-A3B-Instruct/                |
+|                             │   ├── tp4_pp4_20g_20261011_214919/ (16-case full tree)    |
+|                             │   ├── tp4_pp4_20g_benchmark_results.json / .csv           |
+|                             │   └── FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md               |
+|                             └── deepseek-ai_DeepSeek-V4.1-Flash/                        |
+|                                 ├── RUNBOOK.md (verified commands & MLA partition)      |
+|                                 ├── smoke_test/ (smoke_test.json, bench_stdout.log)     |
+|                                 └── tp4_pp4_20g/ (16-case matrix sweeps)                |
+| [4. Visual Dashboards]   -> dashboard/index.html & DASHBOARD_CANONICAL_DATA.json        |
 +-----------------------------------------------------------------------------------------+
 ```
 
-### 4.2 Global Manifest: `RUNS_INDEX.json` & Master Datasets
-`RUNS_INDEX.json` is the authoritative master registry of the repository. It indexes all executed benchmark steps, mapping each step to its commit hash, hardware configuration, execution timestamps, duration, and telemetry artifact paths. Alongside this manifest, the root of `data/` provides direct access to:
-- **`combined_vllm_runs.csv`:** The master 32-column tabular dataset of all 126 evaluated benchmark runs.
-- **`combined_vllm_runs.json`:** Structured hierarchical JSON representation of the master dataset.
-- **`PLATFORM_FULL_RELEASE.json`:** Audited, frozen enterprise release payload containing summary statistics, invariant evaluations, and system configurations.
-- **`master_step_status.jsonl`:** Append-only NDJSON execution timeline stream recording the lifecycle and exit codes of all benchmark steps.
+### 4.2 Canonical Model Results Vault: `data/results/<model_id>/`
+Official, reproducible benchmark measurements are organized hierarchically by model architecture rather than monolithic flat dumps:
+- **`moonshotai_Kimi-Linear-48B-A3B-Instruct/`:**
+  - `tp4_pp4_20g_20261011_214919/`: Pristine run tree containing per-case JSONs, engine iteration logs, and traces.
+  - `tp4_pp4_20g_benchmark_results.json` & `.csv`: Consolidated 16-case machine-readable metrics.
+  - `extracted_dashboard_metrics.json`: Processed feed for visual decision dashboard.
+  - `FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md`: Comprehensive engineering report.
+- **`deepseek-ai_DeepSeek-V4.1-Flash/`:**
+  - `RUNBOOK.md`: Step-by-step reproducible commands, environment exports, and MLA KV-sharing group invariants.
+  - `smoke_test/`: Verified live smoke test outputs (`smoke_test.json`, `bench_stdout.log`, `COMMAND.txt`).
+  - `tp4_pp4_20g/`: Full 16-case distributed matrix runs.
 
-### 4.3 Cluster Hardware & Platform Release Specs: `release_specs/`
-The `release_specs/` directory contains complete hardware and software manifests establishing the immutable baseline of the cluster environment:
-- **`cluster_hardware_spec.json`:** Details host CPU topology (Dual AMD EPYC 9654, 192 cores / 384 threads), 1.5 TB DDR5-4800 ECC host memory, 8x NVIDIA RTX PRO 6000 Ada (96GB GDDR7 per GPU, 768GB VRAM per node), and PCIe Gen5 x16 bus topologies.
-- **`network_topology_spec.json`:** Outlines Google Cloud Andromeda VPC configuration, gVNIC interface, standard MTU 1460 bytes vs Jumbo MTU 9000 bytes, 100 Gbps bandwidth limits, and Linux Traffic Control (`tc` HTB) pacing policies.
-- **`software_bill_of_materials.json`:** Details Ubuntu 22.04 LTS, Linux kernel 5.15.0-105-generic, NVIDIA Driver 550.54.15, CUDA 12.4.1, cuDNN 9.1.0, PyTorch 2.13.0+cu124, vLLM 0.29.0, and Ray 2.35.0.
+### 4.3 Intermediate Staging Vault: `data/raw_runs/`
+The `data/raw_runs/` directory serves as the **intermediate staging and uncurated execution vault**. During live multi-step benchmark campaigns:
+- **`master_step_status.jsonl`:** Append-only NDJSON execution timeline stream recording the lifecycle, start/end timestamps, and exit codes of all benchmark steps.
+- **`master_campaign_stdout.log`:** Top-level orchestrator terminal output stream captured during autonomous sweeps.
+- **`staging/`:** Temporary download directory for unpacking multi-node tarballs before validation and model-vault ingestion.
 
-### 4.4 State Transition Stream: `raw_runs/master_step_status.jsonl`
+### 4.4 State Transition Stream: `data/raw_runs/master_step_status.jsonl`
 This JSON Lines file records the operational lifecycle of the benchmark campaign. Each record represents a step transition:
 
 ```json

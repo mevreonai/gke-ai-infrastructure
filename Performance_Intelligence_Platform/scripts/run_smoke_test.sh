@@ -12,18 +12,6 @@
 set -euo pipefail
 
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
-SMOKE_ROOT="$HOME/platform_smoke_test_$(date +%Y%m%d_%H%M%S)"
-mkdir -p "$SMOKE_ROOT/logs" "$SMOKE_ROOT/results"
-
-SMOKE_LOG="$SMOKE_ROOT/logs/SMOKE_TEST.log"
-exec > >(tee -a "$SMOKE_LOG") 2>&1
-
-echo "================================================================================"
-echo "  PERFORMANCE INTELLIGENCE PLATFORM — EXPANDED SMOKE TEST VERIFIER (v5.1)"
-echo "  Timestamp : $(date -u)"
-echo "  Smoke Root: $SMOKE_ROOT"
-echo "  Suite Dir : $SCRIPT_DIR"
-echo "================================================================================"
 
 # Load configuration if available
 if [[ -f "$PWD/RUN_CONFIG.env" ]]; then source "$PWD/RUN_CONFIG.env"
@@ -32,13 +20,14 @@ fi
 
 : "${VENV_DIR:=$HOME/vllm_env}"
 if [[ -f "$VENV_DIR/bin/activate" ]]; then
-  echo "Activating virtual environment: $VENV_DIR"
   source "$VENV_DIR/bin/activate"
 fi
 
 STRICT_MODE=0
 LIVE_SERVER=0
 SKIP_RUNNER=0
+CLI_RUN_TAG=""
+CLI_SMOKE_ROOT=""
 
 # Dynamic execution selections
 while [[ $# -gt 0 ]]; do
@@ -51,6 +40,14 @@ while [[ $# -gt 0 ]]; do
     --revision)
       export REVISION="$2"
       export VLLM_REVISION="$2"
+      shift 2
+      ;;
+    --run-tag|--tag)
+      CLI_RUN_TAG="$2"
+      shift 2
+      ;;
+    --smoke-root|--out-root)
+      CLI_SMOKE_ROOT="$2"
       shift 2
       ;;
     --topologies)
@@ -77,6 +74,8 @@ while [[ $# -gt 0 ]]; do
       echo "Usage: $0 [OPTIONS]"
       echo "  --model <id>       Target model to qualify"
       echo "  --revision <sha>   Target revision"
+      echo "  --run-tag <tag>    Custom user tag for run folder (defaults to model name)"
+      echo "  --smoke-root <dir> Explicit output directory for smoke test"
       echo "  --topologies <t>   Target topologies (e.g. tp4_pp1,tp8_pp1,tp8_pp2,tp16_pp1)"
       echo "  --bandwidth <b>    Target bandwidth modes (e.g. native,100g,20g,impaired)"
       echo "  --strict           Enforce strict pass (treat warnings as failures)"
@@ -89,6 +88,31 @@ while [[ $# -gt 0 ]]; do
       ;;
   esac
 done
+
+: "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"
+RAW_MODEL="${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}"
+MODEL_TAG=$(basename "$RAW_MODEL" | tr '/' '_' | tr -cd '[:alnum:]_.-')
+USER_MODEL_TAG="${CLI_RUN_TAG:-${RUN_TAG:-$MODEL_TAG}}"
+SMOKE_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+if [[ -n "$CLI_SMOKE_ROOT" ]]; then
+  SMOKE_ROOT="$CLI_SMOKE_ROOT"
+else
+  SMOKE_ROOT="$PIP_DATA_ROOT/smoke_test_${USER_MODEL_TAG}_${SMOKE_TIMESTAMP}"
+fi
+
+mkdir -p "$SMOKE_ROOT/logs" "$SMOKE_ROOT/results" "$PIP_DATA_ROOT"
+
+SMOKE_LOG="$SMOKE_ROOT/logs/SMOKE_TEST.log"
+exec > >(tee -a "$SMOKE_LOG") 2>&1
+
+echo "================================================================================"
+echo "  PERFORMANCE INTELLIGENCE PLATFORM — EXPANDED SMOKE TEST VERIFIER (v5.1)"
+echo "  Timestamp : $(date -u)"
+echo "  Model Tag : $USER_MODEL_TAG"
+echo "  Smoke Root: $SMOKE_ROOT"
+echo "  Suite Dir : $SCRIPT_DIR"
+echo "================================================================================"
 
 PASSED_CHECKS=0
 WARNING_CHECKS=0

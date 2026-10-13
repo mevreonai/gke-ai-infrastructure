@@ -180,7 +180,7 @@ bash run_smoke_test.sh
 ### What the Smoke Test Validates (Up to 11 Automated Checks):
 1. **Host Environment:** Python 3.10+, NVIDIA GPU drivers, and system dependencies.
 2. **AI Framework Stack:** PyTorch CUDA availability and vLLM module initialization.
-3. **MoE Kernel Invariants:** Checks `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, and confirms `VLLM_PP_LAYER_PARTITION` is unset to use vLLM native defaults.
+3. **MoE Kernel Invariants:** Checks `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, confirms `VLLM_PP_LAYER_PARTITION` is unset for Kimi-Linear-48B (or set to `"8,6,6,20"` when serving DeepSeek-V4.1-Flash with MLA KV-sharing).
 4. **Cases Schema:** Validates `master_benchmark_cases.json` integrity across all 20 steps (27 cases).
 5. **Linux Systems Utilities:** Qualifies `taskset`, `ip`, `tc`, and `numactl`.
 6. **Dual-Node 16-GPU Interconnect Probe:** (When `NODE1_IP` is configured) Tests SSH connectivity, remote GPU detection, and inter-node readiness.
@@ -228,7 +228,11 @@ The platform is model-agnostic. You can serve models directly from HuggingFace o
   gcloud storage rsync -r gs://mevreon-deepseek-models/deepseek-ai/DeepSeek-V4.1-Flash /data/models/deepseek-v4.1-flash/
   
   export MODEL="/data/models/deepseek-v4.1-flash"
+  # Mandatory for DeepSeek-V4.1 MLA KV-sharing group invariant across 4 pipeline stages:
+  export VLLM_PP_LAYER_PARTITION="8,6,6,20"
   ```
+* **Serving Flags Invariant:**
+  When serving `DeepSeek-V4.1-Flash` in multi-node pipeline parallel mode, pass `--language-model-only --block-size 128` to satisfy the model's text-only routing across pipeline stages.
 
 ---
 
@@ -267,10 +271,10 @@ While the benchmark runs, monitor progress in real time:
 
 ```bash
 # Monitor live step transitions and exit codes:
-tail -f ~/platform_benchmark_runs/latest_run_id.txt | xargs -I {} tail -f ~/platform_benchmark_runs/{}/master_step_status.jsonl
+tail -f ~/PIP_Benchmark_Data/latest_run_id.txt | xargs -I {} tail -f ~/PIP_Benchmark_Data/{}/master_step_status.jsonl
 
 # Monitor overall campaign log:
-tail -f ~/platform_benchmark_runs/latest_run_id.txt | xargs -I {} tail -f ~/platform_benchmark_runs/{}/logs/MASTER_BENCHMARK_RUN.log
+tail -f ~/PIP_Benchmark_Data/latest_run_id.txt | xargs -I {} tail -f ~/PIP_Benchmark_Data/{}/logs/MASTER_BENCHMARK_RUN.log
 ```
 
 ---
@@ -280,8 +284,8 @@ tail -f ~/platform_benchmark_runs/latest_run_id.txt | xargs -I {} tail -f ~/plat
 ### 8.1 Package and Download Results Archive
 On `kimi-node-0`:
 ```bash
-RUN_ID=$(cat ~/platform_benchmark_runs/latest_run_id.txt)
-tar -czvf ~/benchmark_results_${RUN_ID}.tar.gz -C ~/platform_benchmark_runs "$RUN_ID"
+RUN_ID=$(cat ~/PIP_Benchmark_Data/latest_run_id.txt)
+tar -czvf ~/benchmark_results_${RUN_ID}.tar.gz -C ~/PIP_Benchmark_Data "$RUN_ID"
 ```
 
 From your local machine:

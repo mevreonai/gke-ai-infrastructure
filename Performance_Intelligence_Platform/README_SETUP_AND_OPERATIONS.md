@@ -296,7 +296,7 @@ python3 -c "import torch, vllm, ray; print(f'PyTorch: {torch.__version__}, CUDA:
 ### 2.8 Multi-Node Ray Core Cluster Deployment
 For distributed serving (Stage 2: Steps 9, 12, 14, 15), Node 1 serves as the Ray head node and Node 2 attaches as a Ray worker.
 
-#### 1. Launch Ray Head Node on Node 1 (`10.128.0.10`):
+#### 1. Launch Ray Head Node on Node 1 (`10.128.0.39`):
 ```bash
 source /opt/vllm-platform-env/bin/activate
 ray stop --force || true
@@ -305,18 +305,18 @@ ray start --head \
     --dashboard-host=0.0.0.0 \
     --dashboard-port=8265 \
     --num-gpus=8 \
-    --node-ip-address=10.128.0.10 \
+    --node-ip-address=10.128.0.39 \
     --block=false
 ```
 
-#### 2. Attach Ray Worker Node on Node 2 (`10.128.0.11`):
+#### 2. Attach Ray Worker Node on Node 2 (`10.128.0.40`):
 ```bash
 source /opt/vllm-platform-env/bin/activate
 ray stop --force || true
 ray start \
-    --address='10.128.0.10:6379' \
+    --address='10.128.0.39:6379' \
     --num-gpus=8 \
-    --node-ip-address=10.128.0.11 \
+    --node-ip-address=10.128.0.40 \
     --block=false
 ```
 
@@ -455,7 +455,7 @@ Type=forking
 User=ubuntu
 Environment="PATH=/opt/vllm-platform-env/bin:/usr/local/cuda-12.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 Environment="CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7"
-ExecStart=/opt/vllm-platform-env/bin/ray start --head --port=6379 --dashboard-host=0.0.0.0 --dashboard-port=8265 --num-gpus=8 --node-ip-address=10.128.0.10
+ExecStart=/opt/vllm-platform-env/bin/ray start --head --port=6379 --dashboard-host=0.0.0.0 --dashboard-port=8265 --num-gpus=8 --node-ip-address=10.128.0.39
 ExecStop=/opt/vllm-platform-env/bin/ray stop --force
 Restart=on-failure
 RestartSec=10
@@ -479,7 +479,7 @@ Type=forking
 User=ubuntu
 Environment="PATH=/opt/vllm-platform-env/bin:/usr/local/cuda-12.4/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin"
 Environment="CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7"
-ExecStart=/opt/vllm-platform-env/bin/ray start --address=10.128.0.10:6379 --num-gpus=8 --node-ip-address=10.128.0.11
+ExecStart=/opt/vllm-platform-env/bin/ray start --address=10.128.0.39:6379 --num-gpus=8 --node-ip-address=10.128.0.40
 ExecStop=/opt/vllm-platform-env/bin/ray stop --force
 Restart=on-failure
 RestartSec=10
@@ -557,12 +557,12 @@ def check_ray_cluster():
         print(f"      Ray cluster check notice: {e}")
 
 def check_network_ping():
-    print("[5/5] Checking network ping to Node 2 (10.128.0.11)...")
-    rc = subprocess.call(["ping", "-c", "2", "-W", "2", "10.128.0.11"], stdout=subprocess.DEVNULL)
+    print("[5/5] Checking network ping to kimi-node-1 (10.128.0.40)...")
+    rc = subprocess.call(["ping", "-c", "2", "-W", "2", "10.128.0.40"], stdout=subprocess.DEVNULL)
     if rc == 0:
         print("      Node 2 is reachable over VPC private subnet.")
     else:
-        print("      WARNING: Node 2 (10.128.0.11) did not respond to ICMP ping!")
+        print("      WARNING: kimi-node-1 (10.128.0.40) did not respond to ICMP ping!")
 
 if __name__ == "__main__":
     print("==================================================================")
@@ -593,7 +593,7 @@ Expected console output:
 [PASS] PyTorch 2.13.0+cu124 detects 8 NVIDIA RTX PRO 6000 GPUs
 [PASS] PCIe Gen5 link widths confirmed (x16 @ 32 GT/s on all devices)
 [PASS] Ray Core connection verified (16 GPUs available across cluster)
-[PASS] Cloud VPC ping & MTU discovery to Node 2 (10.128.0.11) SUCCESS
+[PASS] Cloud VPC ping & MTU discovery to kimi-node-1 (10.128.0.40) SUCCESS
 [PASS] Smoke test generation: 10 requests completed with 0 errors
 ==> CLUSTER QUALIFICATION COMPLETE: Ready for benchmark campaign.
 ```
@@ -684,7 +684,7 @@ Stage 1 targets single-node optimizations, chunked prefill schedules, profiler d
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step01_chunk_512/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step01_chunk_512/execution.log
 ```
 
 ---
@@ -707,7 +707,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step01_chunk_512/ex
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step02_torch_prof_c8_c32/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step02_torch_prof_c8_c32/execution.log
 ```
 
 ---
@@ -729,7 +729,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step02_torch_prof_c
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step03_nccl_tuning/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step03_nccl_tuning/execution.log
 ```
 
 ---
@@ -751,7 +751,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step03_nccl_tuning/
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step04_numa_pinning/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step04_numa_pinning/execution.log
 ```
 
 ---
@@ -773,7 +773,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step04_numa_pinning
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step05_short_prompt/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step05_short_prompt/execution.log
 ```
 
 ---
@@ -795,7 +795,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step05_short_prompt
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step06_128k_chunk/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step06_128k_chunk/execution.log
 ```
 
 ---
@@ -817,7 +817,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step06_128k_chunk/e
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step07_kv_trace_trim/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step07_kv_trace_trim/execution.log
 ```
 
 ---
@@ -839,7 +839,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step07_kv_trace_tri
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step08_prefix_eviction/execution.log
+grep -E 'Metrics|Completed' ../data/raw_runs/step01_.../step08_prefix_eviction/execution.log
 ```
 
 ---
@@ -864,7 +864,7 @@ Stage 2 executes multi-node distributed workloads, extreme concurrency tests, an
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step09_fp8_rca/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step09_fp8_rca/execution.log
 ```
 
 ---
@@ -886,7 +886,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step09_fp8_rca
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step10_cpu_offload/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step10_cpu_offload/execution.log
 ```
 
 ---
@@ -908,7 +908,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step10_cpu_off
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step11_1m_concurrency/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step11_1m_concurrency/execution.log
 ```
 
 ---
@@ -930,7 +930,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step11_1m_conc
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step12_pp15_12_rebalance/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step12_pp15_12_rebalance/execution.log
 ```
 
 ---
@@ -952,7 +952,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step12_pp15_12
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step13_capped_profiles/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step13_capped_profiles/execution.log
 ```
 
 ---
@@ -974,7 +974,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step13_capped_
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step14_tp16_512k/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step14_tp16_512k/execution.log
 ```
 
 ---
@@ -996,7 +996,7 @@ grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step14_tp16_51
 
 ##### Step Verification Command:
 ```bash
-grep -E 'Metrics|Completed|INFO' ../data/data/raw_runs/step08_.../step15_timeline_profiles/execution.log
+grep -E 'Metrics|Completed|INFO' ../data/raw_runs/step08_.../step15_timeline_profiles/execution.log
 ```
 
 ---
@@ -1163,33 +1163,29 @@ bash run_smoke_test.sh
 The test asserts:
 1. **Host Environment:** Python 3.10+, NVIDIA GPU drivers, and system tools (`taskset`, `ip`, `tc`).
 2. **AI Framework Stack:** PyTorch CUDA initialization and vLLM module imports.
-3. **MoE Kernel Invariants:** Validates `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, and `VLLM_PP_LAYER_PARTITION=15,12`.
-4. **Cases Schema:** Validates `master_benchmark_cases.json` schema across all 15 steps.
+3. **MoE Kernel Invariants:** Validates `CUDA_DEVICE_ORDER=PCI_BUS_ID`, `MOE_BACKEND=flashinfer_cutlass`, `VLLM_FLASHINFER_AUTOTUNE=1`, confirms `VLLM_PP_LAYER_PARTITION` is unset for Kimi-Linear-48B (or `"8,6,6,20"` for DeepSeek-V4.1-Flash MLA KV-sharing, or `"15,12"` for Kimi PP2 A/B tests).
+4. **Cases Schema:** Validates `master_benchmark_cases.json` schema across all benchmark steps.
 5. **Wave Trimming Engine:** Validates outlier trimming math (filtering first-wave burst artifacts).
 6. **Micro-Benchmark Pipeline:** Emulates telemetry generation and validates JSON schema output.
-7. **Master Runner Dry-Run:** Executes `run_master_benchmark.sh --dry-run` to prove zero syntax errors across steps 00–15.
+7. **Master Runner Dry-Run:** Executes `run_master_benchmark.sh --dry-run` to prove zero syntax errors across steps 00–20.
 8. **Report Emission:** Generates a unified JSON verdict in `SMOKE_TEST_REPORT.json`.
 
 ```text
 +-----------------------------------------------------------------------------------------+
 |                    TOP-TO-BOTTOM COMPREHENSIVE DATA PIPELINE                            |
 +-----------------------------------------------------------------------------------------+
-|  data/results/logs/preflight_* & readiness_* (Node microbenchmarks & Ray health)        |
-|  data/results/real_data/vllm_single_node_v6_matrix/ (Baseline single-node c1..c64)      |
-|  data/results/real_data/vllm_open_loop/ (Poisson arrival open-loop queueing traces)     |
-|  data/results/real_data/vllm_scaleout_network_matrix/ (Inter-node TP16, TP8+PP2, VPC tc)|
-|  data/results/real_data/vllm_single_node_1m_extensions/ (128K..1M long-context)         |
-|  data/results/real_data/profiles_*/ (Nsight Systems & PyTorch Chrome traces)            |
-|  data/results/real_data/hardware_raw/ & hardware_processed/ (100ms NVML sensor logs)   |
-|  data/raw_runs/step01_.../ (Master Stage 1 quick-wins logs)                             |
-|  data/raw_runs/step08_.../ (Master Stage 2 deep scale-out logs)                         |
-|                         |                                                               |
-|                         v  (Aggregation & Invariant Auditing Engine)                    |
-|  data/combined_vllm_runs.csv & data/combined_vllm_runs.json (Master 32-Col Matrix)     |
-|  data/PLATFORM_FULL_RELEASE.json & data/RUNS_INDEX.json (Frozen release metadata)       |
-|                         |                                                               |
-|                         v  (Canonical Telemetry Schema)                                 |
-|  data/master_step_status.jsonl & canonical telemetry output                             |
+| [1. Live Cluster Sweeps] -> kimi-node-0 (10.128.0.39) + kimi-node-1 (10.128.0.40)        |
+| [2. Scratch & Staging]   -> data/raw_runs/ (master_step_status.jsonl, logs)             |
+| [3. Canonical Vaults]    -> data/results/<model_org>_<model_name>/                      |
+|                             ├── moonshotai_Kimi-Linear-48B-A3B-Instruct/                |
+|                             │   ├── tp4_pp4_20g_20261011_214919/ (16-case full tree)    |
+|                             │   ├── tp4_pp4_20g_benchmark_results.json / .csv           |
+|                             │   └── FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md               |
+|                             └── deepseek-ai_DeepSeek-V4.1-Flash/                        |
+|                                 ├── RUNBOOK.md (verified commands & MLA partition)      |
+|                                 ├── smoke_test/ (smoke_test.json, bench_stdout.log)     |
+|                                 └── tp4_pp4_20g/ (16-case matrix sweeps)                |
+| [4. Visual Dashboards]   -> dashboard/index.html & DASHBOARD_CANONICAL_DATA.json        |
 +-----------------------------------------------------------------------------------------+
 ```
 
@@ -1438,7 +1434,7 @@ This appendix provides 20 detailed troubleshooting recipes for real-world failur
 ### 5.3 Ray Cluster Worker Disconnection & GCS Recovery
 - **Observed Symptom:** Symptom: Ray head node logs `Node failure: worker-node-2 disconnected from cluster` or job terminates with `RaySystemError`.
 - **Micro-Architectural Root Cause:** Root Cause: Worker node OOM killer terminating Ray daemon, network socket reset, or clock drift between cluster nodes.
-- **Step-by-Step Remediation:** Remediation: Check worker system logs via `dmesg -T | grep -i oom`. Synchronize cluster clocks via `sudo chronyd -q 'server time.google.com iburst'`. Restart worker node via `ray stop --force && ray start --address='10.128.0.10:6379' --num-gpus=8`.
+- **Step-by-Step Remediation:** Remediation: Check worker system logs via `dmesg -T | grep -i oom`. Synchronize cluster clocks via `sudo chronyd -q 'server time.google.com iburst'`. Restart worker node via `ray stop --force && ray start --address='10.128.0.39:6379' --num-gpus=8`.
 
 ### 5.4 PCIe Link Degradation & NVML Power Throttling
 - **Observed Symptom:** Symptom: Severe drop in serving throughput (>30%) on specific GPUs.
@@ -1687,7 +1683,7 @@ This appendix provides 20 detailed troubleshooting recipes for real-world failur
 ### 5.15 Cross-Node SSH Handshake Timeouts in Automated Runners
 - **Observed Symptom:** Symptom: Multi-node script aborts with `Permission denied (publickey)` or `Connection timed out`.
 - **Micro-Architectural Root Cause:** Root Cause: SSH key expiration or missing authorized_keys entry between Node 1 and Node 2.
-- **Step-by-Step Remediation:** Remediation: Re-deploy SSH keys: `ssh-copy-id -i ~/.ssh/id_rsa.pub 10.128.0.11`. Test passwordless access via `ssh 10.128.0.11 'hostname'`.
+- **Step-by-Step Remediation:** Remediation: Re-deploy SSH keys: `ssh-copy-id -i ~/.ssh/id_rsa.pub 10.128.0.40`. Test passwordless access via `ssh 10.128.0.40 'hostname'`.
 
 ### 5.16 TCP Port Collisions on Ray GCS Server
 - **Observed Symptom:** Symptom: `ray start --head` fails with `Address already in use: 6379`.
@@ -1928,8 +1924,8 @@ All empirical test traces, raw sensor logs, and model output tokens captured in 
 
 ### 5.36 Cluster Environment Variable Quick-Reference
 ```bash
-export VLLM_HOST_NODE1=10.128.0.10
-export VLLM_HOST_NODE2=10.128.0.11
+export VLLM_HOST_NODE1=10.128.0.39
+export VLLM_HOST_NODE2=10.128.0.40
 export NCCL_BUFFSIZE=4194304
 # NCCL_ALGO left unset for dynamic All-Reduce topology auto-selection
 export GPU_MEMORY_UTILIZATION=0.92

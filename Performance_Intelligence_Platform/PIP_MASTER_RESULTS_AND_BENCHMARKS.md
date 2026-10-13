@@ -321,3 +321,36 @@ Evaluated on single-node TP4/TP8 and dual-node scale-out configurations:
 | **Step 14: Nsight Timeline** | `$MASTER_ROOT/step14_timeline_profiles/` | `*.nsys-rep`, `timeline.sqlite` | 4.47 ms Decode Critical Path |
 | **Step 16: Waves & Pauses** | `$MASTER_ROOT/step16_waves_stalls/` | `PAUSE_AND_STALL_SCAN.csv` | Wave Spacing & Stall Counts |
 | **Step 17: Continuous Batching**| `$MASTER_ROOT/step17_continuous_batching/` | `continuous_batching_manifest.json`, `RESULT_SUMMARY.md` | Blocks 1–7 Performance Report |
+
+---
+
+## 12. Model-Centric Results Vaults & DeepSeek-V4.1-Flash Verification
+
+The platform catalogs all official benchmark data hierarchically under `Performance_Intelligence_Platform/data/results/<model_org>_<model_name>/`:
+
+### 12.1 Moonshot AI Kimi-Linear 48B (`moonshotai_Kimi-Linear-48B-A3B-Instruct`)
+* **Architecture:** 27 layers, Hybrid Linear Attention + MoE (A3B).
+* **Canonical Artifacts:** [`data/results/moonshotai_Kimi-Linear-48B-A3B-Instruct/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/data/results/moonshotai_Kimi-Linear-48B-A3B-Instruct/)
+  - `tp4_pp4_20g_20261011_214919/`: Complete 16-case raw empirical execution tree.
+  - `tp4_pp4_20g_benchmark_results.json` & `.csv`: Consolidated 16-case metrics.
+  - `FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md`: Master 16-case analytical engineering report.
+
+### 12.2 DeepSeek AI DeepSeek-V4.1-Flash (`deepseek-ai_DeepSeek-V4.1-Flash`)
+* **Architecture:** 40 layers, Multi-Head Latent Attention (MLA) with compressed KV-cache sharing (`kv_source_layer_ids = [2, 8, 14, 20]`).
+* **Cluster Fabric:** Dual-Node 16× NVIDIA RTX PRO 6000 Blackwell Server Edition GPUs (`kimi-node-0` @ `10.128.0.39` + `kimi-node-1` @ `10.128.0.40`).
+* **Interconnect Rate Shaping:** 20 Gbps active on `ens3` on both nodes (`tc qdisc`).
+* **Serving Topology:** TP4 × PP4 (4 GPUs per pipeline stage across 4 stages, 16 GPUs total).
+* **Pipeline Partition Invariant:** `VLLM_PP_LAYER_PARTITION="8,6,6,20"` (bounds shared layer groups strictly inside stage boundaries).
+* **Serving Flags:** `--language-model-only --block-size 128`.
+* **Empirical Smoke Test Verification:**
+  - **Prompts Processed:** 2 / 2 completed (0 failed).
+  - **Mean TTFT:** **241.30 ms**
+  - **Mean TPOT:** **80.18 ms**
+  - **Generation Throughput:** **12.28 tok/s**
+  - **Total Throughput:** **110.51 tok/s**
+* **Canonical Artifacts:** [`data/results/deepseek-ai_DeepSeek-V4.1-Flash/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/data/results/deepseek-ai_DeepSeek-V4.1-Flash/)
+  - `RUNBOOK.md`: Step-by-step reproducible commands, environment exports, health checks, and smoke/matrix instructions.
+  - `smoke_test/smoke_test.json`: Machine-readable latency distributions and timings.
+  - `smoke_test/bench_stdout.log`: Raw terminal stdout from `vllm bench serve`.
+  - `smoke_test/COMMAND.txt`: Exact shell command and invocation parameters.
+  - `tp4_pp4_20g/`: Full 16-case benchmark matrix vault (1K, 8K, 128K, 512K, 1M across concurrencies $c=1..32$).

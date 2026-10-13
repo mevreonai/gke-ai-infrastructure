@@ -95,6 +95,9 @@ bash scripts/run_master_benchmark.sh [OPTIONS]
 * `--step <N>`: Executes a single target step (0 to 20).
 * `--from-step <N>`: Resumes execution starting at step N.
 * `--new-run`: Generates a fresh run directory without reading previous resume markers.
+* `--run-tag <tag>`: Custom user tag for output directory naming (defaults to model name).
+* `--run-id <id>`: Specifies explicit run identifier under `$HOME/PIP_Benchmark_Data/`.
+* `--out-root <path>`: Overrides output root directory (defaults to `$HOME/PIP_Benchmark_Data/<tag>_<timestamp>`).
 
 ---
 
@@ -132,8 +135,13 @@ export VLLM_FLASHINFER_AUTOTUNE="1"
 # 4. Critical FlashInfer Skip-Ops (Prevents 30-min TRTLLM MoE Warmup Hang)
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2"
 
-# 5. Pipeline Parallel Layer Partition (Left unset so vLLM native defaults apply: 14/13 PP2, 7/7/7/6 PP4)
-unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+# 5. Pipeline Parallel Layer Partition
+# For standard models (e.g. Kimi-Linear-48B), left unset so vLLM native defaults apply:
+#   unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+# For models with MLA compressed-KV sharing groups (e.g. DeepSeek-V4.1-Flash where kv_source_layer_ids=[2, 8, 14, 20]),
+# equal partitioning splits the 20-layer shared group (layers 20..39), failing startup.
+# Enforce the exact non-splitting partition:
+#   export VLLM_PP_LAYER_PARTITION="8,6,6,20"
 
 # 6. NCCL Inter-Node Transport Tuning (Stage 1/Stage 2 clean isolation)
 export LD_LIBRARY_PATH="/tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
@@ -186,8 +194,10 @@ Performance_Intelligence_Platform/
 │
 └── data/                                      <- CANONICAL EMPIRICAL TELEMETRY REPOSITORY
     ├── README.md                              <- Telemetry Repository Manual & Schema
-    ├── raw_runs/                              <- Raw Execution Trees and Case Logs
-    └── results/                               <- Multi-Phase Characterization Traces & Archive Vaults
+    ├── raw_runs/                              <- Staging & Intermediate Capture Vault
+    └── results/                               <- Canonical Model-Centric Results Vault
+        ├── moonshotai_Kimi-Linear-48B-A3B-Instruct/
+        └── deepseek-ai_DeepSeek-V4.1-Flash/
 ```
 
 ---

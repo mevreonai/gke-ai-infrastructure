@@ -152,7 +152,8 @@ echo "--> [4/5] Executing automated pre-flight smoke test..."
 bash "$SCRIPT_DIR/run_smoke_test.sh"
 
 # 5. Parse Smoke Test Output Verdict
-LATEST_SMOKE=$(ls -td "$HOME"/platform_smoke_test_* 2>/dev/null | head -n1 || echo "")
+: "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"
+LATEST_SMOKE=$(ls -td "$PIP_DATA_ROOT"/smoke_test_* "$HOME"/platform_smoke_test_* 2>/dev/null | head -n1 || echo "")
 if [[ -n "$LATEST_SMOKE" && -f "$LATEST_SMOKE/SMOKE_TEST_REPORT.json" ]]; then
   echo ""
   echo "--> [5/5] Smoke Test Result Verdict:"

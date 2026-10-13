@@ -71,3 +71,11 @@ user_prompt.txt
 WhatsApp Image*
 
 *.bak*
+
+# Performance Intelligence Platform — Benchmark Data & Generated Dashboards
+Performance_Intelligence_Platform/data/
+Performance_Intelligence_Platform/results/
+Performance_Intelligence_Platform/**/results/
+Performance_Intelligence_Platform/dashboard/index.html
+Performance_Intelligence_Platform/dashboard/DASHBOARD_CANONICAL_DATA.json
+PIP_Benchmark_Data/

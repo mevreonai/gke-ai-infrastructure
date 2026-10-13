@@ -65,9 +65,13 @@ echo "==========================================================================
 [[ -f "$SSH_KEY" ]] || { if [[ -f "$HOME/.ssh/id_rsa" ]]; then SSH_KEY="$HOME/.ssh/id_rsa"; fi; }
 
 # Initialize output directory early so telemetry logs can be written immediately
+: "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"
+RAW_MODEL="${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}"
+MODEL_TAG=$(basename "$RAW_MODEL" | tr '/' '_' | tr -cd '[:alnum:]_.-')
+USER_TAG="${RUN_TAG:-$MODEL_TAG}"
 RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-OUT_DIR="$HOME/platform_benchmark_runs/tp4_pp4_20g_${RUN_TIMESTAMP}"
-mkdir -p "$OUT_DIR" "$HOME/platform_benchmark_runs"
+OUT_DIR="$PIP_DATA_ROOT/tp4_pp4_20g_${USER_TAG}_${RUN_TIMESTAMP}"
+mkdir -p "$OUT_DIR" "$PIP_DATA_ROOT"
 
 # Export traffic control rate and mode labels for provenance
 export V8_VLLM_NETWORK_CAP_GBPS=20

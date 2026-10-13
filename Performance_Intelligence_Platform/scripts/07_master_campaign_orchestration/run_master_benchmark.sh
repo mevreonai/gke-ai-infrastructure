@@ -49,14 +49,12 @@ elif [[ -f "$SUITE_ROOT/RUN_CONFIG.env" ]]; then source "$SUITE_ROOT/RUN_CONFIG.
 elif [[ -f "$SUITE_ROOT/../RUN_CONFIG.env" ]]; then source "$SUITE_ROOT/../RUN_CONFIG.env"
 fi
 
-RUN_ID_FILE="$HOME/platform_benchmark_runs/latest_run_id.txt"
-if [[ "$RESUME" == 1 && -f "$RUN_ID_FILE" && -z "${RUN_ID:-}" ]]; then
-  DEFAULT_RUN_ID=$(cat "$RUN_ID_FILE")
-else
-  DEFAULT_RUN_ID=$(date +%Y%m%d_%H%M%S)
-fi
-: "${RUN_ID:=$DEFAULT_RUN_ID}"
-: "${MASTER_ROOT:=$HOME/platform_benchmark_runs/$RUN_ID}"
+: "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"
+RUN_ID_FILE="$PIP_DATA_ROOT/latest_run_id.txt"
+CLI_RUN_ID="${RUN_ID:-}"
+CLI_OUT_ROOT="${MASTER_ROOT:-}"
+CLI_RUN_TAG="${RUN_TAG:-}"
+FORCE_NEW_RUN=0
 
 # Dynamic execution selections
 SELECTED_MODEL=""
@@ -133,12 +131,15 @@ while [[ $# -gt 0 ]]; do
       shift 2
       ;;
     --run-id)
-      RUN_ID="$2"
-      MASTER_ROOT="$HOME/platform_benchmark_runs/$RUN_ID"
+      CLI_RUN_ID="$2"
+      shift 2
+      ;;
+    --run-tag|--tag)
+      CLI_RUN_TAG="$2"
       shift 2
       ;;
     --out-root)
-      MASTER_ROOT="$2"
+      CLI_OUT_ROOT="$2"
       shift 2
       ;;
     --dry-run)
@@ -146,8 +147,7 @@ while [[ $# -gt 0 ]]; do
       shift
       ;;
     --new-run)
-      RUN_ID=$(date +%Y%m%d_%H%M%S)
-      MASTER_ROOT="$HOME/platform_benchmark_runs/$RUN_ID"
+      FORCE_NEW_RUN=1
       RESUME=0
       shift
       ;;
@@ -216,7 +216,8 @@ while [[ $# -gt 0 ]]; do
       echo "  --dry-run                    Verify commands and configuration without launching GPU workloads"
       echo "  --new-run / --no-resume      Force clean execution without resume markers"
       echo "  --run-id <id>                Specify explicit run identifier"
-      echo "  --out-root <path>            Override output root directory"
+      echo "  --run-tag <tag>              Custom model/run tag for directory naming (defaults to model name)"
+      echo "  --out-root <path>            Override output root directory (defaults to \$HOME/PIP_Benchmark_Data/<tag>_<timestamp>)"
       exit 0
       ;;
     *)
@@ -227,7 +228,30 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-mkdir -p "$MASTER_ROOT" "$MASTER_ROOT/logs" "$MASTER_ROOT/.done" "$MASTER_ROOT/env" "$HOME/platform_benchmark_runs"
+# Model resolution and user tag preference
+TARGET_MODEL_NAME="${SELECTED_MODEL:-${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}}"
+MODEL_TAG=$(basename "$TARGET_MODEL_NAME" | tr '/' '_' | tr -cd '[:alnum:]_.-')
+USER_TAG="${CLI_RUN_TAG:-${MODEL_TAG}}"
+RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+if [[ -n "$CLI_OUT_ROOT" ]]; then
+  MASTER_ROOT="$CLI_OUT_ROOT"
+  RUN_ID="${CLI_RUN_ID:-$(basename "$MASTER_ROOT")}"
+elif [[ -n "$CLI_RUN_ID" ]]; then
+  RUN_ID="$CLI_RUN_ID"
+  MASTER_ROOT="$PIP_DATA_ROOT/$RUN_ID"
+elif [[ "$FORCE_NEW_RUN" == 1 ]]; then
+  RUN_ID="${USER_TAG}_${RUN_TIMESTAMP}"
+  MASTER_ROOT="$PIP_DATA_ROOT/$RUN_ID"
+elif [[ "$RESUME" == 1 && -f "$RUN_ID_FILE" ]]; then
+  RUN_ID=$(cat "$RUN_ID_FILE")
+  MASTER_ROOT="$PIP_DATA_ROOT/$RUN_ID"
+else
+  RUN_ID="${USER_TAG}_${RUN_TIMESTAMP}"
+  MASTER_ROOT="$PIP_DATA_ROOT/$RUN_ID"
+fi
+
+mkdir -p "$MASTER_ROOT" "$MASTER_ROOT/logs" "$MASTER_ROOT/.done" "$MASTER_ROOT/env" "$PIP_DATA_ROOT"
 echo "$RUN_ID" > "$RUN_ID_FILE"
 MASTER_LOG="$MASTER_ROOT/logs/MASTER_BENCHMARK_RUN.log"
 exec > >(tee -a "$MASTER_LOG") 2>&1
@@ -235,6 +259,7 @@ exec > >(tee -a "$MASTER_LOG") 2>&1
 echo "================================================================================"
 echo "  PERFORMANCE INTELLIGENCE PLATFORM — UNIFIED MASTER BENCHMARK RUNNER"
 echo "  Run ID       : $RUN_ID"
+echo "  Model Tag    : $USER_TAG"
 echo "  Output Root  : $MASTER_ROOT"
 echo "  Suite Root   : $SUITE_ROOT"
 echo "  Target Step  : $TARGET_STEP"
