@@ -18,6 +18,7 @@ CALLER_NODE0="${NODE0_IP:-}"
 CALLER_NODE1="${NODE1_IP:-}"
 CALLER_SSH_KEY="${SSH_KEY:-}"
 CALLER_VENV_DIR="${VENV_DIR:-}"
+CALLER_PP_SPLIT="${VLLM_PP_LAYER_PARTITION:-}"
 
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
 
@@ -35,6 +36,8 @@ for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smo
 [[ -n "$CALLER_SSH_KEY" ]] && export SSH_KEY="$CALLER_SSH_KEY"
 [[ -n "$CALLER_VENV_DIR" ]] && export VENV_DIR="$CALLER_VENV_DIR"
 unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+[[ -n "$CALLER_PP_SPLIT" ]] && export VLLM_PP_LAYER_PARTITION="$CALLER_PP_SPLIT"
+
 if [[ -f "$SCRIPT_DIR/20_nccl_policy.sh" ]]; then
   source "$SCRIPT_DIR/20_nccl_policy.sh"
   nccl_multi_node_v6_aligned_env
@@ -44,7 +47,11 @@ else
 fi
 
 : "${MODEL:=moonshotai/Kimi-Linear-48B-A3B-Instruct}"
-: "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
+if [[ "$MODEL" == *"Kimi-Linear"* ]]; then
+  : "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
+else
+  : "${REVISION:=}"
+fi
 : "${TOPOLOGY:=tp4_pp4_dist}"
 : "${INPUT_LEN:=8192}"
 : "${OUTPUT_LEN:=1024}"

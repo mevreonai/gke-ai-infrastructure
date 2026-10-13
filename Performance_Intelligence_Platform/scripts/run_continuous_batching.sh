@@ -88,17 +88,26 @@ DEFAULT_RUN_ID="${USER_TAG}_${RUN_TIMESTAMP}"
 RUN_ID="${CLI_RUN_ID:-$DEFAULT_RUN_ID}"
 OUT_ROOT="${CLI_OUT_ROOT:-$PIP_DATA_ROOT/$RUN_ID/continuous_batching}"
 
-# Resolve python binary
+# Resolve python binary with virtualenv auto-discovery
 PYTHON_BIN=""
-for candidate in python3 python py /c/Python314/python.exe /usr/bin/python3; do
-  if command -v "$candidate" >/dev/null 2>&1; then
-    ver=$("$candidate" --version 2>&1 || true)
-    if [[ "$ver" == *"Python 3"* ]]; then
-      PYTHON_BIN="$candidate"
-      break
-    fi
+for cand_venv in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "$HOME/pip_vllm_env" /home/*/vllm_env /home/*/pip_vllm_env /opt/vllm-platform-env; do
+  if [[ -n "$cand_venv" && -f "$cand_venv/bin/python" ]]; then
+    PYTHON_BIN="$cand_venv/bin/python"
+    break
   fi
 done
+
+if [[ -z "$PYTHON_BIN" ]]; then
+  for candidate in python3 python /usr/bin/python3; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      ver=$("$candidate" --version 2>&1 || true)
+      if [[ "$ver" == *"Python 3"* ]]; then
+        PYTHON_BIN="$candidate"
+        break
+      fi
+    fi
+  done
+fi
 [[ -n "$PYTHON_BIN" ]] || PYTHON_BIN="python3"
 
 echo "================================================================================"

@@ -52,7 +52,7 @@ for i in range(torch.cuda.device_count()):
 
 print("\nPeer-to-Peer Access:")
 for i in range(torch.cuda.device_count()):
-    p2p = [ "P2P" if torch.cuda.can_device_access_peer(i, j) else "SELF" if i==j else "NO" for j in range(8) ]
+    p2p = [ "P2P" if torch.cuda.can_device_access_peer(i, j) else "SELF" if i==j else "NO" for j in range(torch.cuda.device_count()) ]
     print(f"  GPU {i}: " + " ".join(p2p))
 
 x = torch.empty(256 * 1024 * 1024, dtype=torch.float32, device="cuda:0")

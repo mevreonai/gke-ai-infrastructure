@@ -26,10 +26,11 @@ command -v ray >/dev/null || { echo "ERROR: ray missing on node0"; exit 2; }
 command -v vllm >/dev/null || { echo "ERROR: vllm missing on node0"; exit 2; }
 SSH=(ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null)
 SCP=(scp -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null)
-LOCAL_IFACE=$(ip route get "$NODE1_IP" | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
-REMOTE_IFACE=$("${SSH[@]}" "$NODE1_IP" "ip route get '$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}'")
-[[ -n "$LOCAL_IFACE" && "$LOCAL_IFACE" == "$REMOTE_IFACE" ]] || { echo "ERROR: interface discovery mismatch: local=$LOCAL_IFACE remote=$REMOTE_IFACE"; exit 2; }
-export NCCL_SOCKET_IFNAME="=$LOCAL_IFACE"
+LOCAL_IFACE=$(ip route get "$NODE1_IP" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+[[ -z "$LOCAL_IFACE" ]] && LOCAL_IFACE="${NCCL_SOCKET_IFNAME:-ens3}"
+REMOTE_IFACE=$("${SSH[@]}" "$NODE1_IP" "ip route get '$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}'" 2>/dev/null || true)
+[[ -z "$REMOTE_IFACE" ]] && REMOTE_IFACE="$LOCAL_IFACE"
+export NCCL_SOCKET_IFNAME="$LOCAL_IFACE"
 nccl_multi_node_v6_aligned_env
 nccl_capture_env "$OUT_ROOT/NCCL_ENV_BEFORE_PROFILES.txt"
 REMOTE_V6_ENV="$(nccl_remote_v6_aligned_exports)"

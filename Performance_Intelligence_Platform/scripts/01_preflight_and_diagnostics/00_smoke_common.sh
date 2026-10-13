@@ -3,7 +3,7 @@
 set -o pipefail
 
 init_smoke_env() {
-  : "${BENCH_ROOT:=$HOME/rtx_g4_smoke}"
+  : "${BENCH_ROOT:=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
   : "${RUN_ID:=$(date +%Y%m%d_%H%M%S)}"
   : "${HOST_SHORT:=$(hostname -s)}"
   : "${RESULT_DIR:=$BENCH_ROOT/results/$RUN_ID/$HOST_SHORT}"

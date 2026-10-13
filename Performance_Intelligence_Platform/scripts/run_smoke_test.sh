@@ -19,7 +19,7 @@ elif [[ -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then source "$SCRIPT_DIR/RUN_CONFIG.
 fi
 
 # Auto-detect working Python virtualenv with PyTorch/vLLM stack
-for cand_venv in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "/home/ayu23/vllm_env" "/home/sudarshan/vllm_env"; do
+for cand_venv in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "$HOME/pip_vllm_env" /home/*/vllm_env /home/*/pip_vllm_env /opt/vllm-platform-env; do
   if [[ -n "$cand_venv" && -f "$cand_venv/bin/python" ]]; then
     if "$cand_venv/bin/python" -c "import torch" >/dev/null 2>&1; then
       VENV_DIR="$cand_venv"
@@ -658,15 +658,16 @@ echo "--- 18. END-TO-END MICRO-BENCHMARK SURROGATE PIPELINE ---"
 TEST_OUT="$SMOKE_ROOT/results/micro_test"
 mkdir -p "$TEST_OUT"
 
-micro_bench_status=$("$PYTHON_BIN" - << 'PY' "$TEST_OUT" 2>&1
+micro_bench_status=$("$PYTHON_BIN" - << 'PY' "$TEST_OUT" "${RAW_MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}" 2>&1
 import json, sys, time
 from pathlib import Path
 out_dir = Path(sys.argv[1])
+target_model = sys.argv[2] if len(sys.argv) > 2 and sys.argv[2] else "unknown"
 # Dynamic telemetry calculation ensuring pipeline verification without hardcoded constants
 t0 = time.time()
 ttft_s = max(0.001, round(time.time() - t0 + 0.045, 5))
 bench_data = {
-    "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
+    "model": target_model,
     "case": "tp4_smoke_verification",
     "input_lens": [512],
     "output_lens": [16],
@@ -843,7 +844,7 @@ verdict_payload = {
         f"Deploy repository to Node 0 ({n0_ip}) and Node 1 ({n1_ip})",
         "Launch full campaign: bash run_master_benchmark.sh --profile default",
         "Launch rapid test: bash run_20min_tp4pp4_campaign.sh",
-        "Inspect dashboard: open Performance_Intelligence_Platform/dashboard/index.html"
+        "Generate dashboard: python3 Performance_Intelligence_Platform/dashboard/generate_dashboard.py"
     ]
 }
 
@@ -869,7 +870,7 @@ print("=" * 80)
 print(f"  Platform Verdict : {overall_badge}")
 print(f"  Readiness Tier   : {readiness_tier}")
 print(f"  Score Summary    : {passed} PASSED  |  {warnings} ADVISORIES (Surrogate)  |  {failed} FAILED  ({total} Total)")
-print(f"  Model Target     : Moonshot Kimi-Linear 48B-A3B (TP4 x PP4 20G Dual-Node Cluster)")
+print(f"  Model Target     : {target_model} (TP4 x PP4 20G Dual-Node Cluster)")
 print(f"  JSON Report Path : {report_path}")
 print("")
 print("  Diagnostic Subsystem Clearances:")

@@ -88,6 +88,27 @@ def parse_run_artifacts(run_dir):
             pass
 
     if model_name == "Unknown Model":
+        # Look for model in run metadata JSONs first
+        json_candidates = [
+            os.path.join(run_dir, "SMOKE_TEST_REPORT.json"),
+            os.path.join(run_dir, "case_manifest.json"),
+            os.path.join(run_dir, "bench_summary.json"),
+        ] + glob.glob(os.path.join(run_dir, "**", "bench.json"), recursive=True)
+
+        for jc in json_candidates:
+            if os.path.isfile(jc):
+                try:
+                    with open(jc, "r", encoding="utf-8") as f:
+                        meta = json.load(f)
+                        if isinstance(meta, dict):
+                            m = meta.get("model") or meta.get("model_target") or meta.get("verdict", {}).get("model_target")
+                            if m and isinstance(m, str) and "unknown" not in m.lower():
+                                model_name = os.path.basename(m.split(" (")[0])
+                                break
+                except Exception:
+                    pass
+
+    if model_name == "Unknown Model":
         dir_name = os.path.basename(run_dir)
         parent_name = os.path.basename(os.path.dirname(run_dir))
         if "deepseek" in dir_name.lower() or "deepseek" in parent_name.lower():

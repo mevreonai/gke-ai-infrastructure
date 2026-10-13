@@ -1,10 +1,22 @@
-import os
-import json
+import os, sys, glob, json
 
 base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-metrics_file = os.path.join(base_dir, "data", "results", "moonshotai_Kimi-Linear-48B-A3B-Instruct", "extracted_dashboard_metrics.json")
-if not os.path.exists(metrics_file):
-    metrics_file = os.path.join(base_dir, "data", "results", "extracted_dashboard_metrics.json")
+metrics_file = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("METRICS_FILE", "")
+
+if not metrics_file or not os.path.exists(metrics_file):
+    candidates = [
+        os.path.join(base_dir, "data", "results", "moonshotai_Kimi-Linear-48B-A3B-Instruct", "extracted_dashboard_metrics.json"),
+        os.path.join(base_dir, "data", "results", "extracted_dashboard_metrics.json"),
+        os.path.join(base_dir, "dashboard", "DASHBOARD_CANONICAL_DATA.json")
+    ] + glob.glob(os.path.join(os.path.expanduser("~"), "PIP_Benchmark_Data", "**", "*metrics*.json"), recursive=True)
+    for c in candidates:
+        if os.path.exists(c):
+            metrics_file = c
+            break
+
+if not metrics_file or not os.path.exists(metrics_file):
+    print("Notice: No benchmark metrics file found to project from. Pass path as argv[1] or set METRICS_FILE.")
+    sys.exit(0)
 
 with open(metrics_file, "r", encoding="utf-8") as f:
     kimi_runs = json.load(f)

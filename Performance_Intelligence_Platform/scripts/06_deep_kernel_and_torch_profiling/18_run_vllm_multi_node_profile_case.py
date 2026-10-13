@@ -62,7 +62,7 @@ def main():
     if '--profiler-config' not in serve_help and '--profiler-config.profiler' not in serve_help:
         raise SystemExit('vLLM profiler-config capability not found; refuse to claim a distributed profile')
     cfg=json.loads(Path(__file__).with_name('10b_vllm_multi_node_cases.json').read_text())
-    model=cfg['model']
+    model=os.environ.get('MODEL', cfg.get('model', 'moonshotai/Kimi-Linear-48B-A3B-Instruct'))
     case={
       'name':args.topology,'tp':args.tp,'pp':args.pp,'ray_gpus_per_node':args.ray_gpus_per_node,
       'gpu_indices':list(range(args.ray_gpus_per_node)),'max_num_batched_tokens':8192,

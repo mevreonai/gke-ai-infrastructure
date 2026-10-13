@@ -307,8 +307,10 @@ export VLLM_MOE_BACKEND="${VLLM_MOE_BACKEND:-flashinfer_cutlass}"
 export MOE_BACKEND="${MOE_BACKEND:-flashinfer_cutlass}"
 export VLLM_FLASHINFER_AUTOTUNE="1"
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
-# Layer split left unset by default so vLLM defaults apply (14/13 PP2, 7/7/7/6 PP4)
-unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+# Preserve caller's VLLM_PP_LAYER_PARTITION if set (e.g. "8,6,6,20" for DeepSeek PP4), otherwise leave unset so vLLM defaults apply
+if [[ -z "${VLLM_PP_LAYER_PARTITION:-}" ]]; then
+  unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+fi
 
 # Inter-Node NCCL & Network Controls (Enforce Stage 1/Stage 2 Golden Stability)
 if [[ -d "/usr/local/gib/lib64" && ! -d "/tmp/clean_nccl_libs" ]]; then
@@ -330,10 +332,19 @@ if [[ -d "/tmp/clean_nccl_libs" ]]; then
     export LD_LIBRARY_PATH="/tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   fi
 fi
-export NCCL_SOCKET_IFNAME="${NCCL_SOCKET_IFNAME:-ens3}"
+
+# Dynamic interface discovery for NCCL / Gloo
+DEFAULT_IFACE="${NCCL_SOCKET_IFNAME:-}"
+if [[ -z "$DEFAULT_IFACE" && -n "${NODE1_IP:-}" ]]; then
+  DEFAULT_IFACE=$(ip route get "$NODE1_IP" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+fi
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE=$(ip route get 8.8.8.8 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE="ens3"
+
+export NCCL_SOCKET_IFNAME="${NCCL_SOCKET_IFNAME:-$DEFAULT_IFACE}"
 export NCCL_NET="${NCCL_NET:-Socket}"
 export NCCL_BUFFSIZE="${NCCL_BUFFSIZE:-4194304}"
-export GLOO_SOCKET_IFNAME="${GLOO_SOCKET_IFNAME:-ens3}"
+export GLOO_SOCKET_IFNAME="${GLOO_SOCKET_IFNAME:-$DEFAULT_IFACE}"
 unset VLLM_DISABLE_PYNCCL 2>/dev/null || true
 unset NCCL_ALGO NCCL_PROTO || true
 
@@ -547,12 +558,19 @@ if step_should_run 4; then
     mkdir -p '$TP8_DIR/control' '$TP8_DIR/pinned'
     local_port=8035
     model_name=\"\${VLLM_MODEL:-\${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}}\"
-    rev_id=\"\${VLLM_REVISION:-\${REVISION:-e1df551a447157d4658b573f9a695d57658590e9}}\"
+    rev_id=\"\${VLLM_REVISION:-\${REVISION:-}}\"
+    rev_arg=\"\"
+    if [[ -n \"\$rev_id\" ]]; then
+      rev_arg=\"--revision \$rev_id\"
+    elif [[ \"\$model_name\" == *\"Kimi-Linear\"* ]]; then
+      rev_arg=\"--revision e1df551a447157d4658b573f9a695d57658590e9\"
+    fi
+    max_len=\"\${VLLM_MAX_MODEL_LEN:-\${MAX_MODEL_LEN:-1048576}}\"
     export CUDA_VISIBLE_DEVICES=\"0,1,2,3,4,5,6,7\"
 
     echo \"Starting TP8 server for NUMA pinning evaluation with model: \$model_name...\"
-    setsid vllm serve \"\$model_name\" --revision \"\$rev_id\" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port \"\$local_port\" \
-      --tensor-parallel-size 8 --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32 \
+    setsid vllm serve \"\$model_name\" \$rev_arg --model-impl vllm --trust-remote-code --host 0.0.0.0 --port \"\$local_port\" \
+      --tensor-parallel-size 8 --max-model-len \"\$max_len\" --max-num-batched-tokens 8192 --max-num-seqs 32 \
       --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
       --moe-backend flashinfer_cutlass --enable-flashinfer-autotune \
       --no-enable-prefix-caching > '$TP8_DIR/server.log' 2>&1 & PID=\$!
@@ -607,24 +625,24 @@ if step_should_run 4; then
     cleanup_tp8
     trap - EXIT INT TERM ERR
 
-    ctrl_ok=0; pin_ok=0
-    [[ -f "$TP8_DIR/control/8k_c1_unpinned.json" ]] && ctrl_ok=1
-    [[ -f "$TP8_DIR/pinned/8k_c1_pinned.json" ]] && pin_ok=1
-    step4_status="FAILED"
-    if [[ "$ctrl_ok" -eq 1 && "$pin_ok" -eq 1 ]]; then
-      step4_status="COMPLETED"
-    fi
-    cat << EOF > "$TP8_DIR/case_manifest.json"
-{
+    python3 -c '
+import json, os, sys
+p_ctrl, p_pin, p_out = sys.argv[1], sys.argv[2], sys.argv[3]
+ctrl = os.path.exists(p_ctrl)
+pin = os.path.exists(p_pin)
+st = "COMPLETED" if ctrl and pin else "FAILED"
+data = {
   "case": "step04_tp8_pinning",
   "name": "step04_tp8_pinning",
-  "status": "$step4_status",
+  "status": st,
   "benchmarks": [
-    {"name": "8k_c1_unpinned", "status": $([ $ctrl_ok -eq 1 ] && echo '"COMPLETED"' || echo '"FAILED"')},
-    {"name": "8k_c1_pinned", "status": $([ $pin_ok -eq 1 ] && echo '"COMPLETED"' || echo '"FAILED"')}
+    {"name": "8k_c1_unpinned", "status": "COMPLETED" if ctrl else "FAILED"},
+    {"name": "8k_c1_pinned", "status": "COMPLETED" if pin else "FAILED"}
   ]
 }
-EOF
+with open(p_out, "w") as f:
+    json.dump(data, f, indent=2)
+' "$TP8_DIR/control/8k_c1_unpinned.json" "$TP8_DIR/pinned/8k_c1_pinned.json" "$TP8_DIR/case_manifest.json"
 
     python3 '$SUITE_ROOT/../tools/compare_numa_pinning.py' '$TP8_DIR' 2>/dev/null || python3 '$SUITE_ROOT/tools/compare_numa_pinning.py' '$TP8_DIR' || true
     "
@@ -770,31 +788,34 @@ if step_should_run 12; then
   run_step 12 "capped_and_resilience_profiles" bash -c "
     mkdir -p '$CAPPED_DIR'
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
+      LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+      LOCAL_IFACE=\"\${LOCAL_IFACE:-ens3}\"
+      REMOTE_IFACE=\$(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"ip route get '\$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'\" 2>/dev/null || true)
+      REMOTE_IFACE=\"\${REMOTE_IFACE:-ens3}\"
+
       clean_tc_both() {
-        local cond_dir="${1:-$CAPPED_DIR}"
-        sudo -n tc qdisc del dev "$LOCAL_IFACE" root 2>/dev/null || true
-        sudo -n tc qdisc del dev "$LOCAL_IFACE" ingress 2>/dev/null || true
-        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
-          "sudo -n tc qdisc del dev '$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '$REMOTE_IFACE' ingress 2>/dev/null || true" 2>/dev/null || true
-        if [[ -n "$1" ]]; then
-          mkdir -p "$cond_dir"
-          sudo -n tc -s qdisc show dev "$LOCAL_IFACE" > "$cond_dir/node0_tc_qdisc.txt" 2>&1 || true
-          ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc -s qdisc show dev '$REMOTE_IFACE'" > "$cond_dir/node1_tc_qdisc.txt" 2>&1 || true
+        local cond_dir=\"\${1:-$CAPPED_DIR}\"
+        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" root 2>/dev/null || true
+        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" ingress 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
+          \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '\$REMOTE_IFACE' ingress 2>/dev/null || true\" 2>/dev/null || true
+        if [[ -n \"\$1\" ]]; then
+          mkdir -p \"\$cond_dir\"
+          sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" > \"\$cond_dir/node0_tc_qdisc.txt\" 2>&1 || true
+          ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'\" > \"\$cond_dir/node1_tc_qdisc.txt\" 2>&1 || true
         fi
       }
       apply_cap() {
-        local rate=$1
-        local cond_dir=$2
-        mkdir -p "$cond_dir"
-        sudo -n tc qdisc replace dev "$LOCAL_IFACE" root handle 1: htb default 10 2>&1 | tee "$cond_dir/node0_tc_apply.log" || true
-        sudo -n tc class replace dev "$LOCAL_IFACE" parent 1: classid 1:10 htb rate "${rate}gbit" ceil "${rate}gbit" 2>&1 | tee -a "$cond_dir/node0_tc_apply.log" || true
-        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
-          "sudo -n tc qdisc replace dev '$REMOTE_IFACE' root handle 1: htb default 10 2>&1 && sudo -n tc class replace dev '$REMOTE_IFACE' parent 1: classid 1:10 htb rate '${rate}gbit' ceil '${rate}gbit' 2>&1" | tee "$cond_dir/node1_tc_apply.log" || true
-        sudo -n tc -s qdisc show dev "$LOCAL_IFACE" > "$cond_dir/node0_tc_qdisc.txt" 2>&1 || true
-        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc -s qdisc show dev '$REMOTE_IFACE'" > "$cond_dir/node1_tc_qdisc.txt" 2>&1 || true
+        local rate=\$1
+        local cond_dir=\$2
+        mkdir -p \"\$cond_dir\"
+        sudo -n tc qdisc replace dev \"\$LOCAL_IFACE\" root handle 1: htb default 10 2>&1 | tee \"\$cond_dir/node0_tc_apply.log\" || true
+        sudo -n tc class replace dev \"\$LOCAL_IFACE\" parent 1: classid 1:10 htb rate \"\${rate}gbit\" ceil \"\${rate}gbit\" 2>&1 | tee -a \"\$cond_dir/node0_tc_apply.log\" || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
+          \"sudo -n tc qdisc replace dev '\$REMOTE_IFACE' root handle 1: htb default 10 2>&1 && sudo -n tc class replace dev '\$REMOTE_IFACE' parent 1: classid 1:10 htb rate '\${rate}gbit' ceil '\${rate}gbit' 2>&1\" | tee \"\$cond_dir/node1_tc_apply.log\" || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" > \"\$cond_dir/node0_tc_qdisc.txt\" 2>&1 || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'\" > \"\$cond_dir/node1_tc_qdisc.txt\" 2>&1 || true
       }
-      LOCAL_IFACE=\$(ip route get "\$NODE1_IP" | awk '{for(i=1;i<=NF;i++) if(\$i=="dev"){print \$(i+1); exit}}')
-      REMOTE_IFACE=\$(ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'")
 
       # 1. Native baseline
       if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"native"* ]]; then
@@ -818,12 +839,12 @@ if step_should_run 12; then
 
       # 4. Impaired (0.05% synthetic packet loss & jitter)
       if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"impaired"* ]]; then
-        mkdir -p "$CAPPED_DIR/impaired_005pct_loss"
-        sudo -n tc qdisc add dev "\$LOCAL_IFACE" root netem loss 0.05% delay 0.2ms 0.05ms 2>&1 | tee "$CAPPED_DIR/impaired_005pct_loss/node0_tc_apply.log" || true
-        ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>&1" | tee "$CAPPED_DIR/impaired_005pct_loss/node1_tc_apply.log" || true
-        sudo -n tc -s qdisc show dev "\$LOCAL_IFACE" > "$CAPPED_DIR/impaired_005pct_loss/node0_tc_qdisc.txt" 2>&1 || true
-        ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'" > "$CAPPED_DIR/impaired_005pct_loss/node1_tc_qdisc.txt" 2>&1 || true
-        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE="GCP_CAPPED_JITTER" GCP_NETWORK_PROVENANCE="GCP_CAPPED_JITTER" V8_VLLM_NETWORK_MODE="capped" VLLM_NETWORK_MODE="capped" NETWORK_MODE="capped" V8_VLLM_NETWORK_CAP_GBPS="impaired" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+        mkdir -p '$CAPPED_DIR/impaired_005pct_loss'
+        sudo -n tc qdisc add dev \"\$LOCAL_IFACE\" root netem loss 0.05% delay 0.2ms 0.05ms 2>&1 | tee '$CAPPED_DIR/impaired_005pct_loss/node0_tc_apply.log' || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>&1\" | tee '$CAPPED_DIR/impaired_005pct_loss/node1_tc_apply.log' || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" > '$CAPPED_DIR/impaired_005pct_loss/node0_tc_qdisc.txt' 2>&1 || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'\" > '$CAPPED_DIR/impaired_005pct_loss/node1_tc_qdisc.txt' 2>&1 || true
+        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_JITTER\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_JITTER\" V8_VLLM_NETWORK_MODE=\"capped\" VLLM_NETWORK_MODE=\"capped\" NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"impaired\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
 
         # Restore clean network
         clean_tc_both

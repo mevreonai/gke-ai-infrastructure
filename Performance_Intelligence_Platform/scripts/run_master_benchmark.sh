@@ -307,8 +307,10 @@ export VLLM_MOE_BACKEND="${VLLM_MOE_BACKEND:-flashinfer_cutlass}"
 export MOE_BACKEND="${MOE_BACKEND:-flashinfer_cutlass}"
 export VLLM_FLASHINFER_AUTOTUNE="1"
 export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-trtllm::fused_moe::gemm1,trtllm::fused_moe::gemm2}"
-# Layer split left unset by default so vLLM defaults apply (14/13 PP2, 7/7/7/6 PP4)
-unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+# Preserve caller's VLLM_PP_LAYER_PARTITION if set (e.g. "8,6,6,20" for DeepSeek PP4), otherwise leave unset so vLLM defaults apply
+if [[ -z "${VLLM_PP_LAYER_PARTITION:-}" ]]; then
+  unset VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+fi
 
 # Inter-Node NCCL & Network Controls (Enforce Stage 1/Stage 2 Golden Stability)
 if [[ -d "/usr/local/gib/lib64" && ! -d "/tmp/clean_nccl_libs" ]]; then
@@ -330,10 +332,19 @@ if [[ -d "/tmp/clean_nccl_libs" ]]; then
     export LD_LIBRARY_PATH="/tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
   fi
 fi
-export NCCL_SOCKET_IFNAME="${NCCL_SOCKET_IFNAME:-ens3}"
+
+# Dynamic interface discovery for NCCL / Gloo
+DEFAULT_IFACE="${NCCL_SOCKET_IFNAME:-}"
+if [[ -z "$DEFAULT_IFACE" && -n "${NODE1_IP:-}" ]]; then
+  DEFAULT_IFACE=$(ip route get "$NODE1_IP" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+fi
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE=$(ip route get 8.8.8.8 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE="ens3"
+
+export NCCL_SOCKET_IFNAME="${NCCL_SOCKET_IFNAME:-$DEFAULT_IFACE}"
 export NCCL_NET="${NCCL_NET:-Socket}"
 export NCCL_BUFFSIZE="${NCCL_BUFFSIZE:-4194304}"
-export GLOO_SOCKET_IFNAME="${GLOO_SOCKET_IFNAME:-ens3}"
+export GLOO_SOCKET_IFNAME="${GLOO_SOCKET_IFNAME:-$DEFAULT_IFACE}"
 unset VLLM_DISABLE_PYNCCL 2>/dev/null || true
 unset NCCL_ALGO NCCL_PROTO || true
 
@@ -547,12 +558,19 @@ if step_should_run 4; then
     mkdir -p '$TP8_DIR/control' '$TP8_DIR/pinned'
     local_port=8035
     model_name=\"\${VLLM_MODEL:-\${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}}\"
-    rev_id=\"\${VLLM_REVISION:-\${REVISION:-e1df551a447157d4658b573f9a695d57658590e9}}\"
+    rev_id=\"\${VLLM_REVISION:-\${REVISION:-}}\"
+    rev_arg=\"\"
+    if [[ -n \"\$rev_id\" ]]; then
+      rev_arg=\"--revision \$rev_id\"
+    elif [[ \"\$model_name\" == *\"Kimi-Linear\"* ]]; then
+      rev_arg=\"--revision e1df551a447157d4658b573f9a695d57658590e9\"
+    fi
+    max_len=\"\${VLLM_MAX_MODEL_LEN:-\${MAX_MODEL_LEN:-1048576}}\"
     export CUDA_VISIBLE_DEVICES=\"0,1,2,3,4,5,6,7\"
 
     echo \"Starting TP8 server for NUMA pinning evaluation with model: \$model_name...\"
-    setsid vllm serve \"\$model_name\" --revision \"\$rev_id\" --model-impl vllm --trust-remote-code --host 0.0.0.0 --port \"\$local_port\" \
-      --tensor-parallel-size 8 --max-model-len 1048576 --max-num-batched-tokens 8192 --max-num-seqs 32 \
+    setsid vllm serve \"\$model_name\" \$rev_arg --model-impl vllm --trust-remote-code --host 0.0.0.0 --port \"\$local_port\" \
+      --tensor-parallel-size 8 --max-model-len \"\$max_len\" --max-num-batched-tokens 8192 --max-num-seqs 32 \
       --gpu-memory-utilization 0.9 --performance-mode balanced --optimization-level 2 \
       --moe-backend flashinfer_cutlass --enable-flashinfer-autotune \
       --no-enable-prefix-caching > '$TP8_DIR/server.log' 2>&1 & PID=\$!

@@ -8,7 +8,11 @@ SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
 
 : "${MODEL:=moonshotai/Kimi-Linear-48B-A3B-Instruct}"
-: "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
+if [[ "$MODEL" == *"Kimi-Linear"* ]]; then
+  : "${REVISION:=e1df551a447157d4658b573f9a695d57658590e9}"
+else
+  : "${REVISION:=}"
+fi
 : "${TOPOLOGY:=tp4_pp4_dist}"
 : "${INPUT_LEN:=8192}"
 : "${OUTPUT_LEN:=1024}"

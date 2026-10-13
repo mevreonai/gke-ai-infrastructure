@@ -80,11 +80,23 @@ NODE1_IP="${NODE1_IP:-}"
 SSH_KEY="${SSH_KEY:-$HOME/.ssh/google_compute_engine}"
 [[ -f "$SSH_KEY" ]] || { if [[ -f "$HOME/.ssh/id_rsa" ]]; then SSH_KEY="$HOME/.ssh/id_rsa"; fi; }
 
+# Resolve default network interface dynamically
+DEFAULT_IFACE="${NCCL_SOCKET_IFNAME:-}"
+if [[ -z "$DEFAULT_IFACE" && -n "$NODE1_IP" ]]; then
+  DEFAULT_IFACE=$(ip route get "$NODE1_IP" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+fi
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE=$(ip route get 8.8.8.8 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE="ens3"
+
 cleanup_caps() {
   echo "--> Draining and resetting traffic control rate caps on both nodes..."
-  sudo -n tc qdisc del dev ens3 root 2>/dev/null || true
+  sudo -n tc qdisc del dev "$DEFAULT_IFACE" root 2>/dev/null || true
   if [[ -n "${NODE1_IP:-}" ]]; then
-    ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
+    ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "
+      REMOTE_IF=\$(ip route get '$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+      [[ -z \"\$REMOTE_IF\" ]] && REMOTE_IF=\"$DEFAULT_IFACE\"
+      sudo -n tc qdisc del dev \"\$REMOTE_IF\" root 2>/dev/null || true
+    " 2>/dev/null || true
   fi
 }
 trap cleanup_caps EXIT
@@ -93,7 +105,7 @@ echo "==========================================================================
 echo "  PERFORMANCE INTELLIGENCE PLATFORM — AUTOMATED SMOKE TEST & CLUSTER SETUP"
 echo "  Primary Node 0 IP : $NODE0_IP"
 echo "  Worker Node 1 IP  : ${NODE1_IP:-<UNCONFIGURED>}"
-echo "  Network Rate Cap  : $([[ "$SKIP_20G" == 1 ]] && echo 'Native (100G)' || echo '20 Gbps (tc HTB on ens3)')"
+echo "  Network Rate Cap  : $([[ "$SKIP_20G" == 1 ]] && echo 'Native (100G)' || echo "20 Gbps (tc HTB on $DEFAULT_IFACE)")"
 echo "  Auto Launch Bench : $([[ "$RUN_BENCHMARK" == 1 ]] && echo 'YES (Step 10 TP4/PP4)' || echo 'NO (Smoke test only)')"
 echo "================================================================================"
 
@@ -128,22 +140,24 @@ else
   echo "    ⚠️ Remote GPU check timed out. Proceeding with local verification."
 fi
 
-# 2. Apply 20 Gbps Rate Cap on ens3
+# 2. Apply 20 Gbps Rate Cap on $DEFAULT_IFACE
 if [[ "$SKIP_20G" == 0 ]]; then
   echo ""
-  echo "--> [2/5] Applying 20 Gbps rate shaping (tc HTB) on interface ens3..."
-  if ip link show ens3 >/dev/null 2>&1; then
-    sudo tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
-    sudo tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
-    echo "    Node 0: ens3 paced to 20 Gbps."
+  echo "--> [2/5] Applying 20 Gbps rate shaping (tc HTB) on interface $DEFAULT_IFACE..."
+  if ip link show "$DEFAULT_IFACE" >/dev/null 2>&1; then
+    sudo tc qdisc replace dev "$DEFAULT_IFACE" root handle 1: htb default 10 2>/dev/null || true
+    sudo tc class replace dev "$DEFAULT_IFACE" parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+    echo "    Node 0: $DEFAULT_IFACE paced to 20 Gbps."
   fi
 
   # Apply remotely on Node 1 via SSH
   ssh -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "
-    if ip link show ens3 >/dev/null 2>&1; then
-      sudo tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
-      sudo tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
-      echo '    Node 1: ens3 paced to 20 Gbps.'
+    REMOTE_IF=\$(ip route get '$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+    [[ -z \"\$REMOTE_IF\" ]] && REMOTE_IF=\"$DEFAULT_IFACE\"
+    if ip link show \"\$REMOTE_IF\" >/dev/null 2>&1; then
+      sudo tc qdisc replace dev \"\$REMOTE_IF\" root handle 1: htb default 10 2>/dev/null || true
+      sudo tc class replace dev \"\$REMOTE_IF\" parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+      echo \"    Node 1: \$REMOTE_IF paced to 20 Gbps.\"
     fi
   " 2>/dev/null || echo "    Notice: Remote Node 1 traffic shaping applied or skipped."
 else
@@ -154,7 +168,7 @@ fi
 # 3. Synchronize RUN_CONFIG.env
 echo ""
 # Auto-detect working Python virtualenv with PyTorch/vLLM stack
-for cand in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "/home/ayu23/vllm_env" "/home/sudarshan/vllm_env"; do
+for cand in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "$HOME/pip_vllm_env" /home/*/vllm_env /home/*/pip_vllm_env /opt/vllm-platform-env; do
   if [[ -n "$cand" && -f "$cand/bin/python" ]]; then
     if "$cand/bin/python" -c "import torch" >/dev/null 2>&1; then
       VENV_DIR="$cand"

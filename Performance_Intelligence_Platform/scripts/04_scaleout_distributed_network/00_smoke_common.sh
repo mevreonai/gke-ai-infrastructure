@@ -3,7 +3,7 @@
 set -o pipefail
 
 init_smoke_env() {
-  : "${BENCH_ROOT:=$HOME/rtx_g4_smoke}"
+  : "${BENCH_ROOT:=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
   : "${RUN_ID:=$(date +%Y%m%d_%H%M%S)}"
   : "${HOST_SHORT:=$(hostname -s)}"
   : "${RESULT_DIR:=$BENCH_ROOT/results/$RUN_ID/$HOST_SHORT}"
@@ -42,7 +42,11 @@ run_logged() {
   } | tee -a "$MASTER_LOG" "$outfile"
 
   set +e
-  bash -c "set -o pipefail; [ -f \$HOME/rtx_g4_smoke/RUN_CONFIG.env ] && source \$HOME/rtx_g4_smoke/RUN_CONFIG.env; $cmd" \
+  local cfg=""
+  for c in "$PWD/RUN_CONFIG.env" "${BENCH_ROOT:-}/RUN_CONFIG.env" "${BENCH_ROOT:-}/scripts/RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do
+    if [[ -f "$c" ]]; then cfg="$c"; break; fi
+  done
+  bash -c "set -o pipefail; [ -n '$cfg' ] && source '$cfg'; $cmd" \
     > >(tee -a "$MASTER_LOG" "$outfile") \
     2> >(tee -a "$MASTER_LOG" "$outfile" >&2)
   local rc=$?

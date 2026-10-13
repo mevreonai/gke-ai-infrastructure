@@ -131,18 +131,31 @@ def filter_case_benchmarks(benchmarks: list[dict], contexts: str | None = None, 
     return [b for b in benchmarks if benchmark_matches_filter(b, ctx_set, cnc_set)]
 
 def resolved(case, cfg, key, default=None):
+    env_vllm = f"VLLM_{key.upper()}"
+    if env_vllm in os.environ:
+        return os.environ[env_vllm]
+    if key.upper() in os.environ:
+        return os.environ[key.upper()]
     if key in case: return case[key]
     return cfg.get("server_defaults",{}).get(key,default)
 
 def build_server_cmd(vllm, serve_help, cfg, case, model, port, distributed=False):
-    for flag in ("--tensor-parallel-size","--pipeline-parallel-size","--max-model-len","--max-num-batched-tokens","--kv-cache-dtype","--revision"):
+    for flag in ("--tensor-parallel-size","--pipeline-parallel-size","--max-model-len","--max-num-batched-tokens","--kv-cache-dtype"):
         require_flag(serve_help,flag,"vllm serve")
     model = os.environ.get("MODEL", model)
-    revision = os.environ.get("REVISION", str(cfg.get("revision", "")))
+    env_rev = os.environ.get("REVISION")
+    if env_rev is not None:
+        revision = env_rev.strip()
+    elif model == cfg.get("model"):
+        revision = str(cfg.get("revision", "")).strip()
+    else:
+        revision = ""
     cmd=[vllm,"serve",model]
     add_if_supported(cmd,serve_help,"--model-impl","vllm")
     if "--trust-remote-code" in serve_help: cmd += ["--trust-remote-code"]
-    cmd += ["--revision",revision,"--host","0.0.0.0","--port",str(port),
+    if revision and "--revision" in serve_help:
+        cmd += ["--revision", revision]
+    cmd += ["--host","0.0.0.0","--port",str(port),
             "--tensor-parallel-size",str(case["tp"]),"--pipeline-parallel-size",str(case.get("pp",1)),
             "--max-model-len",str(resolved(case,cfg,"max_model_len")),
             "--max-num-batched-tokens",str(case["max_num_batched_tokens"]),

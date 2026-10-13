@@ -52,14 +52,17 @@ def main():
     args=ap.parse_args()
     if not args.node1_ip: raise SystemExit("NODE1_IP not set. Source RUN_CONFIG.env or pass --node1-ip.")
 
-    cfg=json.loads(Path(args.cases).read_text()); model=cfg["model"]
+    cfg=json.loads(Path(args.cases).read_text())
+    model=os.environ.get("MODEL", cfg.get("model", "moonshotai/Kimi-Linear-48B-A3B-Instruct"))
+    env_rev=os.environ.get("REVISION")
+    revision = env_rev if env_rev is not None else (cfg.get("revision", "") if model == cfg.get("model") else "")
     cases=choose_cases(cfg,args.case,args.group,args.all)
     out=Path(args.out).resolve(); out.mkdir(parents=True,exist_ok=True)
     vllm=shutil.which("vllm"); py=sys.executable
     if not vllm: raise SystemExit("vllm CLI not found")
     sampler=str(Path(__file__).with_name("09_metrics_sampler.py").resolve())
     serve_help=cli_help(vllm,["serve"]); bench_help=cli_help(vllm,["bench","serve"])
-    top={"schema_version":2,"model":model,"revision":cfg.get("revision"),"evidence_class":"MEASURED-48B",
+    top={"schema_version":2,"model":model,"revision":revision,"evidence_class":"MEASURED-PRODUCTION",
          "network_provenance":os.environ.get("GCP_NETWORK_PROVENANCE","GCP_UNSPECIFIED"),
          "nccl_transport_provenance":os.environ.get("NCCL_TRANSPORT_PROVENANCE","UNSPECIFIED"),
          "configured_network_cap_gbps":os.environ.get("V8_VLLM_NETWORK_CAP_GBPS","0"),

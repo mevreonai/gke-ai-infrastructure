@@ -49,13 +49,26 @@ if [[ -f "$VENV_DIR/bin/activate" ]]; then
   source "$VENV_DIR/bin/activate"
 fi
 
+RAW_MODEL="${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}"
+MODEL_TAG=$(basename "$RAW_MODEL" | tr '/' '_' | tr -cd '[:alnum:]_.-')
+USER_TAG="${RUN_TAG:-$MODEL_TAG}"
+RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+
+# Resolve default network interface dynamically
+DEFAULT_IFACE="${NCCL_SOCKET_IFNAME:-}"
+if [[ -z "$DEFAULT_IFACE" && -n "$NODE1_IP" ]]; then
+  DEFAULT_IFACE=$(ip route get "$NODE1_IP" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+fi
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE=$(ip route get 8.8.8.8 2>/dev/null | awk '{for(i=1;i<=NF;i++) if($i=="dev"){print $(i+1); exit}}')
+[[ -z "$DEFAULT_IFACE" ]] && DEFAULT_IFACE="ens3"
+
 echo "================================================================================"
 echo "  PERFORMANCE INTELLIGENCE PLATFORM — 20-MINUTE TP4/PP4 CAMPAIGN"
-echo "  Model             : moonshotai/Kimi-Linear-48B-A3B-Instruct"
+echo "  Model             : $RAW_MODEL"
 echo "  Topology          : TP4 / PP4 (16 GPUs across 2 Nodes)"
-echo "  Pipeline Partition: 7, 7, 7, 6 (4 stages for 27 layers)"
+echo "  Pipeline Partition: ${VLLM_PP_LAYER_PARTITION:-default (7, 7, 7, 6 for 27L)}"
 echo "  MoE Backend       : FlashInfer CUTLASS (Autotuned)"
-echo "  Interconnect      : 20 Gbps (tc HTB rate-paced on ens3)"
+echo "  Interconnect      : 20 Gbps (tc HTB rate-paced on $DEFAULT_IFACE)"
 echo "  Primary Node 0    : $NODE0_IP"
 echo "  Worker Node 1     : $NODE1_IP"
 echo "  Expected Runtime  : ~20 to 22 minutes"
@@ -66,10 +79,6 @@ echo "==========================================================================
 
 # Initialize output directory early so telemetry logs can be written immediately
 : "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"
-RAW_MODEL="${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}"
-MODEL_TAG=$(basename "$RAW_MODEL" | tr '/' '_' | tr -cd '[:alnum:]_.-')
-USER_TAG="${RUN_TAG:-$MODEL_TAG}"
-RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 OUT_DIR="$PIP_DATA_ROOT/tp4_pp4_20g_${USER_TAG}_${RUN_TIMESTAMP}"
 mkdir -p "$OUT_DIR" "$PIP_DATA_ROOT"
 
@@ -81,9 +90,13 @@ export PLATFORM_VLLM_NETWORK_MODE="tc_htb"
 
 cleanup_caps() {
   echo "--> Draining and resetting traffic control rate caps on both nodes..."
-  sudo -n tc qdisc del dev ens3 root 2>/dev/null || true
+  sudo -n tc qdisc del dev "$DEFAULT_IFACE" root 2>/dev/null || true
   if [[ -n "${NODE1_IP:-}" ]]; then
-    ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc qdisc del dev ens3 root 2>/dev/null || true" 2>/dev/null || true
+    ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "
+      REMOTE_IF=\$(ip route get '$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+      [[ -z \"\$REMOTE_IF\" ]] && REMOTE_IF=\"$DEFAULT_IFACE\"
+      sudo -n tc qdisc del dev \"\$REMOTE_IF\" root 2>/dev/null || true
+    " 2>/dev/null || true
   fi
 }
 trap cleanup_caps EXIT INT TERM ERR
@@ -97,21 +110,23 @@ if ! ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChec
 fi
 echo "    ✅ Dual-node cluster verified. 16 GPUs accessible."
 
-# 2. Enforce 20 Gbps Traffic Control on ens3 (Both Nodes)
-echo "--> [2/4] Applying 20 Gbps rate shaping (tc HTB) on ens3 across both nodes..."
-if ip link show ens3 >/dev/null 2>&1; then
-  sudo -n tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
-  sudo -n tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
-  sudo -n tc -s qdisc show dev ens3 > "$OUT_DIR/node0_tc_qdisc_active.txt" 2>/dev/null || true
-  echo "    Node 0: ens3 configured at 20 Gbps."
+# 2. Enforce 20 Gbps Traffic Control on $DEFAULT_IFACE (Both Nodes)
+echo "--> [2/4] Applying 20 Gbps rate shaping (tc HTB) on $DEFAULT_IFACE across both nodes..."
+if ip link show "$DEFAULT_IFACE" >/dev/null 2>&1; then
+  sudo -n tc qdisc replace dev "$DEFAULT_IFACE" root handle 1: htb default 10 2>/dev/null || true
+  sudo -n tc class replace dev "$DEFAULT_IFACE" parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+  sudo -n tc -s qdisc show dev "$DEFAULT_IFACE" > "$OUT_DIR/node0_tc_qdisc_active.txt" 2>/dev/null || true
+  echo "    Node 0: $DEFAULT_IFACE configured at 20 Gbps."
 fi
 
 ssh -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=5 -o StrictHostKeyChecking=no "$NODE1_IP" "
-  if ip link show ens3 >/dev/null 2>&1; then
-    sudo -n tc qdisc replace dev ens3 root handle 1: htb default 10 2>/dev/null || true
-    sudo -n tc class replace dev ens3 parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
-    sudo -n tc -s qdisc show dev ens3 > /tmp/node1_tc_qdisc_active.txt 2>/dev/null || true
-    echo '    Node 1: ens3 configured at 20 Gbps.'
+  REMOTE_IF=\$(ip route get '$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+  [[ -z \"\$REMOTE_IF\" ]] && REMOTE_IF=\"$DEFAULT_IFACE\"
+  if ip link show \"\$REMOTE_IF\" >/dev/null 2>&1; then
+    sudo -n tc qdisc replace dev \"\$REMOTE_IF\" root handle 1: htb default 10 2>/dev/null || true
+    sudo -n tc class replace dev \"\$REMOTE_IF\" parent 1: classid 1:10 htb rate 20gbit ceil 20gbit burst 256k cburst 256k 2>/dev/null || true
+    sudo -n tc -s qdisc show dev \"\$REMOTE_IF\" > /tmp/node1_tc_qdisc_active.txt 2>/dev/null || true
+    echo \"    Node 1: \$REMOTE_IF configured at 20 Gbps.\"
   fi
 " 2>/dev/null || true
 scp -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP:/tmp/node1_tc_qdisc_active.txt" "$OUT_DIR/node1_tc_qdisc_active.txt" 2>/dev/null || true
@@ -120,11 +135,13 @@ scp -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP:/tmp/n
 echo "--> [3/4] Exporting execution environment and kernel parameters..."
 if [[ ! -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
   cat << EOF > "$SCRIPT_DIR/RUN_CONFIG.env"
-# Machine addresses and environment paths (Blocker 8 compliance: only paths/addresses)
+# Machine addresses and environment paths
 export VENV_DIR="$VENV_DIR"
 export NODE0_IP="$NODE0_IP"
 export NODE1_IP="$NODE1_IP"
 export SSH_KEY="$SSH_KEY"
+export MODEL="$RAW_MODEL"
+${VLLM_PP_LAYER_PARTITION:+export VLLM_PP_LAYER_PARTITION="$VLLM_PP_LAYER_PARTITION"}
 EOF
   echo "    Initial RUN_CONFIG.env created with node topology."
 else
