@@ -23,14 +23,15 @@ for cand_venv in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "/home/ayu2
   if [[ -n "$cand_venv" && -f "$cand_venv/bin/python" ]]; then
     if "$cand_venv/bin/python" -c "import torch" >/dev/null 2>&1; then
       VENV_DIR="$cand_venv"
-      source "$VENV_DIR/bin/activate" 2>/dev/null || true
       break
     fi
   fi
 done
 : "${VENV_DIR:=$HOME/vllm_env}"
 if [[ -f "$VENV_DIR/bin/activate" ]]; then
-  source "$VENV_DIR/bin/activate"
+  set +u
+  source "$VENV_DIR/bin/activate" 2>/dev/null || true
+  set -u
 fi
 
 STRICT_MODE=0
