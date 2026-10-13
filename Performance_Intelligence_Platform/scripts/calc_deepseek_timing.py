@@ -1,6 +1,11 @@
+import os
 import json
 
-metrics_file = r"c:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\data\results\extracted_dashboard_metrics.json"
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+metrics_file = os.path.join(base_dir, "data", "results", "moonshotai_Kimi-Linear-48B-A3B-Instruct", "extracted_dashboard_metrics.json")
+if not os.path.exists(metrics_file):
+    metrics_file = os.path.join(base_dir, "data", "results", "extracted_dashboard_metrics.json")
+
 with open(metrics_file, "r", encoding="utf-8") as f:
     kimi_runs = json.load(f)
 

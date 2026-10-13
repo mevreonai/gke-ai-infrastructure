@@ -175,9 +175,9 @@
     },
     {
       "category": "Integrity S9.2",
-      "name": "All JSON configurations (95) parse cleanly without JSONDecodeError",
+      "name": "All JSON configurations (56) parse cleanly without JSONDecodeError",
       "status": "PASS",
-      "details": "95 files validated successfully"
+      "details": "56 files validated successfully"
     }
   ]
 }
