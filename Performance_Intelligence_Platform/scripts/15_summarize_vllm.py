@@ -113,6 +113,7 @@ def main():
             pq,pq_src=metric_delta_any(series,["vllm:prefix_cache_queries_total","vllm:prefix_cache_queries"])
             row={
               "case":case.get("name"),"groups":";".join(case.get("groups",[])),"purpose":case.get("purpose"),"tp":case.get("tp"),"pp":case.get("pp"),
+              "run_folder":str(mp.parent.name),"pp_layer_partition":case.get("pp_layer_partition",case.get("vllm_pp_layer_partition")),
               "network_provenance":case.get("network_provenance","SINGLE_NODE_LOCAL"),"network_mode":case.get("network_mode","local"),
               "configured_network_cap_gbps":case.get("configured_network_cap_gbps",0),"nccl_transport_provenance":case.get("nccl_transport_provenance"),
               "physical_gpu_indices":json.dumps(case.get("physical_gpu_indices",case.get("physical_gpu_indices_each_node"))),
@@ -156,9 +157,9 @@ def main():
         except Exception: return ""
     md=["# V5 serving summary","","> **Evidence:** MEASURED-48B surrogate. Absolute latency/tok/s are not Kimi K3 predictions.",
         "> p95 is surfaced as trustworthy only when N>=20; p99 only when N>=100. Raw percentile fields remain in JSON/CSV.","",
-        "| Case | Bench | Input | C | Req/s | TTFT mean ms | TPOT mean ms | Output tok/s | KV peak | Waiting peak | Preempt Δ | Metrics |",
-        "|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
+        "| Case | Folder | Split | Bench | Input | C | Req/s | TTFT mean ms | TPOT mean ms | Output tok/s | KV peak | Waiting peak | Preempt Δ | Metrics |",
+        "|---|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"]
     for r in rows:
-        md.append(f"| {r['case']} | {r['bench']} | {r.get('actual_input_mean') or r.get('requested_input_tokens') or ''} | {r.get('concurrency') or ''} | {f(r.get('request_throughput'))} | {f(r.get('mean_ttft_ms'))} | {f(r.get('mean_tpot_ms'))} | {f(r.get('output_throughput'))} | {f(r.get('peak_kv_usage'),3)} | {f(r.get('peak_waiting'),0)} | {f(r.get('preemptions_delta'),0)} | {r.get('metrics_capture_status')} |")
+        md.append(f"| {r['case']} | {r.get('run_folder','')} | {r.get('pp_layer_partition') or 'default'} | {r['bench']} | {r.get('actual_input_mean') or r.get('requested_input_tokens') or ''} | {r.get('concurrency') or ''} | {f(r.get('request_throughput'))} | {f(r.get('mean_ttft_ms'))} | {f(r.get('mean_tpot_ms'))} | {f(r.get('output_throughput'))} | {f(r.get('peak_kv_usage'),3)} | {f(r.get('peak_waiting'),0)} | {f(r.get('preemptions_delta'),0)} | {r.get('metrics_capture_status')} |")
     (out/"VLLM_SUMMARY.md").write_text("\n".join(md)+"\n"); print(f"Wrote {out}")
 if __name__=="__main__": main()

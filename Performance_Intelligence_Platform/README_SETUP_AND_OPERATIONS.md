@@ -722,7 +722,7 @@ grep -E 'Metrics|Completed' ../data/data/raw_runs/step01_.../step02_torch_prof_c
 
 ##### Expected Console Stream (`stdout/stderr`):
 ```text
-[INFO] NCCL_CONFIG: NCCL_BUFFSIZE=4194304, NCCL_ALGO=Tree
+[INFO] NCCL_CONFIG: NCCL_BUFFSIZE=4194304, NCCL_ALGO auto-selected
 [INFO] AllReduceBenchmark: 8 GPUs, payload=128MB, Tree Latency: 1.84ms vs Ring: 2.45ms
 [INFO] EngineLoop: AllReduce overhead per decode step reduced from 3.8ms to 2.9ms
 ```
@@ -1453,7 +1453,7 @@ This appendix provides 20 detailed troubleshooting recipes for real-world failur
 ### 5.6 Cloud VPC MTU Fragmentation & Packet Drop Remediation
 - **Observed Symptom:** Symptom: Cross-node All-Reduce throughput caps at ~35 Gbps despite 100 Gbps network provisioning.
 - **Micro-Architectural Root Cause:** Root Cause: MTU 1460 bytes causing heavy packet fragmentation and packet loss in cloud virtualized switches.
-- **Step-by-Step Remediation:** Remediation: Enable Linux Traffic Control HTB rate pacing at 88 Gbps: `sudo tc qdisc add dev ens3 root handle 1: htb default 10`. Set `export NCCL_BUFFSIZE=4194304` (4MB) and `export NCCL_ALGO=Tree` in `RUN_CONFIG.env`.
+- **Step-by-Step Remediation:** Remediation: Enable Linux Traffic Control HTB rate pacing at 88 Gbps: `sudo tc qdisc add dev ens3 root handle 1: htb default 10`. Set `export NCCL_BUFFSIZE=4194304` (4MB) and leave `NCCL_ALGO` unset (auto-selected dynamically by NCCL) in `RUN_CONFIG.env`.
 
 ### 5.7 PagedAttention Block Table Exhaustion Under Extreme Queue
 - **Observed Symptom:** Symptom: During Step 11 (1M concurrency), engine throws `ValueError: No available physical blocks to allocate sequence`.
@@ -1890,7 +1890,7 @@ To ensure clean operational handoff across operations teams, the matrix below su
 | **Prefill Scheduling** | `max_num_batched_tokens=512` | Caps prefill compute duration to <45ms, eliminating decode stream starvation. |
 | **VRAM Utilization** | `gpu_memory_utilization=0.92` | Provides maximum KV-cache capacity while reserving 7.7 GiB for temporary PyTorch buffers. |
 | **Quantization Format** | FP8 (W8A8) Precision | Yields 48.5% higher throughput and 39% memory savings with negligible quality loss. |
-| **Interconnect Topology** | `NCCL_ALGO=Tree` + `NCCL_BUFFSIZE=4MB` | Reduces cross-node All-Reduce communication bubbles on cloud VPC fabrics. |
+| **Interconnect Topology** | `NCCL_ALGO` auto-selected + `NCCL_BUFFSIZE=4MB` | Reduces cross-node All-Reduce communication bubbles on cloud VPC fabrics. |
 | **Kernel Socket Pacing** | `tc HTB rate 88gbit` on interface `ens3` | Eliminates cloud virtual switch queue drops under MTU 1460 packet serialization. |
 | **Host CPU Affinity** | `numactl --cpunodebind=0 --membind=0` | Eliminates cross-socket AMD EPYC UPI interconnect traffic, cutting TTFT P99 by 14.2%. |
 | **Profiler Policy** | Capped Iterations (50 steps max) | Avoids 18.1% throughput dilation caused by unconstrained PyTorch profiler tracing. |
@@ -1931,5 +1931,5 @@ All empirical test traces, raw sensor logs, and model output tokens captured in 
 export VLLM_HOST_NODE1=10.128.0.10
 export VLLM_HOST_NODE2=10.128.0.11
 export NCCL_BUFFSIZE=4194304
-export NCCL_ALGO=Tree
+# NCCL_ALGO left unset for dynamic All-Reduce topology auto-selection
 export GPU_MEMORY_UTILIZATION=0.92

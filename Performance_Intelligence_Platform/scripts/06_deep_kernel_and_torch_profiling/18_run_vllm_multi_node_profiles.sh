@@ -10,6 +10,12 @@ CALLER_RUN_HEAVY="${RUN_HEAVY_PROFILE:-}"
 CALLER_TOPO_FILTER="${PROFILE_TOPOLOGY_FILTER:-}"
 CALLER_MODE_FILTER="${PROFILE_MODE_FILTER:-}"
 CALLER_OUT_ROOT="${OUT_ROOT:-}"
+CALLER_NODE0="${NODE0_IP:-}"
+CALLER_NODE1="${NODE1_IP:-}"
+CALLER_SSH_KEY="${SSH_KEY:-}"
+CALLER_VENV_DIR="${VENV_DIR:-}"
+CALLER_MODEL="${MODEL:-}"
+CALLER_REVISION="${REVISION:-}"
 
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
 
@@ -17,6 +23,12 @@ for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smo
 [[ -n "$CALLER_TOPO_FILTER" ]] && export PROFILE_TOPOLOGY_FILTER="$CALLER_TOPO_FILTER"
 [[ -n "$CALLER_MODE_FILTER" ]] && export PROFILE_MODE_FILTER="$CALLER_MODE_FILTER"
 [[ -n "$CALLER_OUT_ROOT" ]] && export OUT_ROOT="$CALLER_OUT_ROOT"
+[[ -n "$CALLER_NODE0" ]] && export NODE0_IP="$CALLER_NODE0"
+[[ -n "$CALLER_NODE1" ]] && export NODE1_IP="$CALLER_NODE1"
+[[ -n "$CALLER_SSH_KEY" ]] && export SSH_KEY="$CALLER_SSH_KEY"
+[[ -n "$CALLER_VENV_DIR" ]] && export VENV_DIR="$CALLER_VENV_DIR"
+[[ -n "$CALLER_MODEL" ]] && export MODEL="$CALLER_MODEL"
+[[ -n "$CALLER_REVISION" ]] && export REVISION="$CALLER_REVISION"
 unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL VLLM_PP_LAYER_PARTITION 2>/dev/null || true
 
 if [[ -n "${PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE:-}" ]]; then export GCP_NETWORK_PROVENANCE="$PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE"; fi
@@ -95,6 +107,9 @@ PYG
   nvidia-smi --query-gpu=index,uuid,name,memory.total,pci.bus_id --format=csv > "$DIR/node0_gpu_inventory.csv" 2>&1 || true
   ip -br addr > "$DIR/node0_network.txt" 2>&1 || true
   "${SSH[@]}" "$NODE1_IP" "$REMOTE_V6_ENV unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVEL; source '$VENV_DIR/bin/activate'; nsys --version; echo ===TOPO===; nvidia-smi topo -m; echo ===GPU===; nvidia-smi --query-gpu=index,uuid,name,memory.total,pci.bus_id --format=csv; echo ===NET===; ip -br addr" > "$DIR/node1_provenance.txt" 2>&1 || true
+
+  # Ensure the remote worker has the exact metrics sampler for this capture
+  "${SCP[@]}" "$SCRIPT_DIR/09_metrics_sampler.py" "$NODE1_IP:/tmp/v5_metrics_sampler.py" 2>/dev/null || true
 
   # V6-compatible Ray formation: same commands and GPU visibility strategy.
   CUDA_VISIBLE_DEVICES="$GPU_LIST" ray start --head --node-ip-address="$NODE0_IP" --port=6379 --num-gpus="$GPUS" > "$DIR/ray_start_node0.log" 2>&1
@@ -184,8 +199,8 @@ EOS
   # Purge any zero-byte placeholder .nsys-rep files (idle helper ranks) from both captures
   find "$DIR/node0_capture" "$DIR/node1_capture" -type f -name '*.nsys-rep' -size 0 -delete 2>/dev/null || true
 
-  # Clean up remote node1 metrics sampler files left in /tmp
-  "${SSH[@]}" "$NODE1_IP" "rm -f /tmp/v5_metrics_sampler.py /tmp/platform_prof_sampler.out" 2>/dev/null || true
+  # Clean up remote node1 metrics sampler output left in /tmp
+  "${SSH[@]}" "$NODE1_IP" "rm -f /tmp/platform_prof_sampler.out" 2>/dev/null || true
 
   stop_ray_both
   python3 "$SCRIPT_DIR/19_postprocess_nsys.py" "$DIR" --out "$DIR/NSYS_ANALYSIS.json" || true

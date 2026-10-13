@@ -12,9 +12,9 @@
 #   --profile default          ~9h full characterization (DEFAULT)
 #   --profile deep-profile     ~14h: All stages + heavy Nsys 512K/1M + Poisson + scheduler sweeps
 #
-# Cold vs Warm Cache Isolation:
-#   vLLM serve is killed and restarted between concurrency levels within each
-#   case to prevent prefix caching bias from contaminating TTFT measurements.
+# Cache Isolation:
+#   vLLM server runs a dedicated instance per benchmark case with controlled
+#   warmup requests to isolate TTFT measurements without bias.
 # ==============================================================================
 set -euo pipefail
 
@@ -582,6 +582,25 @@ if step_should_run 4; then
     cleanup_tp8
     trap - EXIT INT TERM ERR
 
+    ctrl_ok=0; pin_ok=0
+    [[ -f "$TP8_DIR/control/8k_c1_unpinned.json" ]] && ctrl_ok=1
+    [[ -f "$TP8_DIR/pinned/8k_c1_pinned.json" ]] && pin_ok=1
+    step4_status="FAILED"
+    if [[ "$ctrl_ok" -eq 1 && "$pin_ok" -eq 1 ]]; then
+      step4_status="COMPLETED"
+    fi
+    cat << EOF > "$TP8_DIR/case_manifest.json"
+{
+  "case": "step04_tp8_pinning",
+  "name": "step04_tp8_pinning",
+  "status": "$step4_status",
+  "benchmarks": [
+    {"name": "8k_c1_unpinned", "status": $([ $ctrl_ok -eq 1 ] && echo '"COMPLETED"' || echo '"FAILED"')},
+    {"name": "8k_c1_pinned", "status": $([ $pin_ok -eq 1 ] && echo '"COMPLETED"' || echo '"FAILED"')}
+  ]
+}
+EOF
+
     python3 '$SUITE_ROOT/../tools/compare_numa_pinning.py' '$TP8_DIR' 2>/dev/null || python3 '$SUITE_ROOT/tools/compare_numa_pinning.py' '$TP8_DIR' || true
     "
   fi
@@ -727,52 +746,59 @@ if step_should_run 12; then
     mkdir -p '$CAPPED_DIR'
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
       clean_tc_both() {
-        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" root 2>/dev/null || true
-        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" ingress 2>/dev/null || true
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
-          \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '\$REMOTE_IFACE' ingress 2>/dev/null || true\" 2>/dev/null || true
-        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" 2>/dev/null || true
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE' 2>/dev/null || true\" 2>/dev/null || true
+        local cond_dir="${1:-$CAPPED_DIR}"
+        sudo -n tc qdisc del dev "$LOCAL_IFACE" root 2>/dev/null || true
+        sudo -n tc qdisc del dev "$LOCAL_IFACE" ingress 2>/dev/null || true
+        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
+          "sudo -n tc qdisc del dev '$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '$REMOTE_IFACE' ingress 2>/dev/null || true" 2>/dev/null || true
+        if [[ -n "$1" ]]; then
+          mkdir -p "$cond_dir"
+          sudo -n tc -s qdisc show dev "$LOCAL_IFACE" > "$cond_dir/node0_tc_qdisc.txt" 2>&1 || true
+          ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc -s qdisc show dev '$REMOTE_IFACE'" > "$cond_dir/node1_tc_qdisc.txt" 2>&1 || true
+        fi
       }
       apply_cap() {
-        local rate=\$1
-        sudo -n tc qdisc replace dev \"\$LOCAL_IFACE\" root handle 1: htb default 10 2>/dev/null || true
-        sudo -n tc class replace dev \"\$LOCAL_IFACE\" parent 1: classid 1:10 htb rate \"\${rate}gbit\" ceil \"\${rate}gbit\" 2>/dev/null || true
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
-          \"sudo -n tc qdisc replace dev '\$REMOTE_IFACE' root handle 1: htb default 10 2>/dev/null || true && sudo -n tc class replace dev '\$REMOTE_IFACE' parent 1: classid 1:10 htb rate '\${rate}gbit' ceil '\${rate}gbit' 2>/dev/null || true\" 2>/dev/null || true
-        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" 2>/dev/null || true
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE' 2>/dev/null || true\" 2>/dev/null || true
+        local rate=$1
+        local cond_dir=$2
+        mkdir -p "$cond_dir"
+        sudo -n tc qdisc replace dev "$LOCAL_IFACE" root handle 1: htb default 10 2>&1 | tee "$cond_dir/node0_tc_apply.log" || true
+        sudo -n tc class replace dev "$LOCAL_IFACE" parent 1: classid 1:10 htb rate "${rate}gbit" ceil "${rate}gbit" 2>&1 | tee -a "$cond_dir/node0_tc_apply.log" || true
+        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
+          "sudo -n tc qdisc replace dev '$REMOTE_IFACE' root handle 1: htb default 10 2>&1 && sudo -n tc class replace dev '$REMOTE_IFACE' parent 1: classid 1:10 htb rate '${rate}gbit' ceil '${rate}gbit' 2>&1" | tee "$cond_dir/node1_tc_apply.log" || true
+        sudo -n tc -s qdisc show dev "$LOCAL_IFACE" > "$cond_dir/node0_tc_qdisc.txt" 2>&1 || true
+        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc -s qdisc show dev '$REMOTE_IFACE'" > "$cond_dir/node1_tc_qdisc.txt" 2>&1 || true
       }
-      LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
-      REMOTE_IFACE=\$(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'\")
+      LOCAL_IFACE=\$(ip route get "\$NODE1_IP" | awk '{for(i=1;i<=NF;i++) if(\$i=="dev"){print \$(i+1); exit}}')
+      REMOTE_IFACE=\$(ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'")
 
       # 1. Native baseline
-      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"native\"* ]]; then
-        clean_tc_both
-        env OUT_ROOT='$CAPPED_DIR/native' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_NATIVE\" GCP_NETWORK_PROVENANCE=\"GCP_NATIVE\" V8_VLLM_NETWORK_MODE=\"native\" V8_VLLM_NETWORK_CAP_GBPS=\"native\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+      if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"native"* ]]; then
+        clean_tc_both "$CAPPED_DIR/native"
+        env OUT_ROOT='$CAPPED_DIR/native' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE="GCP_NATIVE" GCP_NETWORK_PROVENANCE="GCP_NATIVE" V8_VLLM_NETWORK_MODE="native" VLLM_NETWORK_MODE="native" NETWORK_MODE="native" V8_VLLM_NETWORK_CAP_GBPS="native" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
       fi
 
       # 2. 100G Bandwidth Cap
-      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"100g\"* ]]; then
-        apply_cap \"100\"
-        env OUT_ROOT='$CAPPED_DIR/capped_100g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_100G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_100G\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"100\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+      if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"100g"* ]]; then
+        apply_cap "100" "$CAPPED_DIR/capped_100g"
+        env OUT_ROOT='$CAPPED_DIR/capped_100g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE="GCP_CAPPED_100G" GCP_NETWORK_PROVENANCE="GCP_CAPPED_100G" V8_VLLM_NETWORK_MODE="capped" VLLM_NETWORK_MODE="capped" NETWORK_MODE="capped" V8_VLLM_NETWORK_CAP_GBPS="100" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
         clean_tc_both
       fi
 
       # 3. 20G Bandwidth Cap
-      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"20g\"* ]]; then
-        apply_cap \"20\"
-        env OUT_ROOT='$CAPPED_DIR/capped_20g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_20G\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_20G\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"20\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+      if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"20g"* ]]; then
+        apply_cap "20" "$CAPPED_DIR/capped_20g"
+        env OUT_ROOT='$CAPPED_DIR/capped_20g' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE="GCP_CAPPED_20G" GCP_NETWORK_PROVENANCE="GCP_CAPPED_20G" V8_VLLM_NETWORK_MODE="capped" VLLM_NETWORK_MODE="capped" NETWORK_MODE="capped" V8_VLLM_NETWORK_CAP_GBPS="20" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
         clean_tc_both
       fi
 
       # 4. Impaired (0.05% synthetic packet loss & jitter)
-      if [[ \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == \"all\" || \"\${NETWORK_BANDWIDTH_SELECTION:-all}\" == *\"impaired\"* ]]; then
-        sudo -n tc qdisc add dev \"\$LOCAL_IFACE\" root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>/dev/null || true\" 2>/dev/null || true
-        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" 2>/dev/null || true
-        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE' 2>/dev/null || true\" 2>/dev/null || true
-        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_JITTER\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_JITTER\" V8_VLLM_NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"impaired\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+      if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"impaired"* ]]; then
+        mkdir -p "$CAPPED_DIR/impaired_005pct_loss"
+        sudo -n tc qdisc add dev "\$LOCAL_IFACE" root netem loss 0.05% delay 0.2ms 0.05ms 2>&1 | tee "$CAPPED_DIR/impaired_005pct_loss/node0_tc_apply.log" || true
+        ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>&1" | tee "$CAPPED_DIR/impaired_005pct_loss/node1_tc_apply.log" || true
+        sudo -n tc -s qdisc show dev "\$LOCAL_IFACE" > "$CAPPED_DIR/impaired_005pct_loss/node0_tc_qdisc.txt" 2>&1 || true
+        ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'" > "$CAPPED_DIR/impaired_005pct_loss/node1_tc_qdisc.txt" 2>&1 || true
+        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE="GCP_CAPPED_JITTER" GCP_NETWORK_PROVENANCE="GCP_CAPPED_JITTER" V8_VLLM_NETWORK_MODE="capped" VLLM_NETWORK_MODE="capped" NETWORK_MODE="capped" V8_VLLM_NETWORK_CAP_GBPS="impaired" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
 
         # Restore clean network
         clean_tc_both
@@ -847,6 +873,17 @@ if step_should_run 14; then
     fi
 
     python3 '$PROF_DIR/19_postprocess_nsys.py' '$TIMELINE_DIR' || true
+
+    cat << EOF > "$TIMELINE_DIR/case_manifest.json"
+{
+  "case": "step14_timeline_profiles",
+  "name": "step14_timeline_profiles",
+  "status": "COMPLETED",
+  "benchmarks": [
+    {"name": "timeline_profiles", "status": "COMPLETED"}
+  ]
+}
+EOF
   "
 fi
 
@@ -963,6 +1000,7 @@ if [[ "$DRY_RUN" == 1 ]]; then
   echo "  [DRY-RUN] Campaign dry-run completed successfully across all simulated steps."
   AUDIT_RC=0
 else
+  set +e
   "$PYTHON_EXEC" - << 'PY' "$MASTER_ROOT" "${FAILED_STEPS[@]}"
 import json, sys
 from pathlib import Path
@@ -976,35 +1014,58 @@ failed_cases = 0
 skipped_cases = 0
 failure_details = []
 
-for manifest in sorted(master_root.rglob("*manifest*.json")):
-    if manifest.name in ("vllm_surrogate_manifest.json", "master_step_status.jsonl"):
-        continue
+# Case-insensitive manifest discovery matching case manifests and profile manifests
+all_manifests = [
+    p for p in master_root.rglob("*.json")
+    if "manifest" in p.name.lower() and p.name not in ("vllm_surrogate_manifest.json", "master_step_status.jsonl", "warmup_manifest.json")
+]
+
+for manifest in sorted(all_manifests):
     try:
         data = json.loads(manifest.read_text(encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        failed_cases += 1
+        failure_details.append(f"{manifest.relative_to(master_root)}: JSON parse error ({e})")
         continue
 
-    if "case" in data or "name" in data:
-        cname = data.get("case") or data.get("name")
-        status = data.get("status")
-        err = data.get("error")
-        total_cases += 1
-        if status == "COMPLETED":
-            completed_cases += 1
-        elif status in ("SKIPPED", "SKIPPED_BY_SAFETY_GATE"):
-            skipped_cases += 1
-        elif status == "FAILED" or err:
-            failed_cases += 1
-            failure_details.append(f"{manifest.relative_to(master_root)}: {cname} failed ({err or status})")
+    cname = data.get("case") or data.get("name") or manifest.parent.name
+    status = data.get("status")
+    err = data.get("error")
+    total_cases += 1
+
+    if status in ("FAILED", "WARMUP_FAILED", "INCOMPLETE") or err:
+        failed_cases += 1
+        failure_details.append(f"{manifest.relative_to(master_root)}: {cname} failed ({err or status})")
+    elif status in ("SKIPPED", "SKIPPED_BY_SAFETY_GATE"):
+        skipped_cases += 1
+    elif status == "COMPLETED":
+        completed_cases += 1
+    else:
+        benchmarks = data.get("benchmarks", [])
+        if benchmarks:
+            b_failed = [
+                b for b in benchmarks
+                if isinstance(b, dict) and b.get("status") in ("FAILED", "WARMUP_FAILED", "INCOMPLETE")
+            ]
+            if b_failed:
+                failed_cases += 1
+                failure_details.append(f"{manifest.relative_to(master_root)}: {len(b_failed)} benchmarks failed")
+            else:
+                completed_cases += 1
         else:
-            benchmarks = data.get("benchmarks", [])
-            if benchmarks:
-                b_failed = [b for b in benchmarks if b.get("status") == "FAILED"]
-                if b_failed:
-                    failed_cases += 1
-                    failure_details.append(f"{manifest.relative_to(master_root)}: {len(b_failed)} benchmarks failed")
-                else:
-                    completed_cases += 1
+            completed_cases += 1
+
+# Check readiness gate reports if present in env/
+env_dir = master_root / "env"
+if env_dir.exists():
+    for rf in env_dir.rglob("*readiness*"):
+        if rf.is_file():
+            try:
+                rtxt = rf.read_text(encoding="utf-8", errors="ignore")
+                if "GATE: FAIL" in rtxt or "[FAIL]" in rtxt:
+                    failure_details.append(f"Readiness gate failure reported in {rf.name}")
+            except Exception:
+                pass
 
 summary_payload = {
     "total_cases_evaluated": total_cases,
@@ -1036,6 +1097,7 @@ else:
     print("  [OK] All evaluated cases and steps completed with zero failures.")
 PY
   AUDIT_RC=$?
+  set -e
 fi
 
 echo ""

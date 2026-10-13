@@ -62,7 +62,18 @@ echo "  Expected Runtime  : ~20 to 22 minutes"
 echo "================================================================================"
 
 : "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
-[[ -f "$SSH_KEY" ]] || SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_rsa}"
+[[ -f "$SSH_KEY" ]] || { if [[ -f "$HOME/.ssh/id_rsa" ]]; then SSH_KEY="$HOME/.ssh/id_rsa"; fi; }
+
+# Initialize output directory early so telemetry logs can be written immediately
+RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
+OUT_DIR="$HOME/platform_benchmark_runs/tp4_pp4_20g_${RUN_TIMESTAMP}"
+mkdir -p "$OUT_DIR" "$HOME/platform_benchmark_runs"
+
+# Export traffic control rate and mode labels for provenance
+export V8_VLLM_NETWORK_CAP_GBPS=20
+export PLATFORM_VLLM_NETWORK_CAP_GBPS=20
+export V8_VLLM_NETWORK_MODE="tc_htb"
+export PLATFORM_VLLM_NETWORK_MODE="tc_htb"
 
 cleanup_caps() {
   echo "--> Draining and resetting traffic control rate caps on both nodes..."
@@ -120,10 +131,6 @@ unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL || true
 
 # 4. Launch the 20-Minute Distributed TP4/PP4 Campaign on Ray Cluster
 echo "--> [4/4] Launching Distributed TP4/PP4 20G Suite (16 GPUs across 2 Nodes)..."
-RUN_TIMESTAMP=$(date +%Y%m%d_%H%M%S)
-OUT_DIR="$HOME/platform_benchmark_runs/tp4_pp4_20g_${RUN_TIMESTAMP}"
-mkdir -p "$OUT_DIR" "$HOME/platform_benchmark_runs"
-echo "$RUN_TIMESTAMP" > "$HOME/platform_benchmark_runs/latest_run_id.txt"
 echo "    Output Directory: $OUT_DIR"
 echo "    Live Server Log : tail -f $OUT_DIR/tp4_pp4_dist/tp4_pp4_dist/server.log"
 echo "================================================================================"

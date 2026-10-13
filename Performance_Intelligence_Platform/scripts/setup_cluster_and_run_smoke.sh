@@ -54,7 +54,7 @@ if [[ -n "$INPUT_NODE1_IP" ]]; then
 fi
 NODE1_IP="${NODE1_IP:-}"
 SSH_KEY="${SSH_KEY:-$HOME/.ssh/google_compute_engine}"
-[[ -f "$SSH_KEY" ]] || SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_rsa}"
+[[ -f "$SSH_KEY" ]] || { if [[ -f "$HOME/.ssh/id_rsa" ]]; then SSH_KEY="$HOME/.ssh/id_rsa"; fi; }
 
 cleanup_caps() {
   echo "--> Draining and resetting traffic control rate caps on both nodes..."

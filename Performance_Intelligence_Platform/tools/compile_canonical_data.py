@@ -5,86 +5,155 @@ import json
 import glob
 import pandas as pd
 import numpy as np
+import re
 
 def build_canonical_dataset(run_dir=None):
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    out_json = os.path.join(base_dir, "dashboard", "DASHBOARD_CANONICAL_DATA.json")
     
-    csv_path = None
+    # N21: Determine target output location. If run_dir given, write into run_dir only.
     if run_dir and os.path.exists(run_dir):
-        run_csvs = glob.glob(os.path.join(run_dir, "**", "*.csv"), recursive=True)
-        if run_csvs:
-            csv_path = run_csvs[0]
+        out_json = os.path.join(run_dir, "DASHBOARD_CANONICAL_DATA.json")
+    else:
+        out_json = os.path.join(base_dir, "dashboard", "DASHBOARD_CANONICAL_DATA.json")
+
+    dfs = []
+    if run_dir and os.path.exists(run_dir):
+        # N21: Discover and join every step's summary/vllm_runs.csv, skipping empty ones
+        candidate_csvs = glob.glob(os.path.join(run_dir, "**", "vllm_runs.csv"), recursive=True)
+        if not candidate_csvs:
+            candidate_csvs = glob.glob(os.path.join(run_dir, "**", "*.csv"), recursive=True)
             
-    if not csv_path:
-        csv_path = os.path.join(base_dir, "data", "results", "real_data", "combined_vllm_runs.csv")
-    
-    if not os.path.exists(csv_path):
-        # Fall back to any csv found in results
-        csv_candidates = glob.glob(os.path.join(base_dir, "data", "results", "**", "*.csv"), recursive=True)
-        if csv_candidates:
-            csv_path = csv_candidates[0]
-        else:
-            print(f"WARN: Empirical CSV file not found at {csv_path}. Creating stub structure.", file=sys.stderr)
-            os.makedirs(os.path.dirname(out_json), exist_ok=True)
-            with open(out_json, "w", encoding="utf-8") as f:
-                json.dump({"schema_version": "Enterprise-Platform", "status": "PENDING_BENCHMARK_EXECUTION"}, f, indent=2)
-            return
-        
-    df = pd.read_csv(csv_path)
+        for cp in sorted(candidate_csvs):
+            if os.path.exists(cp) and os.path.getsize(cp) > 0:
+                try:
+                    cdf = pd.read_csv(cp)
+                    if not cdf.empty:
+                        # Extract step identifier from path if not present in CSV
+                        if "step_id" not in cdf.columns:
+                            m = re.search(r'(step\d+[^/\\\s]*)', cp, re.I)
+                            if m:
+                                cdf["step_id"] = m.group(1)
+                            elif "case" in cdf.columns:
+                                cdf["step_id"] = cdf["case"]
+                        dfs.append(cdf)
+                except Exception as e:
+                    print(f"DEBUG: Skipping unparseable or empty CSV {cp}: {e}", file=sys.stderr)
+
+    if not dfs:
+        # Fallback to repository empirical results
+        default_csv = os.path.join(base_dir, "data", "results", "real_data", "combined_vllm_runs.csv")
+        if os.path.exists(default_csv) and os.path.getsize(default_csv) > 0:
+            try:
+                cdf = pd.read_csv(default_csv)
+                if not cdf.empty:
+                    dfs.append(cdf)
+            except Exception:
+                pass
+
+    if not dfs:
+        # Search anywhere under data/results
+        res_csvs = glob.glob(os.path.join(base_dir, "data", "results", "**", "vllm_runs.csv"), recursive=True)
+        for cp in sorted(res_csvs):
+            if os.path.exists(cp) and os.path.getsize(cp) > 0:
+                try:
+                    cdf = pd.read_csv(cp)
+                    if not cdf.empty:
+                        dfs.append(cdf)
+                        break
+                except Exception:
+                    pass
+
+    if not dfs:
+        print(f"WARN: No empirical CSV data found. Writing baseline placeholder to {out_json}.", file=sys.stderr)
+        os.makedirs(os.path.dirname(out_json), exist_ok=True)
+        with open(out_json, "w", encoding="utf-8") as f:
+            json.dump({
+                "schema_version": "Enterprise-Platform",
+                "status": "PENDING_BENCHMARK_EXECUTION",
+                "executive_kpis": {
+                    "total_campaign_wall_time_seconds": 0.0,
+                    "total_campaign_wall_time_hours": 0.0,
+                    "total_requests_evaluated": 0,
+                    "peak_token_throughput_tps": 0.0,
+                    "lowest_p99_itl_ms": 0.0,
+                    "cluster_gpus_active": 16,
+                    "total_cluster_vram_gib": 1536
+                },
+                "step_summaries": {},
+                "raw_records": []
+            }, f, indent=2)
+        return
+
+    df = pd.concat(dfs, ignore_index=True)
     print(f"Loaded {len(df)} empirical benchmark records across {df.get('step_id', pd.Series()).nunique()} steps.")
+
+    # N21: Read summarizer's actual column names (mean_ttft_ms, mean_tpot_ms, output_throughput, duration, completed)
+    duration_col = 'duration' if 'duration' in df.columns else ('duration_seconds' if 'duration_seconds' in df.columns else None)
+    reqs_col = 'completed' if 'completed' in df.columns else ('prompts_requested' if 'prompts_requested' in df.columns else ('num_total_requests' if 'num_total_requests' in df.columns else None))
+    tps_col = 'output_throughput' if 'output_throughput' in df.columns else ('total_token_throughput' if 'total_token_throughput' in df.columns else ('token_throughput_tps' if 'token_throughput_tps' in df.columns else None))
+    rps_col = 'request_throughput' if 'request_throughput' in df.columns else ('request_throughput_rps' if 'request_throughput_rps' in df.columns else None)
     
-    # 1. Executive Summary Rollups
-    total_campaign_wall_time = float(df['duration_seconds'].sum()) if 'duration_seconds' in df.columns else 0.0
-    total_requests_served = int(df['num_total_requests'].sum()) if 'num_total_requests' in df.columns else 0
-    peak_throughput_tps = float(df['token_throughput_tps'].max()) if 'token_throughput_tps' in df.columns else 0.0
-    lowest_p99_itl_ms = float(df['itl_p99_ms'].min()) if 'itl_p99_ms' in df.columns else 0.0
+    total_campaign_wall_time = float(df[duration_col].sum()) if duration_col and pd.api.types.is_numeric_dtype(df[duration_col]) else 0.0
+    total_requests_served = int(df[reqs_col].sum()) if reqs_col and pd.api.types.is_numeric_dtype(df[reqs_col]) else 0
+    peak_throughput_tps = float(df[tps_col].max()) if tps_col and pd.api.types.is_numeric_dtype(df[tps_col]) else 0.0
     
+    itl_col = 'p99_tpot_ms' if 'p99_tpot_ms' in df.columns else ('p99_itl_ms' if 'p99_itl_ms' in df.columns else ('mean_itl_ms' if 'mean_itl_ms' in df.columns else ('itl_p99_ms' if 'itl_p99_ms' in df.columns else None)))
+    lowest_p99_itl_ms = float(df[itl_col].min()) if itl_col and pd.api.types.is_numeric_dtype(df[itl_col]) else 0.0
+
+    # N21: Dynamically determine active GPUs from step 0 environment or default
+    active_gpus = 16
+    if run_dir and os.path.exists(run_dir):
+        readiness_file = os.path.join(run_dir, "env", "node0_readiness", "PLATFORM_READINESS.md")
+        if os.path.exists(readiness_file):
+            try:
+                rtext = open(readiness_file, encoding="utf-8", errors="ignore").read()
+                gm = re.search(r'(\d+)\s+total\s+GPUs', rtext, re.I)
+                if gm:
+                    active_gpus = int(gm.group(1))
+            except Exception:
+                pass
+
     # 2. Per-Step Statistical Groupings
     step_summaries = {}
-    if "step_id" in df.columns:
-        for step_id, group in df.groupby("step_id"):
+    group_col = "step_id" if "step_id" in df.columns else ("case" if "case" in df.columns else None)
+    if group_col:
+        for step_id, group in df.groupby(group_col):
             step_summaries[str(step_id)] = {
                 "step_name": str(step_id),
                 "total_runs": len(group),
-                "mean_rps": float(group["request_throughput_rps"].mean()) if "request_throughput_rps" in group else 0.0,
-                "mean_tps": float(group["token_throughput_tps"].mean()) if "token_throughput_tps" in group else 0.0,
-                "ttft_p50_ms": float(group["ttft_median_ms"].mean()) if "ttft_median_ms" in group else 0.0,
-                "ttft_p90_ms": float(group["ttft_p90_ms"].mean()) if "ttft_p90_ms" in group else 0.0,
-                "ttft_p99_ms": float(group["ttft_p99_ms"].mean()) if "ttft_p99_ms" in group else 0.0,
-                "itl_p50_ms": float(group["itl_median_ms"].mean()) if "itl_median_ms" in group else 0.0,
-                "itl_p90_ms": float(group["itl_p90_ms"].mean()) if "itl_p90_ms" in group else 0.0,
-                "itl_p99_ms": float(group["itl_p99_ms"].mean()) if "itl_p99_ms" in group else 0.0,
-                "e2e_p99_ms": float(group["e2e_latency_p99_ms"].mean()) if "e2e_latency_p99_ms" in group else 0.0,
-                "gpu_memory_peak_gib": float(group["gpu_memory_peak_gib"].max()) if "gpu_memory_peak_gib" in group else 0.0,
-                "gpu_utilization_mean": float(group["gpu_utilization_mean"].mean()) if "gpu_utilization_mean" in group else 0.0
+                "mean_rps": float(group[rps_col].mean()) if rps_col and rps_col in group else 0.0,
+                "mean_tps": float(group[tps_col].mean()) if tps_col and tps_col in group else 0.0,
+                "ttft_p50_ms": float(group["p50_ttft_ms"].mean()) if "p50_ttft_ms" in group else (float(group["mean_ttft_ms"].mean()) if "mean_ttft_ms" in group else 0.0),
+                "ttft_p90_ms": float(group["p95_ttft_ms"].mean()) if "p95_ttft_ms" in group else 0.0,
+                "ttft_p99_ms": float(group["p99_ttft_ms"].mean()) if "p99_ttft_ms" in group else 0.0,
+                "itl_p50_ms": float(group["p50_tpot_ms"].mean()) if "p50_tpot_ms" in group else (float(group["mean_itl_ms"].mean()) if "mean_itl_ms" in group else 0.0),
+                "itl_p90_ms": float(group["p95_tpot_ms"].mean()) if "p95_tpot_ms" in group else 0.0,
+                "itl_p99_ms": float(group["p99_tpot_ms"].mean()) if "p99_tpot_ms" in group else 0.0,
+                "e2e_p99_ms": float(group["mean_e2el_ms"].mean()) if "mean_e2el_ms" in group else 0.0,
+                "gpu_memory_peak_gib": float(group["offload_gib_total"].max()) if "offload_gib_total" in group else 0.0,
+                "gpu_utilization_mean": 0.0
             }
-        
-    # 3. Canonical Schema Construction
+
     canonical_payload = {
         "schema_version": "Enterprise-Platform",
-        "generated_at": pd.Timestamp.utcnow().isoformat(),
+        "generated_at": pd.Timestamp.now("UTC").isoformat(),
         "executive_kpis": {
             "total_campaign_wall_time_seconds": total_campaign_wall_time,
             "total_campaign_wall_time_hours": round(total_campaign_wall_time / 3600.0, 2),
             "total_requests_evaluated": total_requests_served,
             "peak_token_throughput_tps": peak_throughput_tps,
             "lowest_p99_itl_ms": lowest_p99_itl_ms,
-            "cluster_gpus_active": 16,
-            "total_cluster_vram_gib": 1536
+            "cluster_gpus_active": active_gpus,
+            "total_cluster_vram_gib": active_gpus * 96
         },
         "step_summaries": step_summaries,
         "raw_records": df.to_dict(orient="records")
     }
-    
+
     os.makedirs(os.path.dirname(out_json), exist_ok=True)
     with open(out_json, "w", encoding="utf-8") as f:
         json.dump(canonical_payload, f, indent=2)
-    if run_dir and os.path.exists(run_dir):
-        run_out = os.path.join(run_dir, "DASHBOARD_CANONICAL_DATA.json")
-        with open(run_out, "w", encoding="utf-8") as f:
-            json.dump(canonical_payload, f, indent=2)
-        
+
     print(f"Successfully compiled canonical dataset to {out_json} ({os.path.getsize(out_json)} bytes).")
 
 if __name__ == "__main__":

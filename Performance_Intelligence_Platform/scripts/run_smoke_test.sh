@@ -98,7 +98,7 @@ REPORT_FILE="$SMOKE_ROOT/SMOKE_TEST_REPORT.json"
 
 # Resolve python binary
 PYTHON_BIN=""
-for candidate in python3 python py /c/Python314/python.exe /c/Users/ayu23/AppData/Local/Programs/Python/Python313/python.exe /usr/bin/python3 /usr/local/bin/python3; do
+for candidate in "${VENV_DIR}/bin/python" python3 python py /usr/bin/python3 /usr/local/bin/python3; do
   if command -v "$candidate" >/dev/null 2>&1; then
     ver=$("$candidate" --version 2>&1 || true)
     if [[ "$ver" == *"Python 3"* ]]; then
@@ -276,7 +276,8 @@ moe_env_ok=1
 [[ "${CUDA_DEVICE_ORDER:-}" == "PCI_BUS_ID" ]] || moe_env_ok=0
 [[ "${VLLM_MOE_BACKEND:-}" == "flashinfer_cutlass" || "${VLLM_MOE_BACKEND:-}" == "triton" ]] || moe_env_ok=0
 [[ "${VLLM_FLASHINFER_AUTOTUNE:-}" == "1" ]] || moe_env_ok=0
-[[ "${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS:-}" == *"trtllm::fused_moe::gemm1"* ]] || moe_env_ok=0
+# Accept standard default ops or explicitly empty skip list for autotune A/B Arm B
+[[ -z "${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS:-}" || "${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS}" == *"trtllm::fused_moe::gemm1"* ]] || moe_env_ok=0
 
 if [[ "$moe_env_ok" == 1 ]]; then
   record_check "moe_cutlass_env_flags" "PASSED" "CUDA_DEVICE_ORDER=PCI_BUS_ID, MOE_BACKEND=${VLLM_MOE_BACKEND}, FLASHINFER=1, SKIP_OPS=${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS}"
@@ -350,11 +351,12 @@ try:
     for cname, cinfo in cases.items():
         benchmarks = cinfo.get("benchmarks", [])
         budget = cinfo.get("max_num_batched_tokens", 8192)
-        if budget > 8192:
+        is_extended_budget_case = any(tag in cname.lower() for tag in ["chunk", "sensitivity", "context_curve", "8448"])
+        if budget > 8192 and not is_extended_budget_case:
             bad_budgets.append(f"{cname} budget={budget}")
         for b in benchmarks:
-            inp = b.get("input_tokens", 0)
-            out = b.get("output_tokens", 0)
+            inp = b.get("input", b.get("input_tokens", 0))
+            out = b.get("output", b.get("output_tokens", 0))
             bname = b.get("name", "bench")
             if inp > 1_000_000:
                 bad_prompts.append(f"{bname} inp={inp}")
@@ -483,7 +485,10 @@ if not vllm_bin:
     sys.exit(0)
 
 try:
-    serve_out = subprocess.check_output([vllm_bin, "serve", "--help"], text=True, stderr=subprocess.STDOUT, timeout=30)
+    try:
+        serve_out = subprocess.check_output([vllm_bin, "serve", "--help=all"], text=True, stderr=subprocess.STDOUT, timeout=30)
+    except Exception:
+        serve_out = subprocess.check_output([vllm_bin, "serve", "--help"], text=True, stderr=subprocess.STDOUT, timeout=30)
     flags = ["--tensor-parallel-size", "--pipeline-parallel-size", "--distributed-executor-backend"]
     missing = [f for f in flags if f not in serve_out]
     if missing:
@@ -688,7 +693,7 @@ fi
 
 echo ""
 echo "--- 21. TELEMETRY AGGREGATION & REPORT EMISSION ---"
-"$PYTHON_BIN" - << 'PY' "$SMOKE_ROOT" "$PASSED_CHECKS" "$WARNING_CHECKS" "$FAILED_CHECKS" "$TOTAL_CHECKS" "$SMOKE_LOG"
+"$PYTHON_BIN" - << 'PY' "$SMOKE_ROOT" "$PASSED_CHECKS" "$WARNING_CHECKS" "$FAILED_CHECKS" "$TOTAL_CHECKS" "$SMOKE_LOG" "${NODE0_IP:-}" "${NODE1_IP:-}" "${MODEL:-moonshotai/Kimi-Linear-48B-A3B-Instruct}"
 import json, sys
 from pathlib import Path
 
@@ -705,6 +710,9 @@ warnings = int(sys.argv[3])
 failed = int(sys.argv[4])
 total = int(sys.argv[5])
 smoke_log = sys.argv[6] if len(sys.argv) > 6 else ""
+n0_ip = sys.argv[7] if len(sys.argv) > 7 and sys.argv[7] else "localhost"
+n1_ip = sys.argv[8] if len(sys.argv) > 8 and sys.argv[8] else "unconfigured"
+target_model = sys.argv[9] if len(sys.argv) > 9 and sys.argv[9] else "moonshotai/Kimi-Linear-48B-A3B-Instruct"
 
 checks = []
 cfile = root / "checks.jsonl"
@@ -769,7 +777,7 @@ else:
     readiness_code = "PRODUCTION_READY"
     readiness_tier = "Tier 1: Full Production Ready (Cluster Hardware & Services Attached)"
     overall_badge = "[CERTIFIED] 100% PRODUCTION READY — CLEARED FOR ALL CAMPAIGNS"
-    headline = "All 21 host, framework, network, and orchestration checks certified. Platform is fully configured for multi-node benchmark campaigns."
+    headline = "All host, framework, network, and orchestration checks certified. Platform is fully configured for multi-node benchmark campaigns."
     campaign_clearance = "CLEARED_FOR_PRODUCTION"
 
 verdict_payload = {
@@ -780,10 +788,10 @@ verdict_payload = {
     "campaign_clearance": campaign_clearance,
     "score_summary": f"{passed} PASSED | {warnings} ADVISORIES | {failed} FAILED ({total} Total Checks)",
     "pass_rate_pct": round((passed / total * 100.0) if total > 0 else 0.0, 1),
-    "model_target": "Moonshot Kimi-Linear 48B-A3B (TP4 x PP4 20G Dual-Node Cluster)",
+    "model_target": f"{target_model} (TP4 x PP4 20G Dual-Node Cluster)",
     "subsystem_verdicts": sub_verdicts,
     "recommendations": [
-        "Deploy repository to Node 0 (10.128.0.43) and Node 1 (10.128.0.44)",
+        f"Deploy repository to Node 0 ({n0_ip}) and Node 1 ({n1_ip})",
         "Launch full campaign: bash run_master_benchmark.sh --profile default",
         "Launch rapid test: bash run_20min_tp4pp4_campaign.sh",
         "Inspect dashboard: open Performance_Intelligence_Platform/dashboard/index.html"

@@ -7,7 +7,20 @@
 #   Variant D: Provider plugin (if available on cluster)
 set -euo pipefail
 SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+CALLER_NODE0="${NODE0_IP:-}"
+CALLER_NODE1="${NODE1_IP:-}"
+CALLER_SSH_KEY="${SSH_KEY:-}"
+CALLER_BENCH_ROOT="${BENCH_ROOT:-}"
+CALLER_OUT_ROOT="${OUT_ROOT:-}"
+
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
+
+[[ -n "$CALLER_NODE0" ]] && export NODE0_IP="$CALLER_NODE0"
+[[ -n "$CALLER_NODE1" ]] && export NODE1_IP="$CALLER_NODE1"
+[[ -n "$CALLER_SSH_KEY" ]] && export SSH_KEY="$CALLER_SSH_KEY"
+[[ -n "$CALLER_BENCH_ROOT" ]] && export BENCH_ROOT="$CALLER_BENCH_ROOT"
+[[ -n "$CALLER_OUT_ROOT" ]] && export OUT_ROOT="$CALLER_OUT_ROOT"
+
 : "${NODE0_IP:?NODE0_IP missing}"
 : "${NODE1_IP:?NODE1_IP missing}"
 : "${SSH_KEY:=$HOME/.ssh/google_compute_engine}"
@@ -28,6 +41,8 @@ if [[ ! -d "$NCCL_TESTS_DIR/build" ]]; then
   fi
 fi
 
+FAILED_VARIANTS=()
+
 run_nccl_variant() {
   local var_name="$1"
   local nthreads="$2"
@@ -41,6 +56,8 @@ run_nccl_variant() {
   echo "=========================================================="
 
   if [[ -f "$NCCL_TESTS_DIR/build/all_reduce_perf" && -f "$NCCL_TESTS_DIR/build/sendrecv_perf" ]]; then
+    local rc_ar=0
+    local rc_sr=0
     # 16 KiB AllReduce Latency
     mpirun --hostfile "$HOSTFILE" -np 2 --map-by ppr:1:node --bind-to none \
       -x PATH -x LD_LIBRARY_PATH \
@@ -51,7 +68,7 @@ run_nccl_variant() {
       -x NCCL_NSOCKS_PERTHREAD="$nsocks" \
       $extra_env \
       "$NCCL_TESTS_DIR/build/all_reduce_perf" -b 16K -e 16K -g 1 -J "$vdir/all_reduce_16k.json" \
-      > "$vdir/all_reduce_16k.log" 2>&1 || true
+      > "$vdir/all_reduce_16k.log" 2>&1 || rc_ar=$?
 
     # 256 MiB SendRecv Bandwidth
     mpirun --hostfile "$HOSTFILE" -np 2 --map-by ppr:1:node --bind-to none \
@@ -63,7 +80,12 @@ run_nccl_variant() {
       -x NCCL_NSOCKS_PERTHREAD="$nsocks" \
       $extra_env \
       "$NCCL_TESTS_DIR/build/sendrecv_perf" -b 256M -e 256M -g 1 -J "$vdir/sendrecv_256m.json" \
-      > "$vdir/sendrecv_256m.log" 2>&1 || true
+      > "$vdir/sendrecv_256m.log" 2>&1 || rc_sr=$?
+
+    if [[ $rc_ar -ne 0 || $rc_sr -ne 0 || ! -f "$vdir/all_reduce_16k.json" || ! -f "$vdir/sendrecv_256m.json" ]]; then
+      echo "WARN: nccl-tests execution encountered errors for $var_name (rc_ar=$rc_ar, rc_sr=$rc_sr)"
+      FAILED_VARIANTS+=("$var_name")
+    fi
   else
     echo "ERROR: nccl-tests binaries missing in $NCCL_TESTS_DIR/build"
     return 1
@@ -98,15 +120,27 @@ for vdir in sorted(root.glob("variant_*")):
     if ar_json.exists():
         try:
             d = json.load(open(ar_json))
-            # Extract latency from nccl-test JSON output
-            for row in d.get("data", []):
-                summary[vname]["allreduce_16k_us"] = row.get("time_us") or row.get("algbw")
+            # Extract latency from nccl-test JSON output (out_of_place or data)
+            if "results" in d:
+                for r in d.get("results", []):
+                    oop = r.get("out_of_place", {})
+                    if "time" in oop:
+                        summary[vname]["allreduce_16k_us"] = oop.get("time")
+            elif "data" in d:
+                for row in d.get("data", []):
+                    summary[vname]["allreduce_16k_us"] = row.get("time_us") or row.get("time")
         except Exception: pass
     if sr_json.exists():
         try:
             d = json.load(open(sr_json))
-            for row in d.get("data", []):
-                summary[vname]["sendrecv_256m_gbps"] = row.get("busbw")
+            if "results" in d:
+                for r in d.get("results", []):
+                    oop = r.get("out_of_place", {})
+                    if "bus_bw" in oop or "busbw" in oop:
+                        summary[vname]["sendrecv_256m_gbps"] = oop.get("bus_bw") or oop.get("busbw")
+            elif "data" in d:
+                for row in d.get("data", []):
+                    summary[vname]["sendrecv_256m_gbps"] = row.get("busbw") or row.get("bus_bw")
         except Exception: pass
     if ar_log.exists():
         for line in open(ar_log):
@@ -117,6 +151,12 @@ for vdir in sorted(root.glob("variant_*")):
 out_file = root / "NCCL_TUNING_SUMMARY.json"
 out_file.write_text(json.dumps(summary, indent=2))
 print("NCCL Tuning Summary:\n", json.dumps(summary, indent=2))
+if all(v.get("allreduce_16k_us") is None for v in summary.values()):
+    print("ERROR: All evaluated NCCL variants produced null metrics or failed.", file=sys.stderr)
+    sys.exit(1)
 PY
 
+if [[ ${#FAILED_VARIANTS[@]} -gt 0 ]]; then
+  echo "WARN: NCCL socket tuning variants failed: ${FAILED_VARIANTS[*]}"
+fi
 echo "NCCL Socket tuning evaluation complete: $OUT_ROOT"

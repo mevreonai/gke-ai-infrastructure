@@ -14,6 +14,10 @@ CALLER_CONCURRENCY="${CONCURRENCY:-}"
 CALLER_PORT="${PORT:-}"
 CALLER_PROFILE_ROOT="${PROFILE_ROOT:-}"
 CALLER_OUT_ROOT="${OUT_ROOT:-}"
+CALLER_NODE0="${NODE0_IP:-}"
+CALLER_NODE1="${NODE1_IP:-}"
+CALLER_SSH_KEY="${SSH_KEY:-}"
+CALLER_VENV_DIR="${VENV_DIR:-}"
 
 for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env"; do [[ -f "$f" ]] && { source "$f"; break; }; done
 
@@ -26,6 +30,10 @@ for f in "$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smo
 [[ -n "$CALLER_PORT" ]] && export PORT="$CALLER_PORT"
 [[ -n "$CALLER_PROFILE_ROOT" ]] && export PROFILE_ROOT="$CALLER_PROFILE_ROOT"
 [[ -n "$CALLER_OUT_ROOT" ]] && export OUT_ROOT="$CALLER_OUT_ROOT"
+[[ -n "$CALLER_NODE0" ]] && export NODE0_IP="$CALLER_NODE0"
+[[ -n "$CALLER_NODE1" ]] && export NODE1_IP="$CALLER_NODE1"
+[[ -n "$CALLER_SSH_KEY" ]] && export SSH_KEY="$CALLER_SSH_KEY"
+[[ -n "$CALLER_VENV_DIR" ]] && export VENV_DIR="$CALLER_VENV_DIR"
 unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL VLLM_PP_LAYER_PARTITION 2>/dev/null || true
 if [[ -f "$SCRIPT_DIR/20_nccl_policy.sh" ]]; then
   source "$SCRIPT_DIR/20_nccl_policy.sh"

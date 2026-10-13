@@ -35,11 +35,11 @@ Evaluates multi-node distributed serving across dual 8-GPU nodes interconnected 
 ## 💡 Landmark Findings & Measured Deltas
 1. **Topology Supremacy:** `TP16` across virtualized 100G VPC suffers severe packet serialization stalls, increasing decode latency to **88.4 ms/token**. `TP8+PP2` confines All-Reduce inside each node and transmits only boundary activations, cutting decode latency to **5.48 ms/token** (a **16.1× speedup**).
 2. **Network Resilience:** Under 0.05% packet loss, `TP16` suffers a **3.8× slowdown**, whereas `TP8+PP2` and `TP4+PP4` degrade by **less than 5%**.
-3. **Asymmetric 15/12 Layer Partition:** An asymmetric 15/12 layer split on 27-layer models yields a **+27.58% TTFT improvement** over default symmetric splits.
+3. **Asymmetric 15/12 Layer Partition:** An asymmetric 15/12 layer split on 27-layer models provides an A/B benchmark evaluation against default symmetric splits.
 
 ## 🧊 Multi-Node Cold vs. Warm Cache Isolation
 In multi-node runs, cold/warm cache isolation is orchestrated across both cluster nodes:
-* **Coordinated Worker Termination:** Local and remote Ray actors and `vllm serve` processes are cleanly torn down via SSH (`pkill -9 -f vllm`).
+* **Coordinated Worker Termination:** Local and remote Ray actors and `vllm serve` processes are cleanly terminated via `ray stop` and targeted process-group shutdown.
 * **Cluster VRAM Drain:** Both Node 0 and Node 1 verify complete VRAM allocation return to zero prior to the next concurrency point.
 * **Cold Initial Measurements:** Initial requests at each concurrency tier evaluate pure cold performance without cross-request prefix caching.
 

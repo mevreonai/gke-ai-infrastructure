@@ -1,0 +1,56 @@
+SERVING RUNS (prompt length: requests in flight; 'rate' = arrivals at a set rate; batching blocks run in step 17 only when --cb-blocks or CB_BLOCKS selects them)
+  TP4/PP1 · 4 GPUs
+      step 1                                                     8K c4/c32
+      step 5                                                     1K c1/c8/c16/c32; 2K c1/c8/c32
+      step 6                                                     1K c1/c8/c32; 8K c1/c8/c16/c32; 16K c1; 32K c1; 64K c1; 128K c1/c4/c8; 256K c1; 512K c1/c2; 1M c1
+      step 8                                                     8K c8; 128K c1/c4; 512K c1; 1M c1
+      step 9                                                     1K c1; 128K c1; 512K c1; 1M c1
+      step 18 (deep-profile only)                                8K c64
+      step 19 (deep-profile only)                                8K c32
+      step 20 (deep-profile only)                                8K c8/c32
+      batching block 1 (two_long_prompts_side_by_side)           128K c8; 1M c2
+      batching block 2 (step_budget_sweep)                       8K c8/c32; 128K c4/c8
+      batching block 3 (request_cap_binding)                     1K c64; 8K c64
+      batching block 4 (mixed_traffic_concurrency)               1K rate (cap c4); 128K rate (cap c1)
+      batching block 5 (memory_pressure_kv_limits)               8K c32; 128K c8
+      batching block 6 (long_answers_decode_scaling)             8K c16/c32
+  TP8/PP1 · 8 GPUs
+      step 4 (inline server; unpinned, then pinned)              8K c1
+      step 6                                                     1K c1/c8/c32; 8K c1/c8/c32; 16K c1; 32K c1; 64K c1; 128K c1/c4/c8; 256K c1; 512K c1/c2/c4; 1M c1/c2
+      batching block 2 (step_budget_sweep)                       8K c8/c32; 128K c4/c8
+  TP4/PP2 · 8 GPUs
+      step 10                                                    1K c1/c8/c32; 8K c1/c8/c32; 128K c1/c2/c4/c8; 512K c1/c2/c4; 1M c1/c2/c4
+      step 11                                                    1K c1; 8K c1; 128K c1; 512K c1; 1M c1
+      batching block 2 (step_budget_sweep)                       8K c8/c32; 128K c4/c8
+      batching block 4 (mixed_traffic_concurrency)               1K rate (cap c4); 128K rate (cap c1)
+      batching block 7 (steady_arrivals_poisson)                 8K rate (cap c128); 128K rate (cap c64)
+  TP16/PP1 · 16 GPUs
+      step 10                                                    1K c1/c8/c32; 8K c1/c8/c32; 128K c1/c2/c4/c8; 512K c1/c2/c4; 1M c1/c2/c4
+      step 12                                                    128K c1/c4
+      batching block 4 (mixed_traffic_concurrency)               1K rate (cap c4); 128K rate (cap c1)
+      batching block 7 (steady_arrivals_poisson)                 8K rate (cap c128); 128K rate (cap c64)
+  TP8/PP2 · 16 GPUs
+      step 10                                                    1K c1/c8/c32; 8K c1/c8/c32; 128K c1/c2/c4/c8; 512K c1/c2/c4; 1M c1/c2/c4
+      step 11                                                    1K c1; 8K c1; 128K c1; 512K c1; 1M c1
+      batching block 1 (two_long_prompts_side_by_side)           128K c8; 1M c2
+      batching block 2 (step_budget_sweep)                       8K c8/c32; 128K c4/c8
+      batching block 3 (request_cap_binding)                     1K c64; 8K c64
+      batching block 4 (mixed_traffic_concurrency)               1K rate (cap c4); 128K rate (cap c1)
+      batching block 7 (steady_arrivals_poisson)                 8K rate (cap c128); 128K rate (cap c64)
+  TP4/PP4 · 16 GPUs
+      step 10                                                    1K c1/c8/c32; 8K c1/c8/c32; 128K c1/c2/c4/c8; 512K c1/c2/c4; 1M c1/c2/c4
+      step 12                                                    128K c1/c4
+      batching block 1 (two_long_prompts_side_by_side)           128K c8; 1M c2
+      batching block 3 (request_cap_binding)                     1K c64; 8K c64
+      batching block 4 (mixed_traffic_concurrency)               1K rate (cap c4); 128K rate (cap c1)
+      batching block 7 (steady_arrivals_poisson)                 8K rate (cap c128); 128K rate (cap c64)
+  defined, but no master step runs them: 
+PROFILES THE MASTER SELECTS (every step's topology guard taken as matching)
+  step 2: torch: TP4 8K c8 graphs on; TP4 8K c32 graphs on; TP8 8K c8 graphs on; TP8 8K c32 graphs on
+  step 13: two-server Nsight: tp16_pp1_dist long_prefill_512k eager
+  step 14: single-node Nsight: TP4 decode 8K c1 graphs on; TP4 prefill 128K c1 graphs on; TP8 prefill 128K c1 graphs on
+  step 14: torch: TP4 8K c8 graphs on
+  step 14: two-server Nsight: tp4_pp2_dist decode_8k eager; tp4_pp2_dist batched_decode_8k_c8 eager; tp4_pp2_dist prefill_128k eager; tp8_pp2_dist decode_8k eager; tp8_pp2_dist batched_decode_8k_c8 eager; tp8_pp2_dist prefill_128k eager; tp4_pp4_dist decode_8k eager; tp4_pp4_dist batched_decode_8k_c8 eager; tp4_pp4_dist prefill_128k eager; tp16_pp1_dist decode_8k eager; tp16_pp1_dist batched_decode_8k_c8 eager; tp16_pp1_dist prefill_128k eager; tp4_pp2_dist decode_8k graphs on; tp4_pp2_dist batched_decode_8k_c8 graphs on; tp8_pp2_dist decode_8k graphs on; tp8_pp2_dist batched_decode_8k_c8 graphs on; tp4_pp4_dist decode_8k graphs on; tp4_pp4_dist batched_decode_8k_c8 graphs on; tp16_pp1_dist decode_8k graphs on; tp16_pp1_dist batched_decode_8k_c8 graphs on
+  step 14: two-server torch: tp4_pp2_dist 8K c8 graphs on; tp4_pp4_dist 8K c8 graphs on; tp8_pp2_dist 8K c8 graphs on; tp16_pp1_dist 8K c8 graphs on
+  two-server Nsight captures the server would refuse (prompt + output longer than max_model_len): none
+  the two-server Nsight matrix defines 24 captures (tp16_pp1_dist 6, tp4_pp2_dist 6, tp4_pp4_dist 6, tp8_pp2_dist 6); the master selects 21

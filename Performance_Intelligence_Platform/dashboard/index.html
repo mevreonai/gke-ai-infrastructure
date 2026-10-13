@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PIP Benchmark Dashboard — Kimi-Linear 48B (TP4 × PP4 20G Distributed)</title>
-  <meta name="description" content="Production performance intelligence dashboard for Kimi-Linear-48B-A3B-Instruct distributed across 16x RTX PRO 6000 Ada GPUs with TP4 and PP4. 100% genuine measured empirical data with zero hallucinations.">
+  <meta name="description" content="Production performance intelligence dashboard for Kimi-Linear-48B-A3B-Instruct distributed across 16x RTX PRO 6000 Blackwell Server Edition GPUs (1,536 GB GDDR7) with TP4 and PP4. 100% genuine measured empirical data with zero hallucinations.">
   
   <!-- Modern Typography from Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -815,7 +815,7 @@
         <h1 id="page-title">Performance Intelligence Platform — Multi-Node Benchmark Dashboard</h1>
       </div>
       <p class="header-subtitle">
-        Empirical characterization of <strong>moonshotai/Kimi-Linear-48B-A3B-Instruct</strong> distributed across 16× NVIDIA RTX PRO 6000 Ada GPUs (2 Nodes × 8 GPUs, TP=4, PP=4) under 20 Gbps capped network with FlashInfer CUTLASS kernels.
+        Empirical characterization of <strong>moonshotai/Kimi-Linear-48B-A3B-Instruct</strong> distributed across 16× NVIDIA RTX PRO 6000 Blackwell Server Edition GPUs (2 Nodes × 8 GPUs, 1,536 GB GDDR7 aggregate, TP=4, PP=4) under 20 Gbps capped network with FlashInfer CUTLASS kernels.
       </p>
     </div>
 
@@ -1166,7 +1166,7 @@
       <div class="insight-box accent-emerald">
         <div class="insight-head">⚡ FlashInfer CUTLASS Kernel Acceleration</div>
         <div class="insight-text">
-          Attention decode kernel operations executed using FlashInfer CUTLASS kernels with pinned version compatibility, enabling consistent sub-10ms decoding on the Ada generation architecture.
+          Attention decode kernel operations executed using FlashInfer CUTLASS kernels with pinned version compatibility, delivering mean time per token spanning 7.43–752.03 ms across tested concurrency and context depths (2 of 16 points sub-10ms).
         </div>
       </div>
     </div>
@@ -1257,7 +1257,7 @@
             <tr><td class="cell-bold">Model Revision</td><td><code>e1df551a447157d4658b573f9a695d57658590e9</code></td></tr>
             <tr><td class="cell-bold">Evidence Class</td><td><code>MEASURED-48B</code> (Empirically measured benchmark)</td></tr>
             <tr><td class="cell-bold">Cluster Nodes</td><td>2 Nodes (<code>kimi-node-0</code>, <code>kimi-node-1</code>)</td></tr>
-            <tr><td class="cell-bold">GPU Type & Count</td><td>16× NVIDIA RTX PRO 6000 Ada Generation (8 GPUs per node)</td></tr>
+            <tr><td class="cell-bold">GPU Type & Count</td><td>16× NVIDIA RTX PRO 6000 Blackwell Server Edition (96 GB GDDR7 each, 1,536 GB total; 8 GPUs per node)</td></tr>
             <tr><td class="cell-bold">Tensor Parallel (TP)</td><td><code>TP = 4</code> (Local TP within each node)</td></tr>
             <tr><td class="cell-bold">Pipeline Parallel (PP)</td><td><code>PP = 4</code> (2 stages on Node 0, 2 stages on Node 1)</td></tr>
             <tr><td class="cell-bold">PP Layer Partition</td><td><code>7, 7, 7, 6</code> (27 total transformer layers)</td></tr>
@@ -1306,7 +1306,7 @@
   <!-- Footer -->
   <footer class="footer">
     <div>
-      Performance Intelligence Platform (PIP) &bull; Verified multi-node distributed characterization on Blackwell/Ada architecture.
+      Performance Intelligence Platform (PIP) &bull; Verified multi-node distributed characterization on Blackwell Server Edition architecture.
     </div>
     <div>
       Strictly empirical &bull; 0 hallucinations &bull; Run Directory: <code>tp4_pp4_20g_20261011_214919</code>

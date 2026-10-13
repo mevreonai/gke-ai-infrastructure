@@ -43,7 +43,7 @@ Performance_Intelligence_Platform/data/raw_runs/
 | **`08_fp8_kv_rerun/`** | FP8 KV cache execution & memory capacity bounds | `summary/vllm_runs.csv` |
 | **`09_cpu_offload_reuse/`** | Host DDR5 RAM offload tiering & multi-turn prefix reuse | `summary/vllm_runs.csv` |
 | **`10_multi_node_load/`** | Multi-node concurrency stress ($c=1..8$) across TP16, TP8+PP2, TP4+PP4 | `summary/vllm_runs.csv` |
-| **`11_pp2_split_evaluation/`** | Pipeline parallel 2-stage layer rebalance (15/12 split vs default) | `summary/vllm_runs.csv` *(+27.58% TTFT speedup)* |
+| **`11_pp2_split_evaluation/`** | Pipeline parallel 2-stage layer rebalance (15/12 split vs default) | `summary/vllm_runs.csv` *(A/B split evaluation)* |
 | **`12_capped_profiles/`** | Network resilience sweeps (Native vs 100G vs 20G vs 0.05% loss) | `RESILIENCE_COMPARISON.json` |
 | **`13_tp16_512k_prefill/`** | Cross-node TP16 512K prefill feasibility evaluation | `node0_capture/`, `node1_capture/` |
 

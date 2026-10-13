@@ -1,0 +1,296 @@
+# Scripts_Review_v1.5 checks
+folder: Performance_Intelligence_Platform | zip md5: 726a1b6e | v1.4 folder given: True | vLLM wheel given: True | v1.3 folder given: True
+
+## 0. The folder as shared
+[PASS] Z.zip: the zip holds 220 files, 256 macOS metadata entries (__MACOSX/) and 0 .DS_Store files (512 entries)
+[PASS] Z.diff: against the folder v1.4 reviewed (214 files): 6 added, 0 removed, 31 changed, 5 of them docs
+         added: dashboard/index.html, data/results/extracted_dashboard_metrics.json, data/results/tp4_pp4_20g_20261011_214919/tp4_pp4_20g_dashboard.html, scripts/calc_<m2>_timing.py, tools/compare_numa_pinning.py, tools/compare_resilience_matrix.py
+[PASS] Z.same: unchanged since v1.4: the master's cases, 10b's cases, the profile matrix, the summarizer, the pause screen, the NCCL sweep, 14, 14c, the two-server Nsight case script, the Ray audit and the readiness gate
+         {}
+
+## 3.1 Blockers 1-13
+[PASS] B1: every .sh file in the zip carries an executable bit (49 of 49)
+[PASS] B1.direct: the master runs 6 of the team's .sh files directly, not through bash, from 20 places; steps 3 and 13 call theirs through run_step, so a missing bit there is a recorded failure (exit 126), while steps 2, 10-12 and 14 call theirs inside their bodies, where it would pass unseen
+[PASS] B2.export: the master now exports the node addresses, the SSH key, the venv, the run root and id, and the dry-run and resume switches, takes --node0-ip, --node1-ip, --ssh-key and --venv-dir, and defaults node 0's address to the first entry of hostname -I
+         scripts/run_master_benchmark.sh:251 export NODE0_IP NODE1_IP SSH_KEY VENV_DIR MASTER_ROOT SUITE_ROOT RUN_ID DRY_RUN RESUME; scripts/run_master_benchmark.sh:246 : "${NODE0_IP:=$(hostname -I 2>/dev/null | awk '{print $1}' || echo "127.0.0.1")}"
+[PASS] B2.bodies: steps 0 and 10-12 read the node addresses and the key inside their bodies, which now see them through the export
+[PASS] B3.copies: shared files are still copied, not resolved from one place (outside the old rtx_g4_* folders): 09_metrics_sampler.py 5 (1 version), v5_runner_lib.py 6 (1 version), 20_ray_nccl_env_audit.py 3 (2 versions), 20_nccl_policy.sh 2 (1 version), run_master_benchmark.sh 2 (1 version), master_benchmark_cases.json 2 (1 version), RUN_CONFIG.env.example 2 (1 version)
+[PASS] B3.lib: the runner library is now one version in all 7 places (rtx_g4_smoke_v5/ included): every copy has the success check and none the old pkill -9 -f "vllm"
+[PASS] B3.audit: the Ray audit's two versions: the copies the runners use (04/ and 06/) agree; the one in 01/ differs and nothing calls it
+[PASS] B3.startup: the master has no start-up check that the files its steps call exist
+[PASS] B4.default: the master unsets the split; neither example, the smoke test nor either helper sets it; the two-server runner, the Nsight driver and 14d unset it after their re-read of RUN_CONFIG.env
+[PASS] B4.docs: README.md and scripts/README.md now unset the split; the setup guide says it is left unset; the runbook says the smoke test confirms it is unset, which is what the smoke test checks (the environment only)
+[PASS] B4.docs2: two doc lines still describe the 15,12 split as the setting: {'setup guide smoke list says 15,12': True, 'README.md TP8/PP2 as 15/12': True}
+[PASS] B5.bodies: no step body calls pkill any more (19 bodies); steps 2, 19 and 20 wait 3 s between captures instead
+         []
+[PASS] B5.step4: step 4 starts its server with setsid in the background, takes PID=$!, and stops it with SIGTERM, then SIGKILL, to the PID and to the process group -PID, in a trap and once more after the pinned run
+[PASS] B5.14d: 14d's stop_ray_both has no pkill on either node; node 1's command now activates the venv and runs ray stop
+[PASS] B5.helper: the 20-minute helper has no pkill
+[PASS] B5.left: the pkill -f calls left: 14c's, which targets its own port; the runner library's drain barrier and the master's new kill_orphan_workers, which nothing calls
+         scripts/02_single_node_baseline_matrix/v5_runner_lib.py, scripts/03_open_loop_poisson_arrival/v5_runner_lib.py, scripts/04_scaleout_distributed_network/v5_runner_lib.py, scripts/05_long_context_1m_extensions/v5_runner_lib.py, scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh, scripts/06_deep_kernel_and_torch_profiling/v5_runner_lib.py, scripts/07_master_campaign_orchestration/run_master_benchmark.sh, scripts/run_master_benchmark.sh, scripts/v5_runner_lib.py
+[PASS] B5.14c: 14c's pattern (vllm.*port.*$PORT) needs "port" in lower case after "vllm"; neither step that calls 14c ([2, 14]) has "port" in lower case in its text, so it cannot match their shells unless a folder path supplies it
+[PASS] B6.case: the two-server runner still records a failed case, carries on, stops Ray in a trap and exits non-zero at the end
+[PASS] B6.ray: ray start, ray status and the Ray audit still run under set -e, so a cluster that does not form, or an audit violation (exit 2), ends the group with no case manifest written; so does a failed copy of the sampler before the first case
+         eval "${PP_EXPORT}CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --head --node-ip-ad | "$REMOTE_V6_ENV $PP_EXPORT unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVE | ray status | tee "$OUT_ROOT/${CASE}_ray_status_before.log" | python3 "$SCRIPT_DIR/20_ray_nccl_env_audit.py" --out "$OUT_ROOT/${CASE}_RAY_NCCL | scp -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking
+[PASS] B7.runstep: run_step now records each step's status in master_step_status.jsonl, writes the done marker only on status 0, adds a failed step to FAILED_STEPS with a warning, and always returns 0, so no step ends the run
+[PASS] B7.audit: after the last step the master reads every *manifest*.json under the run, writes CAMPAIGN_SUMMARY.json and exits 1 if any case or step failed
+[PASS] B7.status: none of the 19 bodies sets -e, so a step's status is still its last command's: steps [0, 2, 4, 8, 12, 14, 15, 16, 17] end with || true, an echo or an if block, so they report 0; steps [1, 5, 6, 9, 10, 11, 18, 19] end with the summarizer
+[PASS] B7.exit: the only early exit in a body is step 4's: it reports 3 when its server dies at start ([(4, 'kill -0 "$PID" 2>/dev/null || { echo "Server crashed on startup"; exit 3; }')])
+[PASS] B7.ortrue: || true appears 70 times in the bodies (23 in step 12)
+[PASS] B7.resume: resume is still on by default, and the run id is taken from latest_run_id.txt before the flags are read, so --no-resume re-runs every step into the latest run's folder; only --new-run starts a new one
+         scripts/run_master_benchmark.sh:54 < 76
+[PASS] B8.master: the master reads RUN_CONFIG.env before it parses the flags
+[PASS] B8.all: --topologies all and --bandwidth all still export nothing, so a selection a RUN_CONFIG.env sets cannot be reset from the command line
+[PASS] B8.examples: both examples (now one file in two places) default the five selections to all and the network labels with ${VAR:-...}, so a value the caller set survives a re-read
+[PASS] B8.runners: the two-server runner, the Nsight driver and 14d now save the caller's values before re-reading RUN_CONFIG.env and put back the ones that are not empty: 12_run_vllm_multi_node.sh: 8; 18_run_vllm_multi_node_profiles.sh: 4; 14d_run_vllm_torch_profile_multi_node.sh: 9
+[PASS] B8.sweep: the NCCL sweep (step 3) still re-reads the file with nothing saved
+[PASS] B8.outright: the example still sets these outright, so an environment variable cannot change them: {'RUN_HEAVY_PROFILE': True, 'RUN_POISSON_SWEEPS': True, 'RUN_SCHEDULER_SWEEPS': True, 'RUN_OBSERVER_OVERHEAD': True, 'VLLM_MOE_BACKEND': True, 'MOE_BACKEND': True, 'NCCL_SOCKET_IFNAME': True, 'GLOO_SOCKET_IFNAME': True}; the sweeps and RUN_HEAVY_PROFILE have a flag (--profile deep-profile, parsed after the file), the MoE variables and the NCCL interface none (the master's flags: 22)
+[PASS] B9.silenced: every tc command in steps 10-12 still silences its errors: the 6 that apply a cap or loss and the 12 deletes
+[PASS] B9.show: step 12 prints tc -s qdisc show on both nodes (6 calls) to the master log only
+[PASS] B9.iperf: nothing measures the link: no iperf3 in the master, and the network matrix script with its iperf3 checks is still not called
+[PASS] B9.labels: the mode, cap and provenance labels step 12 passes now survive the runner's re-read (it puts back the caller's, and the examples' labels default with ${VAR:-...})
+[PASS] B9.traps: both helpers now remove their caps in a trap (the cluster set-up on EXIT, the 20-minute helper on EXIT, INT, TERM and ERR)
+[PASS] B10.pins: setup_node_env.sh still falls back silently when a pin fails: vLLM 0.29.0 with Ray 2.58.0 to vllm>=0.6.3 with any Ray, FlashInfer 0.6.18 to any, and torch 2.13.0 from the CUDA 12.4 index to torch 2.5.1
+[PASS] B10.hash: no install by file and no checksum
+[PASS] B10.venv: its venv now defaults to $VENV_DIR or ~/vllm_env, the master's default, and links the other name (pip_vllm_env) to it; it writes pip freeze into the venv
+[PASS] B10.venv2: but both helpers still prefer ~/pip_vllm_env when it exists ({'setup_cluster_and_run_smoke.sh': True, 'run_20min_tp4pp4_campaign.sh': True}), and the link is made only when the other name is free, so on a VM set up before, with ~/pip_vllm_env, a new setup_node_env.sh run with its defaults installs into ~/vllm_env while a RUN_CONFIG.env the helpers write points the run at ~/pip_vllm_env
+[PASS] B10.vllmpins: vLLM 0.29.0 itself pins torch 2.13.0 and FlashInfer 0.6.18 (wheel checked: True), so when its pin installs, the torch line before it does not decide torch
+[PASS] B10.docs: the docs' recipes are unchanged: {'setup manual ray 2.35.0 / triton 3.0.0': True, 'runbook torch 2.5.1': True}
+[PASS] B10.gate: the readiness gate expects vLLM 0.29.0, Ray 2.58.0, torch 2.13.0, Triton 3.7.1, FlashInfer 0.6.18 and NCCL 2.29.7 or 2.31.2 (or a library in the clean folder), strict by default
+[PASS] B10.run: the TP4/PP4 run in the data folder recorded, on node 0: {'vllm': '0.31.0', 'flashinfer-python': '0.7.0.post1', 'ray': '2.59.0', 'torch': '2.13.0'}
+[PASS] B11.node1: the batching runner's node 1 now activates $VENV_DIR, puts the clean NCCL folder first on LD_LIBRARY_PATH, unsets NCCL_ALGO, NCCL_PROTO and VLLM_DISABLE_PYNCCL, then starts Ray; its ray stop activates the venv too
+[PASS] B11.gpus: the three TP4/PP2 cases now set ray_gpus_per_node 4 (3 cases), and the runner falls back to 4 for TP4/PP2; the case manifest records the two node addresses and the GPUs per node
+[PASS] B11.left: left: no Ray audit runs, and node 1's ray start carries none of the NCCL policy's exports
+[PASS] B11.fill: in vLLM 0.29.0 a Ray worker fills in the driver's variables after it starts, only where its own node's environment has none (wheel checked: True); so node 1's ranks take node 0's NCCL settings and skip list unless node 1's own login sets them, and LD_LIBRARY_PATH, read at start, comes from node 1's ray start shell, which now sets it
+[PASS] B12.verdict: the smoke test now exits 1 and reports "DEPLOYMENT BLOCKED" when any check fails; ready_for_full_benchmark needs no failure and 12 passes
+[PASS] N8: its end-to-end check still writes bench.json without a server: a first-token time from two clock reads plus 0.045 s, a fixed 5.0 ms a token, status COMPLETED, and the check passes when the file exists
+[PASS] B12.live: its new --live-server flag ("Launch real micro-server test") sets a variable nothing reads
+[PASS] B12.count: it has 21 checks (node 1's only when NODE1_IP is set, the runner's unless --skip-runner)
+[PASS] B12.dry: the runner check is still a dry run, in which no step executes, and the wave check still passes without running when its test file is absent
+[PASS] B12.consts: four checks test values written into the test itself: Prometheus parsing of a fixed sample, wave trimming of fixed numbers, the dashboard schema of a fixed record, and the micro-benchmark's own file
+[PASS] B13.warmup: a warm-up now fails on a non-zero exit, or when its log holds "All requests failed", "Zero completed requests", or both "failed_requests" and "successful_requests: 0"; the three runners that warm up mark such a point WARMUP_FAILED and skip it
+[PASS] B13.vllm: in vLLM 0.29.0 the all-failed case prints the "All requests failed" warning, which the check catches; the other two strings never occur in its output (it prints "Successful requests:"); and its ready check is off by default, so a dead server gives that warning with exit 0 (wheel: {'all-failed warning': True, 'prints Successful requests:': True, 'no "Zero completed requests"': True, 'no "successful_requests"': True, 'ready check off by default': True})
+[PASS] B13.partial: when only some requests fail, vLLM 0.29.0 prints "Failed requests during benchmark run detected" (wheel checked: True), which the check does not look for
+
+## 3.2 The footing
+[PASS] F1: the runners still add --moe-backend and --enable-flashinfer-autotune only when vLLM's help lists them, and the only server-log line any runner reads is the KV cache size
+[PASS] F2: VLLM_FLASHINFER_AUTOTUNE=1 is still exported by the master, both examples and the smoke test (5 files), as is VLLM_MOE_BACKEND; vLLM 0.29.0 reads neither (wheel checked: True)
+[PASS] F4: VLLM_DISABLE_PYNCCL is set nowhere (0 files), unset by the master, the NCCL policy, the two-server runner, the Nsight driver, 14d, the 20-minute helper and the examples, and no longer in the list the policy forwards to node 1; the split is still in that list, but every runner unsets it first
+[PASS] F5: the "+27.58%" claim for the 15/12 split is still in 5 docs (7 places); README_SETUP_AND_OPERATIONS.md dropped it
+         PIP_MASTER_RESULTS_AND_BENCHMARKS.md, README.md, data/raw_runs/README.md, scripts/04_scaleout_distributed_network/README.md, scripts/README.md
+[PASS] F6.ld: the master now builds LD_LIBRARY_PATH as /tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:...} and skips it when the folder is already there; the examples prepend it the same way but without the guard, so each re-read of an example-based RUN_CONFIG.env adds it once more (harmless)
+[PASS] F6.mapped: nothing records the NCCL library each worker mapped, or torch.cuda.nccl.version()
+[PASS] F6.node1: the master still makes the clean folder on node 1 only where GIB is installed (and node 0 has it too), with errors silenced
+[PASS] F7.safe: every script that starts vLLM servers and reads RUN_CONFIG.env unsets NCCL_ALGO and NCCL_PROTO after the read ({'run_master_benchmark.sh': True, '12_run_vllm_multi_node.sh': True, '18_run_vllm_multi_node_profiles.sh': True, '14d_run_vllm_torch_profile_multi_node.sh': True, 'run_20min_tp4pp4_campaign.sh': True}); the others do not read it ({'14_run_vllm_nsys_profile.sh': True, '14c_run_vllm_torch_profile_batched.sh': True, '11_run_vllm_surrogate.py': True, 'run_continuous_batching.py': True}); so a Tree in the file no longer reaches a run's servers
+[PASS] F7.tree: NCCL_ALGO=Tree is still recommended in 2 docs ({'README_SETUP_AND_OPERATIONS.md': 4, 'README_FILES_AND_ARCHITECTURE.md': 3}), one of them asking for it in RUN_CONFIG.env and one claiming 28.4% less cross-node AllReduce latency; NCCL_PROTO=Simple is gone from the docs, and NCCL_CROSS_NIC appears only as dropped
+[PASS] F7.04readme: 04's README now says the policy leaves NCCL_ALGO and NCCL_PROTO unset
+[PASS] F7.restart: the master's header (both copies) and README.md still say the server restarts between concurrency levels; the runners keep one server for all of a case's points
+[PASS] F7.restart2: the same claim is in four more docs ({'scripts/README.md': True, '02 README': True, '04 README (pkill -9 -f vllm)': True, 'RUN_COVERAGE.md (pkill -9 -f vllm)': True}); no script writes the cache_state tag those READMEs describe, and the runner library's classify_thermal_state is called nowhere
+[PASS] F8: admission: the load grid admits 32 at once, the network-condition cases 16 ({'tp4_pp4_dist_load': 32, 'tp16_pp1_dist_load': 32, 'stage3_r3_network_jitter_pp4': 16}); the 20-minute helper now runs the load grid's TP4/PP4 case when the master's cases file is there
+
+## 3.3 The skip list
+[PASS] K1: the master, the two-server runner, both examples and the smoke test keep the "-" form, so an empty value stays empty
+[PASS] K2: the single-node runner keeps a value that is set, empty included
+[PASS] K3: the two-server runner saves the caller's list, empty included, but puts it back after its re-read only when it is not empty, so a RUN_CONFIG.env that sets the list replaces arm B's empty value
+[PASS] K4: the smoke test's MoE check keeps an empty list, then fails unless the list holds gemm1, so arm B fails the smoke test
+
+## 3.4 Coverage
+[PASS] C.ncu: nothing uses Nsight Compute
+[PASS] C.lengths: the two-server load grid still runs ['1k', '1m', '8k', '128k', '512k']
+[PASS] C.net: network conditions still cover two layouts only: {'stage3_r3_network_jitter_tp16': (16, 1), 'stage3_r3_network_jitter_pp4': (4, 4)}
+[PASS] C.nsight: the master selects 13 of the matrix's 24 two-server Nsight captures in 21 runs: 1 in step 13, 12 eager and 8 with graphs on in step 14
+[PASS] C.same: the master's cases and the profile matrix are unchanged, so depth, mid lengths and the other coverage gaps stand as v1.4 found them
+
+## 3.5 Smaller points
+[PASS] S2: step 20 compares the same 8K workload under minimal and full telemetry (unchanged)
+[PASS] S3: the two master copies are identical, and the 07/ copy now takes its suite root from scripts/ (where run_master_benchmark.sh sits one level up), so it finds 05/, pip_scan.py and the cases file
+[PASS] S5: the summarizer is unchanged: its rows carry neither the folder nor the split
+[PASS] S7: all four profile paths still send no warm-up ({'14_run_vllm_nsys_profile.sh': True, '14c_run_vllm_torch_profile_batched.sh': True, '14d_run_vllm_torch_profile_multi_node.sh': True, '18_run_vllm_multi_node_profile_case.py': True})
+[PASS] S8: a warm-up now has its own seed: (seed + 9999) mod 100000
+
+## 3.6 v1.4's new findings N1-N14
+[PASS] N1: the Nsight driver gives PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE a default before it reads it
+[PASS] N2: step 4's comparison is now tools/compare_numa_pinning.py; bash -c gets its body as one word (1 after -c), and no step's string closes before its body ends (19 checked)
+         []
+[PASS] N3.defused: what made the old RUN_CONFIG.env stop servers and turn the communicator off is now undone after every runner's re-read: the two-server runner saves the caller's values (lines up to 16), reads the file (line 19), then unsets the split, VLLM_DISABLE_PYNCCL, NCCL_ALGO and NCCL_PROTO (line 30); the Nsight driver and 14d do the same
+[PASS] N3.left: what the old file would still do: its selections pin the master (B8.all, E6); step 10 passes no cap label, so the file's label stays on step 10's runs; the policy forwards every NCCL_* variable but the local-transport ones, ALGO and PROTO, so its NCCL_CROSS_NIC reaches node 1; and its skip list replaces an empty one (K3). The helpers still keep an existing file as it is
+[PASS] N3.old: the v1.3-era helpers wrote into RUN_CONFIG.env: {'setup_cluster_and_run_smoke.sh': {'TOPOLOGY_SELECTION=tp4_pp4': True, 'bandwidth 20g': True, 'cap label 20': True, 'NCCL_CROSS_NIC=1': True, 'full skip list': True, 'split 7,7,7,6': True, 'communicator off': True}, 'run_20min_tp4pp4_campaign.sh': {'TOPOLOGY_SELECTION=tp4_pp4': True, 'bandwidth 20g': True, 'cap label 20': True, 'NCCL_CROSS_NIC=1': True, 'full skip list': True, 'split 7,7,7,6': True, 'communicator off': True}}
+[PASS] N3.shrink: with that file, the master keeps TP4/PP4 only (E6), and the runners now filter on it too: step 10 keeps only its TP4/PP4 case and step 12, whose 20G condition alone passes the bandwidth guard, keeps neither of its cases (E10); step 14's two-server torch traces keep only TP4/PP4, and step 2's TP8 block, its two TP8 torch captures, is skipped
+[PASS] N3.old2: it also set MODEL and REVISION outright and the old LD_LIBRARY_PATH form ({'setup_cluster_and_run_smoke.sh': {'MODEL': True, 'REVISION': True, 'old LD form': True}, 'run_20min_tp4pp4_campaign.sh': {'MODEL': True, 'REVISION': True, 'old LD form': True}}); the two-server runner and the Nsight driver do not save MODEL or REVISION, so the file's would replace --model and --revision there, and each re-read adds the folder again
+[PASS] N3.shrink2: with that selection, step 14's single-node TP8 Nsight capture is skipped too, while its two-server Nsight runs ignore the selection and run on all four layouts (the driver filters only on its own profile filters), and step 13 is skipped
+[PASS] N4: step 0 now runs the readiness gate with --out on both nodes, node 1's inside the venv; both behind || true, so a failed gate (exit 2) does not stop the run; node 1's report stays in /tmp on node 1, only its summary line comes back
+[PASS] N4.node1: on node 1 the gate runs in a plain ssh shell, so its clean-folder checks run only if node 1's own login sets NCCL_NET=Socket or the folder on LD_LIBRARY_PATH; and step 0 is marked done even when a gate fails, so re-checking needs a new run of step 0
+[PASS] N5: step 0's two python3 commands on node 1 now activate $VENV_DIR first, and step 0 copies the gate to node 1's /tmp
+[PASS] N6.setup: the cluster set-up now gives SSH_KEY a default, sources RUN_CONFIG.env whenever it exists (the command-line address wins), removes both caps in its EXIT trap (a failing smoke test included), and clears the trap before it hands over to the master
+[PASS] N6.bench: with --run-benchmark it runs step 10 with --topologies tp4_pp4, which the runner now applies (only the TP4/PP4 case runs), but step 10 clears both caps and labels its runs native, so the run is uncapped under a banner that says 20 Gbit/s; --bandwidth reaches only step 12
+[PASS] N6.resume: the cluster set-up hands over to the master without --new-run or --no-resume, so it resumes the latest run, and a step 10 already done there is skipped
+[PASS] N6.h20: the 20-minute helper now uses sudo -n, removes the caps in a trap, runs the master's TP4/PP4 load-grid case and unsets NCCL_ALGO, NCCL_PROTO and VLLM_DISABLE_PYNCCL; it still takes node 0's address from hostname -I, and its header still lists six parts and its banner "FlashInfer CUTLASS (Autotuned)" and 20 Gbit/s while it runs one case
+[PASS] N6.key: both helpers' fallback to id_rsa, [[ -f "$SSH_KEY" ]] || SSH_KEY="${SSH_KEY:-$HOME/.ssh/id_rsa}", never changes the key, since SSH_KEY is already set (E8); harmless, as ssh then tries its default keys, and the cluster set-up writes id_rsa into the file it creates
+         scripts/setup_cluster_and_run_smoke.sh:57; scripts/run_20min_tp4pp4_campaign.sh:65
+[PASS] N6.link: neither helper measures the link (no iperf3)
+[PASS] N7: the batching runner's node 1: as blocker 11
+[PASS] N9: setup_node_env.sh's pins: as blocker 10
+[PASS] N12: no empty LD_LIBRARY_PATH entry: the master, both examples, both READMEs and the batching runner's node 1 use ${LD_LIBRARY_PATH:+:...}
+[PASS] N12.login: but the empty entry v1.4 saw in the TP4/PP4 run ('/tmp/clean_nccl_libs:/tmp/clean_nccl_libs:/usr/local/cuda/lib64:/usr/local/cuda/lib64:') comes after the CUDA entries, which no script adds (0 files), so it was in the nodes' own path; the new form keeps it, and with an example-based file the master plus one re-read give the recorded string again (E11)
+[PASS] N13: the 07/ master now finds every file (S3); the runner library's old copies are gone (B3.lib); the copies themselves remain (B3.copies)
+[PASS] N14: the example's batching help shows its three examples again ("all", "1,2,3", "4"), and export CB_BLOCKS stays commented out; the zip still carries the macOS metadata (Z.zip)
+
+## 4. New findings N15-N25
+[PASS] N15: step 11 passes VLLM_PP_LAYER_PARTITION=15,12 to the two-server runner only through its environment; the runner does not save it (it saves ['TOPOLOGY_SELECTION', 'NETWORK_BANDWIDTH_SELECTION', 'Vx_VLLM_NETWORK_MODE', 'Vx_VLLM_NETWORK_CAP_GBPS', 'Vx_GCP_NETWORK_PROVENANCE_OVERRIDE', 'VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS', 'CASES_FILE', 'OUT_ROOT']), unsets it at line 30, and builds the split it exports to both nodes from it at line 105, so the 15,12 arm runs vLLM's default split and its case manifest records default_14_13
+[PASS] N15.arms: both arms run the same pp2_split cases (['tp4_pp2_split_eval', 'tp8_pp2_split_eval']), so step 11's two folders hold the same configuration
+[PASS] N15.vllm: vLLM 0.29.0's default split for 27 layers, re-typed from get_pp_indices (wheel checked: True): [14, 13] at PP2 and [7, 7, 7, 6] at PP4
+[PASS] N16: the 20-minute helper writes the qdisc to "$OUT_DIR/..." at lines [90, 102], but sets OUT_DIR only at line 124; under set -u the first use stops it with "unbound variable" (E3), right after node 0's cap is applied, and line [102] does the same where ens3 is absent; its EXIT trap then removes the caps, and the run never starts
+         scripts/run_20min_tp4pp4_campaign.sh: uses [90, 102, 125, 127], set at 124
+[PASS] N16.label: once it runs, its 20 Gbit/s run will be labelled cap 0 and mode native: it passes no labels, and the file the helpers write sets none
+[PASS] N16.runid: once it runs, it also writes its own id into latest_run_id.txt (line 126, after the stop); a master resumed after it reads that file and runs in $HOME/platform_benchmark_runs/<id>, not the helper's tp4_pp4_20g_<id> folder: a new, empty run folder, so it starts again from step 0
+         scripts/run_20min_tp4pp4_campaign.sh:126
+[PASS] N17.rules: the end audit counts a case as failed when its manifest's status is FAILED or it has an error, and otherwise only when one of its points has status FAILED; WARMUP_FAILED is not counted
+         "vllm_surrogate_manifest.json", "master_step_status.jsonl"
+[PASS] N17.warm: the single-node and batching runners write no case status, so a case whose points all failed their warm-up counts as completed; the two-server runner sets FAILED for such a case, which the audit sees
+[PASS] N17.profile: the two-server Nsight case writes PROFILE_CASE_MANIFEST.json, which the case-sensitive *manifest*.json does not match (E4), so steps 13 and 14's two-server Nsight failures are not counted; the driver itself ends 0 whatever its cases did
+[PASS] N17.none: steps 2 and 4 call no runner that writes a case manifest ({2: True, 4: True}), and 14, 14c and 14d write none ({'14_run_vllm_nsys_profile.sh': True, '14c_run_vllm_torch_profile_batched.sh': True, '14d_run_vllm_torch_profile_multi_node.sh': True}), so their failures are not counted either
+[PASS] N17.before: a two-server runner that stops before its first case manifest (the Ray start-up, the audit, the sampler copy) leaves nothing to count, and its exit status is lost, since steps 10 and 11 end with the summarizer and step 12 with an if block
+[PASS] N17.banner: the audit's exit 1 ends the master under set -e before AUDIT_RC is read, so the closing banner is skipped when a run fails (E5)
+[PASS] N18: the runners save none of the node addresses, the key or the venv before their re-read ({'12_run_vllm_multi_node.sh': ['CASES_FILE', 'NETWORK_BANDWIDTH_SELECTION', 'OUT_ROOT', 'TOPOLOGY_SELECTION', 'Vx_GCP_NETWORK_PROVENANCE_OVERRIDE', 'Vx_VLLM_NETWORK_CAP_GBPS', 'Vx_VLLM_NETWORK_MODE', 'VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS'], '18_run_vllm_multi_node_profiles.sh': ['OUT_ROOT', 'PROFILE_MODE_FILTER', 'PROFILE_TOPOLOGY_FILTER', 'RUN_HEAVY_PROFILE'], '14d_run_vllm_torch_profile_multi_node.sh': ['CONCURRENCY', 'INPUT_LEN', 'MODEL', 'OUTPUT_LEN', 'OUT_ROOT', 'PORT', 'PROFILE_ROOT', 'REVISION', 'TOPOLOGY']}), and the file the helpers write sets all four (['VENV_DIR', 'NODE0_IP', 'NODE1_IP', 'SSH_KEY']), so inside steps 3 and 10-14 the file's values replace the master's --node0-ip, --node1-ip, --ssh-key and --venv-dir
+[PASS] N18.paths: the master reads RUN_CONFIG.env from $PWD, scripts/ or the repository root; the runners from $PWD, scripts/ (one level above their own folder), then older copies in $HOME ({'18_run_vllm_multi_node_profiles.sh': True, '14d_run_vllm_torch_profile_multi_node.sh': True, '23_run_nccl_socket_tuning.sh': True}; the two-server runner one more, the old suite's folder)
+[PASS] N19.cli: its vLLM check runs plain `vllm serve --help` and needs --tensor-parallel-size, --pipeline-parallel-size and --distributed-executor-backend in it; vLLM 0.29.0's plain help prints its usage line, description, config-group list and epilog, with none of the three (wheel checked: True), so on Linux the check fails and the smoke test exits 1 on a healthy node; the runners, the gate and the Nsight driver read --help=all first
+[PASS] N19.setup: the cluster set-up runs the smoke test under set -e, so it stops at step [4/5] and never reaches --run-benchmark
+[PASS] N19.iperf: iperf3 is now required by the smoke test on Linux, and by the gate, but neither setup_node_env.sh nor the runbook installs it (01's node preparation script does): {'smoke test': True, 'gate': True, 'not installed by setup_node_env.sh': True, 'not in the runbook install line': True, 'new in the smoke test': True, "01's prepare script installs it": True}
+[PASS] N19.ctx: the smoke test's context check reads input_tokens and output_tokens, which no point in the cases file has (they use input, 155 points, and output); and it warns whenever a case's step budget exceeds 8,192, which 4 cases do by design (['tp4_128k_chunk_sensitivity', 'tp4_8k_chunk_fix_8448', 'tp4_r1_continuous_context_curve', 'tp8_r1_continuous_context_curve']), so it always warns (E9)
+[PASS] N19.verdict: once its vLLM check passes, any warning makes the verdict "SURROGATE QUALIFIED ... CLEARED FOR CLUSTER DEPLOYMENT", saying warnings reflect a local surrogate host; "100% PRODUCTION READY" needs none, so a healthy node never gets it; --strict turns warnings into failures, so --strict always fails
+[PASS] N19.cb: its batching check reads the file's block names, never a stream, and the flag it computes is never used, so it passes whenever the file parses
+[PASS] N19.misc: its Python search list holds a developer's Windows home path, and its report hard-codes two node addresses and the model
+[PASS] N20.key: step 12's comparison (tools/compare_resilience_matrix.py) now keys each point by d.get("case_name") or its folder's name and reports all four conditions with time per token; vLLM's result files carry no case_name, so the key is the benchmark's folder
+[PASS] N20.deg: it computes the change only for 0.05% loss against native
+[PASS] N20.files: the TP4/PP4 run's 16 result files have no case_name key; each sits beside a warmup_manifest.json in the same folder, which the comparison does not exclude, so the two share a key and the one the folder lists last is kept (E7)
+[PASS] N20.audit: nor does it exclude the runner's <case>_RAY_NCCL_ENV_AUDIT.json at the top of each condition, which becomes a point named after the condition
+[PASS] N20.names: the two layouts' benchmark names differ (['128k_c1_pp4_resilience', '128k_c1_tp16_resilience', '128k_c4_pp4_resilience', '128k_c4_tp16_resilience']), so they do not collide with each other
+[PASS] N21: step 15's aggregation now takes --run-dir and writes a copy into the run, but uses the first CSV a recursive glob finds there, and the columns its figures need (7 checked) appear in no CSV any script writes (the summarizer's 78 columns have none of them), so its totals and per-step tables come out 0 or empty; 16 GPUs and 1,536 GiB are still constants, and it still overwrites the repository's dashboard file
+         {'duration_seconds': False, 'num_total_requests': False, 'token_throughput_tps': False, 'itl_p99_ms': False, 'step_id': False, 'request_throughput_rps': False, 'ttft_median_ms': False}
+[PASS] N21.v14: the dashboard string check is no longer called by the master
+[PASS] N21.csv: the first CSV can also be another kind ({'step 13 GPU inventory': True, 'step 14 Nsight stats': True}), and the summarizer writes an empty file for a step with no rows (True; the second campaign's FP8 step summary is 0 bytes: True); pandas fails on an empty file (E12), and the step's || true hides it
+[PASS] N22: the two-server runner keeps a case only when a selected name is a substring of its name; step 12's cases are ['stage3_r3_network_jitter_pp4', 'stage3_r3_network_jitter_tp16'], so a selection written as the help shows it (tp16_pp1, tp4_pp4) keeps neither, the runner exits 2 ("No multi-node cases selected") under every condition, and step 12 runs nothing; the master's own guard matches both ways (E10)
+[PASS] N22.fix: matching both ways would not help (neither tp16_pp1 nor stage3_r3_network_jitter_tp16 is part of the other); step 12 has no topology guard of its own; and --topologies multi_node passes step 10's guard but matches no case name, so step 10 would run nothing
+[PASS] N23.dash: new and outside the run: a dashboard page of the TP4/PP4 run, one file in two places (1,766,912 bytes each), and the metrics it shows (16 points), whose median ITL values match the run's result files
+[PASS] N23.report: the TP4/PP4 report is unchanged, its median ITL column still wrong in 14 of 16 rows as v1.4 found
+[PASS] N23.timing: a new timing calculator for another model reads its input from a developer's Windows path, so it cannot run on the VM, scales this run's durations by assumed factors ([2.4, 2.5, 2.6, 2.7, 2.8]), and nothing calls it
+[PASS] N23.unused: the example sets four switches no script reads ({'VLLM_COLD_WARM_ISOLATION': True, 'PROFILE_TOPOLOGIES': True, 'PROFILE_CONTEXTS': True, 'VLLM_METRIC_PERCENTILES': True}), the last of which vLLM 0.29.0 does not read either (wheel checked: True)
+[PASS] N23.page: the page says the run used 16 RTX PRO 6000 Ada GPUs with about 768 GB in all, decoding in under 10 ms; the run's records show 8 ['RTX PRO 6000 Blackwell Server Edition'] on node 0 at ['97887'] MiB each, and a mean time per token under 10 ms at 2 of its 16 points (7.43-752.03 ms); it calls its data "100% genuine"
+[PASS] N24: the two-server Nsight driver copies the sampler to node 1 once (line 58), before its loop (line 81), and deletes it inside the loop (line 188), so only the first capture of each call gets node 1's GPU telemetry: 3 of the 21 runs (step 13's one, the first of each of step 14's two calls); the remote start records no error (nohup ... & echo $!), and each later run's validation reads complete: false. The same lines were in the earlier folders ({'v1.4 folder': True, 'v1.3 folder': True})
+[PASS] N25: step 3's summary reads d["data"][...]["time_us"] and ["busbw"], but nccl-tests writes results[...]["out_of_place"]["time"] and ["bus_bw"] (an earlier run's file checked: True), so both figures for every variant in its NCCL_TUNING_SUMMARY.json are null (only the transport line, read from the log, is filled); and each mpirun is behind || true (2 of them), so a sweep whose runs all failed still ends 0
+[PASS] N25.algbw: its latency figure falls back to algbw, a bandwidth, when time_us is missing
+
+## D. A default run, step by step
+[PASS] D.flow: every step goes through run_step (21 calls), which always returns 0; the master's only exits are --help, an unknown flag or profile, and the end (E5)
+         [(190, 'exit 1'), (220, 'exit 0'), (225, 'exit 1'), (1046, 'exit "$AUDIT_RC"')]
+[PASS] D.step0: step 0 runs whatever --step or --from-step say (no step_should_run guard)
+[PASS] D.step3: step 3 runs only with a node 1 address; without the nccl-tests binaries under $BENCH_ROOT its sweep exits 1, which now marks the step failed and the campaign FAILED at the end, without stopping the run
+[PASS] D.bench: the sweep looks for nccl-tests under $BENCH_ROOT, which defaults to $HOME/rtx_g4_smoke and which the example sets to $HOME/platform_bench_suite
+[PASS] D.prep: 01's node-preparation script installs iperf3 and clones and builds nccl-tests under its own $BENCH_ROOT ($HOME/rtx_g4_smoke unless set, as in step 3), needs PEER_IP, and no script outside the old rtx_g4_* folders calls it, the master included (only error messages name it: ['scripts/01_preflight_and_diagnostics/02_run_node_local.sh'])
+[PASS] D.prep2: it runs under set -euo pipefail and each logged step returns its own status, so it stops at the first step that fails; it builds nvbandwidth before nccl-tests; step 3 runs all_reduce_perf and sendrecv_perf from nccl-tests/build/
+[PASS] D.tools: the readiness gate requires nsys and iperf3 (with vllm, ray, nvidia-smi, tc and python3) and fails on any missing one; neither setup_node_env.sh, the runbook, 01's node-preparation script nor the cluster set-up installs nsys; without it on node 0, 14 and the Nsight driver exit 2, so step 13 (through run_step) fails and step 14's Nsight calls, behind || true, are lost quietly
+[PASS] D.hup: the master sets no trap for a hang-up and does not detach itself, so started in the foreground of an SSH session it ends when the session drops; the setup guide starts it with nohup; the master tees everything into <run>/logs/MASTER_BENCHMARK_RUN.log
+[PASS] D.runid: --run-id <id> sets the run id and its folder and leaves resume on, so the second command of 2.3 can name its run outright
+[PASS] D.resume: section 2.3's two commands: --new-run gives a new id, which the master writes to latest_run_id.txt; step 0 alone with --step 0; the next run, resuming by default, takes that id and skips step 0, whose body ends with an echo (status 0) and so leaves its done marker
+[PASS] D.step4: step 4's fixed server command uses flags that vLLM 0.29.0 has (wheel checked: True)
+[PASS] D.step13: step 13 now reaches the Nsight driver, which exits 2 without nsys, ray or vllm on node 0 or vLLM's --ray-workers-use-nsight; on node 1 its check runs the three lookups in one command, so only the last (vllm) decides; a failed capture still ends the driver 0
+[PASS] D.step17: step 17 still runs only with --cb-blocks (or CB_BLOCKS set), and steps 18-20 only with --profile deep-profile or --step
+[PASS] D.fp8: step 8 runs tp4_fp8_kv_fixed, the case that ended in the second campaign with "server exited rc=1", no benchmark and no server log (checked: True); a server that dies at start gives the case manifest an error, which the end audit counts as a failed case; the runner now keeps the server's log in the case folder
+[PASS] D.step4trap: step 4 sets an ERR trap in a shell without -e: if its control benchmark exits non-zero, the trap stops the server, the pinned run then measures nothing, and the step still reports 0
+[PASS] D.toplabel: each step-12 condition's top-level manifest reads its mode from a variable that only two scripts the master never calls set (['scripts/04_scaleout_distributed_network/20_run_vllm_network_matrix.sh', 'scripts/06_deep_kernel_and_torch_profiling/21_run_vllm_capped_profiles.sh']), so it says native under every condition; the per-case records are right
+
+## E. Experiments (scratch folder, own snippets)
+[PASS] E1: started as step 4 starts its server (setsid ... & PID=$!), the background child leads its own process group, so kill -- -PID ends it and its children while the shell that started it carries on
+         pid_is_group_leader=yes | children=3 | left_after_group_kill=0 | body-survives | rc=0 | 
+[PASS] E2: given VLLM_PP_LAYER_PARTITION=15,12 in its environment, as step 11 passes it, the runner's prologue exports no split and records default_14_13
+         PP_EXPORT=[] | recorded=default_14_13 | 
+[PASS] E3: under set -euo pipefail, writing to "$OUT_DIR/..." before OUT_DIR is set stops the script with "unbound variable" (status 1) despite 2>/dev/null || true; the EXIT trap runs and nothing after it does
+         node0 cap applied | TRAP_RAN |  || <scratch>/e3_outdir.sh: line 6: OUT_DIR: unbound variable | 
+[PASS] E4: the audit's rules, re-typed, on three manifests: a single-node case whose second point failed its warm-up counts as completed; the two-server case with status FAILED counts as failed; the upper-case PROFILE_CASE_MANIFEST.json is not found
+         found=single/case_manifest.json,two/case_manifest.json | completed=1 failed=1 | 
+[PASS] E5: under set -e a heredoc Python that exits 1 ends the script at once: the next line (AUDIT_RC=$?) and the banner never run
+[PASS] E6: replaying the master's selection lines: a TOPOLOGY_SELECTION=tp4_pp4 left in a RUN_CONFIG.env survives --topologies all, and steps 4, 11 and 13 are skipped
+         selection=tp4_pp4 | step13_skipped | step4_skipped | step11_skipped | 
+[PASS] E7: the comparison's key, re-typed, on one condition's folder: the result and its warm-up manifest share the key 128k_c1_pp4_resilience, and the Ray audit file becomes a point named capped_20g
+         {"128k_c1_pp4_resilience": ["128k_c1_pp4_resilience.json", "warmup_manifest.json"], "capped_20g": ["stage3_r3_network_jitter_pp4_RAY_NCCL_ENV_AUDIT.json"]}
+[PASS] E8: the helpers' fallback line, re-typed: with the first key missing, SSH_KEY still names it afterwards
+         key=no_such_key_pipchk
+[PASS] E9: the smoke test's context check, re-typed, on the master's cases file: HIGH_BUDGET, recorded as a warning (a failure under --strict)
+         status=HIGH_BUDGET record=WARNING strict=FAILED budgets=4
+[PASS] E10: the runner's case filter, re-typed: tp4_pp4 keeps only the load-grid case and tp16_pp1 only the TP16 load-grid case, neither of step 12's two; "tp16,pp4" or all keeps both
+         tp4_pp4=tp4_pp4_dist_load | tp16_pp1=tp16_pp1_dist_load | tp16,pp4=stage3_r3_network_jitter_tp16,stage3_r3_network_jitter_pp4,tp4_pp4_dist_load,tp16_pp1_dist_load | all=stage3_r3_network_jitter_tp16,stage3_r3_network_jitter_pp4,tp4_pp4_dist_load,tp16_pp1_dist_load | 
+[PASS] E11: the example's line read by the master, the master's guarded line, and the example's line again at a runner's re-read, on a node path ending in ":", give exactly the string the TP4/PP4 run recorded
+         ld=/tmp/clean_nccl_libs:/tmp/clean_nccl_libs:/usr/local/cuda/lib64:/usr/local/cuda/lib64:
+[PASS] E12: pandas.read_csv on an empty file raises EmptyDataError
+         EmptyDataError
+
+## Checks by review item (Z: the folder; B: blockers 1-13; F, K, C, S: sections 3.2-3.5; N: v1.4's and the new findings; D: a default run; E: experiments)
+B1: B1, B1.direct -- 2 of 2 pass
+B2: B2.export, B2.bodies -- 2 of 2 pass
+B3: B3.copies, B3.lib, B3.audit, B3.startup -- 4 of 4 pass
+B4: B4.default, B4.docs, B4.docs2 -- 3 of 3 pass
+B5: B5.bodies, B5.step4, B5.14d, B5.helper, B5.left, B5.14c -- 6 of 6 pass
+B6: B6.case, B6.ray -- 2 of 2 pass
+B7: B7.runstep, B7.audit, B7.status, B7.exit, B7.ortrue, B7.resume -- 6 of 6 pass
+B8: B8.master, B8.all, B8.examples, B8.runners, B8.sweep, B8.outright -- 6 of 6 pass
+B9: B9.silenced, B9.show, B9.iperf, B9.labels, B9.traps -- 5 of 5 pass
+B10: B10.pins, B10.hash, B10.venv, B10.venv2, B10.vllmpins, B10.docs, B10.gate, B10.run -- 8 of 8 pass
+B11: B11.node1, B11.gpus, B11.left, B11.fill -- 4 of 4 pass
+B12: B12.verdict, B12.live, B12.count, B12.dry, B12.consts -- 5 of 5 pass
+B13: B13.warmup, B13.vllm, B13.partial -- 3 of 3 pass
+C: C.ncu, C.lengths, C.net, C.nsight, C.same -- 5 of 5 pass
+D: D.flow, D.step0, D.step3, D.bench, D.prep, D.prep2, D.tools, D.hup, D.runid, D.resume, D.step4, D.step13, D.step17, D.fp8, D.step4trap, D.toplabel -- 16 of 16 pass
+E1: E1 -- 1 of 1 pass
+E2: E2 -- 1 of 1 pass
+E3: E3 -- 1 of 1 pass
+E4: E4 -- 1 of 1 pass
+E5: E5 -- 1 of 1 pass
+E6: E6 -- 1 of 1 pass
+E7: E7 -- 1 of 1 pass
+E8: E8 -- 1 of 1 pass
+E9: E9 -- 1 of 1 pass
+E10: E10 -- 1 of 1 pass
+E11: E11 -- 1 of 1 pass
+E12: E12 -- 1 of 1 pass
+F1: F1 -- 1 of 1 pass
+F2: F2 -- 1 of 1 pass
+F4: F4 -- 1 of 1 pass
+F5: F5 -- 1 of 1 pass
+F6: F6.ld, F6.mapped, F6.node1 -- 3 of 3 pass
+F7: F7.safe, F7.tree, F7.04readme, F7.restart, F7.restart2 -- 5 of 5 pass
+F8: F8 -- 1 of 1 pass
+K1: K1 -- 1 of 1 pass
+K2: K2 -- 1 of 1 pass
+K3: K3 -- 1 of 1 pass
+K4: K4 -- 1 of 1 pass
+N1: N1 -- 1 of 1 pass
+N2: N2 -- 1 of 1 pass
+N3: N3.defused, N3.left, N3.old, N3.shrink, N3.old2, N3.shrink2 -- 6 of 6 pass
+N4: N4, N4.node1 -- 2 of 2 pass
+N5: N5 -- 1 of 1 pass
+N6: N6.setup, N6.bench, N6.resume, N6.h20, N6.key, N6.link -- 6 of 6 pass
+N7: N7 -- 1 of 1 pass
+N8: N8 -- 1 of 1 pass
+N9: N9 -- 1 of 1 pass
+N12: N12, N12.login -- 2 of 2 pass
+N13: N13 -- 1 of 1 pass
+N14: N14 -- 1 of 1 pass
+N15: N15, N15.arms, N15.vllm -- 3 of 3 pass
+N16: N16, N16.label, N16.runid -- 3 of 3 pass
+N17: N17.rules, N17.warm, N17.profile, N17.none, N17.before, N17.banner -- 6 of 6 pass
+N18: N18, N18.paths -- 2 of 2 pass
+N19: N19.cli, N19.setup, N19.iperf, N19.ctx, N19.verdict, N19.cb, N19.misc -- 7 of 7 pass
+N20: N20.key, N20.deg, N20.files, N20.audit, N20.names -- 5 of 5 pass
+N21: N21, N21.v14, N21.csv -- 3 of 3 pass
+N22: N22, N22.fix -- 2 of 2 pass
+N23: N23.dash, N23.report, N23.timing, N23.unused, N23.page -- 5 of 5 pass
+N24: N24 -- 1 of 1 pass
+N25: N25, N25.algbw -- 2 of 2 pass
+S2: S2 -- 1 of 1 pass
+S3: S3 -- 1 of 1 pass
+S5: S5 -- 1 of 1 pass
+S7: S7 -- 1 of 1 pass
+S8: S8 -- 1 of 1 pass
+Z: Z.zip, Z.diff, Z.same -- 3 of 3 pass
+
+177 of 177 checks pass

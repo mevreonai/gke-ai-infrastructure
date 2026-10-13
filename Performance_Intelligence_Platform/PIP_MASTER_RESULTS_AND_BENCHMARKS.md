@@ -28,7 +28,7 @@ The Performance Intelligence Platform (PIP) provides verified, reproducible benc
 
 | Performance Metric / Area | Baseline / Traditional Approach | PIP Optimized Result | Empirical Improvement |
 | :--- | :--- | :--- | :--- |
-| **Pipeline Parallel Partition** | Symmetric 14/13 layer split across 2 nodes | Asymmetric **15/12 layer partition** | **+27.58% TTFT reduction** (6.12s $\to$ 4.43s) |
+| **Pipeline Parallel Partition** | Symmetric 14/13 layer split across 2 nodes | Asymmetric **15/12 layer partition** | **Evaluated via Step 11 A/B benchmark** |
 | **Multi-Node Serving Topology** | Cross-node Tensor Parallel (`TP16/PP1`) | Pipeline Parallelism (`TP8/PP2`) | **16.1× faster decode** (88.4ms $\to$ 5.48ms/token) |
 | **Host Socket NUMA Pinning** | OS default thread round-robin | Core pinning to GPU local CPU socket | **-1.80ms TPOT reduction** at concurrency 1 (8K ISL) |
 | **Chunk Budget Sizing** | 8192-token chunk budget | **8448-token chunk budget** | Eliminates 4.02s first-run engine compilation stall |
@@ -88,7 +88,7 @@ Evaluated across dual nodes (Node 0 + Node 1, 16 GPUs total) interconnected via 
 *Key Findings:*
 - **TP16 Cross-Node Failure:** Pure tensor parallelism across a 100 Gbps virtual ethernet network performs AllReduce collectives on every single transformer layer over TCP sockets, resulting in **88.4 ms/token** decode latency.
 - **TP8 / PP2 Supremacy:** By confining Tensor Parallelism strictly within the NVLink/PCIe boundaries of each individual node and transmitting only activation vectors across the VPC, decode latency drops to **5.48 ms/token** (**16.1× faster**).
-- **Asymmetric 15/12 Layer Partition:** Kimi-Linear has 27 layers. Placing 15 layers on Node 0 and 12 layers on Node 1 balances compute and pipeline latency, reducing mean TTFT from **6.12s to 4.43s (+27.58% faster)**.
+- **Asymmetric 15/12 Layer Partition:** Kimi-Linear has 27 layers. Step 11 evaluates placing 15 layers on Node 0 and 12 layers on Node 1 against the symmetric default partition (14/13).
 
 ---
 
@@ -315,7 +315,7 @@ Evaluated on single-node TP4/TP8 and dual-node scale-out configurations:
 | **Step 08: FP8 KV-Cache** | `$MASTER_ROOT/step08_fp8_kv_rerun/` | `summary/vllm_runs.csv` | 1.89× Sequence Capacity |
 | **Step 09: CPU Offload** | `$MASTER_ROOT/step09_cpu_offload_reuse/` | `summary/vllm_runs.csv` | 6.37× Multi-Turn Prefix Reuse |
 | **Step 10: Multi-Node Load** | `$MASTER_ROOT/step10_multi_node_load/` | `summary/vllm_runs.csv` | TP8/PP2 vs TP16 Load Curve |
-| **Step 11: PP 15/12 Split** | `$MASTER_ROOT/step11_pp2_split_evaluation/` | `summary/vllm_runs.csv` | +27.58% TTFT Improvement |
+| **Step 11: PP 15/12 Split** | `$MASTER_ROOT/step11_pp2_split_evaluation/` | `summary/vllm_runs.csv` | A/B Split Partition Evaluation |
 | **Step 12: Network Resilience** | `$MASTER_ROOT/step12_capped_profiles/` | `RESILIENCE_COMPARISON.json` | PP Resilient / TP16 Collapses |
 | **Step 13: Distributed 512K** | `$MASTER_ROOT/step13_tp16_512k_prefill/` | `summary/vllm_runs.csv` | 512K Context Qualified |
 | **Step 14: Nsight Timeline** | `$MASTER_ROOT/step14_timeline_profiles/` | `*.nsys-rep`, `timeline.sqlite` | 4.47 ms Decode Critical Path |

@@ -14,6 +14,13 @@ CALLER_PROV="${V8_GCP_NETWORK_PROVENANCE_OVERRIDE:-$PLATFORM_GCP_NETWORK_PROVENA
 CALLER_SKIP_OPS="${VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS-}"
 CALLER_CASES="${CASES_FILE:-}"
 CALLER_OUT_ROOT="${OUT_ROOT:-}"
+CALLER_PP_SPLIT="${VLLM_PP_LAYER_PARTITION:-}"
+CALLER_NODE0="${NODE0_IP:-}"
+CALLER_NODE1="${NODE1_IP:-}"
+CALLER_SSH_KEY="${SSH_KEY:-}"
+CALLER_VENV_DIR="${VENV_DIR:-}"
+CALLER_MODEL="${MODEL:-}"
+CALLER_REVISION="${REVISION:-}"
 
 CONFIG_CANDIDATES=("$PWD/RUN_CONFIG.env" "$SCRIPT_DIR/../RUN_CONFIG.env" "$HOME/rtx_g4_smoke/RUN_CONFIG.env" "$HOME/v8_additional_runs_suite/RUN_CONFIG.env")
 for f in "${CONFIG_CANDIDATES[@]}"; do if [[ -f "$f" ]]; then source "$f"; break; fi; done
@@ -27,7 +34,14 @@ for f in "${CONFIG_CANDIDATES[@]}"; do if [[ -f "$f" ]]; then source "$f"; break
 [[ -n "$CALLER_SKIP_OPS" ]] && export VLLM_FLASHINFER_AUTOTUNE_SKIP_OPS="$CALLER_SKIP_OPS"
 [[ -n "$CALLER_CASES" ]] && export CASES_FILE="$CALLER_CASES"
 [[ -n "$CALLER_OUT_ROOT" ]] && export OUT_ROOT="$CALLER_OUT_ROOT"
+[[ -n "$CALLER_NODE0" ]] && export NODE0_IP="$CALLER_NODE0"
+[[ -n "$CALLER_NODE1" ]] && export NODE1_IP="$CALLER_NODE1"
+[[ -n "$CALLER_SSH_KEY" ]] && export SSH_KEY="$CALLER_SSH_KEY"
+[[ -n "$CALLER_VENV_DIR" ]] && export VENV_DIR="$CALLER_VENV_DIR"
+[[ -n "$CALLER_MODEL" ]] && export MODEL="$CALLER_MODEL"
+[[ -n "$CALLER_REVISION" ]] && export REVISION="$CALLER_REVISION"
 unset NCCL_ALGO NCCL_PROTO VLLM_DISABLE_PYNCCL VLLM_PP_LAYER_PARTITION 2>/dev/null || true
+[[ -n "$CALLER_PP_SPLIT" ]] && export VLLM_PP_LAYER_PARTITION="$CALLER_PP_SPLIT"
 
 if [[ -n "$V8_GCP_NETWORK_PROVENANCE_OVERRIDE" ]]; then export GCP_NETWORK_PROVENANCE="$V8_GCP_NETWORK_PROVENANCE_OVERRIDE"; fi
 : "${NODE0_IP:?NODE0_IP missing; run 00_init_gcp_config.sh or provide RUN_CONFIG.env}"
@@ -71,8 +85,19 @@ for c in raw_cases:
     if not ok:
         continue
     if topos:
-        c_str = (str(c.get('topology', '')) + ' ' + str(c.get('name', ''))).lower()
-        if not any(t in c_str for t in topos):
+        derived_topo = f"tp{c.get('tp')}_pp{c.get('pp')}".lower() if ('tp' in c and 'pp' in c) else ''
+        c_tags = [derived_topo, str(c.get('topology', '')).lower(), str(c.get('name', '')).lower()] + [g.lower() for g in c.get('groups', [])]
+        matched = False
+        for t in topos:
+            if any(t == tag or t in tag or tag in t for tag in c_tags if tag):
+                matched = True; break
+            if t in ('tp16', 'tp16_pp1') and (derived_topo == 'tp16_pp1' or 'tp16' in c['name']):
+                matched = True; break
+            if t in ('pp4', 'tp4_pp4') and (derived_topo == 'tp4_pp4' or 'pp4' in c['name']):
+                matched = True; break
+            if t == 'multi_node' and ('multi_node' in c_tags or c.get('ray_gpus_per_node', 8) > 0):
+                matched = True; break
+        if not matched:
             continue
     print(f"{c['name']}|{c.get('ray_gpus_per_node',8)}")
 PY

@@ -36,7 +36,7 @@ echo "--> [2/5] Checking essential Linux system packages..."
 if command -v apt-get >/dev/null 2>&1; then
   sudo apt-get update -qq && sudo apt-get install -y -qq \
     git git-lfs build-essential iproute2 iputils-ping numactl \
-    libnuma-dev python3-pip python3-venv jq >/dev/null 2>&1 || {
+    libnuma-dev python3-pip python3-venv jq iperf3 >/dev/null 2>&1 || {
       echo "    Notice: apt-get install finished with non-critical warnings (continuing)."
     }
 fi

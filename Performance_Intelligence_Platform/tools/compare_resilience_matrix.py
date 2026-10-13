@@ -13,22 +13,33 @@ def collect_metrics_for_condition(cond_dir: Path):
     if not cond_dir.exists():
         return points
     for f in cond_dir.rglob("*.json"):
-        if f.name in (
-            "summary.json",
-            "manifest.json",
-            "case_manifest.json",
-            "resolved_models.json",
-            "vllm_surrogate_manifest.json",
-            "RESILIENCE_COMPARISON.json",
+        fname_lower = f.name.lower()
+        if (
+            "warmup_manifest" in fname_lower
+            or "audit" in fname_lower
+            or "ray_nccl_env_audit" in fname_lower
+            or f.name in (
+                "summary.json",
+                "manifest.json",
+                "case_manifest.json",
+                "resolved_models.json",
+                "vllm_surrogate_manifest.json",
+                "RESILIENCE_COMPARISON.json",
+                "warmup_manifest.json",
+            )
         ):
             continue
         try:
             d = json.loads(f.read_text(encoding="utf-8"))
-            case_name = d.get("case_name") or f.parent.name or f.stem
             ttft = d.get("mean_ttft_ms")
             if ttft is None and "ttfts" in d and len(d["ttfts"]) > 0:
                 ttft = (sum(d["ttfts"]) / len(d["ttfts"])) * 1000.0
             tpot = d.get("mean_tpot_ms")
+            # Require benchmark metrics so arbitrary JSONs are never treated as points
+            if ttft is None and tpot is None and "median_itl_ms" not in d:
+                continue
+
+            case_name = d.get("case_name") or f.parent.name or f.stem
             points[case_name] = {
                 "mean_ttft_ms": round(ttft, 2) if ttft is not None else None,
                 "mean_tpot_ms": round(tpot, 2) if tpot is not None else None,
@@ -70,6 +81,18 @@ def main():
             n_tpot = nat["mean_tpot_ms"]
             i_tpot = imp["mean_tpot_ms"]
             report[case]["tpot_degradation_pct"] = round(((i_tpot - n_tpot) / n_tpot) * 100.0, 2)
+
+        # Also calculate degradation for capped bandwidth conditions against native
+        for c_name in ("capped_100g", "capped_20g"):
+            c_data = report[case].get(c_name, {})
+            if nat.get("mean_ttft_ms") and c_data.get("mean_ttft_ms"):
+                report[case][f"ttft_{c_name}_degradation_pct"] = round(
+                    ((c_data["mean_ttft_ms"] - nat["mean_ttft_ms"]) / nat["mean_ttft_ms"]) * 100.0, 2
+                )
+            if nat.get("mean_tpot_ms") and c_data.get("mean_tpot_ms"):
+                report[case][f"tpot_{c_name}_degradation_pct"] = round(
+                    ((c_data["mean_tpot_ms"] - nat["mean_tpot_ms"]) / nat["mean_tpot_ms"]) * 100.0, 2
+                )
 
     out_file = root / "RESILIENCE_COMPARISON.json"
     out_file.write_text(json.dumps(report, indent=2), encoding="utf-8")

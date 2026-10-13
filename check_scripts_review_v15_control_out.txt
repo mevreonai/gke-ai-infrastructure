@@ -1,0 +1,207 @@
+# Scripts_Review_v1.5 checks
+folder: Performance_Intelligence_Platform | zip md5: 076730f9 | v1.4 folder given: False | vLLM wheel given: True | v1.3 folder given: True
+
+## 0. The folder as shared
+[FAIL] Z.zip: the zip holds 217 files, 252 macOS metadata entries (__MACOSX/) and 3 .DS_Store files (504 entries)
+
+## 3.1 Blockers 1-13
+[PASS] B1: every .sh file in the zip carries an executable bit (49 of 49)
+[PASS] B1.direct: the master runs 6 of the team's .sh files directly, not through bash, from 20 places; steps 3 and 13 call theirs through run_step, so a missing bit there is a recorded failure (exit 126), while steps 2, 10-12 and 14 call theirs inside their bodies, where it would pass unseen
+[FAIL] B2.export: the master now exports the node addresses, the SSH key, the venv, the run root and id, and the dry-run and resume switches, takes --node0-ip, --node1-ip, --ssh-key and --venv-dir, and defaults node 0's address to the first entry of hostname -I
+[FAIL] B2.bodies: steps 0 and 10-12 read the node addresses and the key inside their bodies, which now see them through the export
+[FAIL] B3.copies: shared files are still copied, not resolved from one place (outside the old rtx_g4_* folders): 09_metrics_sampler.py 5 (1 version), v5_runner_lib.py 6 (2 versions), 20_ray_nccl_env_audit.py 3 (2 versions), 20_nccl_policy.sh 2 (1 version), run_master_benchmark.sh 2 (1 version), master_benchmark_cases.json 2 (1 version), RUN_CONFIG.env.example 2 (2 versions)
+[FAIL] B3.lib: the runner library is now one version in all 7 places (rtx_g4_smoke_v5/ included): every copy has the success check and none the old pkill -9 -f "vllm"
+[PASS] B3.audit: the Ray audit's two versions: the copies the runners use (04/ and 06/) agree; the one in 01/ differs and nothing calls it
+[PASS] B3.startup: the master has no start-up check that the files its steps call exist
+[FAIL] B4.default: the master unsets the split; neither example, the smoke test nor either helper sets it; the two-server runner, the Nsight driver and 14d unset it after their re-read of RUN_CONFIG.env
+[FAIL] B4.docs: README.md and scripts/README.md now unset the split; the setup guide says it is left unset; the runbook says the smoke test confirms it is unset, which is what the smoke test checks (the environment only)
+[PASS] B4.docs2: two doc lines still describe the 15,12 split as the setting: {'setup guide smoke list says 15,12': True, 'README.md TP8/PP2 as 15/12': True}
+[FAIL] B5.bodies: no step body calls pkill any more (19 bodies); steps 2, 19 and 20 wait 3 s between captures instead
+         [2, 4, 19, 20]
+[FAIL] B5.step4: step 4 starts its server with setsid in the background, takes PID=$!, and stops it with SIGTERM, then SIGKILL, to the PID and to the process group -PID, in a trap and once more after the pinned run
+[FAIL] B5.14d: 14d's stop_ray_both has no pkill on either node; node 1's command now activates the venv and runs ray stop
+[FAIL] B5.helper: the 20-minute helper has no pkill
+[FAIL] B5.left: the pkill -f calls left: 14c's, which targets its own port; the runner library's drain barrier and the master's new kill_orphan_workers, which nothing calls
+         scripts/02_single_node_baseline_matrix/v5_runner_lib.py, scripts/03_open_loop_poisson_arrival/v5_runner_lib.py, scripts/04_scaleout_distributed_network/v5_runner_lib.py, scripts/05_long_context_1m_extensions/v5_runner_lib.py, scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh, scripts/06_deep_kernel_and_torch_profiling/14d_run_vllm_torch_profile_multi_node.sh, scripts/06_deep_kernel_and_torch_profiling/v5_runner_lib.py, scripts/07_master_campaign_orchestration/run_master_benchmark.sh, scripts/run_20min_tp4pp4_campaign.sh, scripts/run_master_benchmark.sh, scripts/v5_runner_lib.py
+[PASS] B5.14c: 14c's pattern (vllm.*port.*$PORT) needs "port" in lower case after "vllm"; neither step that calls 14c ([2, 14]) has "port" in lower case in its text, so it cannot match their shells unless a folder path supplies it
+[PASS] B6.case: the two-server runner still records a failed case, carries on, stops Ray in a trap and exits non-zero at the end
+[PASS] B6.ray: ray start, ray status and the Ray audit still run under set -e, so a cluster that does not form, or an audit violation (exit 2), ends the group with no case manifest written; so does a failed copy of the sampler before the first case
+         eval "${PP_EXPORT}CUDA_VISIBLE_DEVICES='$GPU_LIST' ray start --head --node-ip-ad | "$REMOTE_V6_ENV $PP_EXPORT unset NCCL_P2P_DISABLE NCCL_SHM_DISABLE NCCL_P2P_LEVE | ray status | tee "$OUT_ROOT/${CASE}_ray_status_before.log" | python3 "$SCRIPT_DIR/20_ray_nccl_env_audit.py" --out "$OUT_ROOT/${CASE}_RAY_NCCL | scp -i "$SSH_KEY" -o BatchMode=yes -o ConnectTimeout=20 -o StrictHostKeyChecking
+[FAIL] B7.runstep: run_step now records each step's status in master_step_status.jsonl, writes the done marker only on status 0, adds a failed step to FAILED_STEPS with a warning, and always returns 0, so no step ends the run
+[FAIL] Blocker 7: could not be evaluated on this folder (ValueError: substring not found)
+[FAIL] Blocker 8: could not be evaluated on this folder (NameError: name 'i_loop' is not defined)
+[PASS] B9.silenced: every tc command in steps 10-12 still silences its errors: the 6 that apply a cap or loss and the 12 deletes
+[PASS] B9.show: step 12 prints tc -s qdisc show on both nodes (6 calls) to the master log only
+[PASS] B9.iperf: nothing measures the link: no iperf3 in the master, and the network matrix script with its iperf3 checks is still not called
+[FAIL] B9.labels: the mode, cap and provenance labels step 12 passes now survive the runner's re-read (it puts back the caller's, and the examples' labels default with ${VAR:-...})
+[FAIL] B9.traps: both helpers now remove their caps in a trap (the cluster set-up on EXIT, the 20-minute helper on EXIT, INT, TERM and ERR)
+[PASS] B10.pins: setup_node_env.sh still falls back silently when a pin fails: vLLM 0.29.0 with Ray 2.58.0 to vllm>=0.6.3 with any Ray, FlashInfer 0.6.18 to any, and torch 2.13.0 from the CUDA 12.4 index to torch 2.5.1
+[PASS] B10.hash: no install by file and no checksum
+[FAIL] B10.venv: its venv now defaults to $VENV_DIR or ~/vllm_env, the master's default, and links the other name (pip_vllm_env) to it; it writes pip freeze into the venv
+[FAIL] B10.venv2: but both helpers still prefer ~/pip_vllm_env when it exists ({'setup_cluster_and_run_smoke.sh': True, 'run_20min_tp4pp4_campaign.sh': True}), and the link is made only when the other name is free, so on a VM set up before, with ~/pip_vllm_env, a new setup_node_env.sh run with its defaults installs into ~/vllm_env while a RUN_CONFIG.env the helpers write points the run at ~/pip_vllm_env
+[PASS] B10.vllmpins: vLLM 0.29.0 itself pins torch 2.13.0 and FlashInfer 0.6.18 (wheel checked: True), so when its pin installs, the torch line before it does not decide torch
+[PASS] B10.docs: the docs' recipes are unchanged: {'setup manual ray 2.35.0 / triton 3.0.0': True, 'runbook torch 2.5.1': True}
+[PASS] B10.gate: the readiness gate expects vLLM 0.29.0, Ray 2.58.0, torch 2.13.0, Triton 3.7.1, FlashInfer 0.6.18 and NCCL 2.29.7 or 2.31.2 (or a library in the clean folder), strict by default
+[PASS] B10.run: the TP4/PP4 run in the data folder recorded, on node 0: {'vllm': '0.31.0', 'flashinfer-python': '0.7.0.post1', 'ray': '2.59.0', 'torch': '2.13.0'}
+[FAIL] Blocker 11: could not be evaluated on this folder (AttributeError: 'NoneType' object has no attribute 'group')
+[FAIL] B12.verdict: the smoke test now exits 1 and reports "DEPLOYMENT BLOCKED" when any check fails; ready_for_full_benchmark needs no failure and 12 passes
+[FAIL] Blocker 12: could not be evaluated on this folder (ValueError: substring not found)
+[FAIL] B13.warmup: a warm-up now fails on a non-zero exit, or when its log holds "All requests failed", "Zero completed requests", or both "failed_requests" and "successful_requests: 0"; the three runners that warm up mark such a point WARMUP_FAILED and skip it
+[PASS] B13.vllm: in vLLM 0.29.0 the all-failed case prints the "All requests failed" warning, which the check catches; the other two strings never occur in its output (it prints "Successful requests:"); and its ready check is off by default, so a dead server gives that warning with exit 0 (wheel: {'all-failed warning': True, 'prints Successful requests:': True, 'no "Zero completed requests"': True, 'no "successful_requests"': True, 'ready check off by default': True})
+[PASS] B13.partial: when only some requests fail, vLLM 0.29.0 prints "Failed requests during benchmark run detected" (wheel checked: True), which the check does not look for
+
+## 3.2 The footing
+[PASS] F1: the runners still add --moe-backend and --enable-flashinfer-autotune only when vLLM's help lists them, and the only server-log line any runner reads is the KV cache size
+[PASS] F2: VLLM_FLASHINFER_AUTOTUNE=1 is still exported by the master, both examples and the smoke test (5 files), as is VLLM_MOE_BACKEND; vLLM 0.29.0 reads neither (wheel checked: True)
+[FAIL] F4: VLLM_DISABLE_PYNCCL is set nowhere (0 files), unset by the master, the NCCL policy, the two-server runner, the Nsight driver, 14d, the 20-minute helper and the examples, and no longer in the list the policy forwards to node 1; the split is still in that list, but every runner unsets it first
+[FAIL] F5: the "+27.58%" claim for the 15/12 split is still in 6 docs (8 places); README_SETUP_AND_OPERATIONS.md dropped it
+         PIP_MASTER_RESULTS_AND_BENCHMARKS.md, README.md, README_SETUP_AND_OPERATIONS.md, data/raw_runs/README.md, scripts/04_scaleout_distributed_network/README.md, scripts/README.md
+[FAIL] F6.ld: the master now builds LD_LIBRARY_PATH as /tmp/clean_nccl_libs${LD_LIBRARY_PATH:+:...} and skips it when the folder is already there; the examples prepend it the same way but without the guard, so each re-read of an example-based RUN_CONFIG.env adds it once more (harmless)
+[PASS] F6.mapped: nothing records the NCCL library each worker mapped, or torch.cuda.nccl.version()
+[FAIL] 3.2 The footing: could not be evaluated on this folder (ValueError: substring not found)
+
+## 3.3 The skip list
+[PASS] K1: the master, the two-server runner, both examples and the smoke test keep the "-" form, so an empty value stays empty
+[PASS] K2: the single-node runner keeps a value that is set, empty included
+[FAIL] K3: the two-server runner saves the caller's list, empty included, but puts it back after its re-read only when it is not empty, so a RUN_CONFIG.env that sets the list replaces arm B's empty value
+[FAIL] K4: the smoke test's MoE check keeps an empty list, then fails unless the list holds gemm1, so arm B fails the smoke test
+
+## 3.4 Coverage
+[PASS] C.ncu: nothing uses Nsight Compute
+[FAIL] 3.4 Coverage: could not be evaluated on this folder (NameError: name 'caseset' is not defined)
+
+## 3.5 Smaller points
+[PASS] S2: step 20 compares the same 8K workload under minimal and full telemetry (unchanged)
+[FAIL] S3: the two master copies are identical, and the 07/ copy now takes its suite root from scripts/ (where run_master_benchmark.sh sits one level up), so it finds 05/, pip_scan.py and the cases file
+[PASS] S5: the summarizer is unchanged: its rows carry neither the folder nor the split
+[PASS] S7: all four profile paths still send no warm-up ({'14_run_vllm_nsys_profile.sh': True, '14c_run_vllm_torch_profile_batched.sh': True, '14d_run_vllm_torch_profile_multi_node.sh': True, '18_run_vllm_multi_node_profile_case.py': True})
+[FAIL] S8: a warm-up now has its own seed: (seed + 9999) mod 100000
+
+## 3.6 v1.4's new findings N1-N14
+[FAIL] N1: the Nsight driver gives PLATFORM_GCP_NETWORK_PROVENANCE_OVERRIDE a default before it reads it
+[FAIL] N2: step 4's comparison is now tools/compare_numa_pinning.py; bash -c gets its body as one word (3 after -c), and no step's string closes before its body ends (19 checked)
+         [4]
+[FAIL] N1-N14: could not be evaluated on this folder (StopIteration: )
+
+## 4. New findings N15-N25
+[FAIL] N15: could not be evaluated on this folder (NameError: name 'i_un12' is not defined)
+[FAIL] N16: the 20-minute helper writes the qdisc to "$OUT_DIR/..." at lines [], but sets OUT_DIR only at line 107; under set -u the first use stops it with "unbound variable" (E3), right after node 0's cap is applied, and line [] does the same where ens3 is absent; its EXIT trap then removes the caps, and the run never starts
+         scripts/run_20min_tp4pp4_campaign.sh: uses [108, 110, 111, 124], set at 107
+[PASS] N16.label: once it runs, its 20 Gbit/s run will be labelled cap 0 and mode native: it passes no labels, and the file the helpers write sets none
+[FAIL] N16.runid: once it runs, it also writes its own id into latest_run_id.txt (line 109, after the stop); a master resumed after it reads that file and runs in $HOME/platform_benchmark_runs/<id>, not the helper's tp4_pp4_20g_<id> folder: a new, empty run folder, so it starts again from step 0
+         scripts/run_20min_tp4pp4_campaign.sh:109
+[FAIL] N17: could not be evaluated on this folder (TypeError: expected string or bytes-like object, got 'dict')
+[FAIL] N18: the runners save none of the node addresses, the key or the venv before their re-read ({'12_run_vllm_multi_node.sh': [], '18_run_vllm_multi_node_profiles.sh': ['RUN_HEAVY_PROFILE'], '14d_run_vllm_torch_profile_multi_node.sh': []}), and the file the helpers write sets all four (['VENV_DIR', 'NODE0_IP', 'NODE1_IP', 'SSH_KEY']), so inside steps 3 and 10-14 the file's values replace the master's --node0-ip, --node1-ip, --ssh-key and --venv-dir
+[PASS] N18.paths: the master reads RUN_CONFIG.env from $PWD, scripts/ or the repository root; the runners from $PWD, scripts/ (one level above their own folder), then older copies in $HOME ({'18_run_vllm_multi_node_profiles.sh': True, '14d_run_vllm_torch_profile_multi_node.sh': True, '23_run_nccl_socket_tuning.sh': True}; the two-server runner one more, the old suite's folder)
+[FAIL] N19: could not be evaluated on this folder (ValueError: substring not found)
+[FAIL] N20: could not be evaluated on this folder (FileNotFoundError: [Errno 2] No such file or directory: '<folder>/to)
+[FAIL] N21: step 15's aggregation now takes --run-dir and writes a copy into the run, but uses the first CSV a recursive glob finds there, and the columns its figures need (7 checked) appear in no CSV any script writes (the summarizer's 78 columns have none of them), so its totals and per-step tables come out 0 or empty; 16 GPUs and 1,536 GiB are still constants, and it still overwrites the repository's dashboard file
+         {'duration_seconds': False, 'num_total_requests': False, 'token_throughput_tps': False, 'itl_p99_ms': False, 'step_id': False, 'request_throughput_rps': False, 'ttft_median_ms': False}
+[FAIL] N21.v14: the dashboard string check is no longer called by the master
+[PASS] N21.csv: the first CSV can also be another kind ({'step 13 GPU inventory': True, 'step 14 Nsight stats': True}), and the summarizer writes an empty file for a step with no rows (True; the second campaign's FP8 step summary is 0 bytes: True); pandas fails on an empty file (E12), and the step's || true hides it
+[FAIL] N22: could not be evaluated on this folder (ValueError: substring not found)
+[FAIL] N23: could not be evaluated on this folder (FileNotFoundError: [Errno 2] No such file or directory: '<folder>/da)
+[PASS] N24: the two-server Nsight driver copies the sampler to node 1 once (line 47), before its loop (line 70), and deletes it inside the loop (line 177), so only the first capture of each call gets node 1's GPU telemetry: 3 of the 21 runs (step 13's one, the first of each of step 14's two calls); the remote start records no error (nohup ... & echo $!), and each later run's validation reads complete: false. The same lines were in the earlier folders ({'v1.3 folder': True})
+[PASS] N25: step 3's summary reads d["data"][...]["time_us"] and ["busbw"], but nccl-tests writes results[...]["out_of_place"]["time"] and ["bus_bw"] (an earlier run's file checked: True), so both figures for every variant in its NCCL_TUNING_SUMMARY.json are null (only the transport line, read from the log, is filled); and each mpirun is behind || true (2 of them), so a sweep whose runs all failed still ends 0
+[PASS] N25.algbw: its latency figure falls back to algbw, a bandwidth, when time_us is missing
+
+## D. A default run, step by step
+[FAIL] D.flow: every step goes through run_step (21 calls), which always returns 0; the master's only exits are --help, an unknown flag or profile, and the end (E5)
+         [(167, 'exit 1'), (197, 'exit 0'), (202, 'exit 1')]
+[PASS] D.step0: step 0 runs whatever --step or --from-step say (no step_should_run guard)
+[FAIL] D.step3: step 3 runs only with a node 1 address; without the nccl-tests binaries under $BENCH_ROOT its sweep exits 1, which now marks the step failed and the campaign FAILED at the end, without stopping the run
+[PASS] D.bench: the sweep looks for nccl-tests under $BENCH_ROOT, which defaults to $HOME/rtx_g4_smoke and which the example sets to $HOME/platform_bench_suite
+[PASS] D.prep: 01's node-preparation script installs iperf3 and clones and builds nccl-tests under its own $BENCH_ROOT ($HOME/rtx_g4_smoke unless set, as in step 3), needs PEER_IP, and no script outside the old rtx_g4_* folders calls it, the master included (only error messages name it: ['scripts/01_preflight_and_diagnostics/02_run_node_local.sh'])
+[PASS] D.prep2: it runs under set -euo pipefail and each logged step returns its own status, so it stops at the first step that fails; it builds nvbandwidth before nccl-tests; step 3 runs all_reduce_perf and sendrecv_perf from nccl-tests/build/
+[PASS] D.tools: the readiness gate requires nsys and iperf3 (with vllm, ray, nvidia-smi, tc and python3) and fails on any missing one; neither setup_node_env.sh, the runbook, 01's node-preparation script nor the cluster set-up installs nsys; without it on node 0, 14 and the Nsight driver exit 2, so step 13 (through run_step) fails and step 14's Nsight calls, behind || true, are lost quietly
+[PASS] D.hup: the master sets no trap for a hang-up and does not detach itself, so started in the foreground of an SSH session it ends when the session drops; the setup guide starts it with nohup; the master tees everything into <run>/logs/MASTER_BENCHMARK_RUN.log
+[PASS] D.runid: --run-id <id> sets the run id and its folder and leaves resume on, so the second command of 2.3 can name its run outright
+[FAIL] D. A default run: could not be evaluated on this folder (NameError: name 'i_loop' is not defined)
+
+## E. Experiments (scratch folder, own snippets)
+[PASS] E1: started as step 4 starts its server (setsid ... & PID=$!), the background child leads its own process group, so kill -- -PID ends it and its children while the shell that started it carries on
+         pid_is_group_leader=yes | children=3 | left_after_group_kill=0 | body-survives | rc=0 | 
+[PASS] E2: given VLLM_PP_LAYER_PARTITION=15,12 in its environment, as step 11 passes it, the runner's prologue exports no split and records default_14_13
+         PP_EXPORT=[] | recorded=default_14_13 | 
+[PASS] E3: under set -euo pipefail, writing to "$OUT_DIR/..." before OUT_DIR is set stops the script with "unbound variable" (status 1) despite 2>/dev/null || true; the EXIT trap runs and nothing after it does
+         node0 cap applied | TRAP_RAN |  || <scratch>/e3_outdir.sh: line 6: OUT_DIR: unbound variable | 
+[PASS] E4: the audit's rules, re-typed, on three manifests: a single-node case whose second point failed its warm-up counts as completed; the two-server case with status FAILED counts as failed; the upper-case PROFILE_CASE_MANIFEST.json is not found
+         found=single/case_manifest.json,two/case_manifest.json | completed=1 failed=1 | 
+[PASS] E5: under set -e a heredoc Python that exits 1 ends the script at once: the next line (AUDIT_RC=$?) and the banner never run
+[PASS] E6: replaying the master's selection lines: a TOPOLOGY_SELECTION=tp4_pp4 left in a RUN_CONFIG.env survives --topologies all, and steps 4, 11 and 13 are skipped
+         selection=tp4_pp4 | step13_skipped | step4_skipped | step11_skipped | 
+[PASS] E7: the comparison's key, re-typed, on one condition's folder: the result and its warm-up manifest share the key 128k_c1_pp4_resilience, and the Ray audit file becomes a point named capped_20g
+         {"128k_c1_pp4_resilience": ["128k_c1_pp4_resilience.json", "warmup_manifest.json"], "capped_20g": ["stage3_r3_network_jitter_pp4_RAY_NCCL_ENV_AUDIT.json"]}
+[PASS] E8: the helpers' fallback line, re-typed: with the first key missing, SSH_KEY still names it afterwards
+         key=no_such_key_pipchk
+[PASS] E9: the smoke test's context check, re-typed, on the master's cases file: HIGH_BUDGET, recorded as a warning (a failure under --strict)
+         status=HIGH_BUDGET record=WARNING strict=FAILED budgets=4
+[PASS] E10: the runner's case filter, re-typed: tp4_pp4 keeps only the load-grid case and tp16_pp1 only the TP16 load-grid case, neither of step 12's two; "tp16,pp4" or all keeps both
+         tp4_pp4=tp4_pp4_dist_load | tp16_pp1=tp16_pp1_dist_load | tp16,pp4=stage3_r3_network_jitter_tp16,stage3_r3_network_jitter_pp4,tp4_pp4_dist_load,tp16_pp1_dist_load | all=stage3_r3_network_jitter_tp16,stage3_r3_network_jitter_pp4,tp4_pp4_dist_load,tp16_pp1_dist_load | 
+[PASS] E11: the example's line read by the master, the master's guarded line, and the example's line again at a runner's re-read, on a node path ending in ":", give exactly the string the TP4/PP4 run recorded
+         ld=/tmp/clean_nccl_libs:/tmp/clean_nccl_libs:/usr/local/cuda/lib64:/usr/local/cuda/lib64:
+[PASS] E12: pandas.read_csv on an empty file raises EmptyDataError
+         EmptyDataError
+
+## Checks by review item (Z: the folder; B: blockers 1-13; F, K, C, S: sections 3.2-3.5; N: v1.4's and the new findings; D: a default run; E: experiments)
+3: 3.2 The footing, 3.4 Coverage -- 0 of 2 pass
+B1: B1, B1.direct -- 2 of 2 pass
+B2: B2.export, B2.bodies -- 0 of 2 pass
+B3: B3.copies, B3.lib, B3.audit, B3.startup -- 2 of 4 pass
+B4: B4.default, B4.docs, B4.docs2 -- 1 of 3 pass
+B5: B5.bodies, B5.step4, B5.14d, B5.helper, B5.left, B5.14c -- 1 of 6 pass
+B6: B6.case, B6.ray -- 2 of 2 pass
+B7: B7.runstep -- 0 of 1 pass
+Blocker 7: Blocker 7 -- 0 of 1 pass
+Blocker 8: Blocker 8 -- 0 of 1 pass
+B9: B9.silenced, B9.show, B9.iperf, B9.labels, B9.traps -- 3 of 5 pass
+B10: B10.pins, B10.hash, B10.venv, B10.venv2, B10.vllmpins, B10.docs, B10.gate, B10.run -- 6 of 8 pass
+Blocker 11: Blocker 11 -- 0 of 1 pass
+B12: B12.verdict -- 0 of 1 pass
+Blocker 12: Blocker 12 -- 0 of 1 pass
+B13: B13.warmup, B13.vllm, B13.partial -- 2 of 3 pass
+C: C.ncu -- 1 of 1 pass
+D: D.flow, D.step0, D.step3, D.bench, D.prep, D.prep2, D.tools, D.hup, D.runid, D. A default run -- 7 of 10 pass
+E1: E1 -- 1 of 1 pass
+E2: E2 -- 1 of 1 pass
+E3: E3 -- 1 of 1 pass
+E4: E4 -- 1 of 1 pass
+E5: E5 -- 1 of 1 pass
+E6: E6 -- 1 of 1 pass
+E7: E7 -- 1 of 1 pass
+E8: E8 -- 1 of 1 pass
+E9: E9 -- 1 of 1 pass
+E10: E10 -- 1 of 1 pass
+E11: E11 -- 1 of 1 pass
+E12: E12 -- 1 of 1 pass
+F1: F1 -- 1 of 1 pass
+F2: F2 -- 1 of 1 pass
+F4: F4 -- 0 of 1 pass
+F5: F5 -- 0 of 1 pass
+F6: F6.ld, F6.mapped -- 1 of 2 pass
+K1: K1 -- 1 of 1 pass
+K2: K2 -- 1 of 1 pass
+K3: K3 -- 0 of 1 pass
+K4: K4 -- 0 of 1 pass
+N1: N1 -- 0 of 1 pass
+N2: N2 -- 0 of 1 pass
+N15: N15 -- 0 of 1 pass
+N16: N16, N16.label, N16.runid -- 1 of 3 pass
+N17: N17 -- 0 of 1 pass
+N18: N18, N18.paths -- 1 of 2 pass
+N19: N19 -- 0 of 1 pass
+N20: N20 -- 0 of 1 pass
+N21: N21, N21.v14, N21.csv -- 1 of 3 pass
+N22: N22 -- 0 of 1 pass
+N23: N23 -- 0 of 1 pass
+N24: N24 -- 1 of 1 pass
+N25: N25, N25.algbw -- 2 of 2 pass
+N1-N14: N1-N14 -- 0 of 1 pass
+S2: S2 -- 1 of 1 pass
+S3: S3 -- 0 of 1 pass
+S5: S5 -- 1 of 1 pass
+S7: S7 -- 1 of 1 pass
+S8: S8 -- 0 of 1 pass
+Z: Z.zip -- 0 of 1 pass
+
+53 of 102 checks pass; failed: ['Z.zip', 'B2.export', 'B2.bodies', 'B3.copies', 'B3.lib', 'B4.default', 'B4.docs', 'B5.bodies', 'B5.step4', 'B5.14d', 'B5.helper', 'B5.left', 'B7.runstep', 'Blocker 7', 'Blocker 8', 'B9.labels', 'B9.traps', 'B10.venv', 'B10.venv2', 'Blocker 11', 'B12.verdict', 'Blocker 12', 'B13.warmup', 'F4', 'F5', 'F6.ld', '3.2 The footing', 'K3', 'K4', '3.4 Coverage', 'S3', 'S8', 'N1', 'N2', 'N1-N14', 'N15', 'N16', 'N16.runid', 'N17', 'N18', 'N19', 'N20', 'N21', 'N21.v14', 'N22', 'N23', 'D.flow', 'D.step3', 'D. A default run']

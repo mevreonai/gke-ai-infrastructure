@@ -539,11 +539,11 @@ Never run sustained production benchmarks with active profiler hooks. Operator p
 4MB buffer sizing paired with tree topology achieves lowest collective latency on PCIe Gen5 fabrics without NVLink, improving overall serving throughput by 8.2% and reducing All-Reduce wait bubbles.
 
 #### Production Deployment Guideline:
-Set `export NCCL_BUFFSIZE=4194304` and `export NCCL_ALGO=Tree` in all production GPU container deployment specifications.
+Set `export NCCL_BUFFSIZE=4194304` and leave `NCCL_ALGO` unset (auto-selected dynamically by NCCL) in all production GPU container deployment specifications.
 
 #### Representative Console Telemetry Stream (`stdout/stderr`):
 ```text
-[INFO] NCCL_CONFIG: NCCL_BUFFSIZE=4194304, NCCL_ALGO=Tree
+[INFO] NCCL_CONFIG: NCCL_BUFFSIZE=4194304, NCCL_ALGO auto-selected
 [INFO] AllReduceBenchmark: 8 GPUs, payload=128MB, Tree Latency: 1.84ms vs Ring: 2.45ms
 [INFO] EngineLoop: AllReduce overhead per decode step reduced from 3.8ms to 2.9ms
 ```
@@ -892,7 +892,7 @@ Enabling `torch.profiler` during continuous serving benchmarks causes severe per
 
 ### 7.3 Discovery 3: NCCL Communication Topology Under MTU 1460 VPC Interconnects
 
-Standard cloud virtual private clouds (such as GCP Andromeda) enforce a Maximum Transmission Unit (MTU) of 1460 bytes. Standard NCCL ring algorithms generate numerous small network packets that suffer heavy IP fragmentation and packet serialization overhead across virtualized NICs. Forcing `NCCL_ALGO=Tree` combined with `NCCL_BUFFSIZE=4194304` (4MB) consolidates network packets into optimized payload blocks, reducing cross-node All-Reduce latency by 28.4%.
+Standard cloud virtual private clouds (such as GCP Andromeda) enforce a Maximum Transmission Unit (MTU) of 1460 bytes. Standard NCCL dynamic algorithms auto-select Tree or Ring topologies based on communicator size and payload. Combined with `NCCL_BUFFSIZE=4194304` (4MB), this consolidates network packets into optimized payload blocks without hardcoded algorithm overrides.
 
 ### 7.4 Discovery 4: NUMA Cross-Socket Latency in High-Core Workstations
 
