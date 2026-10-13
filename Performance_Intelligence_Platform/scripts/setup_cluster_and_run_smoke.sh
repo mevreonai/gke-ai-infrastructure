@@ -25,19 +25,43 @@ RUN_BENCHMARK=0
 SKIP_20G=0
 INPUT_NODE1_IP=""
 
-# Parse flags & arguments
-for arg in "$@"; do
-  case "$arg" in
-    --run-benchmark) RUN_BENCHMARK=1 ;;
-    --skip-20g)      SKIP_20G=1 ;;
+EXTRA_SMOKE_ARGS=()
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --run-benchmark)
+      RUN_BENCHMARK=1
+      shift
+      ;;
+    --skip-20g)
+      SKIP_20G=1
+      shift
+      ;;
+    --model)
+      export MODEL="$2"
+      export VLLM_MODEL="$2"
+      EXTRA_SMOKE_ARGS+=("--model" "$2")
+      shift 2
+      ;;
+    --run-tag|--tag)
+      export RUN_TAG="$2"
+      EXTRA_SMOKE_ARGS+=("--run-tag" "$2")
+      shift 2
+      ;;
+    --strict)
+      EXTRA_SMOKE_ARGS+=("--strict")
+      shift
+      ;;
     -h|--help)
-      echo "Usage: $0 [NODE1_IP] [--run-benchmark] [--skip-20g]"
+      echo "Usage: $0 [NODE1_IP] [--model <id>] [--run-tag <tag>] [--skip-20g] [--run-benchmark] [--strict]"
       exit 0
       ;;
     *)
-      if [[ -z "$INPUT_NODE1_IP" && "$arg" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
-        INPUT_NODE1_IP="$arg"
+      if [[ -z "$INPUT_NODE1_IP" && "$1" =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+        INPUT_NODE1_IP="$1"
+      else
+        EXTRA_SMOKE_ARGS+=("$1")
       fi
+      shift
       ;;
   esac
 done
@@ -149,7 +173,7 @@ fi
 # 4. Run Automated Smoke Test
 echo ""
 echo "--> [4/5] Executing automated pre-flight smoke test..."
-bash "$SCRIPT_DIR/run_smoke_test.sh"
+bash "$SCRIPT_DIR/run_smoke_test.sh" "${EXTRA_SMOKE_ARGS[@]}"
 
 # 5. Parse Smoke Test Output Verdict
 : "${PIP_DATA_ROOT:=$HOME/PIP_Benchmark_Data}"

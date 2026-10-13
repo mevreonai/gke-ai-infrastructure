@@ -335,18 +335,25 @@ pp_split_status=$("$PYTHON_BIN" -c '
 import os, sys
 
 split_env = os.environ.get("VLLM_PP_LAYER_PARTITION")
+model_name = os.environ.get("MODEL", "").lower()
+is_deepseek = "deepseek" in model_name
+
 if split_env is None or split_env == "":
-    print("UNSET_OK:VLLM_PP_LAYER_PARTITION unset; vLLM native defaults apply (14/13 PP2, 7/7/7/6 PP4)")
+    if is_deepseek:
+        print("UNSET_OK:VLLM_PP_LAYER_PARTITION unset; for DeepSeek PP4 multi-node, export VLLM_PP_LAYER_PARTITION=\"8,6,6,20\"")
+    else:
+        print("UNSET_OK:VLLM_PP_LAYER_PARTITION unset; vLLM native defaults apply (14/13 PP2, 7/7/7/6 PP4)")
 elif split_env == "15,12":
     print("INVALID_SPLIT:Hardcoded 15,12 split detected; will break PP1 and PP4 servers (Blocker 4)")
 else:
     try:
         parts = [int(x) for x in split_env.split(",") if x.strip()]
         total_layers = sum(parts)
-        if total_layers == 27:
-            print(f"VALID_SPLIT:Configured split {split_env} sums to 27 model layers ({len(parts)} stages)")
+        expected = 40 if is_deepseek else 27
+        if total_layers == expected:
+            print(f"VALID_SPLIT:Configured split {split_env} sums to {expected} model layers ({len(parts)} stages)")
         else:
-            print(f"WARN_SPLIT:Split {split_env} sums to {total_layers} layers (expected 27 for Kimi-Linear-48B)")
+            print(f"WARN_SPLIT:Split {split_env} sums to {total_layers} layers (expected {expected} for {os.environ.get(\"MODEL\", \"target model\")})")
     except Exception as e:
         print(f"PARSE_ERROR:{e}")
 ' 2>&1)
