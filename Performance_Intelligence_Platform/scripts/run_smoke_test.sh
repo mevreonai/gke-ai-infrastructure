@@ -18,6 +18,16 @@ if [[ -f "$PWD/RUN_CONFIG.env" ]]; then source "$PWD/RUN_CONFIG.env"
 elif [[ -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then source "$SCRIPT_DIR/RUN_CONFIG.env"
 fi
 
+# Auto-detect working Python virtualenv with PyTorch/vLLM stack
+for cand_venv in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "/home/ayu23/vllm_env" "/home/sudarshan/vllm_env"; do
+  if [[ -n "$cand_venv" && -f "$cand_venv/bin/python" ]]; then
+    if "$cand_venv/bin/python" -c "import torch" >/dev/null 2>&1; then
+      VENV_DIR="$cand_venv"
+      source "$VENV_DIR/bin/activate" 2>/dev/null || true
+      break
+    fi
+  fi
+done
 : "${VENV_DIR:=$HOME/vllm_env}"
 if [[ -f "$VENV_DIR/bin/activate" ]]; then
   source "$VENV_DIR/bin/activate"
@@ -122,15 +132,20 @@ REPORT_FILE="$SMOKE_ROOT/SMOKE_TEST_REPORT.json"
 
 # Resolve python binary
 PYTHON_BIN=""
-for candidate in "${VENV_DIR}/bin/python" python3 python py /usr/bin/python3 /usr/local/bin/python3; do
-  if command -v "$candidate" >/dev/null 2>&1; then
-    ver=$("$candidate" --version 2>&1 || true)
-    if [[ "$ver" == *"Python 3"* ]]; then
-      PYTHON_BIN="$candidate"
-      break
+if [[ -n "${VENV_DIR:-}" && -x "${VENV_DIR}/bin/python" ]]; then
+  PYTHON_BIN="${VENV_DIR}/bin/python"
+fi
+if [[ -z "$PYTHON_BIN" ]]; then
+  for candidate in python3 python /usr/bin/python3 /usr/local/bin/python3; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      ver=$("$candidate" --version 2>&1 || true)
+      if [[ "$ver" == *"Python 3"* ]]; then
+        PYTHON_BIN="$candidate"
+        break
+      fi
     fi
-  fi
-done
+  done
+fi
 [[ -n "$PYTHON_BIN" ]] || PYTHON_BIN="python3"
 
 record_check() {
@@ -331,7 +346,7 @@ fi
 
 echo ""
 echo "--- 7. PIPELINE PARALLEL LAYER SPLIT INVARIANTS (SECTION 4) ---"
-pp_split_status=$("$PYTHON_BIN" -c '
+pp_split_status=$("$PYTHON_BIN" - << 'PY' 2>&1
 import os, sys
 
 split_env = os.environ.get("VLLM_PP_LAYER_PARTITION")
@@ -353,10 +368,12 @@ else:
         if total_layers == expected:
             print(f"VALID_SPLIT:Configured split {split_env} sums to {expected} model layers ({len(parts)} stages)")
         else:
-            print(f"WARN_SPLIT:Split {split_env} sums to {total_layers} layers (expected {expected} for {os.environ.get(\"MODEL\", \"target model\")})")
+            target_m = os.environ.get("MODEL", "target model")
+            print(f"WARN_SPLIT:Split {split_env} sums to {total_layers} layers (expected {expected} for {target_m})")
     except Exception as e:
         print(f"PARSE_ERROR:{e}")
-' 2>&1)
+PY
+)
 
 if [[ "$pp_split_status" == *"UNSET_OK:"* || "$pp_split_status" == *"VALID_SPLIT:"* ]]; then
   record_check "pp_layer_partition_invariants" "PASSED" "$pp_split_status"

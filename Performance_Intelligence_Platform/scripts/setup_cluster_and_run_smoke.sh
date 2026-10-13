@@ -153,9 +153,16 @@ fi
 
 # 3. Synchronize RUN_CONFIG.env
 echo ""
-echo "--> [3/5] Generating synchronized RUN_CONFIG.env on Node 0..."
-VENV_DIR="${VENV_DIR:-$HOME/pip_vllm_env}"
-[[ -d "$VENV_DIR" ]] || VENV_DIR="$HOME/vllm_env"
+# Auto-detect working Python virtualenv with PyTorch/vLLM stack
+for cand in "${VENV_DIR:-}" "${VIRTUAL_ENV:-}" "$HOME/vllm_env" "/home/ayu23/vllm_env" "/home/sudarshan/vllm_env"; do
+  if [[ -n "$cand" && -f "$cand/bin/python" ]]; then
+    if "$cand/bin/python" -c "import torch" >/dev/null 2>&1; then
+      VENV_DIR="$cand"
+      break
+    fi
+  fi
+done
+: "${VENV_DIR:=$HOME/vllm_env}"
 
 if [[ ! -f "$SCRIPT_DIR/RUN_CONFIG.env" ]]; then
   cat << EOF > "$SCRIPT_DIR/RUN_CONFIG.env"
