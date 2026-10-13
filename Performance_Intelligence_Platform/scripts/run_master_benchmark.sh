@@ -770,31 +770,34 @@ if step_should_run 12; then
   run_step 12 "capped_and_resilience_profiles" bash -c "
     mkdir -p '$CAPPED_DIR'
     if [[ -n \"\${NODE1_IP:-}\" ]]; then
+      LOCAL_IFACE=\$(ip route get \"\$NODE1_IP\" 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\$i==\"dev\"){print \$(i+1); exit}}')
+      LOCAL_IFACE=\"\${LOCAL_IFACE:-ens3}\"
+      REMOTE_IFACE=\$(ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"ip route get '\$NODE0_IP' 2>/dev/null | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'\" 2>/dev/null || true)
+      REMOTE_IFACE=\"\${REMOTE_IFACE:-ens3}\"
+
       clean_tc_both() {
-        local cond_dir="${1:-$CAPPED_DIR}"
-        sudo -n tc qdisc del dev "$LOCAL_IFACE" root 2>/dev/null || true
-        sudo -n tc qdisc del dev "$LOCAL_IFACE" ingress 2>/dev/null || true
-        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
-          "sudo -n tc qdisc del dev '$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '$REMOTE_IFACE' ingress 2>/dev/null || true" 2>/dev/null || true
-        if [[ -n "$1" ]]; then
-          mkdir -p "$cond_dir"
-          sudo -n tc -s qdisc show dev "$LOCAL_IFACE" > "$cond_dir/node0_tc_qdisc.txt" 2>&1 || true
-          ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc -s qdisc show dev '$REMOTE_IFACE'" > "$cond_dir/node1_tc_qdisc.txt" 2>&1 || true
+        local cond_dir=\"\${1:-$CAPPED_DIR}\"
+        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" root 2>/dev/null || true
+        sudo -n tc qdisc del dev \"\$LOCAL_IFACE\" ingress 2>/dev/null || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
+          \"sudo -n tc qdisc del dev '\$REMOTE_IFACE' root 2>/dev/null || true; sudo -n tc qdisc del dev '\$REMOTE_IFACE' ingress 2>/dev/null || true\" 2>/dev/null || true
+        if [[ -n \"\$1\" ]]; then
+          mkdir -p \"\$cond_dir\"
+          sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" > \"\$cond_dir/node0_tc_qdisc.txt\" 2>&1 || true
+          ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'\" > \"\$cond_dir/node1_tc_qdisc.txt\" 2>&1 || true
         fi
       }
       apply_cap() {
-        local rate=$1
-        local cond_dir=$2
-        mkdir -p "$cond_dir"
-        sudo -n tc qdisc replace dev "$LOCAL_IFACE" root handle 1: htb default 10 2>&1 | tee "$cond_dir/node0_tc_apply.log" || true
-        sudo -n tc class replace dev "$LOCAL_IFACE" parent 1: classid 1:10 htb rate "${rate}gbit" ceil "${rate}gbit" 2>&1 | tee -a "$cond_dir/node0_tc_apply.log" || true
-        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" \
-          "sudo -n tc qdisc replace dev '$REMOTE_IFACE' root handle 1: htb default 10 2>&1 && sudo -n tc class replace dev '$REMOTE_IFACE' parent 1: classid 1:10 htb rate '${rate}gbit' ceil '${rate}gbit' 2>&1" | tee "$cond_dir/node1_tc_apply.log" || true
-        sudo -n tc -s qdisc show dev "$LOCAL_IFACE" > "$cond_dir/node0_tc_qdisc.txt" 2>&1 || true
-        ssh -i "$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "$NODE1_IP" "sudo -n tc -s qdisc show dev '$REMOTE_IFACE'" > "$cond_dir/node1_tc_qdisc.txt" 2>&1 || true
+        local rate=\$1
+        local cond_dir=\$2
+        mkdir -p \"\$cond_dir\"
+        sudo -n tc qdisc replace dev \"\$LOCAL_IFACE\" root handle 1: htb default 10 2>&1 | tee \"\$cond_dir/node0_tc_apply.log\" || true
+        sudo -n tc class replace dev \"\$LOCAL_IFACE\" parent 1: classid 1:10 htb rate \"\${rate}gbit\" ceil \"\${rate}gbit\" 2>&1 | tee -a \"\$cond_dir/node0_tc_apply.log\" || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \
+          \"sudo -n tc qdisc replace dev '\$REMOTE_IFACE' root handle 1: htb default 10 2>&1 && sudo -n tc class replace dev '\$REMOTE_IFACE' parent 1: classid 1:10 htb rate '\${rate}gbit' ceil '\${rate}gbit' 2>&1\" | tee \"\$cond_dir/node1_tc_apply.log\" || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" > \"\$cond_dir/node0_tc_qdisc.txt\" 2>&1 || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'\" > \"\$cond_dir/node1_tc_qdisc.txt\" 2>&1 || true
       }
-      LOCAL_IFACE=\$(ip route get "\$NODE1_IP" | awk '{for(i=1;i<=NF;i++) if(\$i=="dev"){print \$(i+1); exit}}')
-      REMOTE_IFACE=\$(ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "ip route get '\$NODE0_IP' | awk '{for(i=1;i<=NF;i++) if(\\\$i==\\\"dev\\\"){print \\\$(i+1); exit}}'")
 
       # 1. Native baseline
       if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"native"* ]]; then
@@ -818,12 +821,12 @@ if step_should_run 12; then
 
       # 4. Impaired (0.05% synthetic packet loss & jitter)
       if [[ "\${NETWORK_BANDWIDTH_SELECTION:-all}" == "all" || "\${NETWORK_BANDWIDTH_SELECTION:-all}" == *"impaired"* ]]; then
-        mkdir -p "$CAPPED_DIR/impaired_005pct_loss"
-        sudo -n tc qdisc add dev "\$LOCAL_IFACE" root netem loss 0.05% delay 0.2ms 0.05ms 2>&1 | tee "$CAPPED_DIR/impaired_005pct_loss/node0_tc_apply.log" || true
-        ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>&1" | tee "$CAPPED_DIR/impaired_005pct_loss/node1_tc_apply.log" || true
-        sudo -n tc -s qdisc show dev "\$LOCAL_IFACE" > "$CAPPED_DIR/impaired_005pct_loss/node0_tc_qdisc.txt" 2>&1 || true
-        ssh -i "\$SSH_KEY" -o BatchMode=yes -o StrictHostKeyChecking=no "\$NODE1_IP" "sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'" > "$CAPPED_DIR/impaired_005pct_loss/node1_tc_qdisc.txt" 2>&1 || true
-        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE="GCP_CAPPED_JITTER" GCP_NETWORK_PROVENANCE="GCP_CAPPED_JITTER" V8_VLLM_NETWORK_MODE="capped" VLLM_NETWORK_MODE="capped" NETWORK_MODE="capped" V8_VLLM_NETWORK_CAP_GBPS="impaired" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
+        mkdir -p '$CAPPED_DIR/impaired_005pct_loss'
+        sudo -n tc qdisc add dev \"\$LOCAL_IFACE\" root netem loss 0.05% delay 0.2ms 0.05ms 2>&1 | tee '$CAPPED_DIR/impaired_005pct_loss/node0_tc_apply.log' || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc qdisc add dev '\$REMOTE_IFACE' root netem loss 0.05% delay 0.2ms 0.05ms 2>&1\" | tee '$CAPPED_DIR/impaired_005pct_loss/node1_tc_apply.log' || true
+        sudo -n tc -s qdisc show dev \"\$LOCAL_IFACE\" > '$CAPPED_DIR/impaired_005pct_loss/node0_tc_qdisc.txt' 2>&1 || true
+        ssh -i \"\$SSH_KEY\" -o BatchMode=yes -o StrictHostKeyChecking=no \"\$NODE1_IP\" \"sudo -n tc -s qdisc show dev '\$REMOTE_IFACE'\" > '$CAPPED_DIR/impaired_005pct_loss/node1_tc_qdisc.txt' 2>&1 || true
+        env OUT_ROOT='$CAPPED_DIR/impaired_005pct_loss' CASES_FILE='$CASES_FILE' V8_GCP_NETWORK_PROVENANCE_OVERRIDE=\"GCP_CAPPED_JITTER\" GCP_NETWORK_PROVENANCE=\"GCP_CAPPED_JITTER\" V8_VLLM_NETWORK_MODE=\"capped\" VLLM_NETWORK_MODE=\"capped\" NETWORK_MODE=\"capped\" V8_VLLM_NETWORK_CAP_GBPS=\"impaired\" '$NET_DIR/12_run_vllm_multi_node.sh' --group r3_network_resilience
 
         # Restore clean network
         clean_tc_both
