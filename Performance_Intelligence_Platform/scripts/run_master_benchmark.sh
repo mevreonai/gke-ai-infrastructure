@@ -607,24 +607,24 @@ if step_should_run 4; then
     cleanup_tp8
     trap - EXIT INT TERM ERR
 
-    ctrl_ok=0; pin_ok=0
-    [[ -f "$TP8_DIR/control/8k_c1_unpinned.json" ]] && ctrl_ok=1
-    [[ -f "$TP8_DIR/pinned/8k_c1_pinned.json" ]] && pin_ok=1
-    step4_status="FAILED"
-    if [[ "$ctrl_ok" -eq 1 && "$pin_ok" -eq 1 ]]; then
-      step4_status="COMPLETED"
-    fi
-    cat << EOF > "$TP8_DIR/case_manifest.json"
-{
+    python3 -c '
+import json, os, sys
+p_ctrl, p_pin, p_out = sys.argv[1], sys.argv[2], sys.argv[3]
+ctrl = os.path.exists(p_ctrl)
+pin = os.path.exists(p_pin)
+st = "COMPLETED" if ctrl and pin else "FAILED"
+data = {
   "case": "step04_tp8_pinning",
   "name": "step04_tp8_pinning",
-  "status": "$step4_status",
+  "status": st,
   "benchmarks": [
-    {"name": "8k_c1_unpinned", "status": $([ $ctrl_ok -eq 1 ] && echo '"COMPLETED"' || echo '"FAILED"')},
-    {"name": "8k_c1_pinned", "status": $([ $pin_ok -eq 1 ] && echo '"COMPLETED"' || echo '"FAILED"')}
+    {"name": "8k_c1_unpinned", "status": "COMPLETED" if ctrl else "FAILED"},
+    {"name": "8k_c1_pinned", "status": "COMPLETED" if pin else "FAILED"}
   ]
 }
-EOF
+with open(p_out, "w") as f:
+    json.dump(data, f, indent=2)
+' "$TP8_DIR/control/8k_c1_unpinned.json" "$TP8_DIR/pinned/8k_c1_pinned.json" "$TP8_DIR/case_manifest.json"
 
     python3 '$SUITE_ROOT/../tools/compare_numa_pinning.py' '$TP8_DIR' 2>/dev/null || python3 '$SUITE_ROOT/tools/compare_numa_pinning.py' '$TP8_DIR' || true
     "
