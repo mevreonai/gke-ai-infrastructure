@@ -5,13 +5,13 @@
 # ==============================================================================
 set -euo pipefail
 
-BASE_DIR="${1:-/home/ayu23/rtx_g4_smoke/fresh_benchmark_suite}"
+BASE_DIR="${1:-$HOME/rtx_g4_smoke/fresh_benchmark_suite}"
 mkdir -p "$BASE_DIR/allreduce" "$BASE_DIR/allgather" "$BASE_DIR/reducescatter"
 
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE1_IP="10.128.0.40"
 IFACE="ens3"
-BIN_DIR="/home/ayu23/rtx_g4_smoke/nccl-tests/build"
+BIN_DIR="$HOME/rtx_g4_smoke/nccl-tests/build"
 
 # nccl-tests args: -c 0 disables per-iteration correctness checking
 NCCL_ARGS="-b 8K -e 256M -f 2 -g 1 -n 50 -w 20 -c 0"
@@ -90,7 +90,7 @@ run_multinode() {
     echo "OK: [$coll] $np ranks, 1 job, NET hops present, tc counted $((after-before)) bytes."
 }
 
-DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c"
+DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ============================== PHASE 1: node-local baselines =================
 echo ">>> [Phase 1/2] Node-local baselines <<<"

@@ -49,7 +49,7 @@ The suite is **configuration-driven**: you select the target hardware configurat
 
 ### 1.1 Configuring via `RUN_CONFIG.env`
 
-Open [`RUN_CONFIG.env`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/RUN_CONFIG.env) and modify the selection variables:
+Open [`RUN_CONFIG.env`](./scripts/RUN_CONFIG.env) and modify the selection variables:
 
 ```bash
 # ------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ bash run_master_benchmark.sh
 The script loads `RUN_CONFIG.env` and automatically filters the benchmark matrix.
 
 > [!TIP]
-> For the complete matrix of all profiling tools, concurrencies ($c=1..64$), context lengths ($1K..1M$), topologies, and cold/warm cache isolation protocols, consult [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md).
+> For the complete matrix of all profiling tools, concurrencies ($c=1..64$), context lengths ($1K..1M$), topologies, and cold/warm cache isolation protocols, consult [`RUN_COVERAGE.md`](./RUN_COVERAGE.md).
 
 ---
 
@@ -200,7 +200,7 @@ bash run_master_benchmark.sh --dry-run
 ## 2. Top-Level Suite Orchestration Scripts
 
 ### `run_master_benchmark.sh`
-- **Location:** [`Performance_Intelligence_Platform/scripts/run_master_benchmark.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_master_benchmark.sh)
+- **Location:** [`Performance_Intelligence_Platform/scripts/run_master_benchmark.sh`](./scripts/run_master_benchmark.sh)
 - **Role:** The primary entry point for full-scale characterization. Sequentially runs Steps 00 through 20 across 4 selectable run profiles.
 - **Config Selection Support:**
   - Reads `RUN_CONFIG.env` automatically.
@@ -263,7 +263,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `run_smoke_test.sh`
-- **Location:** [`Performance_Intelligence_Platform/scripts/run_smoke_test.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_smoke_test.sh)
+- **Location:** [`Performance_Intelligence_Platform/scripts/run_smoke_test.sh`](./scripts/run_smoke_test.sh)
 - **Role:** Fast (3–5 minute) preflight validator. Verifies that python packages, CUDA drivers, GPU visibility, MoE Triton/Cutlass backends, network ports, inter-node SSH/NCCL, and surrogate benchmark execution work before launching multi-hour runs.
 - **Config Selection Support:**
   - Accepts `--model`, `--revision`, `--topologies`, `--bandwidth`.
@@ -294,8 +294,8 @@ bash run_master_benchmark.sh --dry-run
 
 ### `run_continuous_batching.sh` & `run_continuous_batching.py`
 - **Location:**
-  - Shell wrapper: [`Performance_Intelligence_Platform/scripts/run_continuous_batching.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_continuous_batching.sh)
-  - Python runner: [`Performance_Intelligence_Platform/scripts/run_continuous_batching.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_continuous_batching.py)
+  - Shell wrapper: [`Performance_Intelligence_Platform/scripts/run_continuous_batching.sh`](./scripts/run_continuous_batching.sh)
+  - Python runner: [`Performance_Intelligence_Platform/scripts/run_continuous_batching.py`](./scripts/run_continuous_batching.py)
 - **Role:** Configurable runner for the 7 continuous batching characterization blocks (step budget, chunk cap, request cap, mixed traffic, KV cache memory pressure, long answers, steady arrivals).
 - **Config Selection Support:**
   - Select via CLI: `--blocks 1,2,4` or `--case cb_b2_budget_4k_tp4` or `--dry-run`.
@@ -322,7 +322,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `run_quickstart.sh`
-- **Location:** [`Performance_Intelligence_Platform/scripts/run_quickstart.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_quickstart.sh)
+- **Location:** [`Performance_Intelligence_Platform/scripts/run_quickstart.sh`](./scripts/run_quickstart.sh)
 - **Role:** 10-minute baseline verification of single-node TP4 serving (8K context, concurrency 1 and 4).
 - **Exact Results & Outputs:**
   ```
@@ -338,7 +338,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `run_demo_setup.sh`
-- **Location:** [`Performance_Intelligence_Platform/scripts/run_demo_setup.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_demo_setup.sh)
+- **Location:** [`Performance_Intelligence_Platform/scripts/run_demo_setup.sh`](./scripts/run_demo_setup.sh)
 - **Role:** Sets up the web visualization demo server (serving live characterization dashboards and metrics viewers).
 - **Exact Results & Outputs:** Starts the local HTTP dashboard server on port 8088.
 
@@ -347,7 +347,7 @@ bash run_master_benchmark.sh --dry-run
 ## 3. Telemetry, Waves, Stalls & Profiling Tool Scripts
 
 ### `pip_waves.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/pip_waves.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_waves.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/pip_waves.py`](./scripts/pip_waves.py)
 - **Role:** Analyzes detailed request timings from a `vllm bench serve --save-detailed` result JSON. Determines who waited for whom, reconstructs arrival waves, computes first-wave spacing, detects stalls (token gaps > 100ms), and identifies engine decode silences (pauses).
 - **Usage:**
   ```bash
@@ -367,7 +367,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `pip_scan.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/pip_scan.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_scan.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/pip_scan.py`](./scripts/pip_scan.py)
 - **Role:** Recursively scans directories containing benchmark results, running `pip_waves` over every per-request JSON found to discover pauses, stalls, and burst fractions.
 - **Usage:**
   ```bash
@@ -380,7 +380,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `pip_timeline.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/pip_timeline.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_timeline.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/pip_timeline.py`](./scripts/pip_timeline.py)
 - **Role:** Generates publication-quality timeline diagrams showing prompt reading (red), answer writing (blue), stall gaps (grey with blue thread), waiting in queue (grey), and pauses (pink band).
 - **Usage:**
   ```bash
@@ -392,7 +392,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `pip_step_cost.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/pip_step_cost.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_step_cost.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/pip_step_cost.py`](./scripts/pip_step_cost.py)
 - **Role:** Parses vLLM engine iteration lines in `server.log` and fits the continuous batching step-cost linear model:
   $$\text{Time (ms)} \approx a + b \cdot (\text{generation\_requests}) + c \cdot (\text{context\_tokens})$$
 - **Usage:**
@@ -411,7 +411,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `pip_mixed_traffic.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/pip_mixed_traffic.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_mixed_traffic.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/pip_mixed_traffic.py`](./scripts/pip_mixed_traffic.py)
 - **Role:** Evaluates interference between concurrent short streams (e.g. 1K prompts) and long streams (e.g. 128K prompts).
 - **Usage:**
   ```bash
@@ -427,7 +427,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `ttft_waves.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/ttft_waves.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/ttft_waves.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/ttft_waves.py`](./scripts/ttft_waves.py)
 - **Role:** Wave decomposition tool. Focuses specifically on the first wave, comparing measured first-token waits against the theoretical one-at-a-time rule: $\text{Mean} = (C + 1) / 2$.
 - **Usage:**
   ```bash
@@ -439,7 +439,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `bench_summary.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/bench_summary.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/bench_summary.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/bench_summary.py`](./scripts/bench_summary.py)
 - **Role:** Command-line aggregator that prints clean tables summarizing TTFT, TPOT, throughput, pause indicators, burst percentages, and maximum token gaps.
 - **Usage:**
   ```bash
@@ -450,7 +450,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `metrics_diff.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/metrics_diff.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/metrics_diff.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/metrics_diff.py`](./scripts/metrics_diff.py)
 - **Role:** Analyzes Prometheus time-series logs (`metrics_node0.jsonl`). Computes iteration rate deltas, identifies zero-step intervals, and cross-validates engine queue gauges (`num_requests_running`, `num_requests_waiting`) against the benchmark's per-request timeline.
 - **Usage:**
   ```bash
@@ -461,7 +461,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `server_log.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/server_log.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/server_log.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/server_log.py`](./scripts/server_log.py)
 - **Role:** Parses microsecond-timestamped `server.log` files. Correlates client request arrival times with server engine stats, and automatically extracts all server logs 2s before to 1s after any detected pause to pinpoint the root cause (e.g. CUDA graph compilation or NCCL synchronization).
 - **Usage:**
   ```bash
@@ -472,8 +472,8 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `build_expected_values.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/build_expected_values.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/build_expected_values.py)
-- **Role:** Rebuilds [`expected_values.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/expected_values.json) fixtures from campaign result archives, establishing ground truth baselines for automated test assertions.
+- **Location:** [`Performance_Intelligence_Platform/scripts/build_expected_values.py`](./scripts/build_expected_values.py)
+- **Role:** Rebuilds [`expected_values.json`](./scripts/expected_values.json) fixtures from campaign result archives, establishing ground truth baselines for automated test assertions.
 - **Usage:**
   ```bash
   python3 build_expected_values.py <pilot_dir> <campaign_dir> [expected_values.json]
@@ -482,7 +482,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `generate_result_summary.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/generate_result_summary.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/generate_result_summary.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/generate_result_summary.py`](./scripts/generate_result_summary.py)
 - **Role:** Post-run report generator. Reads `continuous_batching_manifest.json` and produces human-readable Markdown summaries.
 - **Usage:**
   ```bash
@@ -495,7 +495,7 @@ bash run_master_benchmark.sh --dry-run
 ---
 
 ### `v5_runner_lib.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/v5_runner_lib.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/v5_runner_lib.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/v5_runner_lib.py`](./scripts/v5_runner_lib.py)
 - **Role:** Shared runtime library used across all Python benchmark runners. Implements:
   - Process group lifecycle management (`kill_process_group`, `stop_proc`).
   - Robust vLLM HTTP health readiness polling (`wait_for_server`).

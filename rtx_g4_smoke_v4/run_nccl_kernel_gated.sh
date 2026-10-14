@@ -9,11 +9,11 @@ KERNEL="${1:-all_reduce}"
 TOPOLOGY="${2:-tp16}"
 RATE="${3:-NATIVE}"
 
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE0_IP="10.128.0.39"
 NODE1_IP="10.128.0.40"
 IFACE="ens3"
-BIN_DIR="/home/ayu23/rtx_g4_smoke/nccl-tests/build"
+BIN_DIR="$HOME/rtx_g4_smoke/nccl-tests/build"
 PROG="$BIN_DIR/${KERNEL}_perf"
 
 if [ ! -f "$PROG" ]; then

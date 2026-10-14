@@ -17,7 +17,7 @@ import sys
 from pathlib import Path
 
 def main():
-    root = Path(r"c:\Users\ayu23\OneDrive\Desktop\tpu")
+    root = Path(r".")
     val_dir = root / "v9_full_result" / "final_validation"
     runs_path = val_dir / "combined_vllm_runs.json"
     cov_path = val_dir / "coverage.json"

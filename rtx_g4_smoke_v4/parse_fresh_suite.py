@@ -1,7 +1,7 @@
 import re, os, json, csv
 from collections import defaultdict
 
-suite_dir = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v4\results\fresh_benchmark_suite"
+suite_dir = r".rtx_g4_smoke_v4\results\fresh_benchmark_suite"
 
 collectives = ["allreduce", "allgather", "reducescatter"]
 rates = ["NATIVE", "100", "50", "20", "10"]

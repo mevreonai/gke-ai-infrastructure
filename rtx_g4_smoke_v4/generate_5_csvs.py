@@ -1,7 +1,7 @@
 import re, os, csv
 from collections import defaultdict
 
-base_dir = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v4\results\network_allreduce_sweep"
+base_dir = r".rtx_g4_smoke_v4\results\network_allreduce_sweep"
 
 tiers = [
     ("NATIVE", "allreduce_175g_native.csv", "GCP Native (173.58 Gbps)", 175),

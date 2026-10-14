@@ -51,7 +51,7 @@ for idx, item in enumerate(coverage_items, 1):
     raw_man = item.get('manifest') or f"{case}/{bench}"
     
     clean_man = str(raw_man).replace('\\', '/')
-    for prefix in ['C:/Users/ayu23/OneDrive/Desktop/tpu/', 'v8_full_results/20260921_195656/', 'v8_full_results/results/real_data/']:
+    for prefix in ['./', 'v8_full_results/20260921_195656/', 'v8_full_results/results/real_data/']:
         clean_man = clean_man.replace(prefix, '')
         
     r_key = (case, bench, net)

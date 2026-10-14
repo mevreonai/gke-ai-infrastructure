@@ -23,7 +23,7 @@ EOF
 sudo chmod +x /etc/profile.d/cuda.sh
 
 # 4. Inject into bashrc and vllm_env activate script
-for target in /home/ayu23/.bashrc /home/ayu23/vllm_env/bin/activate; do
+for target in $HOME/.bashrc $HOME/vllm_env/bin/activate; do
     if [ -f "$target" ]; then
         if ! grep -q "CUDA_HOME=/usr/local/cuda" "$target"; then
             echo "" >> "$target"

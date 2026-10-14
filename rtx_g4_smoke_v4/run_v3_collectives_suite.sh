@@ -8,12 +8,12 @@
 # ==============================================================================
 set -euo pipefail
 
-BASE_DIR="/home/ayu23/rtx_g4_smoke/fresh_benchmark_suite"
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+BASE_DIR="$HOME/rtx_g4_smoke/fresh_benchmark_suite"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE0="10.128.0.39"
 NODE1="10.128.0.40"
 IFACE="ens3"
-BIN_DIR="/home/ayu23/rtx_g4_smoke/nccl-tests/build"
+BIN_DIR="$HOME/rtx_g4_smoke/nccl-tests/build"
 MPI_PREFIX="/usr/mpi/gcc/openmpi-4.1.9a1"
 SWEEP_ARGS="-b 8K -e 256M -f 2 -n 25 -w 10 -c 0"
 
@@ -183,6 +183,6 @@ cleanup_tc
 echo "================================================================="
 echo "ALL BENCHMARKS COMPLETED SUCCESSFULLY!"
 echo "Packaging output logs into tarball..."
-tar -czf /home/ayu23/rtx_g4_smoke/fresh_suite_all_collectives.tgz -C "$BASE_DIR" sendrecv alltoall allgather reducescatter allreduce
-echo "Archive created: /home/ayu23/rtx_g4_smoke/fresh_suite_all_collectives.tgz"
+tar -czf $HOME/rtx_g4_smoke/fresh_suite_all_collectives.tgz -C "$BASE_DIR" sendrecv alltoall allgather reducescatter allreduce
+echo "Archive created: $HOME/rtx_g4_smoke/fresh_suite_all_collectives.tgz"
 echo "================================================================="

@@ -1,9 +1,9 @@
 
-NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.sqlite
-        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.nsys-rep
+NOTICE: Existing SQLite export found: /home/user/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.sqlite
+        It is assumed file was previously exported from: /home/user/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.nsys-rep
         Consider using --force-export=true if needed.
 
-Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+Processing [/home/user/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
 Time (%),Total Time (ns),Num Calls,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
 73.0,13211593727,5812,2273157.9,6790.0,2200,284994047,22572171.0,cudaMemcpyAsync
 20.1,3634409419,23,158017800.8,192579318.0,1471730,293813117,109376209.4,cudaEventSynchronize

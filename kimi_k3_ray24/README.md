@@ -34,7 +34,7 @@ kimi_k3_ray24/
 
 ### Option A: Running a Live Demo (`quick_demo/`)
 If the 3 cluster nodes already exist in your GCP project and you want to power them on, monitor loading, and run live interactive completions:
-👉 **[Go to Quick Demo Guide](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/kimi_k3_ray24/quick_demo/README.md)** or follow **[Live Demo Runbook](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/kimi_k3_ray24/quick_demo/RUNBOOK.md)**.
+👉 **[Go to Quick Demo Guide](./kimi_k3_ray24/quick_demo/README.md)** or follow **[Live Demo Runbook](./kimi_k3_ray24/quick_demo/RUNBOOK.md)**.
 
 ```powershell
 cd quick_demo
@@ -49,7 +49,7 @@ cd quick_demo
 
 ### Option B: Deploying from Scratch (`from_scratch_replication/`)
 If you want to provision new VMs, format persistent disks, download the 1.45 TB model weights, configure the Ray cluster, and deploy vLLM:
-👉 **[Go to Replication Guide](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/kimi_k3_ray24/from_scratch_replication/README.md)** or follow **[End-to-End Replication Runbook](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/kimi_k3_ray24/from_scratch_replication/REPLICATION_RUNBOOK.md)**.
+👉 **[Go to Replication Guide](./kimi_k3_ray24/from_scratch_replication/README.md)** or follow **[End-to-End Replication Runbook](./kimi_k3_ray24/from_scratch_replication/REPLICATION_RUNBOOK.md)**.
 
 ```bash
 cd from_scratch_replication

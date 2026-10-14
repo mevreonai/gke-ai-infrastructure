@@ -1,6 +1,6 @@
 import os
 
-html_path = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v4\results\v4_interactive_dashboards.html"
+html_path = r".rtx_g4_smoke_v4\results\v4_interactive_dashboards.html"
 with open(html_path, "r", encoding="utf-8") as f:
     content = f.read()
 

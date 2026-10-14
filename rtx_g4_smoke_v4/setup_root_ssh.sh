@@ -2,8 +2,8 @@
 set -euo pipefail
 
 mkdir -p /root/.ssh
-cp /home/ayu23/.ssh/authorized_keys /root/.ssh/authorized_keys
-cp /home/ayu23/.ssh/id_ed25519 /root/.ssh/id_ed25519
+cp $HOME/.ssh/authorized_keys /root/.ssh/authorized_keys
+cp $HOME/.ssh/id_ed25519 /root/.ssh/id_ed25519
 chmod 700 /root/.ssh
 chmod 600 /root/.ssh/*
 

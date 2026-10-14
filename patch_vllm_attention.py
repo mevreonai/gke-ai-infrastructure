@@ -1,8 +1,8 @@
 import re, sys
 
 files = [
-    '/home/ayu23/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/model.py',
-    '/home/ayu23/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py'
+    '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/model.py',
+    '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py'
 ]
 
 for f in files:

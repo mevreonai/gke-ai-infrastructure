@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 
 def main():
-    p = Path("c:/Users/ayu23/OneDrive/Desktop/tpu/v9_full_result/final_validation/combined_vllm_runs.json")
+    p = Path("./v9_full_result/final_validation/combined_vllm_runs.json")
     runs = json.loads(p.read_text(encoding="utf-8"))
     
     print("=== SCALE-OUT tp8_pp2_dist BENCHMARKS ===")

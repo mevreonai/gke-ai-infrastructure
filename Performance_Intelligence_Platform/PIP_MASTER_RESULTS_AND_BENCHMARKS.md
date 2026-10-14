@@ -203,7 +203,7 @@ $$\text{Elapsed Time (ms)} \approx a + b \cdot (\text{generation\_requests}) + c
 
 ## 6. Wave, Stall & Pause Telemetry (Ground-Truth Fixtures)
 
-Empirically extracted using [`pip_waves.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_waves.py) and [`pip_scan.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_scan.py) from the platform's ground-truth fixtures:
+Empirically extracted using [`pip_waves.py`](./scripts/pip_waves.py) and [`pip_scan.py`](./scripts/pip_scan.py) from the platform's ground-truth fixtures:
 
 | Case / Fixture Identifier | Concurrency ($c$) | Lone Read $R$ (s) | First-Wave Spacing (`step_reads`) | First-Wave Mean Reads | Predicted Mean $(C+1)/2$ | Burst Share of Wait | Stalls Detected | Pause Detected |
 |:---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
@@ -330,7 +330,7 @@ The platform catalogs all official benchmark data hierarchically under `Performa
 
 ### 12.1 Moonshot AI Kimi-Linear 48B (`moonshotai_Kimi-Linear-48B-A3B-Instruct`)
 * **Architecture:** 27 layers, Hybrid Linear Attention + MoE (A3B).
-* **Canonical Artifacts:** [`data/results/moonshotai_Kimi-Linear-48B-A3B-Instruct/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/data/results/moonshotai_Kimi-Linear-48B-A3B-Instruct/)
+* **Canonical Artifacts:** [`data/results/moonshotai_Kimi-Linear-48B-A3B-Instruct/`](./data/results/moonshotai_Kimi-Linear-48B-A3B-Instruct)
   - `tp4_pp4_20g_20261011_214919/`: Complete 16-case raw empirical execution tree.
   - `tp4_pp4_20g_benchmark_results.json` & `.csv`: Consolidated 16-case metrics.
   - `FINAL_TP4_PP4_20G_BENCHMARK_REPORT.md`: Master 16-case analytical engineering report.
@@ -348,7 +348,7 @@ The platform catalogs all official benchmark data hierarchically under `Performa
   - **Mean TPOT:** **80.18 ms**
   - **Generation Throughput:** **12.28 tok/s**
   - **Total Throughput:** **110.51 tok/s**
-* **Canonical Artifacts:** [`data/results/deepseek-ai_DeepSeek-V4.1-Flash/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/data/results/deepseek-ai_DeepSeek-V4.1-Flash/)
+* **Canonical Artifacts:** [`data/results/deepseek-ai_DeepSeek-V4.1-Flash/`](./data/results/deepseek-ai_DeepSeek-V4.1-Flash)
   - `RUNBOOK.md`: Step-by-step reproducible commands, environment exports, health checks, and smoke/matrix instructions.
   - `smoke_test/smoke_test.json`: Machine-readable latency distributions and timings.
   - `smoke_test/bench_stdout.log`: Raw terminal stdout from `vllm bench serve`.

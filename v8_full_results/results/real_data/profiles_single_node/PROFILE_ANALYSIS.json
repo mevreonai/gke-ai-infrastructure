@@ -1,7 +1,7 @@
 {
   "profiles": {
     "tp4_prefill": {
-      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill",
+      "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_single_node/tp4_prefill",
       "kernel_csv_present": true,
       "nvtx_csv_present": true,
       "aggregate_gpu_work_ms": 0.0,
@@ -39,7 +39,7 @@
       "sqlite_present": true
     },
     "tp4_decode": {
-      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_decode",
+      "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_single_node/tp4_decode",
       "kernel_csv_present": true,
       "nvtx_csv_present": true,
       "aggregate_gpu_work_ms": 0.0,
@@ -77,7 +77,7 @@
       "sqlite_present": true
     },
     "tp4_batched_decode": {
-      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp4_batched_decode",
+      "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_single_node/tp4_batched_decode",
       "kernel_csv_present": true,
       "nvtx_csv_present": true,
       "aggregate_gpu_work_ms": 0.0,
@@ -115,7 +115,7 @@
       "sqlite_present": true
     },
     "tp8_prefill": {
-      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_prefill",
+      "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_single_node/tp8_prefill",
       "kernel_csv_present": true,
       "nvtx_csv_present": true,
       "aggregate_gpu_work_ms": 0.0,
@@ -153,7 +153,7 @@
       "sqlite_present": true
     },
     "tp8_decode": {
-      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode",
+      "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_single_node/tp8_decode",
       "kernel_csv_present": true,
       "nvtx_csv_present": true,
       "aggregate_gpu_work_ms": 0.0,
@@ -191,7 +191,7 @@
       "sqlite_present": true
     },
     "tp8_batched_decode": {
-      "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_batched_decode",
+      "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_single_node/tp8_batched_decode",
       "kernel_csv_present": true,
       "nvtx_csv_present": true,
       "aggregate_gpu_work_ms": 0.0,

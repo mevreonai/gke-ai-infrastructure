@@ -1,6 +1,6 @@
 import json, os, csv
 
-base_dir = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v4\results"
+base_dir = r".rtx_g4_smoke_v4\results"
 json_path = os.path.join(base_dir, "fresh_benchmark_suite", "master_benchmarks.json")
 
 with open(json_path, "r") as f:

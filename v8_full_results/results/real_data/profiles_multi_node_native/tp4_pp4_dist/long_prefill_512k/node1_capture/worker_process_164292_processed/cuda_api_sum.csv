@@ -1,9 +1,9 @@
 
-NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture/worker_process_164292.sqlite
-        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture/worker_process_164292.nsys-rep
+NOTICE: Existing SQLite export found: /home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture/worker_process_164292.sqlite
+        It is assumed file was previously exported from: /home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture/worker_process_164292.nsys-rep
         Consider using --force-export=true if needed.
 
-Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture/worker_process_164292.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+Processing [/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k/node1_capture/worker_process_164292.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
 Time (%),Total Time (ns),Num Calls,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
 83.3,5406584725,8341,648193.8,35110.0,1710,119497798,7211677.0,cudaMemcpyAsync
 4.2,272101555,40,6802538.9,81340.0,33640,226515186,36074799.7,cuModuleLoadData

@@ -1,7 +1,7 @@
 
 import re
 
-path = "/home/ayu23/vllm_env/lib/python3.12/site-packages/vllm/utils/deep_gemm.py"
+path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/utils/deep_gemm.py"
 with open(path, "r") as f:
     content = f.read()
 

@@ -1,7 +1,7 @@
 # V8 Characterization Dashboard: Visual & Analytical Transformation Specification
 
-**Target Document:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
-**Historical Blueprint Reference:** [`V8_DASHBOARD_VACANT_RUNS_AND_EXPANSION_PLAN.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_DASHBOARD_VACANT_RUNS_AND_EXPANSION_PLAN.md)  
+**Target Document:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](./dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
+**Historical Blueprint Reference:** [`V8_DASHBOARD_VACANT_RUNS_AND_EXPANSION_PLAN.md`](./V8_DASHBOARD_VACANT_RUNS_AND_EXPANSION_PLAN.md)  
 **Target Architecture:** Dual 8× NVIDIA RTX PRO 6000 Ada (16× GPUs, 960 GB VRAM), 100 Gbps Google Cloud Andromeda VPC  
 **Target Model:** `moonshotai/Kimi-Linear-48B-A3B-Instruct` (Git commit: `e1df551a447157d4658b573f9a695d57658590e9`)  
 **Scope Status:** Groups A, B, and Strategic Expansions (R1–R4) Included; Option C (DP=2 × TP8) Excluded  
@@ -17,7 +17,7 @@ The current Master Characterization Dashboard features 126 verified runs, but co
 4. **Disjointed Long-Context Curve:** Prompt lengths leap from $8\text{K} \to 128\text{K} \to 512\text{K} \to 1\text{M}$ with zero intermediate data points.
 5. **False Alarm Validator Flag:** A Windows backslash path separator in the audit script caused `nccl_policy_ok=false` in the Evidence drawer across all 12 distributed runs.
 
-This specification details the **exact visual, numerical, and structural changes** across every tab in [`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html).
+This specification details the **exact visual, numerical, and structural changes** across every tab in [`MASTER_CHARACTERIZATION_DASHBOARD.html`](./dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html).
 
 ---
 

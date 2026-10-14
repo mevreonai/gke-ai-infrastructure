@@ -1,44 +1,44 @@
 {
-  "root": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8",
+  "root": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8",
   "nsys_report_count": 2,
   "reports": [
     {
-      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611.nsys-rep",
+      "report": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611.nsys-rep",
       "size_bytes": 0,
       "exports": {
         "cuda_gpu_kern_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/cuda_gpu_kern_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/cuda_gpu_kern_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "cuda_api_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/cuda_api_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/cuda_api_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nvtx_pushpop_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nvtx_pushpop_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nvtx_pushpop_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nccl_gpu_proj_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nccl_gpu_proj_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nccl_gpu_proj_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nccl_gpu_time_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nccl_gpu_time_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nccl_gpu_time_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nccl_op_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nccl_op_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/nccl_op_sum.csv",
           "exists": true,
           "error_tail": null
         }
@@ -46,7 +46,7 @@
       "trace_role": "node0_or_local",
       "sqlite": {
         "rc": 1,
-        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/worker_process_1349611.sqlite",
+        "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349611_processed/worker_process_1349611.sqlite",
         "exists": false,
         "log": "Exportation error: Cannot read from stream.\n"
       },
@@ -57,42 +57,42 @@
       "warning": "aggregate_gpu_work_ms is summed GPU work across streams/devices, NOT wall-clock critical path"
     },
     {
-      "report": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641.nsys-rep",
+      "report": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641.nsys-rep",
       "size_bytes": 0,
       "exports": {
         "cuda_gpu_kern_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/cuda_gpu_kern_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/cuda_gpu_kern_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "cuda_api_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/cuda_api_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/cuda_api_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nvtx_pushpop_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nvtx_pushpop_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nvtx_pushpop_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nccl_gpu_proj_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nccl_gpu_proj_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nccl_gpu_proj_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nccl_gpu_time_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nccl_gpu_time_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nccl_gpu_time_sum.csv",
           "exists": true,
           "error_tail": null
         },
         "nccl_op_sum": {
           "rc": 0,
-          "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nccl_op_sum.csv",
+          "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/nccl_op_sum.csv",
           "exists": true,
           "error_tail": null
         }
@@ -100,7 +100,7 @@
       "trace_role": "node0_or_local",
       "sqlite": {
         "rc": 1,
-        "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/worker_process_1349641.sqlite",
+        "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/node0_capture/worker_process_1349641_processed/worker_process_1349641.sqlite",
         "exists": false,
         "log": "Exportation error: Cannot read from stream.\n"
       },
@@ -113,7 +113,7 @@
   ],
   "profile_manifests": [
     {
-      "path": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/workload/PROFILE_CASE_MANIFEST.json",
+      "path": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp16_pp1_dist/batched_decode_8k_c8/workload/PROFILE_CASE_MANIFEST.json",
       "topology": "tp16_pp1_dist",
       "mode": "batched_decode_8k_c8",
       "status": "COMPLETED",

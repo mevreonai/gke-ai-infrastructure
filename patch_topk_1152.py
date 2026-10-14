@@ -1,5 +1,5 @@
 
-cu_path = "/home/ayu23/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_decode_dsv4.cu"
+cu_path = "/home/user/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_decode_dsv4.cu"
 with open(cu_path, "r") as f:
     cu = f.read()
 
@@ -14,7 +14,7 @@ with open(cu_path, "w") as f:
     f.write(cu)
 print("SUCCESS: Updated sparse_mla_sm120_decode_dsv4.cu with TOPK=1152!")
 
-py_path = "/home/ayu23/vllm_env/lib64/python3.12/site-packages/flashinfer/mla/_sparse_mla_sm120.py"
+py_path = "/home/user/vllm_env/lib64/python3.12/site-packages/flashinfer/mla/_sparse_mla_sm120.py"
 with open(py_path, "r") as f:
     py = f.read()
 

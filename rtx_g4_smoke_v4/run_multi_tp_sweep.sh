@@ -10,10 +10,10 @@ echo "Collectives: AllReduce, AllGather, ReduceScatter"
 echo "Buffer sizes: 8 KiB to 256 MiB (-b 8K -e 256M -f 2)"
 echo "================================================================"
 
-BASE_DIR="/home/ayu23/rtx_g4_smoke/fresh_benchmark_suite"
+BASE_DIR="$HOME/rtx_g4_smoke/fresh_benchmark_suite"
 mkdir -p "$BASE_DIR/allreduce" "$BASE_DIR/allgather" "$BASE_DIR/reducescatter"
 
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE1_IP="10.128.0.40"
 IFACE="ens3"
 
@@ -21,19 +21,19 @@ IFACE="ens3"
 cat << 'EOF' > /tmp/all_reduce_perf_docker
 #!/bin/bash
 LOCAL_RANK=${OMPI_COMM_WORLD_LOCAL_RANK:-0}
-exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
 EOF
 
 cat << 'EOF' > /tmp/all_gather_perf_docker
 #!/bin/bash
 LOCAL_RANK=${OMPI_COMM_WORLD_LOCAL_RANK:-0}
-exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
 EOF
 
 cat << 'EOF' > /tmp/reduce_scatter_perf_docker
 #!/bin/bash
 LOCAL_RANK=${OMPI_COMM_WORLD_LOCAL_RANK:-0}
-exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
 EOF
 
 chmod +x /tmp/all_reduce_perf_docker /tmp/all_gather_perf_docker /tmp/reduce_scatter_perf_docker

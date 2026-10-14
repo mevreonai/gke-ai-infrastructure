@@ -7,7 +7,7 @@ export LIBRARY_PATH=/usr/local/cuda/lib64:${LIBRARY_PATH:-}
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:${LD_LIBRARY_PATH:-}
 
 source /etc/profile.d/cuda.sh 2>/dev/null || true
-source /home/ayu23/vllm_env/bin/activate
+source $HOME/vllm_env/bin/activate
 
 echo "=== Starting Clean Live Token Smoke Test with --block-size 128 ==="
 

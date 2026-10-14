@@ -87,16 +87,16 @@ Tested across 2 nodes (16 GPUs total) at 128K context:
 ## 3. Deliverables & Access Links
 
 1. **All-in-One Packaged ZIP**:
-   - File: [`V6_BENCHMARK_RESULTS_AND_LOGS.zip`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V6_BENCHMARK_RESULTS_AND_LOGS.zip)
+   - File: [`V6_BENCHMARK_RESULTS_AND_LOGS.zip`](./V6_BENCHMARK_RESULTS_AND_LOGS.zip)
    - Size: **11.59 MB** (compressed from ~147 MB of raw logs).
    - Contains: All CSVs, markdown summaries, raw single-node logs, distributed Ray logs, scripts, and the full interactive dashboard.
 
 2. **Master Interactive Audit Dashboard**:
-   - File: [`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/MASTER_CHARACTERIZATION_DASHBOARD.html)
+   - File: [`MASTER_CHARACTERIZATION_DASHBOARD.html`](./MASTER_CHARACTERIZATION_DASHBOARD.html)
    - Description: Comprehensive 7-tab dashboard (Executive, Scale-Up, Scale-Out, Long Context, Scheduler & KV, Profiler, Evidence) with verified point-to-row provenance.
 
 3. **Core Summary Files**:
-   - Single-Node CSV: [`rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/vllm_runs.csv`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/vllm_runs.csv)
-   - Single-Node Summary: [`rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/VLLM_SUMMARY.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/VLLM_SUMMARY.md)
-   - Multi-Node Summary: [`rtx_g4_smoke_v5/02_v6_production_suite/multi_node_distributed/summary/MULTI_NODE_SUMMARY.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/rtx_g4_smoke_v5/02_v6_production_suite/multi_node_distributed/summary/MULTI_NODE_SUMMARY.md)
-   - Serving Analysis: [`rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/SERVING_ANALYSIS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/SERVING_ANALYSIS.md)
+   - Single-Node CSV: [`rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/vllm_runs.csv`](./rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/vllm_runs.csv)
+   - Single-Node Summary: [`rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/VLLM_SUMMARY.md`](./rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/VLLM_SUMMARY.md)
+   - Multi-Node Summary: [`rtx_g4_smoke_v5/02_v6_production_suite/multi_node_distributed/summary/MULTI_NODE_SUMMARY.md`](./rtx_g4_smoke_v5/02_v6_production_suite/multi_node_distributed/summary/MULTI_NODE_SUMMARY.md)
+   - Serving Analysis: [`rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/SERVING_ANALYSIS.md`](./rtx_g4_smoke_v5/02_v6_production_suite/single_node_matrix/summary/SERVING_ANALYSIS.md)

@@ -1,9 +1,9 @@
 
-NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.sqlite
-        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.nsys-rep
+NOTICE: Existing SQLite export found: /home/user/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.sqlite
+        It is assumed file was previously exported from: /home/user/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.nsys-rep
         Consider using --force-export=true if needed.
 
-Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+Processing [/home/user/v8_full_results/20260921_195656/profiles_single_node/tp8_decode/vllm_profile.1.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
 Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
 89.1,100594958952,225280,446533.0,439744.0,22432,31727180,280136.0,ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage<(unsigned long)4096>)
 2.6,2936570896,212992,13787.2,15104.0,8608,747072,27779.8,fused_moe_kernel

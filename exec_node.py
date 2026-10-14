@@ -6,7 +6,7 @@ def run_on_node(node, script_text, as_python=False):
     b64 = base64.b64encode(script_text.encode('utf-8')).decode('ascii')
     interpreter = "python3" if as_python else "bash"
     remote_cmd = f"echo {b64} | base64 -d | {interpreter}"
-    full_cmd = f'gcloud compute ssh ayu23@{node} --zone=us-central1-b --tunnel-through-iap --command="{remote_cmd}"'
+    full_cmd = f'gcloud compute ssh {node} --zone=us-central1-b --tunnel-through-iap --command="{remote_cmd}"'
     res = subprocess.run(full_cmd, shell=True, capture_output=True, text=True, timeout=600)
     return res.returncode, res.stdout, res.stderr
 

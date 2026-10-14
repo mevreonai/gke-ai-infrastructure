@@ -5,7 +5,7 @@
   "evidence_class": "MEASURED-48B-STAGE2-RERUN",
   "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
   "started": 1791579042.48773,
-  "source_cases": "/home/ayu23/v8_additional_runs_suite/stage2_cases_single_node.json",
+  "source_cases": "/home/user/v8_additional_runs_suite/stage2_cases_single_node.json",
   "environment": {
     "time": 1791579042.4878612,
     "host": "kimi-node-0",
@@ -13,7 +13,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -39,7 +39,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -81,7 +81,7 @@
       "prefix_caching": false,
       "observability_profile": "full",
       "server_command": [
-        "/home/ayu23/vllm_env/bin/vllm",
+        "/home/user/vllm_env/bin/vllm",
         "serve",
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",

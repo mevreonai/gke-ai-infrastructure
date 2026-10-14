@@ -3,7 +3,7 @@
   "hostname": "kimi-node-1",
   "platform": "Linux-6.12.0-211.54.1+2.2.el10_2_ciq.x86_64-x86_64-with-glibc2.39",
   "python": "3.12.14 (main, Aug 13 2026, 00:00:00) [GCC 14.3.1 20251022 (Red Hat 14.3.1-4)]",
-  "vllm_path": "/home/ayu23/vllm_env/bin/vllm",
+  "vllm_path": "/home/user/vllm_env/bin/vllm",
   "vllm_version_output": {
     "rc": 0,
     "out": "0.29.0\n"
@@ -74,7 +74,7 @@
     "--profile": true,
     "--goodput": true
   },
-  "ray_path": "/home/ayu23/vllm_env/bin/ray",
+  "ray_path": "/home/user/vllm_env/bin/ray",
   "nsys_path": "/usr/local/bin/nsys",
   "required_missing": [],
   "env_subset": {}

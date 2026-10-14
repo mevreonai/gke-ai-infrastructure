@@ -37,9 +37,9 @@ rm -rf /tmp/tp8_torch_prefill_out
 mkdir -p /tmp/tp8_torch_prefill_out
 
 echo "Executing profile_case.py for prefill_128k..."
-/home/ayu23/vllm_env/bin/python3 /home/ayu23/V9_FULL/v9_core/profile_case.py \
-  --model-profile /home/ayu23/v9_full_results/v9_full_production_20260930_143117/logs/MODEL_PROFILE.json \
-  --cluster /home/ayu23/v9_full_results/v9_full_production_20260930_143117/logs/CLUSTER_CONFIG.json \
+/home/user/vllm_env/bin/python3 /home/user/V9_FULL/v9_core/profile_case.py \
+  --model-profile /home/user/v9_full_results/v9_full_production_20260930_143117/logs/MODEL_PROFILE.json \
+  --cluster /home/user/v9_full_results/v9_full_production_20260930_143117/logs/CLUSTER_CONFIG.json \
   --spec-json /tmp/test_tp8_torch_prefill_spec.json \
   --out /tmp/tp8_torch_prefill_out \
   --port 8401 \

@@ -7,11 +7,11 @@ echo "Payload sizes: 16M, 64M, 128M, 256M"
 echo "Network rates: 175G (Native), 100G, 50G, 20G, 10G"
 echo "================================================================="
 
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE0="10.128.0.39"
 NODE1="10.128.0.40"
 IFACE="ens3"
-BIN="/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf"
+BIN="$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf"
 OUT_DIR="/tmp/quick_compare"
 mkdir -p "$OUT_DIR"
 

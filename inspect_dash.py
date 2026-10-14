@@ -1,6 +1,6 @@
 import re
 
-html_path = r'c:\Users\ayu23\OneDrive\Desktop\tpu\v9_runs\dashboard\MASTER_CHARACTERIZATION_DASHBOARD_V9.html'
+html_path = r'.v9_runs\dashboard\MASTER_CHARACTERIZATION_DASHBOARD_V9.html'
 with open(html_path, 'r', encoding='utf-8') as f:
     text = f.read()
 

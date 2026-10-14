@@ -71,7 +71,7 @@ inference_gateway/
 ### 1. Launch Everything (1-Click)
 Open PowerShell in this folder and run:
 ```powershell
-cd c:\Users\ayu23\OneDrive\Desktop\tpu\inference_gateway
+cd .inference_gateway
 .\run.ps1
 ```
 

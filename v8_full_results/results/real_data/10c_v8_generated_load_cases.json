@@ -13,7 +13,7 @@
     "observability_profile": "full",
     "metrics_interval_s": 0.5
   },
-  "generated_from_summary": "/home/ayu23/v8_full_results/20260921_195656/vllm_single_node_v6_matrix/summary_v8full/vllm_runs.json",
+  "generated_from_summary": "/home/user/v8_full_results/20260921_195656/vllm_single_node_v6_matrix/summary_v8full/vllm_runs.json",
   "cases": [
     {
       "name": "tp4_openloop_8192",

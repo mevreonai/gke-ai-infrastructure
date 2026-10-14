@@ -1,6 +1,6 @@
 import os, json, re
 
-base_dir = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v4\results"
+base_dir = r".rtx_g4_smoke_v4\results"
 json_path = os.path.join(base_dir, "master_benchmarks_all_collectives.json")
 html_path = os.path.join(base_dir, "v4_interactive_dashboards.html")
 

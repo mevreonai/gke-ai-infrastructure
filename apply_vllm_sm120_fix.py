@@ -2,7 +2,7 @@ import re
 import sys
 
 def patch_sparse_mla():
-    path = "/home/ayu23/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/sparse_mla.py"
+    path = "/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/sparse_mla.py"
     with open(path, "r") as f:
         content = f.read()
 
@@ -22,7 +22,7 @@ def patch_sparse_mla():
     return True
 
 def patch_indexer():
-    path = "/home/ayu23/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/indexer.py"
+    path = "/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/indexer.py"
     with open(path, "r") as f:
         content = f.read()
 
@@ -55,7 +55,7 @@ def patch_indexer():
     return True
 
 def patch_flashinfer_sparse():
-    path = "/home/ayu23/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/flashinfer_sparse.py"
+    path = "/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/flashinfer_sparse.py"
     with open(path, "r") as f:
         content = f.read()
 

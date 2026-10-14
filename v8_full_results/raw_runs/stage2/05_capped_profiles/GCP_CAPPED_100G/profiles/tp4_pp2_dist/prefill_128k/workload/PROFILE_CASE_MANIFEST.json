@@ -22,7 +22,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -48,7 +48,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -72,7 +72,7 @@
     }
   },
   "server_command": [
-    "/home/ayu23/vllm_env/bin/vllm",
+    "/home/user/vllm_env/bin/vllm",
     "serve",
     "moonshotai/Kimi-Linear-48B-A3B-Instruct",
     "--model-impl",

@@ -38,6 +38,6 @@ This directory is the **canonical, production-grade repository** for the V6 vLLM
 ---
 
 ## Key References
-- **Interactive Characterization Dashboard**: [`c:/Users/ayu23/OneDrive/Desktop/tpu/MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/MASTER_CHARACTERIZATION_DASHBOARD.html)
-- **All-in-One Downloadable ZIP Archive**: [`c:/Users/ayu23/OneDrive/Desktop/tpu/V6_BENCHMARK_RESULTS_AND_LOGS.zip`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V6_BENCHMARK_RESULTS_AND_LOGS.zip)
-- **Master Index & Stakeholder Guide**: [`c:/Users/ayu23/OneDrive/Desktop/tpu/V6_MASTER_RESULTS_INDEX.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V6_MASTER_RESULTS_INDEX.md)
+- **Interactive Characterization Dashboard**: [`./MASTER_CHARACTERIZATION_DASHBOARD.html`](./MASTER_CHARACTERIZATION_DASHBOARD.html)
+- **All-in-One Downloadable ZIP Archive**: [`./V6_BENCHMARK_RESULTS_AND_LOGS.zip`](./V6_BENCHMARK_RESULTS_AND_LOGS.zip)
+- **Master Index & Stakeholder Guide**: [`./V6_MASTER_RESULTS_INDEX.md`](./V6_MASTER_RESULTS_INDEX.md)

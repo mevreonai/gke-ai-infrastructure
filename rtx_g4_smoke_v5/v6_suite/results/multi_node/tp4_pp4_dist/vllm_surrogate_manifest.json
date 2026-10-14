@@ -13,7 +13,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -39,7 +39,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -76,7 +76,7 @@
       "max_num_seqs": 8,
       "kv_cache_dtype": "auto",
       "server_command": [
-        "/home/ayu23/vllm_env/bin/vllm",
+        "/home/user/vllm_env/bin/vllm",
         "serve",
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",
@@ -126,7 +126,7 @@
           "warmups": 1,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -164,14 +164,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/128k_c1",
+            "/home/user/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/128k_c1",
             "--result-filename",
             "128k_c1.json"
           ],
           "start": 1789855343.8861632,
           "end": 1789855361.7594638,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/128k_c1/128k_c1.json",
+          "result_json": "/home/user/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/128k_c1/128k_c1.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "peak_kv_usage": 0.0036512751376249764,
@@ -198,7 +198,7 @@
           "warmups": 0,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -236,14 +236,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/512k_c1",
+            "/home/user/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/512k_c1",
             "--result-filename",
             "512k_c1.json"
           ],
           "start": 1789855365.2685008,
           "end": 1789855397.661495,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/512k_c1/512k_c1.json",
+          "result_json": "/home/user/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/tp4_pp4_dist/tp4_pp4_dist/512k_c1/512k_c1.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "peak_kv_usage": 0.014436580159532642,

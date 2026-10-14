@@ -1,9 +1,9 @@
 
-NOTICE: Existing SQLite export found: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture/worker_process_191106.sqlite
-        It is assumed file was previously exported from: /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture/worker_process_191106.nsys-rep
+NOTICE: Existing SQLite export found: /home/user/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture/worker_process_191106.sqlite
+        It is assumed file was previously exported from: /home/user/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture/worker_process_191106.nsys-rep
         Consider using --force-export=true if needed.
 
-Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture/worker_process_191106.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
+Processing [/home/user/v8_full_results/20260921_195656/profiles_multi_node_capped/GCP_CAPPED_100G/profiles/tp4_pp4_dist/prefill_128k/node1_capture/worker_process_191106.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_api_sum.py]... 
 Time (%),Total Time (ns),Num Calls,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
 51.4,1208589328,6469,186827.8,70290.0,2160,64916359,2717081.1,cudaMemcpyAsync
 10.3,241666127,40,6041653.2,99710.0,37620,202490387,32309190.1,cuModuleLoadData

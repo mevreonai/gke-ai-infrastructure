@@ -18,15 +18,15 @@
   "network_smoke": {
     "NETWORK_NATIVE": {
       "present": true,
-      "path": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/hardware_raw/network_node0/NETWORK_NATIVE/NETWORK_VALIDATION.json"
+      "path": "/home/user/v9_full_results/v9_full_production_20260930_143117/hardware_raw/network_node0/NETWORK_NATIVE/NETWORK_VALIDATION.json"
     },
     "NETWORK_CAPPED_100G": {
       "present": true,
-      "path": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/hardware_raw/network_node0/NETWORK_CAPPED_100G/NETWORK_VALIDATION.json"
+      "path": "/home/user/v9_full_results/v9_full_production_20260930_143117/hardware_raw/network_node0/NETWORK_CAPPED_100G/NETWORK_VALIDATION.json"
     },
     "NETWORK_CAPPED_20G": {
       "present": true,
-      "path": "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/hardware_raw/network_node0/NETWORK_CAPPED_20G/NETWORK_VALIDATION.json"
+      "path": "/home/user/v9_full_results/v9_full_production_20260930_143117/hardware_raw/network_node0/NETWORK_CAPPED_20G/NETWORK_VALIDATION.json"
     }
   },
   "network_smoke_complete": true,

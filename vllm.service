@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=ayu23
+User=vllm
 WorkingDirectory=/data/models/deepseek-v4.1-flash/inference
 ExecStart=/usr/local/bin/start-vllm.sh
 ExecStop=/usr/bin/pkill -f api_server.py

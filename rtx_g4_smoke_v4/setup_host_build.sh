@@ -13,7 +13,7 @@ echo "=== NVVM contents ==="
 ls -la /opt/cuda-13.0/nvvm/bin/
 
 echo "=== Building nccl-tests with MPI on Host ==="
-cd /home/ayu23/rtx_g4_smoke/nccl-tests
+cd $HOME/rtx_g4_smoke/nccl-tests
 make clean
 make -j$(nproc) \
   CUDA_HOME=/opt/cuda-13.0 \

@@ -14,13 +14,13 @@ The platform provides mathematically verified, reproducible ground truth regardi
 
 | Manual / Guide | File Link | Focus Area & Description |
 |:---|:---|:---|
-| **Run Coverage Matrix** | [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md) | **Comprehensive coverage reference:** All 20 steps, 4 run profiles, profiling tools, concurrency grid ($c=1..64$), context lengths ($1K..1M$), cold/warm cache isolation methodology. |
-| **Master Results & Benchmarks Compendium** | [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md) | **Exhaustive empirical results:** TTFT, TPOT, throughput, continuous batching blocks 1–7, step-cost linear fits, wave & stall telemetry, 1M context limits, and NUMA deltas. |
-| **Scripts & Configuration Guide** | [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md) | **Script-by-script operations:** How to configure `RUN_CONFIG.env` or CLI flags, select specific topologies/stages, and what exact files and metrics are written. |
-| **Operations Runbook (New VM Setup)** | [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md) | Step-by-step instructions from taking a fresh GCP VM, installing CUDA/PyTorch/vLLM, running the smoke test, and executing benchmarks. |
-| **Setup & Operations Manual** | [`README_SETUP_AND_OPERATIONS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_SETUP_AND_OPERATIONS.md) | Exhaustive systems operations: host specs, NUMA pinning, Ray cluster orchestration, 100G VPC traffic control, and troubleshooting. |
-| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 20-step characterization matrix. |
-| **Execution Scripts Guide** | [`scripts/README.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/README.md) | Command-line options, flag syntax, environment variables, and module documentation. |
+| **Run Coverage Matrix** | [`RUN_COVERAGE.md`](./RUN_COVERAGE.md) | **Comprehensive coverage reference:** All 20 steps, 4 run profiles, profiling tools, concurrency grid ($c=1..64$), context lengths ($1K..1M$), cold/warm cache isolation methodology. |
+| **Master Results & Benchmarks Compendium** | [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](./PIP_MASTER_RESULTS_AND_BENCHMARKS.md) | **Exhaustive empirical results:** TTFT, TPOT, throughput, continuous batching blocks 1–7, step-cost linear fits, wave & stall telemetry, 1M context limits, and NUMA deltas. |
+| **Scripts & Configuration Guide** | [`SCRIPTS_AND_RESULTS_GUIDE.md`](./SCRIPTS_AND_RESULTS_GUIDE.md) | **Script-by-script operations:** How to configure `RUN_CONFIG.env` or CLI flags, select specific topologies/stages, and what exact files and metrics are written. |
+| **Operations Runbook (New VM Setup)** | [`RUNBOOK_NEW_VM_SETUP.md`](./RUNBOOK_NEW_VM_SETUP.md) | Step-by-step instructions from taking a fresh GCP VM, installing CUDA/PyTorch/vLLM, running the smoke test, and executing benchmarks. |
+| **Setup & Operations Manual** | [`README_SETUP_AND_OPERATIONS.md`](./README_SETUP_AND_OPERATIONS.md) | Exhaustive systems operations: host specs, NUMA pinning, Ray cluster orchestration, 100G VPC traffic control, and troubleshooting. |
+| **Architecture & File Anatomy** | [`README_FILES_AND_ARCHITECTURE.md`](./README_FILES_AND_ARCHITECTURE.md) | Script anatomy, declarative JSON schemas, empirical telemetry data dictionary, and 20-step characterization matrix. |
+| **Execution Scripts Guide** | [`scripts/README.md`](./scripts/README.md) | Command-line options, flag syntax, environment variables, and module documentation. |
 
 ---
 

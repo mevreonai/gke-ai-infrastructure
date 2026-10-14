@@ -5,7 +5,7 @@
   "evidence_class": "MEASURED-48B-STAGE1",
   "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
   "started": 1791557090.3922515,
-  "source_cases": "/home/ayu23/v8_additional_runs_suite/stage1_cases.json",
+  "source_cases": "/home/user/v8_additional_runs_suite/stage1_cases.json",
   "environment": {
     "time": 1791557090.392355,
     "host": "kimi-node-0",
@@ -13,7 +13,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -39,7 +39,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -85,7 +85,7 @@
       "prefix_caching": false,
       "observability_profile": "full",
       "server_command": [
-        "/home/ayu23/vllm_env/bin/vllm",
+        "/home/user/vllm_env/bin/vllm",
         "serve",
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",
@@ -133,7 +133,7 @@
           "warmups": 2,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -171,7 +171,7 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4",
+            "/home/user/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4",
             "--result-filename",
             "8k_c4.json",
             "--metadata",
@@ -182,8 +182,8 @@
           "start": 1791557251.4747381,
           "end": 1791557281.948265,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/8k_c4.json",
-          "stdout": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/bench_stdout.log",
+          "result_json": "/home/user/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/8k_c4.json",
+          "stdout": "/home/user/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c4/bench_stdout.log",
           "warmup_separate": true,
           "request_rate": "inf",
           "burstiness": null,
@@ -212,7 +212,7 @@
           "warmups": 2,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -250,7 +250,7 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32",
+            "/home/user/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32",
             "--result-filename",
             "8k_c32.json",
             "--metadata",
@@ -261,8 +261,8 @@
           "start": 1791557296.1320512,
           "end": 1791557352.6154056,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/8k_c32.json",
-          "stdout": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/bench_stdout.log",
+          "result_json": "/home/user/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/8k_c32.json",
+          "stdout": "/home/user/v8_additional_runs/20261009_104123/stage1/01_chunk_budget_ab/fix/tp4_8k_chunk_fix_8448/8k_c32/bench_stdout.log",
           "warmup_separate": true,
           "request_rate": "inf",
           "burstiness": null,

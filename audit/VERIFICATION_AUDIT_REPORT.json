@@ -159,13 +159,13 @@
       "category": "Tools S8.1",
       "name": "tools/compile_canonical_data.py exists and is syntactically valid",
       "status": "PASS",
-      "details": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\compile_canonical_data.py"
+      "details": "C:\\Users\\user\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\compile_canonical_data.py"
     },
     {
       "category": "Tools S8.2",
       "name": "tools/run_v1_4_verification.py exists and is syntactically valid",
       "status": "PASS",
-      "details": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\run_v1_4_verification.py"
+      "details": "C:\\Users\\user\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\run_v1_4_verification.py"
     },
     {
       "category": "Integrity S9.1",

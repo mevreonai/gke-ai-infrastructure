@@ -2,10 +2,10 @@
   "schema_version": 1,
   "provider": "local",
   "head_index": 0,
-  "ssh_key": "/home/ayu23/.ssh/id_rsa",
-  "ssh_user": "ayu23",
-  "venv_dir": "/home/ayu23/vllm_env",
-  "bench_root": "/home/ayu23/v9_bench",
+  "ssh_key": "/home/user/.ssh/id_rsa",
+  "ssh_user": "user",
+  "venv_dir": "/home/user/vllm_env",
+  "bench_root": "/home/user/v9_bench",
   "expected_gpu_name_contains": "RTX",
   "nodes": [
     {

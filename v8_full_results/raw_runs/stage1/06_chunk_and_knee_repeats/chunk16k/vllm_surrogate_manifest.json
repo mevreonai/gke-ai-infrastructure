@@ -5,7 +5,7 @@
   "evidence_class": "MEASURED-48B-STAGE1",
   "guardrail": "Absolute latency/tokens-per-second from this 48B BF16 surrogate must not be scaled to Kimi K3.",
   "started": 1791560402.3218942,
-  "source_cases": "/home/ayu23/v8_additional_runs_suite/stage1_cases.json",
+  "source_cases": "/home/user/v8_additional_runs_suite/stage1_cases.json",
   "environment": {
     "time": 1791560402.322004,
     "host": "kimi-node-0",
@@ -13,7 +13,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -39,7 +39,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -86,7 +86,7 @@
       "prefix_caching": false,
       "observability_profile": "full",
       "server_command": [
-        "/home/ayu23/vllm_env/bin/vllm",
+        "/home/user/vllm_env/bin/vllm",
         "serve",
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",
@@ -134,7 +134,7 @@
           "warmups": 1,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -172,7 +172,7 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c1",
+            "/home/user/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c1",
             "--result-filename",
             "128k_c1.json",
             "--metadata",
@@ -183,8 +183,8 @@
           "start": 1791560576.4627838,
           "end": 1791560607.3329005,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c1/128k_c1.json",
-          "stdout": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c1/bench_stdout.log",
+          "result_json": "/home/user/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c1/128k_c1.json",
+          "stdout": "/home/user/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c1/bench_stdout.log",
           "warmup_separate": true,
           "request_rate": "inf",
           "burstiness": null,
@@ -213,7 +213,7 @@
           "warmups": 1,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -251,7 +251,7 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c4",
+            "/home/user/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c4",
             "--result-filename",
             "128k_c4.json",
             "--metadata",
@@ -262,8 +262,8 @@
           "start": 1791560625.0617034,
           "end": 1791560694.8653471,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c4/128k_c4.json",
-          "stdout": "/home/ayu23/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c4/bench_stdout.log",
+          "result_json": "/home/user/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c4/128k_c4.json",
+          "stdout": "/home/user/v8_additional_runs/20261009_104123/stage1/06_chunk_and_knee_repeats/chunk16k/tp4_128k_chunk_sensitivity/128k_c4/bench_stdout.log",
           "warmup_separate": true,
           "request_rate": "inf",
           "burstiness": null,

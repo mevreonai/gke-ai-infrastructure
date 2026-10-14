@@ -2,8 +2,8 @@
 
 **Document Version:** 1.1 (Deeply Expanded Edition)  
 **Target Release:** V8 Suite & Performance Intelligence Platform  
-**Target File Reference:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
-**Historical Blueprint Reference:** [`V8_Gaps_and_Rerun_Plan_v1.3.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_Gaps_and_Rerun_Plan_v1.3.md)  
+**Target File Reference:** [`MASTER_CHARACTERIZATION_DASHBOARD.html`](./dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
+**Historical Blueprint Reference:** [`V8_Gaps_and_Rerun_Plan_v1.3.md`](./V8_Gaps_and_Rerun_Plan_v1.3.md)  
 **Hardware Topology:** Dual 8× NVIDIA RTX PRO 6000 Ada (16× GPUs total, 960 GB VRAM), 100 Gbps Google Cloud Andromeda VPC  
 **Target Model:** `moonshotai/Kimi-Linear-48B-A3B-Instruct` (Git commit: `e1df551a447157d4658b573f9a695d57658590e9`)  
 **Author:** Deep Infrastructure & Systems Performance Team  
@@ -157,13 +157,13 @@ This section provides comprehensive technical derivations, root causes, executio
   1. Ray worker processes on Node 1 exited immediately upon client completion before the Nsight background daemon completed writing the final buffer to disk.
   2. Ray helper worker ranks produced 0-byte `.nsys-rep` stubs that caused batch postprocessing scripts to error out.
 * **Remediation Specification:**
-  1. Apply the flush synchronization daemon implemented in [`18_run_vllm_multi_node_profiles.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/18_run_vllm_multi_node_profiles.sh):
+  1. Apply the flush synchronization daemon implemented in [`18_run_vllm_multi_node_profiles.sh`](./scripts/06_deep_kernel_and_torch_profiling/18_run_vllm_multi_node_profiles.sh):
      ```bash
      # Wait until Nsys process terminates and buffer stabilizes
      wait_nsys_local "$NODE0_SESSION/logs/nsight"
      wait_nsys_remote "$NODE1_SESSION/logs/nsight"
      ```
-  2. Purge all 0-byte `.nsys-rep` stubs before running [`19_postprocess_nsys.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/19_postprocess_nsys.py).
+  2. Purge all 0-byte `.nsys-rep` stubs before running [`19_postprocess_nsys.py`](./scripts/06_deep_kernel_and_torch_profiling/19_postprocess_nsys.py).
   3. Re-run single ($c=1$) and batched ($c=8$) decode across all four distributed layouts.
 * **Target Insight Delivered:**
   * Directly measures the physical **P2P activation transfer** between Node 0 and Node 1 in PP2 and PP4.

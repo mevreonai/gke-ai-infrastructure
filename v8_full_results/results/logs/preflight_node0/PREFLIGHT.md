@@ -3,7 +3,7 @@
 - Host: `kimi-node-0`
 - vLLM: `0.29.0`
 - Required flags missing: `none`
-- Ray: `/home/ayu23/vllm_env/bin/ray`
+- Ray: `/home/user/vllm_env/bin/ray`
 - Nsight Systems: `/usr/local/bin/nsys`
 
 ## GPU inventory

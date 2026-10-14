@@ -15,7 +15,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -41,7 +41,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -89,7 +89,7 @@
       "network_mode": "20g",
       "nccl_transport_provenance": "GCP_NCCL_SOCKET_NET_PLUGIN_DISABLED",
       "server_command": [
-        "/home/ayu23/vllm_env/bin/vllm",
+        "/home/user/vllm_env/bin/vllm",
         "serve",
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",
@@ -139,7 +139,7 @@
           "warmups": 0,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -177,14 +177,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/128k_c1",
+            "/home/user/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/128k_c1",
             "--result-filename",
             "128k_c1.json"
           ],
           "start": 1790050485.6730871,
           "end": 1790050591.100063,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/128k_c1/128k_c1.json",
+          "result_json": "/home/user/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/128k_c1/128k_c1.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "gate_applied": false,
@@ -218,7 +218,7 @@
           },
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -256,14 +256,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/512k_c1",
+            "/home/user/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/512k_c1",
             "--result-filename",
             "512k_c1.json"
           ],
           "start": 1790050594.6684709,
           "end": 1790050733.5052915,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/512k_c1/512k_c1.json",
+          "result_json": "/home/user/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/512k_c1/512k_c1.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "gate_applied": true,
@@ -297,7 +297,7 @@
           },
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -335,14 +335,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/1m_c1",
+            "/home/user/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/1m_c1",
             "--result-filename",
             "1m_c1.json"
           ],
           "start": 1790050737.0853655,
           "end": 1790051006.6019065,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/1m_c1/1m_c1.json",
+          "result_json": "/home/user/v8_full_results/20260921_195656/vllm_scaleout_network_matrix/GCP_CAPPED_20G/results/tp16_pp1_dist/tp16_pp1_dist/1m_c1/1m_c1.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "gate_applied": true,

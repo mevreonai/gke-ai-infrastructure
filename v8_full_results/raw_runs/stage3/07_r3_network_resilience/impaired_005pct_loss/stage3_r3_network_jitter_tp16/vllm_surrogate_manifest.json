@@ -15,7 +15,7 @@
     "commands": {
       "vllm_version": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/vllm",
+          "/home/user/vllm_env/bin/vllm",
           "--version"
         ],
         "rc": 0,
@@ -41,7 +41,7 @@
       },
       "python_packages": {
         "cmd": [
-          "/home/ayu23/vllm_env/bin/python3",
+          "/home/user/vllm_env/bin/python3",
           "-m",
           "pip",
           "freeze"
@@ -96,7 +96,7 @@
       "nccl_transport_provenance": "UNSPECIFIED",
       "pp_layer_partition": "default_14_13",
       "server_command": [
-        "/home/ayu23/vllm_env/bin/vllm",
+        "/home/user/vllm_env/bin/vllm",
         "serve",
         "moonshotai/Kimi-Linear-48B-A3B-Instruct",
         "--model-impl",
@@ -146,7 +146,7 @@
           "warmups": 1,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -184,14 +184,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience",
+            "/home/user/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience",
             "--result-filename",
             "128k_c1_tp16_resilience.json"
           ],
           "start": 1791553053.1859846,
           "end": 1791553247.9086626,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience/128k_c1_tp16_resilience.json",
+          "result_json": "/home/user/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c1_tp16_resilience/128k_c1_tp16_resilience.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "gate_applied": false,
@@ -220,7 +220,7 @@
           "warmups": 1,
           "status": "COMPLETED",
           "command": [
-            "/home/ayu23/vllm_env/bin/vllm",
+            "/home/user/vllm_env/bin/vllm",
             "bench",
             "serve",
             "--backend",
@@ -258,14 +258,14 @@
             "--save-result",
             "--save-detailed",
             "--result-dir",
-            "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience",
+            "/home/user/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience",
             "--result-filename",
             "128k_c4_tp16_resilience.json"
           ],
           "start": 1791553329.6595592,
           "end": 1791553803.4412951,
           "exit_code": 0,
-          "result_json": "/home/ayu23/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience/128k_c4_tp16_resilience.json",
+          "result_json": "/home/user/v8_additional_runs/20261009_104123/stage3/07_r3_network_resilience/impaired_005pct_loss/stage3_r3_network_jitter_tp16/stage3_r3_network_jitter_tp16/128k_c4_tp16_resilience/128k_c4_tp16_resilience.json",
           "remote_sampler_error": null,
           "warmup_separate": true,
           "gate_applied": false,

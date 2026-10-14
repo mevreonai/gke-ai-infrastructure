@@ -20,13 +20,13 @@
     "nvidia-nccl-cu13": "2.29.7"
   },
   "executables": {
-    "vllm": "/home/ayu23/vllm_env/bin/vllm",
-    "ray": "/home/ayu23/vllm_env/bin/ray",
+    "vllm": "/home/user/vllm_env/bin/vllm",
+    "ray": "/home/user/vllm_env/bin/ray",
     "nsys": "/usr/local/bin/nsys",
     "nvidia-smi": "/usr/bin/nvidia-smi",
     "iperf3": "/usr/bin/iperf3",
     "tc": "/usr/sbin/tc",
-    "python3": "/home/ayu23/vllm_env/bin/python3"
+    "python3": "/home/user/vllm_env/bin/python3"
   },
   "vllm_serve_help_rc": 0,
   "vllm_bench_help_rc": 0,
@@ -48,13 +48,13 @@
     {
       "name": "bin:vllm",
       "ok": true,
-      "detail": "/home/ayu23/vllm_env/bin/vllm",
+      "detail": "/home/user/vllm_env/bin/vllm",
       "severity": "ERROR"
     },
     {
       "name": "bin:ray",
       "ok": true,
-      "detail": "/home/ayu23/vllm_env/bin/ray",
+      "detail": "/home/user/vllm_env/bin/ray",
       "severity": "ERROR"
     },
     {
@@ -84,7 +84,7 @@
     {
       "name": "bin:python3",
       "ok": true,
-      "detail": "/home/ayu23/vllm_env/bin/python3",
+      "detail": "/home/user/vllm_env/bin/python3",
       "severity": "ERROR"
     },
     {

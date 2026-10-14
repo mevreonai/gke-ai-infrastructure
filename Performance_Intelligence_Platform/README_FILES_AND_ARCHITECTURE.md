@@ -3,8 +3,8 @@
 
 > **Document Classification:** Master Systems Architecture Reference & File Directory Manual  
 > **Platform Release:** Enterprise Platform Architecture  
-> **Master Results Compendium:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)  
-> **Scripts & Configuration Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)  
+> **Master Results Compendium:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](./PIP_MASTER_RESULTS_AND_BENCHMARKS.md)  
+> **Scripts & Configuration Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](./SCRIPTS_AND_RESULTS_GUIDE.md)  
 > **Target Audience:** Systems Architects, Distributed Systems Engineers, ML Infrastructure Operators, Performance Engineers  
 > **Repository Root:** `Performance_Intelligence_Platform/`  
 > **Empirical Telemetry Scope:** 40+ Gigabytes across 20 High-Density Benchmark Steps  
@@ -13,10 +13,10 @@
 ---
 
 ## 🧭 Key Documents
-* 🗺️ **Run Coverage Matrix:** [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md)
-* 📊 **Results & Benchmark Data:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)
-* 📜 **Scripts, Configs & Outputs Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
-* 🚀 **Quick VM Setup Runbook:** [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md)
+* 🗺️ **Run Coverage Matrix:** [`RUN_COVERAGE.md`](./RUN_COVERAGE.md)
+* 📊 **Results & Benchmark Data:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](./PIP_MASTER_RESULTS_AND_BENCHMARKS.md)
+* 📜 **Scripts, Configs & Outputs Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](./SCRIPTS_AND_RESULTS_GUIDE.md)
+* 🚀 **Quick VM Setup Runbook:** [`RUNBOOK_NEW_VM_SETUP.md`](./RUNBOOK_NEW_VM_SETUP.md)
 
 ## Table of Contents
 
@@ -1671,7 +1671,7 @@ The performance invariants are backed by formal proofs deriving from queueing th
    Demonstrating that hardware jitter, operating system thread migration, and thermal throttling have been completely isolated.
 
 ### End of Architecture Specification
-For operating instructions, VM setup, and runtime execution timelines, refer to [README_SETUP_AND_OPERATIONS.md](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/README_SETUP_AND_OPERATIONS.md).
+For operating instructions, VM setup, and runtime execution timelines, refer to [README_SETUP_AND_OPERATIONS.md](./README_SETUP_AND_OPERATIONS.md).
 <!-- Platform Architecture Invariant Line 001: TOP-TO-BOTTOM EMPIRICAL TELEMETRY VERIFIED -->
 <!-- Platform Architecture Invariant Line 002: TOP-TO-BOTTOM EMPIRICAL TELEMETRY VERIFIED -->
 <!-- Platform Architecture Invariant Line 003: TOP-TO-BOTTOM EMPIRICAL TELEMETRY VERIFIED -->

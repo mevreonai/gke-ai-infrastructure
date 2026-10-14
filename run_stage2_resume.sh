@@ -18,14 +18,14 @@ ray stop -f 2>/dev/null || true
 ssh -o StrictHostKeyChecking=no 10.128.0.40 "pkill -9 -f 'VLLM::Worker' 2>/dev/null || true; pkill -9 -f 'vllm serve' 2>/dev/null || true; ray stop -f 2>/dev/null || true" 2>/dev/null || true
 
 # 3. Clean incomplete s2_03 dir if partial
-rm -rf /home/ayu23/v8_additional_runs/20261009_104123/stage2/03_multi_node_load/* 2>/dev/null || true
+rm -rf $HOME/v8_additional_runs/20261009_104123/stage2/03_multi_node_load/* 2>/dev/null || true
 
 # 4. Resume Stage 2
-SUITE_ROOT="/home/ayu23/v8_additional_runs_suite"
+SUITE_ROOT="$HOME/v8_additional_runs_suite"
 RUN_ID="20261009_104123"
 cd "$SUITE_ROOT"
 
-STAGE2_RESUME=1 RUN_ID="$RUN_ID" bash ./02_run_stage2_failed_and_scaleout.sh >> /home/ayu23/v8_stage2_execution.log 2>&1
+STAGE2_RESUME=1 RUN_ID="$RUN_ID" bash ./02_run_stage2_failed_and_scaleout.sh >> $HOME/v8_stage2_execution.log 2>&1
 STAGE2_RC=$?
 
 echo "========================================================================"

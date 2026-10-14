@@ -1,6 +1,6 @@
 # RTX G4 smoke-test summary
 
-Results root: `/home/ayu23/rtx_g4_smoke/results/20260915_smoke_v4`
+Results root: `/home/user/rtx_g4_smoke/results/20260915_smoke_v4`
 
 ## NCCL exact points
 

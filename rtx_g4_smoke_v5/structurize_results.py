@@ -2,7 +2,7 @@ import os
 import shutil
 import zipfile
 
-base_dir = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v5"
+base_dir = r".rtx_g4_smoke_v5"
 print(f"Structuring {base_dir} ...")
 
 # 1. Target Directory Paths
@@ -50,7 +50,7 @@ for f in ["vllm_runs.csv", "VLLM_SUMMARY.md", "SERVING_ANALYSIS.md"]:
         shutil.copy2(src, os.path.join(single_node_dir, "summary", f))
 
 # Unpack qualification logs if zip exists
-zip_path = r"c:\Users\ayu23\OneDrive\Desktop\tpu\v6_qualification_results_with_logs.zip"
+zip_path = r".v6_qualification_results_with_logs.zip"
 if os.path.exists(zip_path):
     print(f"Extracting {zip_path} to {single_node_dir}/qualification_logs ...")
     with zipfile.ZipFile(zip_path, 'r') as zf:
@@ -105,7 +105,7 @@ print("Copied V6 runner scripts.")
 dash_src = os.path.join(base_dir, "v6_suite", "results", "v6_characterization_dashboard.html")
 if os.path.exists(dash_src):
     shutil.copy2(dash_src, os.path.join(dashboards_dir, "v6_characterization_dashboard.html"))
-master_dash = r"c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_CHARACTERIZATION_DASHBOARD.html"
+master_dash = r".MASTER_CHARACTERIZATION_DASHBOARD.html"
 if os.path.exists(master_dash):
     shutil.copy2(master_dash, os.path.join(dashboards_dir, "MASTER_CHARACTERIZATION_DASHBOARD.html"))
 

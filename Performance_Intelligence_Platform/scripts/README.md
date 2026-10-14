@@ -4,13 +4,13 @@
 Welcome to the **Benchmark Automation Suite** of the Performance Intelligence Platform. This folder contains all executable test scripts, case manifests, profiling harnesses, and orchestrator tools engineered to characterize Large Language Model (LLM) serving on high-density GPU accelerator clusters.
 
 The automation suite is organized into **7 specialized sub-folders** categorized by the type of characterization run, alongside convenient top-level entrypoints and analytical post-processors:
-* [`run_smoke_test.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_smoke_test.sh): 10-check automated sanity verifier (~3–5 minutes) ensuring all toolchains, MoE flags, schemas, and dry-run flows are qualified.
-* [`run_master_benchmark.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_master_benchmark.sh): Unified master campaign orchestrator executing Steps 00–20 across 4 configurable run profiles.
-* [`run_continuous_batching.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_continuous_batching.sh) / [`run_continuous_batching.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_continuous_batching.py): Configurable runner for Continuous Batching characterization (Blocks 1–7).
+* [`run_smoke_test.sh`](./run_smoke_test.sh): 10-check automated sanity verifier (~3–5 minutes) ensuring all toolchains, MoE flags, schemas, and dry-run flows are qualified.
+* [`run_master_benchmark.sh`](./run_master_benchmark.sh): Unified master campaign orchestrator executing Steps 00–20 across 4 configurable run profiles.
+* [`run_continuous_batching.sh`](./run_continuous_batching.sh) / [`run_continuous_batching.py`](./run_continuous_batching.py): Configurable runner for Continuous Batching characterization (Blocks 1–7).
 * Reference Guides:
-  - [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md): Comprehensive reference for all 20 steps, profiler tools, concurrency sweeps ($c=1..64$), context lengths ($1K..1M$), topologies, and cold/warm cache isolation.
-  - [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md): Exhaustive guide for all scripts, configuration selection options, and output artifacts.
-  - [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md): Master empirical results table, model curves, and telemetry compendium.
+  - [`RUN_COVERAGE.md`](../RUN_COVERAGE.md): Comprehensive reference for all 20 steps, profiler tools, concurrency sweeps ($c=1..64$), context lengths ($1K..1M$), topologies, and cold/warm cache isolation.
+  - [`SCRIPTS_AND_RESULTS_GUIDE.md`](../SCRIPTS_AND_RESULTS_GUIDE.md): Exhaustive guide for all scripts, configuration selection options, and output artifacts.
+  - [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](../PIP_MASTER_RESULTS_AND_BENCHMARKS.md): Master empirical results table, model curves, and telemetry compendium.
 
 ---
 
@@ -89,16 +89,16 @@ The platform provides a suite of high-precision analytical tools that operate on
 
 | Script | Purpose | Usage Example |
 |:---|:---|:---|
-| [`pip_waves.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_waves.py) | Analyzes detailed request timings; extracts lone read $R$, first-wave spacing, stalls (>100ms), and decode pauses ($\ge 3$ normal steps). | `python3 pip_waves.py <run.json> [--budget 8192]` |
-| [`pip_scan.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_scan.py) | Recursively scans result directories for pauses, stalls, and burst fractions; outputs CSV/JSON summaries. | `python3 pip_scan.py <dir> --csv scan.csv` |
-| [`pip_timeline.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_timeline.py) | Generates publication-quality timeline diagrams showing prompt reading (red), answer writing (blue), stalls, and pauses. | `python3 pip_timeline.py <run.json> --out timeline.png` |
-| [`pip_step_cost.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_step_cost.py) | Fits the continuous batching step-cost linear model ($T \approx a + b\cdot gen + c\cdot ctx$) from `server.log`. | `python3 pip_step_cost.py <server.log> --json fit.json` |
-| [`pip_mixed_traffic.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/pip_mixed_traffic.py) | Evaluates interference between concurrent short streams (1K) and long streams (128K); computes TTFT penalty ratio. | `python3 pip_mixed_traffic.py --short s.json --long l.json` |
-| [`ttft_waves.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/ttft_waves.py) | Decomposes the first wave of requests, comparing measured waiting times to the theoretical $(C+1)/2$ rule. | `python3 ttft_waves.py <run.json>` |
-| [`bench_summary.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/bench_summary.py) | Command-line aggregator that prints clean tables summarizing TTFT, TPOT, throughput, pause indicators, and max token gaps. | `python3 bench_summary.py <run.json or dir>` |
-| [`generate_result_summary.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/generate_result_summary.py) | Generates `RESULT_SUMMARY.md` and per-block Markdown reports from continuous batching manifests. | `python3 generate_result_summary.py <out_dir>` |
-| [`server_log.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/server_log.py) | Parses microsecond timestamped server logs; extracts logs 2s before to 1s after any detected pause to identify root cause. | `python3 server_log.py <server.log> --run <run.json>` |
-| [`metrics_diff.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/metrics_diff.py) | Validates Prometheus scrapes (`metrics_node0.jsonl`) against client request timelines; verifies queue gauges. | `python3 metrics_diff.py <metrics.jsonl> --run <run.json>` |
+| [`pip_waves.py`](./pip_waves.py) | Analyzes detailed request timings; extracts lone read $R$, first-wave spacing, stalls (>100ms), and decode pauses ($\ge 3$ normal steps). | `python3 pip_waves.py <run.json> [--budget 8192]` |
+| [`pip_scan.py`](./pip_scan.py) | Recursively scans result directories for pauses, stalls, and burst fractions; outputs CSV/JSON summaries. | `python3 pip_scan.py <dir> --csv scan.csv` |
+| [`pip_timeline.py`](./pip_timeline.py) | Generates publication-quality timeline diagrams showing prompt reading (red), answer writing (blue), stalls, and pauses. | `python3 pip_timeline.py <run.json> --out timeline.png` |
+| [`pip_step_cost.py`](./pip_step_cost.py) | Fits the continuous batching step-cost linear model ($T \approx a + b\cdot gen + c\cdot ctx$) from `server.log`. | `python3 pip_step_cost.py <server.log> --json fit.json` |
+| [`pip_mixed_traffic.py`](./pip_mixed_traffic.py) | Evaluates interference between concurrent short streams (1K) and long streams (128K); computes TTFT penalty ratio. | `python3 pip_mixed_traffic.py --short s.json --long l.json` |
+| [`ttft_waves.py`](./ttft_waves.py) | Decomposes the first wave of requests, comparing measured waiting times to the theoretical $(C+1)/2$ rule. | `python3 ttft_waves.py <run.json>` |
+| [`bench_summary.py`](./bench_summary.py) | Command-line aggregator that prints clean tables summarizing TTFT, TPOT, throughput, pause indicators, and max token gaps. | `python3 bench_summary.py <run.json or dir>` |
+| [`generate_result_summary.py`](./generate_result_summary.py) | Generates `RESULT_SUMMARY.md` and per-block Markdown reports from continuous batching manifests. | `python3 generate_result_summary.py <out_dir>` |
+| [`server_log.py`](./server_log.py) | Parses microsecond timestamped server logs; extracts logs 2s before to 1s after any detected pause to identify root cause. | `python3 server_log.py <server.log> --run <run.json>` |
+| [`metrics_diff.py`](./metrics_diff.py) | Validates Prometheus scrapes (`metrics_node0.jsonl`) against client request timelines; verifies queue gauges. | `python3 metrics_diff.py <metrics.jsonl> --run <run.json>` |
 
 ---
 

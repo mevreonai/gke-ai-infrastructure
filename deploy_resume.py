@@ -4,17 +4,17 @@ import subprocess
 script = """#!/usr/bin/env bash
 set -uo pipefail
 
-ln -sf /home/ayu23/.ssh/id_ed25519 /home/ayu23/.ssh/id_rsa
+ln -sf /home/user/.ssh/id_ed25519 /home/user/.ssh/id_rsa
 
-cd /home/ayu23/V9_FULL
-source /home/ayu23/vllm_env/bin/activate
-export PATH=/home/ayu23/vllm_env/bin:/home/ayu23/.local/bin:/home/ayu23/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
+cd /home/user/V9_FULL
+source /home/user/vllm_env/bin/activate
+export PATH=/home/user/vllm_env/bin:/home/user/.local/bin:/home/user/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
 
-LOG="/home/ayu23/v9_test2_execution.log"
+LOG="/home/user/v9_test2_execution.log"
 echo "=== RESUMING V9 Test 2 Inference Run (Fixed max-model-len, Native + 20G) at $(date) ===" >> "$LOG"
 
 RUN_ID="v9_test2_20260927_163750"
-RESULT_ROOT="/home/ayu23/v9_full_results/$RUN_ID"
+RESULT_ROOT="/home/user/v9_full_results/$RUN_ID"
 
 # Clear failed serving markers so resume re-runs them cleanly with the fix
 rm -f "$RESULT_ROOT/logs/.done_vllm_single"
@@ -48,8 +48,8 @@ echo "=== V9 Execution finished with rc=$RUN_RC at $(date) ===" >> "$LOG"
 echo "=== Packaging final results ===" >> "$LOG"
 if [ -d "$RESULT_ROOT" ]; then
     bash ./99_package_v9_full_results.sh "$RESULT_ROOT" >> "$LOG" 2>&1 || true
-    tar -czf "/home/ayu23/V9_TEST2_RESULTS_${RUN_ID}.tar.gz" -C "/home/ayu23/v9_full_results" "$RUN_ID" >> "$LOG" 2>&1 || true
-    echo "SUCCESS: Results archived to /home/ayu23/V9_TEST2_RESULTS_${RUN_ID}.tar.gz" >> "$LOG"
+    tar -czf "/home/user/V9_TEST2_RESULTS_${RUN_ID}.tar.gz" -C "/home/user/v9_full_results" "$RUN_ID" >> "$LOG" 2>&1 || true
+    echo "SUCCESS: Results archived to /home/user/V9_TEST2_RESULTS_${RUN_ID}.tar.gz" >> "$LOG"
 fi
 
 echo "=== Syncing filesystem ===" >> "$LOG"
@@ -62,7 +62,7 @@ sudo poweroff
 """
 
 b64 = base64.b64encode(script.encode('utf-8')).decode('utf-8')
-cmd = f'gcloud compute ssh ayu23@kimi-node-0 --zone=us-central1-b --tunnel-through-iap --command="echo {b64} | base64 -d > /home/ayu23/run_v9_test2_resume.sh && chmod +x /home/ayu23/run_v9_test2_resume.sh"'
+cmd = f'gcloud compute ssh kimi-node-0 --zone=us-central1-b --tunnel-through-iap --command="echo {b64} | base64 -d > /home/user/run_v9_test2_resume.sh && chmod +x /home/user/run_v9_test2_resume.sh"'
 res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 print("Deploy STDOUT:", res.stdout)
 print("Deploy STDERR:", res.stderr)

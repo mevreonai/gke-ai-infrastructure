@@ -51,7 +51,7 @@ if qc is not None:
 print("FLATTENED CONFIG:")
 print(json.dumps(out, indent=2))
 
-with open("/home/ayu23/V9_FULL/configs/models/deepseek_v41_flash.json") as f:
+with open("/home/user/V9_FULL/configs/models/deepseek_v41_flash.json") as f:
     profile = json.load(f)
 
 failures = []

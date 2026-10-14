@@ -1,6 +1,6 @@
 import json, glob
 
-files = sorted(glob.glob('/home/ayu23/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/*/*case_manifest*.json'))
+files = sorted(glob.glob('/home/user/v5_profiling/results/20260919_215146/kimi-node-0/vllm_multi_node/*/*case_manifest*.json'))
 for path in files:
     d = json.load(open(path))
     print('=== Case:', d.get('name'), '===')

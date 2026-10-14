@@ -1,8 +1,8 @@
 # V8 Benchmark Suite & Platform: File-by-File Code Changes Specification
 
-**Target Suite Directory:** [`v8_full_results/suite/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite) and [`release_specs/suite_scripts/`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/release_specs/suite_scripts)  
-**Historical Code Review Reference:** [`Code_Review_V8_Additional_Runs_v1.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Code_Review_V8_Additional_Runs_v1.md)  
-**Associated UI Specification:** [`V8_DASHBOARD_TRANSFORMATION_SPECIFICATION.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_DASHBOARD_TRANSFORMATION_SPECIFICATION.md)  
+**Target Suite Directory:** [`v8_full_results/suite/`](./v8_full_results/suite) and [`release_specs/suite_scripts/`](./v8_full_results/release_specs/suite_scripts)  
+**Historical Code Review Reference:** [`Code_Review_V8_Additional_Runs_v1.md`](./Code_Review_V8_Additional_Runs_v1.md)  
+**Associated UI Specification:** [`V8_DASHBOARD_TRANSFORMATION_SPECIFICATION.md`](./V8_DASHBOARD_TRANSFORMATION_SPECIFICATION.md)  
 **Execution Scope:** Groups A, B, and Strategic Expansions (R1–R4) | **Option C (DP=2 × TP8) Completely Excluded**  
 **Action Status:** Pre-execution Code Review & Planning (Specification only — zero script modifications performed)
 
@@ -60,7 +60,7 @@ flowchart TD
 ## 2. Category 1: Configuration & Environment Orchestration
 
 ### File 1.1: `v8_full_results/suite/RUN_CONFIG.env` & `RUN_CONFIG.env.example`
-- **Location:** [`v8_full_results/suite/RUN_CONFIG.env`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/RUN_CONFIG.env)
+- **Location:** [`v8_full_results/suite/RUN_CONFIG.env`](./v8_full_results/suite/RUN_CONFIG.env)
 - **Role:** Central environment configuration file loaded by all master and child execution scripts.
 - **Current Defect:**
   Lacks explicit kernel backend declarations for FlashInfer autotuning and MoE Triton backends. PCIe bus order is not enforced, risking rank mismatch between PyTorch and `nvidia-smi`.
@@ -79,7 +79,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 1.2: `v8_full_results/suite/00_run_master_additional_runs.sh`
-- **Location:** [`v8_full_results/suite/00_run_master_additional_runs.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/00_run_master_additional_runs.sh)
+- **Location:** [`v8_full_results/suite/00_run_master_additional_runs.sh`](./v8_full_results/suite/00_run_master_additional_runs.sh)
 - **Role:** Top-level master runner executing Stage 1 and Stage 2 sequentially with checkpointing and provenance logging.
 - **Current Defect:**
   In Step 2 (`dual_node_env_snapshot`), remote environment snapshots on Node 1 fail silently if `SSH_KEY` permissions or SSH options are not strictly passed, and `VLLM_PP_LAYER_PARTITION` is omitted from the captured snapshot regex.
@@ -99,7 +99,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 1.3: `v8_full_results/suite/01_run_stage1_quick_wins.sh`
-- **Location:** [`v8_full_results/suite/01_run_stage1_quick_wins.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/01_run_stage1_quick_wins.sh)
+- **Location:** [`v8_full_results/suite/01_run_stage1_quick_wins.sh`](./v8_full_results/suite/01_run_stage1_quick_wins.sh)
 - **Role:** Orchestrates single-node quick wins: chunk budget A/B test, batched torch profiling, TP8 NUMA pinning, short prompts, and trace trimming.
 - **Current Defect:**
   In Step 4 (`run_tp8_pinning_test`), the server cleanup trap only handles EXIT, which can leave background zombie `vllm serve` processes running on SIGINT or failure, blocking port `8035` and locking 8 GPUs.
@@ -125,7 +125,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 1.4: `v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh`
-- **Location:** [`v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh)
+- **Location:** [`v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh`](./v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh)
 - **Role:** Orchestrates distributed scale-out under load, PP2 15/12 split evaluation, FP8 KV rerun, and Nsight report harvesting.
 - **Current Defect:**
   In Step 2 (`s2_03_multi_node_load`), `tc qdisc` cleanup only queries the primary interface via default route. On multi-interface cloud setups, this can leave rate limits active on secondary virtual network cards.
@@ -158,7 +158,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ## 3. Category 2: Single-Node Benchmark Suite & Pinning Fixes
 
 ### File 2.1: `v8_full_results/suite/stage1_cases.json`
-- **Location:** [`v8_full_results/suite/stage1_cases.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/stage1_cases.json)
+- **Location:** [`v8_full_results/suite/stage1_cases.json`](./v8_full_results/suite/stage1_cases.json)
 - **Role:** Manifest defining cases for Stage 1 quick wins.
 - **Current Defect:**
   `tp4_short_prompts` (1K and 2K) only specifies 128 prompts at $c=32$, which amounts to only 4 waves. For strict statistical confidence on sub-second iterations, $n \ge 160$ prompts (5 full waves) are required.
@@ -177,7 +177,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 2.2: `v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py`](./v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py)
 - **Role:** Single-node surrogate test execution engine.
 - **Current Defect:**
   Does not record `server.log` GPU KV pool size or PID directly into the benchmark result JSON, forcing downstream scripts to rely on regex log parsing.
@@ -207,7 +207,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 2.3: `v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py`](./v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py)
 - **Role:** Core shared library constructing `vllm serve` and `vllm bench serve` CLI commands.
 - **Current Defect:**
   When passing `--attention-config` for FP8 quantization, if the argument is provided as a Python dict or serialized JSON string with escaped quotes, `require_flag` passes but `shlex.quote` in `q()` can produce double-escaped CLI strings.
@@ -233,7 +233,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ## 4. Category 3: Multi-Node Distributed Runner & Layer Partitioning
 
 ### File 3.1: `v8_full_results/suite/stage2_cases_multi_node_load.json`
-- **Location:** [`v8_full_results/suite/stage2_cases_multi_node_load.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/stage2_cases_multi_node_load.json)
+- **Location:** [`v8_full_results/suite/stage2_cases_multi_node_load.json`](./v8_full_results/suite/stage2_cases_multi_node_load.json)
 - **Role:** Manifest defining distributed multi-node cases under concurrency ($c=2, 4, 8$).
 - **Current Defect:**
   Lacks explicit 8K baseline prompts for `TP4/PP4` and `TP16/PP1`, leaving Tab 5 without a 8K context baseline under multi-node execution.
@@ -253,7 +253,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 3.2: `v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh`](./v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh)
 - **Role:** Shell orchestrator for Ray cluster initialization and multi-node execution.
 - **Current Defect:**
   When `VLLM_PP_LAYER_PARTITION` is exported locally on Node 0, it is not explicitly forwarded during remote `ray start` on Node 1 in lines 59 and 63.
@@ -276,7 +276,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ---
 
 ### File 3.3: `v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py`](./v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py)
 - **Role:** Multi-node workload launcher and telemetry coordinator.
 - **Current Defect:**
   Does not record `VLLM_PP_LAYER_PARTITION` in the per-case manifest record `rec`, making post-run audit of layer splits reliant on log grepping.
@@ -302,7 +302,7 @@ export V8_VLLM_NETWORK_MODE="native"
 ## 5. Category 4: Profiling Infrastructure & Nsight Wait-and-Export Fix
 
 ### File 4.1: `v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh`](./v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh)
 - **Role:** Single-node Nsight Systems profiler capture script.
 - **Current Defect (The 30.5 ms Root Cause):**
   Hardcodes `--enforce-eager` on line 30, which disables CUDA Graph capture and forces CPU-overhead-heavy dispatch (30.5 ms vs 4.47 ms true serving step).
@@ -334,7 +334,7 @@ fi
 ---
 
 ### File 4.2: `v8_full_results/suite/rtx_g4_smoke_v5/14c_run_vllm_torch_profile_batched.sh`
-- **Location:** [`Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh)
+- **Location:** [`Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh`](./scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh)
 - **Role:** Pure-decode PyTorch profiler triggering via HTTP `/start_profile` and `/stop_profile`.
 - **Current Defect:**
   Line 80 searches `/tmp` with `-maxdepth 1`, but PyTorch profiler often writes to `/tmp/torch_profiler/` or nested directories, causing valid trace files to be missed.
@@ -353,7 +353,7 @@ find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROF
 ---
 
 ### File 4.3: `v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh`](./v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh)
 - **Role:** Distributed multi-node Nsight Systems profiler coordinator.
 - **Current Defect (The 0-Byte Stub Root Cause):**
   If a worker process crashes, Nsight leaves a 0-byte `.nsys-rep` stub. The script copies this stub and terminates Ray, causing `NSYS_ANALYSIS.json` to report "Cannot read from stream".
@@ -397,7 +397,7 @@ find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROF
 ## 6. Category 5: Post-Processing, Wave Trimming & KV Audit Fixes
 
 ### File 5.1: `Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py`
-- **Location:** [`Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py)
+- **Location:** [`Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py`](./scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py)
 - **Role:** Post-processes closed-loop JSON files to separate Wave 1 arrival bursts from true steady-state serving.
 - **Current Defect:**
   Only calculates percentiles without computing arithmetic means, and does not explicitly expose `wave1_burst_ttft_mean_s` or vLLM queue-wait metrics.
@@ -451,7 +451,7 @@ find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROF
 ---
 
 ### File 5.2: `v8_full_results/suite/stage2_cases_single_node.json`
-- **Location:** [`v8_full_results/suite/stage2_cases_single_node.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/stage2_cases_single_node.json)
+- **Location:** [`v8_full_results/suite/stage2_cases_single_node.json`](./v8_full_results/suite/stage2_cases_single_node.json)
 - **Role:** Manifest defining single-node reruns (FP8 KV cache and CPU offloading).
 - **Current Defect:**
   In `tp4_fp8_kv_fixed`, the `attention_config` is stored as an escaped JSON string: `"{\"use_prefill_query_quantization\": true}"`. Storing as a native JSON dict prevents double-escaping when parsed by `v5_runner_lib.py`.
@@ -472,7 +472,7 @@ find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROF
 ## 7. Category 6: Verification, Validation & Path Normalization Fixes
 
 ### File 6.1: `v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py`
-- **Location:** [`v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py)
+- **Location:** [`v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py`](./v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py)
 - **Role:** Master validation script certifying suite completeness, NCCL policy compliance, and evidence health.
 - **Current Defect (The Windows Backslash False Alarm):**
   Lines 169–170 compare string path prefixes using forward slashes (`'vllm_scaleout_network_matrix/'`), while `str(p.relative_to(root))` on Windows uses backslashes (`vllm_scaleout_network_matrix\GCP_NATIVE\...`). This causes `scaleout_ray_count` to evaluate to 0 instead of 12, incorrectly marking `nccl_policy_ok: false`.
@@ -495,7 +495,7 @@ find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROF
 ---
 
 ### File 6.2: `v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py`
-- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py)
+- **Location:** [`v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py`](./v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py)
 - **Role:** Audits live Ray workers across both nodes to ensure no forbidden local-transport overrides exist.
 - **Current Defect:**
   Only checks for forbidden override variables (`NCCL_P2P_DISABLE`, `NCCL_SHM_DISABLE`), but does not verify that `VLLM_PP_LAYER_PARTITION` is identical across all workers when pipeline parallelism is active.
@@ -523,20 +523,20 @@ find "$PWD" -maxdepth 2 -name '*.pt.trace.json*' -mmin -10 -exec mv -f {} "$PROF
 
 | Category | File Path | Defect / Limitation | Proposed Fix Status |
 | :--- | :--- | :--- | :--- |
-| **Config** | [`RUN_CONFIG.env`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/RUN_CONFIG.env) | Missing Triton MoE & FlashInfer flags | Ready for injection |
-| **Config** | [`00_run_master_additional_runs.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/00_run_master_additional_runs.sh) | Incomplete remote env snapshot | Ready for injection |
-| **Config** | [`01_run_stage1_quick_wins.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/01_run_stage1_quick_wins.sh) | SIGINT trap leaks 8-GPU server | Ready for injection |
-| **Config** | [`02_run_stage2_failed_and_scaleout.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh) | `tc qdisc` cleanup misses multi-NICs | Ready for injection |
-| **Single-Node** | [`stage1_cases.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/stage1_cases.json) | 1K/2K prompts lack 5th wave at c32 | Ready for injection |
-| **Single-Node** | [`11_run_vllm_surrogate.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py) | Server KV pool omitted from output JSON | Ready for injection |
-| **Single-Node** | [`v5_runner_lib.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py) | Double-escaping of attention JSON string | Ready for injection |
-| **Multi-Node** | [`stage2_cases_multi_node_load.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/stage2_cases_multi_node_load.json) | Missing 8K c1 distributed baselines | Ready for injection |
-| **Multi-Node** | [`12_run_vllm_multi_node.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh) | Node 1 Ray misses `VLLM_PP_LAYER_PARTITION` | Ready for injection |
-| **Multi-Node** | [`12_run_vllm_multi_node.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py) | PP partition not recorded in manifest | Ready for injection |
-| **Profiling** | [`14_run_vllm_nsys_profile.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh) | Hardcoded `--enforce-eager` (30.5 ms artifact) | Ready for injection |
-| **Profiling** | [`14c_run_vllm_torch_profile_batched.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh) | `-maxdepth 1` misses nested torch traces | Ready for injection |
-| **Profiling** | [`18_run_vllm_multi_node_profiles.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh) | 0-byte `.nsys-rep` stubs cause stream errors | Ready for injection |
-| **Post-Proc** | [`24_audit_kv_and_trim_traces.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py) | Missing mean calculation & Wave 1 split | Ready for injection |
-| **Post-Proc** | [`stage2_cases_single_node.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/stage2_cases_single_node.json) | String attention config instead of dict | Ready for injection |
-| **Validation** | [`90_collect_and_validate.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py) | Windows backslash bug causes `ok=false` | Ready for injection |
-| **Validation** | [`20_ray_nccl_env_audit.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py) | No cross-node PP layer split check | Ready for injection |
+| **Config** | [`RUN_CONFIG.env`](./v8_full_results/suite/RUN_CONFIG.env) | Missing Triton MoE & FlashInfer flags | Ready for injection |
+| **Config** | [`00_run_master_additional_runs.sh`](./v8_full_results/suite/00_run_master_additional_runs.sh) | Incomplete remote env snapshot | Ready for injection |
+| **Config** | [`01_run_stage1_quick_wins.sh`](./v8_full_results/suite/01_run_stage1_quick_wins.sh) | SIGINT trap leaks 8-GPU server | Ready for injection |
+| **Config** | [`02_run_stage2_failed_and_scaleout.sh`](./v8_full_results/suite/02_run_stage2_failed_and_scaleout.sh) | `tc qdisc` cleanup misses multi-NICs | Ready for injection |
+| **Single-Node** | [`stage1_cases.json`](./v8_full_results/suite/stage1_cases.json) | 1K/2K prompts lack 5th wave at c32 | Ready for injection |
+| **Single-Node** | [`11_run_vllm_surrogate.py`](./v8_full_results/suite/rtx_g4_smoke_v5/11_run_vllm_surrogate.py) | Server KV pool omitted from output JSON | Ready for injection |
+| **Single-Node** | [`v5_runner_lib.py`](./v8_full_results/suite/rtx_g4_smoke_v5/v5_runner_lib.py) | Double-escaping of attention JSON string | Ready for injection |
+| **Multi-Node** | [`stage2_cases_multi_node_load.json`](./v8_full_results/suite/stage2_cases_multi_node_load.json) | Missing 8K c1 distributed baselines | Ready for injection |
+| **Multi-Node** | [`12_run_vllm_multi_node.sh`](./v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh) | Node 1 Ray misses `VLLM_PP_LAYER_PARTITION` | Ready for injection |
+| **Multi-Node** | [`12_run_vllm_multi_node.py`](./v8_full_results/suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.py) | PP partition not recorded in manifest | Ready for injection |
+| **Profiling** | [`14_run_vllm_nsys_profile.sh`](./v8_full_results/suite/rtx_g4_smoke_v5/14_run_vllm_nsys_profile.sh) | Hardcoded `--enforce-eager` (30.5 ms artifact) | Ready for injection |
+| **Profiling** | [`14c_run_vllm_torch_profile_batched.sh`](./scripts/06_deep_kernel_and_torch_profiling/14c_run_vllm_torch_profile_batched.sh) | `-maxdepth 1` misses nested torch traces | Ready for injection |
+| **Profiling** | [`18_run_vllm_multi_node_profiles.sh`](./v8_full_results/suite/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh) | 0-byte `.nsys-rep` stubs cause stream errors | Ready for injection |
+| **Post-Proc** | [`24_audit_kv_and_trim_traces.py`](./scripts/05_long_context_1m_extensions/24_audit_kv_and_trim_traces.py) | Missing mean calculation & Wave 1 split | Ready for injection |
+| **Post-Proc** | [`stage2_cases_single_node.json`](./v8_full_results/suite/stage2_cases_single_node.json) | String attention config instead of dict | Ready for injection |
+| **Validation** | [`90_collect_and_validate.py`](./v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py) | Windows backslash bug causes `ok=false` | Ready for injection |
+| **Validation** | [`20_ray_nccl_env_audit.py`](./v8_full_results/suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py) | No cross-node PP layer split check | Ready for injection |

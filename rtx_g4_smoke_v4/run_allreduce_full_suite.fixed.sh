@@ -17,13 +17,13 @@
 # ==============================================================================
 set -euo pipefail
 
-BASE_DIR="${1:-/home/ayu23/rtx_g4_smoke/fresh_benchmark_suite/allreduce}"
+BASE_DIR="${1:-$HOME/rtx_g4_smoke/fresh_benchmark_suite/allreduce}"
 mkdir -p "$BASE_DIR"
 
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE1_IP="10.128.0.40"
 IFACE="ens3"
-NCCL_TESTS_BIN="/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf"
+NCCL_TESTS_BIN="$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf"
 USE_DOCKER_FOR_MULTINODE="${USE_DOCKER_FOR_MULTINODE:-0}"   # 0 = native (recommended)
 
 # nccl-tests args. -c 0 disables per-iteration correctness checking, which
@@ -46,9 +46,9 @@ ENVS=()
 while IFS='=' read -r k _; do ENVS+=(-e "$k"); done < <(env | grep -E '^(OMPI_|PMIX_|NCCL_|UCX_|OPAL_)')
 exec docker run --rm --gpus all --ipc=host --net=host --pid=host \
     -e CUDA_VISIBLE_DEVICES="${LOCAL_RANK}" "${ENVS[@]}" \
-    -v /home/ayu23:/home/ayu23 -v /tmp:/tmp \
+    -v /home/user:/home/user -v /tmp:/tmp \
     --entrypoint /bin/bash rtx-smoke:latest \
-    -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
+    -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
 EOF
     chmod +x /tmp/all_reduce_perf_docker
     sudo install -m 755 /tmp/all_reduce_perf_docker /usr/local/bin/all_reduce_perf_docker
@@ -136,7 +136,7 @@ run_multinode() {
     echo "OK: $np ranks, 1 job, NET hops present, tc counted $((after-before)) bytes."
 }
 
-DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c"
+DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ============================== PHASE 1: node-local baselines =================
 # These run ONE process with -g N, so no MPI is involved and no container

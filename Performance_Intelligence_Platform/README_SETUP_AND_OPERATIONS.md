@@ -3,8 +3,8 @@
 
 > **Document Classification:** Master Operations Manual, Infrastructure Setup & Execution Runbook  
 > **Platform Release:** Enterprise Platform Architecture  
-> **Master Results Compendium:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)  
-> **Scripts & Configuration Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)  
+> **Master Results Compendium:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](./PIP_MASTER_RESULTS_AND_BENCHMARKS.md)  
+> **Scripts & Configuration Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](./SCRIPTS_AND_RESULTS_GUIDE.md)  
 > **Target Audience:** Systems Administrators, Site Reliability Engineers, ML Platform Engineers, Hardware Architects  
 > **Repository Root:** `Performance_Intelligence_Platform/`  
 > **Total Campaign Wall-Time:** ~8h 55m across 17 Characterization Phases  
@@ -13,9 +13,9 @@
 ---
 
 ## 🧭 Key Documents
-* 📊 **Results & Benchmark Data:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)
-* 📜 **Scripts, Configs & Outputs Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
-* 🚀 **Quick VM Setup Runbook:** [`RUNBOOK_NEW_VM_SETUP.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUNBOOK_NEW_VM_SETUP.md)
+* 📊 **Results & Benchmark Data:** [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](./PIP_MASTER_RESULTS_AND_BENCHMARKS.md)
+* 📜 **Scripts, Configs & Outputs Guide:** [`SCRIPTS_AND_RESULTS_GUIDE.md`](./SCRIPTS_AND_RESULTS_GUIDE.md)
+* 🚀 **Quick VM Setup Runbook:** [`RUNBOOK_NEW_VM_SETUP.md`](./RUNBOOK_NEW_VM_SETUP.md)
 
 ## Table of Contents
 

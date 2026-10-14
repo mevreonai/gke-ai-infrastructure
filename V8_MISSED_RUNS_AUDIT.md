@@ -3,7 +3,7 @@
 > **Document Status**: Authoritative Technical Audit  
 > **Scope**: **Strictly V8 Campaign Only** (`run_id: 20260921_195656`)  
 > **Target Architecture**: NVIDIA RTX 6000 Ada (Blackwell B200 surrogate architecture: 27 layers, 20 KDA, 7 full-attention, 256 routed MoE experts, BF16 checkpoint, max model length 1,048,576 tokens)  
-> **Canonical Sources**: [coverage.json](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/coverage.json), [FINAL_VALIDATION.json](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json), [combined_vllm_runs.csv](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/combined_vllm_runs.csv), [model_validation.json](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/model_validation.json), raw `server.log` files, distributed `PROFILE_VALIDATION.json` records, and [90_collect_and_validate.py](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py).
+> **Canonical Sources**: [coverage.json](./v8_full_results/results/real_data/final_validation/coverage.json), [FINAL_VALIDATION.json](./v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json), [combined_vllm_runs.csv](./v8_full_results/results/real_data/final_validation/combined_vllm_runs.csv), [model_validation.json](./v8_full_results/results/real_data/model_validation.json), raw `server.log` files, distributed `PROFILE_VALIDATION.json` records, and [90_collect_and_validate.py](./v8_full_results/release_specs/suite_scripts/90_collect_and_validate.py).
 
 ---
 
@@ -18,7 +18,7 @@ Across the entire campaign:
 - **8 distributed profiler runs failed strict completion** out of 22 expected (3 completed the workload but had incomplete multi-rank Nsys exports; 5 were not captured or omitted from the final archive).
 - **50G and 10G networks had 0 application runs** because they were explicitly specified as hardware-only microbenchmark sensitivity points, not application serving sweeps.
 
-As recorded in canonical [FINAL_VALIDATION.json](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json):
+As recorded in canonical [FINAL_VALIDATION.json](./v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json):
 ```json
 {
   "coverage_counts": { "COMPLETED": 119, "NOT_RUN": 7 },
@@ -89,7 +89,7 @@ All 7 missed application runs occurred on single-node TP4 configurations. They w
 
 #### Server Launch Command
 ```bash
-/home/ayu23/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
+/home/user/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
   --model-impl vllm \
   --trust-remote-code \
   --revision e1df551a447157d4658b573f9a695d57658590e9 \
@@ -148,7 +148,7 @@ RuntimeError: Engine core initialization failed. See root cause above. Failed co
 
 #### Server Launch Command
 ```bash
-/home/ayu23/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
+/home/user/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
   --model-impl vllm \
   --trust-remote-code \
   --revision e1df551a447157d4658b573f9a695d57658590e9 \
@@ -247,7 +247,7 @@ The benchmark suite scripts and architectural documentation explicitly scoped ap
 2. `GCP_CAPPED_100G` (traffic-shaped via Linux `tc-htb` to 100 Gbps, measured at ~56.8 Gbps forward)
 3. `GCP_CAPPED_20G` (traffic-shaped via Linux `tc-htb` to 20 Gbps, measured at ~16.5 Gbps forward)
 
-As recorded verbatim in [README_V8_FULL.md](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/release_specs/suite_scripts/README_V8_FULL.md) and [SCALEOUT_NETWORK_COVERAGE.md](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/SCALEOUT_NETWORK_COVERAGE.md):
+As recorded verbatim in [README_V8_FULL.md](./v8_full_results/release_specs/suite_scripts/README_V8_FULL.md) and [SCALEOUT_NETWORK_COVERAGE.md](./v8_full_results/results/real_data/final_validation/SCALEOUT_NETWORK_COVERAGE.md):
 > *"vLLM scale-out modes are intentionally limited to Native / 100G / 20G. 50G and 10G remain hardware/NCCL microbenchmark sensitivity points."*
 >
 > *"V8 intentionally limits expensive model runs to the three network states needed for team communication: GCP_NATIVE, GCP_CAPPED_100G, GCP_CAPPED_20G. The cheaper hardware/network phase retains the full Native/100G/50G/20G/10G transport sweep; compared with the vLLM matrix, 50G and 10G are hardware-only sensitivity points."*
@@ -261,7 +261,7 @@ As recorded verbatim in [README_V8_FULL.md](file:///c:/Users/ayu23/OneDrive/Desk
 
 ## 6. Runtime NCCL Policy Audit Misses (`nccl_policy_ok: false`)
 
-Canonical validation marks `nccl_policy_ok: false` in [FINAL_VALIDATION.json](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json):
+Canonical validation marks `nccl_policy_ok: false` in [FINAL_VALIDATION.json](./v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json):
 
 ```json
 {

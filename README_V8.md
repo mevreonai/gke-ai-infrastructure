@@ -265,7 +265,7 @@ Unpack the V8 suite on Node 0 and activate the standardized Python environment:
 
 ```bash
 cd ~
-git clone https://github.com/unrealayush/gke-ai-infrastructure.git
+git clone https://github.com/mevreonai/gke-ai-infrastructure.git
 cd gke-ai-infrastructure
 source ~/vllm_env/bin/activate
 ```

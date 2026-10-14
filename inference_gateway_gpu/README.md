@@ -39,7 +39,7 @@ This directory contains the production-grade deployment of the **GKE Inference G
 
 ### 1. Launch GPU Inference Gateway (1-Click)
 ```powershell
-cd c:\Users\ayu23\OneDrive\Desktop\tpu\inference_gateway_gpu
+cd .inference_gateway_gpu
 
 # If you have a Hugging Face token (required for gated Gemma 2 9B):
 .\run.ps1 -HfToken "hf_xxxxxxxxxxxxxxxxxxxx"

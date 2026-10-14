@@ -10,7 +10,7 @@ rate_labels = {
     '10': 'Capped 10 Gbps'
 }
 
-base_dir = '/home/ayu23/rtx_g4_smoke/allreduce_network_sweep'
+base_dir = '/home/user/rtx_g4_smoke/allreduce_network_sweep'
 parsed_data = {}
 
 for rate in rates:

@@ -10,25 +10,25 @@ echo "             TP=4  (Socket-Local Single-NUMA: 4 GPUs)"
 echo "Message size: 8 KiB to 256 MiB (-b 8K -e 256M -f 2)"
 echo "================================================================"
 
-BASE_DIR="/home/ayu23/rtx_g4_smoke/fresh_benchmark_suite"
+BASE_DIR="$HOME/rtx_g4_smoke/fresh_benchmark_suite"
 mkdir -p "$BASE_DIR/allreduce" "$BASE_DIR/allgather" "$BASE_DIR/reducescatter"
 
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE1_IP="10.128.0.40"
 IFACE="ens3"
 
 # Setup docker wrappers for multi-node OpenMPI
 cat << 'EOF' > /tmp/all_reduce_perf_docker
 #!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
 EOF
 cat << 'EOF' > /tmp/all_gather_perf_docker
 #!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
 EOF
 cat << 'EOF' > /tmp/reduce_scatter_perf_docker
 #!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c "/home/ayu23/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
 EOF
 
 sudo install -m 755 /tmp/all_reduce_perf_docker /usr/local/bin/all_reduce_perf_docker
@@ -69,24 +69,24 @@ apply_tc() {
 
 MPI_RUN="/usr/mpi/gcc/openmpi-4.1.9a1/bin/mpirun --prefix /usr/mpi/gcc/openmpi-4.1.9a1 --allow-run-as-root -x PATH -x LD_LIBRARY_PATH"
 
-DOCKER_RUN="docker run --rm --gpus all --ipc=host --net=host -v /home/ayu23:/home/ayu23 --entrypoint /bin/bash rtx-smoke:latest -c"
+DOCKER_RUN="docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ==========================================
 # 1. RUN TP=4 (Single-NUMA, 4 GPUs on Node 0)
 # ==========================================
 echo ">>> [1/3] Running TP=4 Local Benchmarks (GPUs 0,1,2,3) <<<"
-$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS /home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf -b 8K -e 256M -f 2 -g 4" | tee "$BASE_DIR/allreduce/tp4.log"
-$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS /home/ayu23/rtx_g4_smoke/nccl-tests/build/all_gather_perf -b 8K -e 256M -f 2 -g 4" | tee "$BASE_DIR/allgather/tp4.log"
-$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS /home/ayu23/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf -b 8K -e 256M -f 2 -g 4" | tee "$BASE_DIR/reducescatter/tp4.log"
+$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS $HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf -b 8K -e 256M -f 2 -g 4" | tee "$BASE_DIR/allreduce/tp4.log"
+$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS $HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf -b 8K -e 256M -f 2 -g 4" | tee "$BASE_DIR/allgather/tp4.log"
+$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3 NCCL_P2P_LEVEL=SYS $HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf -b 8K -e 256M -f 2 -g 4" | tee "$BASE_DIR/reducescatter/tp4.log"
 echo "TP=4 Complete!"
 
 # ==========================================
 # 2. RUN TP=8 (Node-Local, 8 GPUs on Node 0)
 # ==========================================
 echo ">>> [2/3] Running TP=8 Node-Local Benchmarks (8 GPUs) <<<"
-$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS /home/ayu23/rtx_g4_smoke/nccl-tests/build/all_reduce_perf -b 8K -e 256M -f 2 -g 8" | tee "$BASE_DIR/allreduce/tp8.log"
-$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS /home/ayu23/rtx_g4_smoke/nccl-tests/build/all_gather_perf -b 8K -e 256M -f 2 -g 8" | tee "$BASE_DIR/allgather/tp8.log"
-$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS /home/ayu23/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf -b 8K -e 256M -f 2 -g 8" | tee "$BASE_DIR/reducescatter/tp8.log"
+$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS $HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf -b 8K -e 256M -f 2 -g 8" | tee "$BASE_DIR/allreduce/tp8.log"
+$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS $HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf -b 8K -e 256M -f 2 -g 8" | tee "$BASE_DIR/allgather/tp8.log"
+$DOCKER_RUN "CUDA_VISIBLE_DEVICES=0,1,2,3,4,5,6,7 NCCL_P2P_LEVEL=SYS $HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf -b 8K -e 256M -f 2 -g 8" | tee "$BASE_DIR/reducescatter/tp8.log"
 echo "TP=8 Complete!"
 
 # ==========================================

@@ -1,6 +1,6 @@
 import sys
 
-file_path = '/home/ayu23/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_prefill.cu'
+file_path = '/home/user/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_prefill.cu'
 with open(file_path, 'r') as f:
     content = f.read()
 

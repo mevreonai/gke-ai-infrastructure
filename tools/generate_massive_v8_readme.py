@@ -683,7 +683,7 @@ This section provides a detailed technical post-mortem of the 15 additional benc
     # Section 6
     sections.append("""## 6. Frontend Integration Architecture: The Master HTML Dashboard
 
-The primary deliverable for stakeholders is [MASTER_CHARACTERIZATION_DASHBOARD.html](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html), located in `v8_full_results/dashboards/v4_dashboard/`. This section documents its internal architecture, CSS design system, JavaScript state management, and component-level data mapping.
+The primary deliverable for stakeholders is [MASTER_CHARACTERIZATION_DASHBOARD.html](./v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html), located in `v8_full_results/dashboards/v4_dashboard/`. This section documents its internal architecture, CSS design system, JavaScript state management, and component-level data mapping.
 
 ```
 +-------------------------------------------------------------------------------------------------------------+
@@ -843,7 +843,7 @@ In real-world serving, requests arrive continuously and latency must be minimize
     # Section 8
     sections.append("""## 8. Automated Verification System: The 72-Rule Invariant Suite
 
-To guarantee documentation integrity, prevent regressions, and eliminate human error across updates, the repository includes an automated verification engine: [tools/run_v1_4_verification.py](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/tools/run_v1_4_verification.py).
+To guarantee documentation integrity, prevent regressions, and eliminate human error across updates, the repository includes an automated verification engine: [tools/run_v1_4_verification.py](./tools/run_v1_4_verification.py).
 
 ```
 +-------------------------------------------------------------------------------------------------------------+

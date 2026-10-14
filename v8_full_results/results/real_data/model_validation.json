@@ -2,7 +2,7 @@
   "timestamp": 1790021577.8800855,
   "model": "moonshotai/Kimi-Linear-48B-A3B-Instruct",
   "resolved_revision": "e1df551a447157d4658b573f9a695d57658590e9",
-  "config_path": "/home/ayu23/.cache/huggingface/hub/models--moonshotai--Kimi-Linear-48B-A3B-Instruct/snapshots/e1df551a447157d4658b573f9a695d57658590e9/config.json",
+  "config_path": "/home/user/.cache/huggingface/hub/models--moonshotai--Kimi-Linear-48B-A3B-Instruct/snapshots/e1df551a447157d4658b573f9a695d57658590e9/config.json",
   "config": {
     "architectures": [
       "KimiLinearForCausalLM"

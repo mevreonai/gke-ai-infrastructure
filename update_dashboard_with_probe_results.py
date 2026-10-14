@@ -2,16 +2,16 @@ import os
 import re
 
 dashboard_paths = [
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_CHARACTERIZATION_DASHBOARD_V4_4thOct_2amIST_V8_KIMI48B.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST_WITH_KEYFINDS.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST_NO_KEYFINDS.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboards\v4_dashboard\index.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboards\v4_dashboard\MASTER_CHARACTERIZATION_DASHBOARD.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboards\v4_dashboard\MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\release_specs\index.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\release_specs\MASTER_CHARACTERIZATION_DASHBOARD.html",
-    r"c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\release_specs\MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html",
+    r".MASTER_CHARACTERIZATION_DASHBOARD_V4_4thOct_2amIST_V8_KIMI48B.html",
+    r".MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST.html",
+    r".MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST_WITH_KEYFINDS.html",
+    r".MASTER_CHARACTERIZATION_DASHBOARD_V4_27thSept_7pmIST_NO_KEYFINDS.html",
+    r".v8_full_results\dashboards\v4_dashboard\index.html",
+    r".v8_full_results\dashboards\v4_dashboard\MASTER_CHARACTERIZATION_DASHBOARD.html",
+    r".v8_full_results\dashboards\v4_dashboard\MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html",
+    r".v8_full_results\release_specs\index.html",
+    r".v8_full_results\release_specs\MASTER_CHARACTERIZATION_DASHBOARD.html",
+    r".v8_full_results\release_specs\MASTER_CHARACTERIZATION_DASHBOARD_WITH_KEYFINDS.html",
 ]
 
 # 1. Read canonical source

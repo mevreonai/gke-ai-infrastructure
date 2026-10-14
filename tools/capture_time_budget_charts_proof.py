@@ -9,8 +9,8 @@ import base64
 import tempfile
 
 CHROME_PATH = r"C:\Program Files\Google\Chrome\Application\chrome.exe"
-URL = r"file:///C:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html"
-OUT_DIR = r"C:\Users\ayu23\.gemini\antigravity-ide\brain\d789151d-6b04-46db-87e0-ca30f1fbc13a"
+URL = r"./v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html"
+OUT_DIR = r"C:\Users\user\.gemini\antigravity-ide\brain\d789151d-6b04-46db-87e0-ca30f1fbc13a"
 
 async def capture():
     temp_dir = tempfile.mkdtemp()

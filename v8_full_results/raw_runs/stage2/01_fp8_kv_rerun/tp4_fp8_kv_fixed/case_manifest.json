@@ -25,7 +25,7 @@
   "prefix_caching": false,
   "observability_profile": "full",
   "server_command": [
-    "/home/ayu23/vllm_env/bin/vllm",
+    "/home/user/vllm_env/bin/vllm",
     "serve",
     "moonshotai/Kimi-Linear-48B-A3B-Instruct",
     "--model-impl",

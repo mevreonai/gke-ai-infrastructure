@@ -137,7 +137,7 @@ for i, item in enumerate(cov_items, 1):
         
     # Clean relative manifest path
     c_man_clean = str(c_man).replace('\\', '/')
-    for prefix in ['C:/Users/ayu23/OneDrive/Desktop/tpu/', 'v8_full_results/20260921_195656/', 'v8_full_results/results/real_data/']:
+    for prefix in ['./', 'v8_full_results/20260921_195656/', 'v8_full_results/results/real_data/']:
         c_man_clean = c_man_clean.replace(prefix, '')
     if 'scaleout_matrix/' in c_man_clean:
         c_man_clean = c_man_clean[c_man_clean.find('scaleout_matrix/'):]

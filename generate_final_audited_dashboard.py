@@ -1639,7 +1639,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 html = html.replace('</body>', charts_script + '\n</body>')
 
-out_path = r'c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_CHARACTERIZATION_DASHBOARD.html'
+out_path = r'.MASTER_CHARACTERIZATION_DASHBOARD.html'
 with open(out_path, 'w', encoding='utf-8') as f:
     f.write(html)
 

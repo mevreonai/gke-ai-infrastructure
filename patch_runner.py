@@ -5,7 +5,7 @@ script = """
 import json
 
 # 1. Fix runner_lib.py
-p = '/home/ayu23/V9_FULL/v9_core/runner_lib.py'
+p = '/home/user/V9_FULL/v9_core/runner_lib.py'
 content = open(p).read()
 old_resolved = '''def resolved(case, cfg, key, default=None):
     if key in case: return case[key]
@@ -36,7 +36,7 @@ else:
 open(p, 'w').write(content)
 
 # 2. Fix model configs
-for mpath in ['/home/ayu23/V9_FULL/configs/models/kimi_linear_48b.json', '/home/ayu23/V9_FULL/configs/models/deepseek_v41_flash.json']:
+for mpath in ['/home/user/V9_FULL/configs/models/kimi_linear_48b.json', '/home/user/V9_FULL/configs/models/deepseek_v41_flash.json']:
     try:
         d = json.load(open(mpath))
         if 'server_defaults' in d:
@@ -48,7 +48,7 @@ for mpath in ['/home/ayu23/V9_FULL/configs/models/kimi_linear_48b.json', '/home/
 """
 
 b64 = base64.b64encode(script.encode('utf-8')).decode('utf-8')
-cmd = f'gcloud compute ssh ayu23@kimi-node-0 --zone=us-central1-b --command="echo {b64} | base64 -d | python3"'
+cmd = f'gcloud compute ssh kimi-node-0 --zone=us-central1-b --command="echo {b64} | base64 -d | python3"'
 print("Running patch on kimi-node-0...")
 res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 print("STDOUT:\n", res.stdout)

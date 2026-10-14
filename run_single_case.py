@@ -3,7 +3,7 @@ import argparse, json, os, subprocess, sys, time
 from pathlib import Path
 
 # Add v9_core to path
-sys.path.insert(0, "/home/ayu23/V9_FULL/v9_core")
+sys.path.insert(0, "/home/user/V9_FULL/v9_core")
 from config import load_json, normalize_cluster
 from cluster import start_ray, stop_ray
 
@@ -11,10 +11,10 @@ def main():
     case_name = sys.argv[1] if len(sys.argv) > 1 else "tp8_pp2_dist"
     mode = sys.argv[2] if len(sys.argv) > 2 else "native"
     
-    model_profile_path = "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/logs/MODEL_PROFILE.json"
-    matrix_path = "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/logs/V9_MATRIX.json"
-    cluster_path = "/home/ayu23/v9_full_results/v9_full_production_20260930_143117/logs/CLUSTER_CONFIG.json"
-    out_root = Path("/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results").resolve()
+    model_profile_path = "/home/user/v9_full_results/v9_full_production_20260930_143117/logs/MODEL_PROFILE.json"
+    matrix_path = "/home/user/v9_full_results/v9_full_production_20260930_143117/logs/V9_MATRIX.json"
+    cluster_path = "/home/user/v9_full_results/v9_full_production_20260930_143117/logs/CLUSTER_CONFIG.json"
+    out_root = Path("/home/user/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results").resolve()
     out_root.mkdir(parents=True, exist_ok=True)
 
     profile, _ = load_json(model_profile_path)
@@ -36,8 +36,8 @@ def main():
     start_ray(cluster, nodes, int(case['ray_gpus_per_node']), extra_env=profile.get('server_env') or {})
 
     cmd = [
-        "/home/ayu23/vllm_env/bin/python3",
-        "/home/ayu23/V9_FULL/v9_core/run_multi.py",
+        "/home/user/vllm_env/bin/python3",
+        "/home/user/V9_FULL/v9_core/run_multi.py",
         "--model-profile", model_profile_path,
         "--matrix", matrix_path,
         "--cluster", cluster_path,

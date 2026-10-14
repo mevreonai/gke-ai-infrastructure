@@ -1,5 +1,5 @@
 {
-  "profile_dir": "/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k",
+  "profile_dir": "/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp4_dist/long_prefill_512k",
   "checks": {
     "workload_completed": true,
     "node0_nsys_report": true,

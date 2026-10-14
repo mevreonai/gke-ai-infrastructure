@@ -1,6 +1,6 @@
 import json
 
-path = "/home/ayu23/V9_FULL/configs/models/deepseek_v41_flash.json"
+path = "/home/user/V9_FULL/configs/models/deepseek_v41_flash.json"
 with open(path) as f:
     d = json.load(f)
 

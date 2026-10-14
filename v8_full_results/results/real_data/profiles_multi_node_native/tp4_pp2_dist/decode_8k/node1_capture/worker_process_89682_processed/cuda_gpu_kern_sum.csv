@@ -1,5 +1,5 @@
-Generating SQLite file /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89682.sqlite from /home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89682.nsys-rep
-Processing [/home/ayu23/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89682.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
+Generating SQLite file /home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89682.sqlite from /home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89682.nsys-rep
+Processing [/home/user/v8_full_results/20260921_195656/profiles_multi_node_native/tp4_pp2_dist/decode_8k/node1_capture/worker_process_89682.sqlite] with [/opt/nvidia/nsight-systems/2025.6.3/host-linux-x64/reports/cuda_gpu_kern_sum.py]... 
 Time (%),Total Time (ns),Instances,Avg (ns),Med (ns),Min (ns),Max (ns),StdDev (ns),Name
 64.9,3693374198,13442,274763.7,288351.0,17567,34122072,449224.8,ncclDevKernel_AllReduce_bf16_RING(ncclDevKernelArgsStorage<(unsigned long)4096>)
 13.3,758090808,1032,734584.1,111199.5,23168,77701741,2526915.3,ncclDevKernel_SendRecv(ncclDevKernelArgsStorage<(unsigned long)4096>)

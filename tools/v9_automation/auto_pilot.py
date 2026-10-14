@@ -30,7 +30,7 @@ def get_status_summary():
     cmd = [
         "gcloud.cmd", "compute", "ssh", "kimi-node-0",
         f"--zone={ZONE}", "--tunnel-through-iap",
-        "--command=echo === DIRS ===; ls /home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist; echo === RECENT LOG ===; tail -n 5 $(ls -t /home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/*/bench_stdout.log 2>/dev/null | head -n 1) 2>/dev/null || true"
+        "--command=echo === DIRS ===; ls /home/user/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist; echo === RECENT LOG ===; tail -n 5 $(ls -t /home/user/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/*/bench_stdout.log 2>/dev/null | head -n 1) 2>/dev/null || true"
     ]
     stdout, stderr, rc = run_cmd(cmd)
     return stdout.strip()
@@ -46,7 +46,7 @@ def download_and_stop():
     os.makedirs("v9_full_result/tp4_pp2_dist_live", exist_ok=True)
     scp_cmd = [
         "gcloud.cmd", "compute", "scp", "--recurse",
-        "kimi-node-0:/home/ayu23/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist",
+        "kimi-node-0:~/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist",
         "v9_full_result/tp4_pp2_dist_live",
         f"--zone={ZONE}", "--tunnel-through-iap"
     ]

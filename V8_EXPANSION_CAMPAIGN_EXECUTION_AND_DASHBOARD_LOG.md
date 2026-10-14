@@ -5,10 +5,10 @@
 **Cluster Architecture:** Dual 8× NVIDIA RTX PRO 6000 Ada / Blackwell Server Nodes (16× GPUs, 960 GB VRAM), 100 Gbps Google Cloud Andromeda VPC  
 **Target Model:** `moonshotai/Kimi-Linear-48B-A3B-Instruct` (Git commit: `e1df551a447157d4658b573f9a695d57658590e9`)  
 **Target Dashboards:**  
-- [`v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
-- [`v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json)  
-- [`v8_full_results/dashboards/v4_dashboard/index.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/index.html)  
-- [`Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
+- [`v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`](./v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
+- [`v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json`](./v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json)  
+- [`v8_full_results/dashboards/v4_dashboard/index.html`](./v8_full_results/dashboards/v4_dashboard/index.html)  
+- [`Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html`](./dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html)  
 
 ---
 
@@ -16,7 +16,7 @@
 
 This log documents the end-to-end execution, empirical data ingestion, and visual dashboard transformations across all runs in **Group A (A1–A8)**, **Group B (B1–B13)**, and **Strategic Expansions (R1–R4)** for the V8 Characterization Campaign.
 
-All workloads executed on the dual-node Blackwell cluster (`kimi-node-0` and `kimi-node-1`), achieved **100% completion (exit code `rc: 0`)**, were packaged into the 4.85 GB master archive (`v8_additional_runs_20261009_104123.tar.gz`), synchronized to Google Cloud Storage (`gs://mevreon-v8-benchmark-vault/`), and extracted locally to [v8_full_results/raw_runs](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/raw_runs). Both GPU cluster nodes were subsequently terminated to eliminate idle compute spend.
+All workloads executed on the dual-node Blackwell cluster (`kimi-node-0` and `kimi-node-1`), achieved **100% completion (exit code `rc: 0`)**, were packaged into the 4.85 GB master archive (`v8_additional_runs_20261009_104123.tar.gz`), synchronized to Google Cloud Storage (`gs://mevreon-v8-benchmark-vault/`), and extracted locally to [v8_full_results/raw_runs](./v8_full_results/raw_runs). Both GPU cluster nodes were subsequently terminated to eliminate idle compute spend.
 
 Every empirical measurement has been injected into the interactive Master Characterization Dashboard and canonical data structures, resolving all historical vacancies, methodological distortions, and missing hardware timelines.
 
@@ -147,10 +147,10 @@ Every empirical measurement has been injected into the interactive Master Charac
 
 | Artifact Location | Role | Size | Verification Status |
 | :--- | :--- | :---: | :---: |
-| [v8_full_results/raw_runs](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/raw_runs) | Raw logs, CSVs, and traces for Stages 1, 2, 3 | 4.85 GB (5,331 files) | **VERIFIED (rc: 0)** |
-| [v8_full_results/raw_runs_20261005_backup](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/raw_runs_20261005_backup) | Oct 5 baseline runs preservation backup | 2.55 GB | **PRESERVED** |
+| [v8_full_results/raw_runs](./v8_full_results/raw_runs) | Raw logs, CSVs, and traces for Stages 1, 2, 3 | 4.85 GB (5,331 files) | **VERIFIED (rc: 0)** |
+| [v8_full_results/raw_runs_20261005_backup](./v8_full_results/raw_runs_20261005_backup) | Oct 5 baseline runs preservation backup | 2.55 GB | **PRESERVED** |
 | `gs://mevreon-v8-benchmark-vault/archives/v8_additional_runs_20261009_104123.tar.gz` | Cloud Storage master archive | 4,851,912,323 bytes | **HASH MATCHED** |
-| [v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html) | Standalone master interactive dashboard | 3,947,360 bytes | **ENHANCED & VERIFIED** |
-| [v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json) | Structured database driving UI controls | 338,214 bytes | **SYNCHRONIZED** |
-| [v8_full_results/dashboards/v4_dashboard/index.html](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/index.html) | Production web server mirror | 3,947,360 bytes | **SYNCHRONIZED** |
-| [Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html) | Platform production dashboard mirror | 3,947,324 bytes | **SYNCHRONIZED** |
+| [v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html](./v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html) | Standalone master interactive dashboard | 3,947,360 bytes | **ENHANCED & VERIFIED** |
+| [v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json](./v8_full_results/dashboards/v4_dashboard/DASHBOARD_CANONICAL_DATA.json) | Structured database driving UI controls | 338,214 bytes | **SYNCHRONIZED** |
+| [v8_full_results/dashboards/v4_dashboard/index.html](./v8_full_results/dashboards/v4_dashboard/index.html) | Production web server mirror | 3,947,360 bytes | **SYNCHRONIZED** |
+| [Performance_Intelligence_Platform/dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html](./dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html) | Platform production dashboard mirror | 3,947,324 bytes | **SYNCHRONIZED** |

@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 def ssh_cmd(host, cmd, node="kimi-node-0"):
-    full_cmd = f'gcloud compute ssh ayu23@{node} --zone=us-central1-b --tunnel-through-iap --command="{cmd}"'
+    full_cmd = f'gcloud compute ssh {node} --zone=us-central1-b --tunnel-through-iap --command="{cmd}"'
     res = subprocess.run(full_cmd, shell=True, capture_output=True, text=True)
     return res.stdout, res.stderr, res.returncode
 

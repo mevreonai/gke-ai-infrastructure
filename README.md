@@ -122,7 +122,7 @@ All benchmark runs are strictly locked to the following software versions to gua
 ### Step 1: Clone the Codebase
 Clone the repository to your primary orchestrator node (Node 0):
 ```bash
-git clone https://github.com/unrealayush/gke-ai-infrastructure.git
+git clone https://github.com/mevreonai/gke-ai-infrastructure.git
 cd gke-ai-infrastructure
 ```
 

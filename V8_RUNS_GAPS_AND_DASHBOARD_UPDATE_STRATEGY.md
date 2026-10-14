@@ -4,7 +4,7 @@
 > **Target Campaign**: V8 Pilot Benchmark Suite (`run_id: 20260921_195656`)  
 > **Hardware Architecture**: Dual-Node NVIDIA RTX 6000 Ada Cluster (16× 96GB GPUs, AMD EPYC 9654, PCIe Gen4/5, MTU 8896 VPC)  
 > **Model Surrogate**: Moonshot AI Kimi-Linear-48B-A3B-Instruct (MLA, 27 Layers, 20 KDA, 7 Full-Attention, 256 Routed MoE Experts, BF16, 1M Max Length)  
-> **Primary Sources**: [`V8_Gaps_and_Rerun_Plan_v1.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_Gaps_and_Rerun_Plan_v1.md), [`V8_Gaps_and_Rerun_Plan_v1.3.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_Gaps_and_Rerun_Plan_v1.3.md), [`V8_MISSED_RUNS_AUDIT.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_MISSED_RUNS_AUDIT.md), [`FINAL_VALIDATION.json`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json).
+> **Primary Sources**: [`V8_Gaps_and_Rerun_Plan_v1.md`](./V8_Gaps_and_Rerun_Plan_v1.md), [`V8_Gaps_and_Rerun_Plan_v1.3.md`](./V8_Gaps_and_Rerun_Plan_v1.3.md), [`V8_MISSED_RUNS_AUDIT.md`](./V8_MISSED_RUNS_AUDIT.md), [`FINAL_VALIDATION.json`](./v8_full_results/results/real_data/final_validation/FINAL_VALIDATION.json).
 
 ---
 
@@ -88,7 +88,7 @@ Out of 22 distributed Nsight Systems profile points:
 
 ## 3. Plan Evolution: What Was Added Between `v1.0` and `v1.3`
 
-[`V8_Gaps_and_Rerun_Plan_v1.3.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/V8_Gaps_and_Rerun_Plan_v1.3.md) systematically expanded the scope to eliminate every *"NOT YET MEASURED"* gap in the technical audit:
+[`V8_Gaps_and_Rerun_Plan_v1.3.md`](./V8_Gaps_and_Rerun_Plan_v1.3.md) systematically expanded the scope to eliminate every *"NOT YET MEASURED"* gap in the technical audit:
 
 | Plan Item | Origin | Targeted Finding & Architectural Purpose | Est. Time |
 |---|---|---|---:|

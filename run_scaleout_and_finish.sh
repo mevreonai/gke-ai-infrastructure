@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -e
-source /home/ayu23/vllm_env/bin/activate
-export PATH=/home/ayu23/vllm_env/bin:/usr/local/cuda/bin:/usr/local/bin:/usr/bin:$PATH
-cd /home/ayu23/V9_FULL
+source $HOME/vllm_env/bin/activate
+export PATH=$HOME/vllm_env/bin:/usr/local/cuda/bin:/usr/local/bin:/usr/bin:$PATH
+cd $HOME/V9_FULL
 
-RUN_ROOT=/home/ayu23/v9_full_results/v9_full_production_20260930_143117
+RUN_ROOT=$HOME/v9_full_results/v9_full_production_20260930_143117
 MODEL_PROFILE=$RUN_ROOT/logs/MODEL_PROFILE.json
 MATRIX=$RUN_ROOT/logs/V9_MATRIX.json
 CLUSTER=$RUN_ROOT/logs/CLUSTER_CONFIG.json

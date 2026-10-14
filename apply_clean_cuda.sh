@@ -31,7 +31,7 @@ if ! grep -q "CUDA_HOME" /etc/environment 2>/dev/null; then
 fi
 
 # 6. Inject into bashrc and vllm_env activate script
-for target in /home/ayu23/.bashrc /home/ayu23/vllm_env/bin/activate; do
+for target in $HOME/.bashrc $HOME/vllm_env/bin/activate; do
     if [ -f "$target" ]; then
         sed -i '/export CUDA_HOME/d' "$target"
         sed -i '/export PATH=\/usr\/local\/cuda/d' "$target"

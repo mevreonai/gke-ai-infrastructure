@@ -16,7 +16,7 @@ print('has_flashinfer_sparse_mla_sm120_config(8, 128):', has_flashinfer_sparse_m
 '''
 
 # Write to remote file
-subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', f"cat << 'EOF' > /home/ayu23/test_tp6.py\n{remote_code}\nEOF"])
-res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', '/home/ayu23/vllm_env/bin/python3 /home/ayu23/test_tp6.py'], capture_output=True, text=True)
+subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', f"cat << 'EOF' > /home/user/test_tp6.py\n{remote_code}\nEOF"])
+res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', '/home/user/vllm_env/bin/python3 /home/user/test_tp6.py'], capture_output=True, text=True)
 print("STDOUT:\n", res.stdout)
 print("STDERR:\n", res.stderr)

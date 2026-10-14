@@ -2,8 +2,8 @@
 set -u
 
 RUN_ID="20261005_210750"
-STAGE2_ROOT="/home/ayu23/v8_additional_runs/$RUN_ID/stage2"
-PID_FILE="/home/ayu23/stage2.pid"
+STAGE2_ROOT="$HOME/v8_additional_runs/$RUN_ID/stage2"
+PID_FILE="$HOME/stage2.pid"
 
 echo "=== STAGE 2 PROCESS STATUS ==="
 if [[ -f "$PID_FILE" ]]; then
@@ -36,8 +36,8 @@ fi
 
 echo ""
 echo "=== LAST 30 LINES OF NOHUP LOG ==="
-if [[ -f /home/ayu23/stage2_nohup.log ]]; then
-  tail -n 30 /home/ayu23/stage2_nohup.log
+if [[ -f $HOME/stage2_nohup.log ]]; then
+  tail -n 30 $HOME/stage2_nohup.log
 fi
 
 echo ""

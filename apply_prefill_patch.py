@@ -1,7 +1,7 @@
 import subprocess
 
 patch_code = '''
-prefill_path = "/home/ayu23/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_prefill.cu"
+prefill_path = "/home/user/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_prefill.cu"
 with open(prefill_path, "r") as f:
     code = f.read()
 
@@ -25,10 +25,10 @@ else:
 import base64
 b64 = base64.b64encode(patch_code.encode()).decode()
 
-cmd0 = f"echo '{b64}' | base64 -d > /tmp/patch_prefill.py && /home/ayu23/vllm_env/bin/python3 /tmp/patch_prefill.py"
+cmd0 = f"echo '{b64}' | base64 -d > /tmp/patch_prefill.py && /home/user/vllm_env/bin/python3 /tmp/patch_prefill.py"
 res0 = subprocess.run(["python", "run_ssh.py", "kimi-node-0", cmd0], capture_output=True, text=True)
 print("NODE 0 PATCH:\n", res0.stdout, res0.stderr)
 
-cmd1 = f"echo '{b64}' | base64 -d > /tmp/patch_prefill.py && /home/ayu23/vllm_env/bin/python3 /tmp/patch_prefill.py"
+cmd1 = f"echo '{b64}' | base64 -d > /tmp/patch_prefill.py && /home/user/vllm_env/bin/python3 /tmp/patch_prefill.py"
 res1 = subprocess.run(["python", "run_ssh.py", "kimi-node-1", cmd1], capture_output=True, text=True)
 print("NODE 1 PATCH:\n", res1.stdout, res1.stderr)

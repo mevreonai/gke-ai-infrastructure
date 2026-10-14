@@ -1,7 +1,7 @@
 import re, os, csv
 from collections import defaultdict
 
-base_dir = r"c:\Users\ayu23\OneDrive\Desktop\tpu\rtx_g4_smoke_v4\results\network_allgather_reducescatter_sweep"
+base_dir = r".rtx_g4_smoke_v4\results\network_allgather_reducescatter_sweep"
 os.makedirs(base_dir, exist_ok=True)
 
 tiers = [

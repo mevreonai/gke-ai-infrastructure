@@ -48,6 +48,6 @@ In order to prevent prefix caching distortion across concurrency levels, single-
 ---
 
 ## 📖 Reference Guides
-- Master Run Coverage Matrix (Steps 00-20): [`RUN_COVERAGE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/RUN_COVERAGE.md)
-- Full script execution parameters: [`SCRIPTS_AND_RESULTS_GUIDE.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/SCRIPTS_AND_RESULTS_GUIDE.md)
-- Complete measured benchmarks: [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/PIP_MASTER_RESULTS_AND_BENCHMARKS.md)
+- Master Run Coverage Matrix (Steps 00-20): [`RUN_COVERAGE.md`](../../RUN_COVERAGE.md)
+- Full script execution parameters: [`SCRIPTS_AND_RESULTS_GUIDE.md`](../../SCRIPTS_AND_RESULTS_GUIDE.md)
+- Complete measured benchmarks: [`PIP_MASTER_RESULTS_AND_BENCHMARKS.md`](../../PIP_MASTER_RESULTS_AND_BENCHMARKS.md)

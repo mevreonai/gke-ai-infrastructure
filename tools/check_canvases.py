@@ -8,7 +8,7 @@ async def test():
         "--headless=new",
         f"--user-data-dir={temp_dir}",
         f"--remote-debugging-port={port}",
-        r"file:///C:/Users/ayu23/OneDrive/Desktop/tpu/v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html"
+        r"./v8_full_results/dashboards/v4_dashboard/MASTER_CHARACTERIZATION_DASHBOARD.html"
     ])
     time.sleep(3)
     try:

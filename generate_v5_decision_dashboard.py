@@ -1691,11 +1691,11 @@ html = html.replace('</body>', scripts_body + '\n</body>')
 
 # 23. Write to primary outputs
 out_files = [
-    r'c:\Users\ayu23\OneDrive\Desktop\tpu\MASTER_DECISION_DASHBOARD_V5.html',
-    r'c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboards\v5_dashboard\index.html',
-    r'c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboards\v5_dashboard\MASTER_DECISION_DASHBOARD_V5.html',
-    r'c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboard\v5_dashboard\index.html',
-    r'c:\Users\ayu23\OneDrive\Desktop\tpu\v8_full_results\dashboard\v5_dashboard\MASTER_DECISION_DASHBOARD_V5.html',
+    r'.MASTER_DECISION_DASHBOARD_V5.html',
+    r'.v8_full_results\dashboards\v5_dashboard\index.html',
+    r'.v8_full_results\dashboards\v5_dashboard\MASTER_DECISION_DASHBOARD_V5.html',
+    r'.v8_full_results\dashboard\v5_dashboard\index.html',
+    r'.v8_full_results\dashboard\v5_dashboard\MASTER_DECISION_DASHBOARD_V5.html',
 ]
 
 for out_path in out_files:

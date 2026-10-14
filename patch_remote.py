@@ -2,7 +2,7 @@ import base64
 import subprocess
 
 script = """
-p = '/home/ayu23/V9_FULL/21_static_validate_v9.py'
+p = '/home/user/V9_FULL/21_static_validate_v9.py'
 content = open(p).read()
 old1 = "check(suite.get('network_modes')==['native','100g','20g'],'suite network modes exactly native/100g/20g',errors,checks)"
 new1 = "check(set(suite.get('network_modes',[])).issubset({'native','100g','20g'}) and len(suite.get('network_modes',[]))>0,'suite network modes valid subset of native/100g/20g',errors,checks)"
@@ -25,7 +25,7 @@ open(p, 'w').write(content)
 """
 
 b64 = base64.b64encode(script.encode('utf-8')).decode('utf-8')
-cmd = f'gcloud compute ssh ayu23@kimi-node-0 --zone=us-central1-b --command="echo {b64} | base64 -d | python3 && chmod +x /home/ayu23/V9_FULL/*.sh /home/ayu23/V9_FULL/rtx_hw/*.sh"'
+cmd = f'gcloud compute ssh kimi-node-0 --zone=us-central1-b --command="echo {b64} | base64 -d | python3 && chmod +x /home/user/V9_FULL/*.sh /home/user/V9_FULL/rtx_hw/*.sh"'
 print("Running patch command...")
 res = subprocess.run(cmd, shell=True, capture_output=True, text=True)
 print("STDOUT:\n", res.stdout)

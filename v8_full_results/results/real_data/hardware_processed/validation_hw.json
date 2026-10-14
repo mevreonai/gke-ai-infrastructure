@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "root": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw",
+  "root": "/home/user/v8_full_results/20260921_195656/hardware_raw",
   "require_caps": true,
   "required_networks": [
     "GCP_NATIVE",
@@ -13,7 +13,7 @@
     {
       "name": "node0:dir",
       "ok": true,
-      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0"
+      "detail": "/home/user/v8_full_results/20260921_195656/hardware_raw/node0"
     },
     {
       "name": "node0:nvbandwidth_host_gpu.raw.json",
@@ -168,15 +168,15 @@
       "detail": {
         "skipped": true,
         "logs": [
-          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/160_cutlass_fp16_large_shape_reference.log",
-          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node0/161_cutlass_fp16_kimi_width_shape_reference.log"
+          "/home/user/v8_full_results/20260921_195656/hardware_raw/node0/160_cutlass_fp16_large_shape_reference.log",
+          "/home/user/v8_full_results/20260921_195656/hardware_raw/node0/161_cutlass_fp16_kimi_width_shape_reference.log"
         ]
       }
     },
     {
       "name": "node1:dir",
       "ok": true,
-      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1"
+      "detail": "/home/user/v8_full_results/20260921_195656/hardware_raw/node1"
     },
     {
       "name": "node1:nvbandwidth_host_gpu.raw.json",
@@ -331,15 +331,15 @@
       "detail": {
         "skipped": true,
         "logs": [
-          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/160_cutlass_fp16_large_shape_reference.log",
-          "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/node1/161_cutlass_fp16_kimi_width_shape_reference.log"
+          "/home/user/v8_full_results/20260921_195656/hardware_raw/node1/160_cutlass_fp16_large_shape_reference.log",
+          "/home/user/v8_full_results/20260921_195656/hardware_raw/node1/161_cutlass_fp16_kimi_width_shape_reference.log"
         ]
       }
     },
     {
       "name": "network:dir",
       "ok": true,
-      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0"
+      "detail": "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0"
     },
     {
       "name": "network:caps_not_skipped",
@@ -401,21 +401,21 @@
       "name": "network:GCP_NATIVE:crossnode_TP2",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_NATIVE.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_NATIVE.log"
       ]
     },
     {
       "name": "network:GCP_NATIVE:crossnode_TP8",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_NATIVE.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_NATIVE.log"
       ]
     },
     {
       "name": "network:GCP_NATIVE:crossnode_TP16",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_NATIVE.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_NATIVE.log"
       ]
     },
     {
@@ -473,21 +473,21 @@
       "name": "network:GCP_CAPPED_100G:crossnode_TP2",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_100G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_100G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_100G:crossnode_TP8",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_100G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_100G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_100G:crossnode_TP16",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_100G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_100G.log"
       ]
     },
     {
@@ -545,21 +545,21 @@
       "name": "network:GCP_CAPPED_50G:crossnode_TP2",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_50G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_50G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_50G:crossnode_TP8",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_50G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_50G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_50G:crossnode_TP16",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_50G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_50G.log"
       ]
     },
     {
@@ -617,21 +617,21 @@
       "name": "network:GCP_CAPPED_20G:crossnode_TP2",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_20G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_20G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_20G:crossnode_TP8",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_20G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_20G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_20G:crossnode_TP16",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_20G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_20G.log"
       ]
     },
     {
@@ -689,21 +689,21 @@
       "name": "network:GCP_CAPPED_10G:crossnode_TP2",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_10G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP2_GCP_CAPPED_10G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_10G:crossnode_TP8",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_10G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP8_GCP_CAPPED_10G.log"
       ]
     },
     {
       "name": "network:GCP_CAPPED_10G:crossnode_TP16",
       "ok": true,
       "detail": [
-        "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_10G.log"
+        "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/225_crossnode_ar_TP16_GCP_CAPPED_10G.log"
       ]
     },
     {
@@ -719,7 +719,7 @@
     {
       "name": "network:nccl_debug_native_sendrecv",
       "ok": true,
-      "detail": "/home/ayu23/v8_full_results/20260921_195656/hardware_raw/network_node0/240_nccl_debug_sendrecv_native_128m.log"
+      "detail": "/home/user/v8_full_results/20260921_195656/hardware_raw/network_node0/240_nccl_debug_sendrecv_native_128m.log"
     },
     {
       "name": "structured_benchmark_logs_exit_zero",

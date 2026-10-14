@@ -1,9 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-RESULTS_DIR="/home/ayu23/rtx_g4_smoke/allreduce_network_sweep"
+RESULTS_DIR="$HOME/rtx_g4_smoke/allreduce_network_sweep"
 mkdir -p "$RESULTS_DIR"
-HOSTFILE="/home/ayu23/rtx_g4_smoke/hosts"
+HOSTFILE="$HOME/rtx_g4_smoke/hosts"
 NODE1_IP="10.128.0.40"
 
 IFACE="ens3"
