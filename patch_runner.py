@@ -5,7 +5,7 @@ script = """
 import json
 
 # 1. Fix runner_lib.py
-p = '/home/user/V9_FULL/v9_core/runner_lib.py'
+p = '$HOME/V9_FULL/v9_core/runner_lib.py'
 content = open(p).read()
 old_resolved = '''def resolved(case, cfg, key, default=None):
     if key in case: return case[key]
@@ -36,7 +36,7 @@ else:
 open(p, 'w').write(content)
 
 # 2. Fix model configs
-for mpath in ['/home/user/V9_FULL/configs/models/kimi_linear_48b.json', '/home/user/V9_FULL/configs/models/deepseek_v41_flash.json']:
+for mpath in ['$HOME/V9_FULL/configs/models/kimi_linear_48b.json', '$HOME/V9_FULL/configs/models/deepseek_v41_flash.json']:
     try:
         d = json.load(open(mpath))
         if 'server_defaults' in d:

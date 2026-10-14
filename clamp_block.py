@@ -1,4 +1,4 @@
-file_path = "/home/user/vllm_env/lib64/python3.12/site-packages/vllm/utils/deep_gemm.py"
+file_path = "$HOME/vllm_env/lib64/python3.12/site-packages/vllm/utils/deep_gemm.py"
 content = open(file_path).read()
 
 target = "    return _get_paged_mqa_logits_metadata_impl("

@@ -5,7 +5,7 @@ from collections import defaultdict
 tp4_data = {}
 tp8_data = {}
 
-summary_path = '/home/user/rtx_g4_smoke/results/20260915_smoke_v4/summary/nccl_points.csv'
+summary_path = '$HOME/rtx_g4_smoke/results/20260915_smoke_v4/summary/nccl_points.csv'
 if os.path.exists(summary_path):
     with open(summary_path) as f:
         reader = csv.DictReader(f)
@@ -25,7 +25,7 @@ if os.path.exists(summary_path):
 
 # 2. Load TP2
 tp2_data = {}
-tp2_log = '/home/user/rtx_g4_smoke/pair_results/tp2.log'
+tp2_log = '$HOME/rtx_g4_smoke/pair_results/tp2.log'
 if os.path.exists(tp2_log):
     with open(tp2_log) as f:
         for line in f:
@@ -40,7 +40,7 @@ if os.path.exists(tp2_log):
 
 # 3. Load TP16
 tp16_raw = defaultdict(list)
-tp16_log = '/home/user/rtx_g4_smoke/pair_results/tp16.log'
+tp16_log = '$HOME/rtx_g4_smoke/pair_results/tp16.log'
 if os.path.exists(tp16_log):
     with open(tp16_log) as f:
         for line in f:
@@ -96,7 +96,7 @@ for s in sizes:
         'pair3_tp1_algbw_gbs': 0.0
     })
 
-out_dir = '/home/user/rtx_g4_smoke/pair_results'
+out_dir = '$HOME/rtx_g4_smoke/pair_results'
 os.makedirs(out_dir, exist_ok=True)
 out_csv = os.path.join(out_dir, 'three_pair_results.csv')
 with open(out_csv, 'w', newline='') as f:

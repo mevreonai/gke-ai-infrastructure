@@ -159,25 +159,25 @@
       "category": "Tools S8.1",
       "name": "tools/compile_canonical_data.py exists and is syntactically valid",
       "status": "PASS",
-      "details": "C:\\Users\\user\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\compile_canonical_data.py"
+      "details": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\compile_canonical_data.py"
     },
     {
       "category": "Tools S8.2",
       "name": "tools/run_v1_4_verification.py exists and is syntactically valid",
       "status": "PASS",
-      "details": "C:\\Users\\user\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\run_v1_4_verification.py"
+      "details": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\tools\\run_v1_4_verification.py"
     },
     {
       "category": "Integrity S9.1",
-      "name": "All Python files (67) compile cleanly without SyntaxError",
+      "name": "All Python files (68) compile cleanly without SyntaxError",
       "status": "PASS",
-      "details": "67 files compiled successfully"
+      "details": "68 files compiled successfully"
     },
     {
       "category": "Integrity S9.2",
-      "name": "All JSON configurations (56) parse cleanly without JSONDecodeError",
+      "name": "All JSON configurations (57) parse cleanly without JSONDecodeError",
       "status": "PASS",
-      "details": "56 files validated successfully"
+      "details": "57 files validated successfully"
     }
   ]
 }

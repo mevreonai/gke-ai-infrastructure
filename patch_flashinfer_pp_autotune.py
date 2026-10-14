@@ -1,7 +1,7 @@
 import os
 
 def patch():
-    path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/model_executor/warmup/kernel_warmup.py"
+    path = "$HOME/vllm_env/lib/python3.12/site-packages/vllm/model_executor/warmup/kernel_warmup.py"
     with open(path, "r") as f:
         content = f.read()
 

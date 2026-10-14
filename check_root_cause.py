@@ -5,7 +5,7 @@ script = """
 import re
 
 for name in ['tp4_kv_fp8_probe', 'tp4_offload_probe']:
-    p = f'/home/user/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/{name}/server.log'
+    p = f'$HOME/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/{name}/server.log'
     print(f'=== ROOT CAUSE FOR {name} ===')
     try:
         lines = open(p).readlines()

@@ -6,7 +6,7 @@ import sys
 
 remote_runner = """#!/usr/bin/env bash
 set -e
-export PATH=/home/user/vllm_env/bin:$PATH
+export PATH=$HOME/vllm_env/bin:$PATH
 export VLLM_LOGGING_LEVEL=INFO
 
 # Cleanup old traces and logs
@@ -18,7 +18,7 @@ pkill -9 -f vllm || true
 sleep 2
 
 echo "Starting vLLM server with profiler enabled on TP=8..."
-/home/user/vllm_env/bin/python3 -m vllm.entrypoints.openai.api_server \
+$HOME/vllm_env/bin/python3 -m vllm.entrypoints.openai.api_server \
     --model /data/models/deepseek-v4.1-flash \
     --tensor-parallel-size 8 \
     --enforce-eager \
@@ -66,7 +66,7 @@ START_RESP=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X POST http://127.0.0.1:80
 echo "Start profile response: $START_RESP"
 
 echo "Sending profiled benchmark request (Long Prefill 4096 tokens + 128 decode tokens)..."
-/home/user/vllm_env/bin/python3 - << 'EOF'
+$HOME/vllm_env/bin/python3 - << 'EOF'
 import requests, json, time
 
 # Generate a prompt of ~4096 tokens

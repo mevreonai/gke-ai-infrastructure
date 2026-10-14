@@ -21,19 +21,19 @@ IFACE="ens3"
 cat << 'EOF' > /tmp/all_reduce_perf_docker
 #!/bin/bash
 LOCAL_RANK=${OMPI_COMM_WORLD_LOCAL_RANK:-0}
-exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
 EOF
 
 cat << 'EOF' > /tmp/all_gather_perf_docker
 #!/bin/bash
 LOCAL_RANK=${OMPI_COMM_WORLD_LOCAL_RANK:-0}
-exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
 EOF
 
 cat << 'EOF' > /tmp/reduce_scatter_perf_docker
 #!/bin/bash
 LOCAL_RANK=${OMPI_COMM_WORLD_LOCAL_RANK:-0}
-exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -e CUDA_VISIBLE_DEVICES=${LOCAL_RANK} -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
 EOF
 
 chmod +x /tmp/all_reduce_perf_docker /tmp/all_gather_perf_docker /tmp/reduce_scatter_perf_docker

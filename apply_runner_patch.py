@@ -1,6 +1,6 @@
 import sys
 
-path = '/home/user/V9_FULL/v9_core/run_single.py'
+path = '$HOME/V9_FULL/v9_core/run_single.py'
 with open(path, 'r') as f:
     content = f.read()
 

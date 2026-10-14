@@ -1,7 +1,7 @@
 import re, sys
 
 # 1. Fix sparse_swa.py: set max_image_tokens = 0 when language_model_only is enabled or vision is disabled
-swa_path = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/sparse_swa.py'
+swa_path = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/sparse_swa.py'
 with open(swa_path, 'r') as f:
     swa_code = f.read()
 
@@ -28,8 +28,8 @@ else:
 
 # 2. Restore model.py to DeepseekV4FlashInferSM120Attention
 for model_path in [
-    '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/model.py',
-    '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py'
+    '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/model.py',
+    '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py'
 ]:
     try:
         with open(model_path, 'r') as f:

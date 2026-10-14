@@ -21,7 +21,7 @@ def inspect_code_sentinel():
     import subprocess
     print("=== GREP IMAGE_SENTINEL_LO ===")
     res = subprocess.run(
-        "grep -rn 'image_sentinel_lo' /home/user/vllm_env/lib64/python3.12/site-packages/vllm/model_executor/layers/fused_moe",
+        "grep -rn 'image_sentinel_lo' $HOME/vllm_env/lib64/python3.12/site-packages/vllm/model_executor/layers/fused_moe",
         shell=True, capture_output=True, text=True
     )
     print(res.stdout)
@@ -30,7 +30,7 @@ def inspect_tid2eid():
     import subprocess
     print("=== GREP TID2EID IN MODEL LAYERS ===")
     res = subprocess.run(
-        "grep -rn 'tid2eid' /home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4*",
+        "grep -rn 'tid2eid' $HOME/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4*",
         shell=True, capture_output=True, text=True
     )
     print(res.stdout)

@@ -46,7 +46,7 @@ ENVS=()
 while IFS='=' read -r k _; do ENVS+=(-e "$k"); done < <(env | grep -E '^(OMPI_|PMIX_|NCCL_|UCX_|OPAL_)')
 exec docker run --rm --gpus all --ipc=host --net=host --pid=host \
     -e CUDA_VISIBLE_DEVICES="${LOCAL_RANK}" "${ENVS[@]}" \
-    -v /home/user:/home/user -v /tmp:/tmp \
+    -v $HOME:$HOME -v /tmp:/tmp \
     --entrypoint /bin/bash rtx-smoke:latest \
     -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
 EOF
@@ -136,7 +136,7 @@ run_multinode() {
     echo "OK: $np ranks, 1 job, NET hops present, tc counted $((after-before)) bytes."
 }
 
-DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c"
+DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ============================== PHASE 1: node-local baselines =================
 # These run ONE process with -g N, so no MPI is involved and no container

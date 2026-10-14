@@ -10,6 +10,6 @@ def run_ssh(cmd):
     p = subprocess.run(full_cmd, capture_output=True, text=True)
     return p.stdout, p.stderr, p.returncode
 
-cmd = "tail -n 35 /home/user/tp4_pp2_dist_live.log"
+cmd = "tail -n 35 $HOME/tp4_pp2_dist_live.log"
 out, err, code = run_ssh(cmd)
 print("tp4_pp2_dist_live.log tail:\n", out)

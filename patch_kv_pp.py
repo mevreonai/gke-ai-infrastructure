@@ -2,7 +2,7 @@ import os
 import sys
 
 def patch_worker_utils():
-    path = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/worker/utils.py'
+    path = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/worker/utils.py'
     if not os.path.exists(path):
         print(f"File not found: {path}")
         return False
@@ -42,7 +42,7 @@ def patch_worker_utils():
         return False
 
 def patch_attn_utils():
-    path = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/worker/gpu/attn_utils.py'
+    path = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/worker/gpu/attn_utils.py'
     if not os.path.exists(path):
         print(f"File not found: {path}")
         return False

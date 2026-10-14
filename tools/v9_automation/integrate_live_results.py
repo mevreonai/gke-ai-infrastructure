@@ -89,7 +89,7 @@ for name, b_meta in bench_map.items():
     ctx_toks, conc = ctx_map.get(name, (b_meta.get("input", 1024), b_meta.get("concurrency", 1)))
     
     run_entry = {
-        "manifest": "/home/user/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json",
+        "manifest": "$HOME/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json",
         "case": "tp4_pp2_dist",
         "bench": name,
         "status": "COMPLETED",

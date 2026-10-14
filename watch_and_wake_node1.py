@@ -95,7 +95,7 @@ def main():
             elapsed_hours = (now_sec - START_TIMESTAMP) / 3600.0
             
             # Query Node 0 for single-node progress
-            check_cmd = f"ls -1 /home/user/v9_full_results/{RUN_ID}/vllm_single_node_v9_matrix/ 2>/dev/null | wc -l; tail -n 1 /home/user/v9_full_results/{RUN_ID}/logs/phase_status.jsonl 2>/dev/null; ps aux | grep -v grep | grep run_single | wc -l"
+            check_cmd = f"ls -1 $HOME/v9_full_results/{RUN_ID}/vllm_single_node_v9_matrix/ 2>/dev/null | wc -l; tail -n 1 $HOME/v9_full_results/{RUN_ID}/logs/phase_status.jsonl 2>/dev/null; ps aux | grep -v grep | grep run_single | wc -l"
             rc, out, _ = ssh_node0(check_cmd)
             
             lines = out.split("\n") if rc == 0 else []

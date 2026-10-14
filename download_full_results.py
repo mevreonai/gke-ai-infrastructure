@@ -3,7 +3,7 @@ import os
 import tarfile
 
 def download_and_extract():
-    remote_archive = "/home/user/V9_TEST2_RESULTS_v9_test2_20260927_163750.tar.gz"
+    remote_archive = "$HOME/V9_TEST2_RESULTS_v9_test2_20260927_163750.tar.gz"
     local_archive = r".V9_TEST2_RESULTS_v9_test2_20260927_163750.tar.gz"
     extract_dir = r".v9_test2_results"
     

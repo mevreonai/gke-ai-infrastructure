@@ -2,7 +2,7 @@ import os
 import sys
 
 def patch_router():
-    path = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py'
+    path = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py'
     if not os.path.exists(path):
         print(f"File not found: {path}")
         return False

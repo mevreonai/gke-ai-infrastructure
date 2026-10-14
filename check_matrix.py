@@ -1,6 +1,6 @@
 import json
 
-with open("/home/user/v9_full_results/v9_full_production_20260930_143117/logs/V9_MATRIX.json") as f:
+with open("$HOME/v9_full_results/v9_full_production_20260930_143117/logs/V9_MATRIX.json") as f:
     m = json.load(f)
 
 print("=== SCALEOUT CASES IN V9_MATRIX.JSON ===")

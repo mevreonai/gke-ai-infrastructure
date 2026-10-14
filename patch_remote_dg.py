@@ -3,7 +3,7 @@ import subprocess
 patch_code = '''
 import re
 
-path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/utils/deep_gemm.py"
+path = "$HOME/vllm_env/lib/python3.12/site-packages/vllm/utils/deep_gemm.py"
 with open(path, "r") as f:
     content = f.read()
 
@@ -46,6 +46,6 @@ with open("./apply_dg_patch.py", "w") as f:
 scp_cmd = 'gcloud compute scp ./apply_dg_patch.py kimi-node-0:~/apply_dg_patch.py --zone=us-central1-b --project=mevreon'
 subprocess.run(scp_cmd, shell=True, check=True)
 
-res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', '/home/user/vllm_env/bin/python3 /home/user/apply_dg_patch.py'], capture_output=True, text=True)
+res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', '$HOME/vllm_env/bin/python3 $HOME/apply_dg_patch.py'], capture_output=True, text=True)
 print("STDOUT:", res.stdout)
 print("STDERR:", res.stderr)

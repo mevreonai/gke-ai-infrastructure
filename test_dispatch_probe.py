@@ -20,7 +20,7 @@ except Exception as e:
     traceback.print_exc()
 '''
 
-cmd = ["python", "run_ssh.py", "kimi-node-0", f"/home/user/vllm_env/bin/python3 -c '{code}' "]
+cmd = ["python", "run_ssh.py", "kimi-node-0", f"$HOME/vllm_env/bin/python3 -c '{code}' "]
 res = subprocess.run(cmd, capture_output=True, text=True)
 print("STDOUT:\n", res.stdout)
 print("STDERR:\n", res.stderr)

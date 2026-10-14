@@ -34,15 +34,15 @@ def check_dir(title, path):
         else:
             print(f"  {basename} ({sz} bytes)")
 
-check_dir("1. HARDWARE RAW NODE 0", "/home/user/v9_full_results/v9_full_production_20260930_090004/hardware_raw/node0")
-check_dir("2. HARDWARE RAW NODE 1", "/home/user/v9_full_results/v9_full_production_20260930_090004/hardware_raw/node1")
-check_dir("3. NETWORK RAW NODE 0", "/home/user/v9_full_results/v9_full_production_20260930_090004/hardware_raw/network_node0")
-check_dir("4. HARDWARE PROCESSED", "/home/user/v9_full_results/v9_full_production_20260930_090004/hardware_processed")
+check_dir("1. HARDWARE RAW NODE 0", "$HOME/v9_full_results/v9_full_production_20260930_090004/hardware_raw/node0")
+check_dir("2. HARDWARE RAW NODE 1", "$HOME/v9_full_results/v9_full_production_20260930_090004/hardware_raw/node1")
+check_dir("3. NETWORK RAW NODE 0", "$HOME/v9_full_results/v9_full_production_20260930_090004/hardware_raw/network_node0")
+check_dir("4. HARDWARE PROCESSED", "$HOME/v9_full_results/v9_full_production_20260930_090004/hardware_processed")
 '''
 
 import base64
 b64 = base64.b64encode(code.encode()).decode()
-write_cmd = f"echo '{b64}' | base64 -d > /tmp/audit_script.py && /home/user/vllm_env/bin/python3 /tmp/audit_script.py"
+write_cmd = f"echo '{b64}' | base64 -d > /tmp/audit_script.py && $HOME/vllm_env/bin/python3 /tmp/audit_script.py"
 res = subprocess.run(["python", "run_ssh.py", "kimi-node-0", write_cmd], capture_output=True, text=True)
 print("STDOUT:\n", res.stdout)
 print("STDERR:\n", res.stderr)

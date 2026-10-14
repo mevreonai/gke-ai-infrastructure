@@ -7,11 +7,11 @@ def main():
     key = r"~/.ssh/google_compute_engine"
     
     if cmd == "start":
-        remote_cmd = "chmod +x /home/user/run_scaleout_and_finish.sh && nohup /home/user/run_scaleout_and_finish.sh > /home/user/v9_full_results/v9_full_production_20260930_143117/logs/scaleout_finish.log 2>&1 &"
+        remote_cmd = "chmod +x $HOME/run_scaleout_and_finish.sh && nohup $HOME/run_scaleout_and_finish.sh > $HOME/v9_full_results/v9_full_production_20260930_143117/logs/scaleout_finish.log 2>&1 &"
     elif cmd == "status":
-        remote_cmd = "ps aux | grep -E 'run_scaleout|run_multi|vllm serve' | grep -v grep; echo '--- LOG TAIL ---'; tail -n 20 /home/user/v9_full_results/v9_full_production_20260930_143117/logs/scaleout_finish.log 2>/dev/null || echo 'no log yet'"
+        remote_cmd = "ps aux | grep -E 'run_scaleout|run_multi|vllm serve' | grep -v grep; echo '--- LOG TAIL ---'; tail -n 20 $HOME/v9_full_results/v9_full_production_20260930_143117/logs/scaleout_finish.log 2>/dev/null || echo 'no log yet'"
     elif cmd == "tail":
-        remote_cmd = "tail -n 30 /home/user/v9_full_results/v9_full_production_20260930_143117/logs/scaleout_finish.log"
+        remote_cmd = "tail -n 30 $HOME/v9_full_results/v9_full_production_20260930_143117/logs/scaleout_finish.log"
     else:
         remote_cmd = cmd
 

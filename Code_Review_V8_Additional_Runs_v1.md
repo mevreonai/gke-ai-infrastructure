@@ -26,7 +26,7 @@ It also will not start as unpacked: the zip was made on Windows and carries no e
 
 ## 1. Before any run: three free checks
 
-1. **Read the pilot's server logs on node 0.** The shared archive has no `.log` files at all; the runner did write `server.log` for every case (`11_run_vllm_surrogate.py` line 65), so they should still be in the original results directory (`/home/user/v8_full_results/20260921_195656/...`). Three of them settle three things at zero machine cost:
+1. **Read the pilot's server logs on node 0.** The shared archive has no `.log` files at all; the runner did write `server.log` for every case (`11_run_vllm_surrogate.py` line 65), so they should still be in the original results directory (`$HOME/v8_full_results/20260921_195656/...`). Three of them settle three things at zero machine cost:
    - `tp4_fp8_kv`, `tp4_fp8_kv_1m` and `tp4_native_offload_pressure`: the archive records only `"server exited rc=1"` after 126–134 s of start-up. The README's causes (a missing `--attention-config` key; a "256-block minimum") are hypotheses until these logs are read.
    - `tp4_context_baseline` and `tp8_context_baseline`: the "GPU KV cache size: N tokens" line answers item 5 outright.
 2. **Look for full copies of the failed Nsight reports.** The failed pilot reports were 0-byte files copied out of `/tmp/ray/session_*/logs/nsight` (§2, C4). If those session directories still exist on either node, complete reports (e.g. `worker_process_1086878.nsys-rep` for TP8/PP2 decode) may be there, and they can be re-exported without a re-run.

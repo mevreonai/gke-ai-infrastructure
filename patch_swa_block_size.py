@@ -1,5 +1,5 @@
 
-path = "/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/attention.py"
+path = "$HOME/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4_1/attention.py"
 with open(path, "r") as f:
     c = f.read()
 

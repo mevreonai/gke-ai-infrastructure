@@ -1,6 +1,6 @@
 import sys
 
-path = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/sparse_swa.py'
+path = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/sparse_swa.py'
 with open(path, 'r') as f:
     content = f.read()
 

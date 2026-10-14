@@ -1,6 +1,6 @@
 import subprocess
 
-res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'cat /home/user/v9_full_results/v9_full_production_20260930_090004/logs/phase_status.jsonl'], capture_output=True, text=True)
+res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'cat $HOME/v9_full_results/v9_full_production_20260930_090004/logs/phase_status.jsonl'], capture_output=True, text=True)
 print("PHASES:\n", res.stdout)
 
 res2 = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'ps -u $(whoami) -f'], capture_output=True, text=True)

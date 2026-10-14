@@ -2,7 +2,7 @@ import os
 import sys
 
 def patch_model_py():
-    path = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py'
+    path = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py'
     if not os.path.exists(path):
         print(f"File not found: {path}")
         return False
@@ -31,7 +31,7 @@ def patch_model_py():
         return False
 
 def patch_run_multi():
-    path = '/home/user/V9_FULL/v9_core/run_multi.py'
+    path = '$HOME/V9_FULL/v9_core/run_multi.py'
     if not os.path.exists(path):
         print(f"File not found: {path}")
         return False

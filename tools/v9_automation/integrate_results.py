@@ -50,7 +50,7 @@ def integrate():
         elif "_c8" in b: conc = 8
 
         run_entry = {
-            "manifest": f"/home/user/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json",
+            "manifest": f"$HOME/v9_full_results/v9_full_production_20260930_143117/vllm_scaleout_network_matrix/NETWORK_NATIVE/results/tp4_pp2_dist/case_manifest.json",
             "case": "tp4_pp2_dist",
             "bench": b,
             "status": "COMPLETED",

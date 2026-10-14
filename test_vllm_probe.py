@@ -40,7 +40,7 @@ if qc is not None:
 print("FLATTENED CONFIG KEYS MATCH:")
 print(json.dumps(out, indent=2))
 
-with open("/home/user/V9_FULL/configs/models/deepseek_v41_flash.json") as f:
+with open("$HOME/V9_FULL/configs/models/deepseek_v41_flash.json") as f:
     profile = json.load(f)
 
 failures = []

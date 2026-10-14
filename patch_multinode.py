@@ -1,4 +1,4 @@
-target = '/home/user/v8_additional_runs_suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh'
+target = '$HOME/v8_additional_runs_suite/rtx_g4_smoke_v5/12_run_vllm_multi_node.sh'
 content = open(target).read()
 
 old_block = """  ray stop -f || true

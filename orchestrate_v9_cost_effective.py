@@ -24,11 +24,11 @@ WORKER_NODE = "kimi-node-1"
 WORKER_IP = "10.128.0.40"
 
 RUN_ID = f"v9_deepseek_full_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
-REMOTE_V9_DIR = "/home/user/V9_FULL"
+REMOTE_V9_DIR = "$HOME/V9_FULL"
 MODEL_CONFIG = "configs/models/deepseek_v41_flash.json"
 CLUSTER_CONFIG = "configs/clusters/kimi_2x8.json"
 SUITE_CONFIG = "configs/suite_native_20g.json"
-REMOTE_RESULTS_ROOT = f"/home/user/v9_full_results/{RUN_ID}"
+REMOTE_RESULTS_ROOT = f"$HOME/v9_full_results/{RUN_ID}"
 TRACKER_FILE = os.path.join(os.path.dirname(__file__), "v9_execution_tracker.json")
 
 TOTAL_ESTIMATED_RUN_HOURS = 15.5
@@ -119,12 +119,12 @@ def run_suite_phase(phase_env, phase_name, target_progress, base_elapsed):
         f"./00_run_v9_full.sh {MODEL_CONFIG} {CLUSTER_CONFIG} {SUITE_CONFIG}"
     )
     # Launch command on Node 0 inside tmux or screen so network hiccups don't abort it
-    tmux_cmd = f"tmux new-session -d -s v9_phase_{phase_name} '{cmd} > /home/user/{phase_name}.log 2>&1'"
+    tmux_cmd = f"tmux new-session -d -s v9_phase_{phase_name} '{cmd} > $HOME/{phase_name}.log 2>&1'"
     rc, _, err = ssh_node0(tmux_cmd)
     if rc != 0:
         log(f"Failed to launch tmux session for {phase_name}: {err}")
         # fallback to nohup
-        nohup_cmd = f"nohup bash -c \"{cmd}\" > /home/user/{phase_name}.log 2>&1 &"
+        nohup_cmd = f"nohup bash -c \"{cmd}\" > $HOME/{phase_name}.log 2>&1 &"
         ssh_node0(nohup_cmd)
 
     # Monitor until completion
@@ -136,7 +136,7 @@ def run_suite_phase(phase_env, phase_name, target_progress, base_elapsed):
         current_elapsed = base_elapsed + (time.time() - start_t) / 3600.0
         
         # Read latest phase status
-        rc_stat, out_stat, _ = ssh_node0(f"tail -n 3 /home/user/v9_full_results/{RUN_ID}/logs/phase_status.jsonl 2>/dev/null", timeout=60)
+        rc_stat, out_stat, _ = ssh_node0(f"tail -n 3 $HOME/v9_full_results/{RUN_ID}/logs/phase_status.jsonl 2>/dev/null", timeout=60)
         log(f"Phase {phase_name} running. Latest log status:\n{out_stat}")
         
         pct = min(target_progress, 5.0 + (current_elapsed / TOTAL_ESTIMATED_RUN_HOURS) * 90.0)

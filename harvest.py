@@ -5,11 +5,11 @@ def harvest():
     print("Waiting 10s for sshd...")
     time.sleep(10)
     cmd = (
-        'tail -n 80 /home/user/v9_test2_execution.log; '
+        'tail -n 80 $HOME/v9_test2_execution.log; '
         'echo === PHASE_STATUS ===; '
-        'cat /home/user/v9_full_results/v9_test2_20260927_163750/logs/phase_status.jsonl; '
+        'cat $HOME/v9_full_results/v9_test2_20260927_163750/logs/phase_status.jsonl; '
         'echo === ARCHIVES ===; '
-        'ls -la /home/user/V9_TEST2* /home/user/v9_full_results/*.tar.gz'
+        'ls -la $HOME/V9_TEST2* $HOME/v9_full_results/*.tar.gz'
     )
     full_cmd = f'gcloud compute ssh kimi-node-0 --zone=us-central1-b --tunnel-through-iap --command="{cmd}"'
     res = subprocess.run(full_cmd, shell=True, capture_output=True, text=True)

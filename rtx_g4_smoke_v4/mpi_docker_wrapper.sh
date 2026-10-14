@@ -5,7 +5,7 @@ env | grep -E '^(OMPI_|PMIX_|OPAL_)' > "$ENV_FILE"
 
 exec docker run --rm --gpus all --ipc=host --net=host --pid=host \
   -v /tmp:/tmp \
-  -v /home/user:/home/user \
+  -v $HOME:$HOME \
   -e CUDA_VISIBLE_DEVICES="${LOCAL_RANK}" \
   --env-file "$ENV_FILE" \
   --entrypoint /bin/bash rtx-smoke:latest \

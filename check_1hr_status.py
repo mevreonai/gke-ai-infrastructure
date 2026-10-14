@@ -1,13 +1,13 @@
 import subprocess
 
-res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'cat /home/user/v9_full_results/v9_full_production_20260930_090004/logs/phase_status.jsonl'], capture_output=True, text=True)
+res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'cat $HOME/v9_full_results/v9_full_production_20260930_090004/logs/phase_status.jsonl'], capture_output=True, text=True)
 print("PHASES:\n", res.stdout)
 
 res2 = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'ps -u $(whoami) -f'], capture_output=True, text=True)
 print("PROCS_NODE0:\n", res2.stdout)
 
-res3 = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'tail -n 30 /home/user/v9_full_production_execution.log'], capture_output=True, text=True)
+res3 = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'tail -n 30 $HOME/v9_full_production_execution.log'], capture_output=True, text=True)
 print("EXEC_LOG:\n", res3.stdout)
 
-res4 = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'ls -la /home/user/v9_full_results/v9_full_production_20260930_090004/hardware_raw/'], capture_output=True, text=True)
+res4 = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', 'ls -la $HOME/v9_full_results/v9_full_production_20260930_090004/hardware_raw/'], capture_output=True, text=True)
 print("HW_RAW:\n", res4.stdout)

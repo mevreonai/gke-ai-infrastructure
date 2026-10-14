@@ -20,15 +20,15 @@ IFACE="ens3"
 # Setup docker wrappers for multi-node OpenMPI
 cat << 'EOF' > /tmp/all_reduce_perf_docker
 #!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_reduce_perf $*"
 EOF
 cat << 'EOF' > /tmp/all_gather_perf_docker
 #!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/all_gather_perf $*"
 EOF
 cat << 'EOF' > /tmp/reduce_scatter_perf_docker
 #!/bin/bash
-exec docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
+exec docker run --rm --gpus all --ipc=host --net=host -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c "$HOME/rtx_g4_smoke/nccl-tests/build/reduce_scatter_perf $*"
 EOF
 
 sudo install -m 755 /tmp/all_reduce_perf_docker /usr/local/bin/all_reduce_perf_docker
@@ -69,7 +69,7 @@ apply_tc() {
 
 MPI_RUN="/usr/mpi/gcc/openmpi-4.1.9a1/bin/mpirun --prefix /usr/mpi/gcc/openmpi-4.1.9a1 --allow-run-as-root -x PATH -x LD_LIBRARY_PATH"
 
-DOCKER_RUN="docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c"
+DOCKER_RUN="docker run --rm --gpus all --ipc=host --net=host -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ==========================================
 # 1. RUN TP=4 (Single-NUMA, 4 GPUs on Node 0)

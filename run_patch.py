@@ -3,7 +3,7 @@ import subprocess
 import base64
 
 patch_code = """
-with open('/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/engine/async_llm.py', 'r') as f:
+with open('$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/engine/async_llm.py', 'r') as f:
     c = f.read()
 
 old_start = '''    async def start_profile(self, profile_prefix: str | None = None) -> None:
@@ -31,7 +31,7 @@ new_start = '''    async def start_profile(self, profile_prefix: str | None = No
         await asyncio.gather(*coros)'''
 
 if old_start in c:
-    with open('/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/engine/async_llm.py', 'w') as f:
+    with open('$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/engine/async_llm.py', 'w') as f:
         f.write(c.replace(old_start, new_start))
     print('SUCCESSFULLY PATCHED async_llm.py')
 elif new_start in c:

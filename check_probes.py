@@ -5,12 +5,12 @@ script = """
 import json
 print('=== KV FP8 ===')
 try:
-    p1 = json.load(open('/home/user/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_kv_fp8_probe/case_manifest.json'))
+    p1 = json.load(open('$HOME/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_kv_fp8_probe/case_manifest.json'))
     print('Status:', p1.get('status'))
     print('Error:', p1.get('error'))
     print('Server log:')
     try:
-        print(open('/home/user/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_kv_fp8_probe/server.log').read()[-800:])
+        print(open('$HOME/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_kv_fp8_probe/server.log').read()[-800:])
     except Exception as e:
         print('no server.log:', e)
 except Exception as e:
@@ -18,12 +18,12 @@ except Exception as e:
 
 print('=== OFFLOAD ===')
 try:
-    p2 = json.load(open('/home/user/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_offload_probe/case_manifest.json'))
+    p2 = json.load(open('$HOME/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_offload_probe/case_manifest.json'))
     print('Status:', p2.get('status'))
     print('Error:', p2.get('error'))
     print('Server log:')
     try:
-        print(open('/home/user/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_offload_probe/server.log').read()[-800:])
+        print(open('$HOME/v9_full_results/v9_test2_20260927_163750/vllm_single_node_v9_matrix/tp4_offload_probe/server.log').read()[-800:])
     except Exception as e:
         print('no server.log:', e)
 except Exception as e:

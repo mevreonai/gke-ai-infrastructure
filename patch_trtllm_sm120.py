@@ -1,7 +1,7 @@
 import re
 
 # 1. Patch trtllm_ragged.py
-target1 = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/prefill/trtllm_ragged.py'
+target1 = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/prefill/trtllm_ragged.py'
 content1 = open(target1).read()
 old1 = 'return device_capability.major == 10'
 new1 = 'return device_capability.major in (10, 12)'
@@ -13,7 +13,7 @@ else:
     print('trtllm_ragged.py already patched or pattern not found')
 
 # 2. Patch selector.py
-target2 = '/home/user/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/prefill/selector.py'
+target2 = '$HOME/vllm_env/lib64/python3.12/site-packages/vllm/v1/attention/backends/mla/prefill/selector.py'
 content2 = open(target2).read()
 old2 = 'if device_capability.major == 10:  # Blackwell'
 new2 = 'if device_capability.major in (10, 12):  # Blackwell'

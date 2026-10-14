@@ -52,10 +52,10 @@ Total: 29 | Passed: 29 | Failed: 0 | Rate: 100.0%
 [PASS] Coverage S6.4 - TP4/PP2 layout included in two-server torch profile runner (14d)
       Details: Ensures all four distributed layouts receive torch kernel profiling
 [PASS] Tools S8.1 - tools/compile_canonical_data.py exists and is syntactically valid
-      Details: .Performance_Intelligence_Platform\tools\compile_canonical_data.py
+      Details: C:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\tools\compile_canonical_data.py
 [PASS] Tools S8.2 - tools/run_v1_4_verification.py exists and is syntactically valid
-      Details: .Performance_Intelligence_Platform\tools\run_v1_4_verification.py
-[PASS] Integrity S9.1 - All Python files (67) compile cleanly without SyntaxError
-      Details: 67 files compiled successfully
-[PASS] Integrity S9.2 - All JSON configurations (56) parse cleanly without JSONDecodeError
-      Details: 56 files validated successfully
+      Details: C:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\tools\run_v1_4_verification.py
+[PASS] Integrity S9.1 - All Python files (68) compile cleanly without SyntaxError
+      Details: 68 files compiled successfully
+[PASS] Integrity S9.2 - All JSON configurations (57) parse cleanly without JSONDecodeError
+      Details: 57 files validated successfully

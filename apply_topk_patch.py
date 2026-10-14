@@ -1,7 +1,7 @@
 import subprocess
 
 patch_code = '''
-cu_path = "/home/user/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_decode_dsv4.cu"
+cu_path = "$HOME/vllm_env/lib64/python3.12/site-packages/flashinfer/data/csrc/sparse_mla_sm120_decode_dsv4.cu"
 with open(cu_path, "r") as f:
     cu = f.read()
 
@@ -16,7 +16,7 @@ with open(cu_path, "w") as f:
     f.write(cu)
 print("SUCCESS: Updated sparse_mla_sm120_decode_dsv4.cu with TOPK=1152!")
 
-py_path = "/home/user/vllm_env/lib64/python3.12/site-packages/flashinfer/mla/_sparse_mla_sm120.py"
+py_path = "$HOME/vllm_env/lib64/python3.12/site-packages/flashinfer/mla/_sparse_mla_sm120.py"
 with open(py_path, "r") as f:
     py = f.read()
 
@@ -37,6 +37,6 @@ with open("./patch_topk_1152.py", "w") as f:
 scp_cmd = 'gcloud compute scp ./patch_topk_1152.py kimi-node-0:~/patch_topk_1152.py --zone=us-central1-b --project=mevreon'
 subprocess.run(scp_cmd, shell=True, check=True)
 
-res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', '/home/user/vllm_env/bin/python3 /home/user/patch_topk_1152.py && rm -rf /home/user/.cache/flashinfer'], capture_output=True, text=True)
+res = subprocess.run(['python', 'run_ssh.py', 'kimi-node-0', '$HOME/vllm_env/bin/python3 $HOME/patch_topk_1152.py && rm -rf $HOME/.cache/flashinfer'], capture_output=True, text=True)
 print("STDOUT:", res.stdout)
 print("STDERR:", res.stderr)

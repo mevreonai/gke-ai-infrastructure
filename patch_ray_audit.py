@@ -1,6 +1,6 @@
 from pathlib import Path
 
-p = Path("/home/user/v8_additional_runs_suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py")
+p = Path("$HOME/v8_additional_runs_suite/rtx_g4_smoke_v5/20_ray_nccl_env_audit.py")
 content = p.read_text()
 
 old_code = """        if expected_ld is not None and r.get('ld_library_path') != expected_ld:

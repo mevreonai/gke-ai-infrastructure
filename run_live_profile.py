@@ -38,9 +38,9 @@ rm -rf /tmp/tp8_torch_out
 mkdir -p /tmp/tp8_torch_out
 
 echo "Executing profile_case.py..."
-/home/user/vllm_env/bin/python3 /home/user/V9_FULL/v9_core/profile_case.py \
-  --model-profile /home/user/v9_full_results/v9_full_production_20260930_143117/logs/MODEL_PROFILE.json \
-  --cluster /home/user/v9_full_results/v9_full_production_20260930_143117/logs/CLUSTER_CONFIG.json \
+$HOME/vllm_env/bin/python3 $HOME/V9_FULL/v9_core/profile_case.py \
+  --model-profile $HOME/v9_full_results/v9_full_production_20260930_143117/logs/MODEL_PROFILE.json \
+  --cluster $HOME/v9_full_results/v9_full_production_20260930_143117/logs/CLUSTER_CONFIG.json \
   --spec-json /tmp/test_tp8_torch_spec.json \
   --out /tmp/tp8_torch_out \
   --port 8400 \

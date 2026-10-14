@@ -2,7 +2,7 @@ import os
 import sys
 
 def patch_attn_utils():
-    path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/v1/worker/gpu/attn_utils.py"
+    path = "$HOME/vllm_env/lib/python3.12/site-packages/vllm/v1/worker/gpu/attn_utils.py"
     with open(path, "r") as f:
         content = f.read()
 
@@ -30,7 +30,7 @@ def patch_attn_utils():
         print("WARNING: Could not find target in attn_utils.py")
 
 def patch_utils():
-    path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/v1/worker/utils.py"
+    path = "$HOME/vllm_env/lib/python3.12/site-packages/vllm/v1/worker/utils.py"
     with open(path, "r") as f:
         content = f.read()
 
@@ -125,7 +125,7 @@ def patch_utils():
         print("WARNING: Could not find old allocate_kv_cache in utils.py")
 
 def patch_model_moe_init():
-    path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py"
+    path = "$HOME/vllm_env/lib/python3.12/site-packages/vllm/models/deepseek_v4/nvidia/model.py"
     with open(path, "r") as f:
         content = f.read()
 
@@ -168,7 +168,7 @@ def patch_model_moe_init():
         print("WARNING: Could not find bias_vl init snippet in model.py")
 
 def patch_fused_topk_collapse():
-    path = "/home/user/vllm_env/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py"
+    path = "$HOME/vllm_env/lib/python3.12/site-packages/vllm/model_executor/layers/fused_moe/router/fused_topk_bias_router.py"
     with open(path, "r") as f:
         content = f.read()
 

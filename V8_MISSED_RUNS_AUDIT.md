@@ -89,7 +89,7 @@ All 7 missed application runs occurred on single-node TP4 configurations. They w
 
 #### Server Launch Command
 ```bash
-/home/user/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
+$HOME/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
   --model-impl vllm \
   --trust-remote-code \
   --revision e1df551a447157d4658b573f9a695d57658590e9 \
@@ -148,7 +148,7 @@ RuntimeError: Engine core initialization failed. See root cause above. Failed co
 
 #### Server Launch Command
 ```bash
-/home/user/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
+$HOME/vllm_env/bin/vllm serve moonshotai/Kimi-Linear-48B-A3B-Instruct \
   --model-impl vllm \
   --trust-remote-code \
   --revision e1df551a447157d4658b573f9a695d57658590e9 \

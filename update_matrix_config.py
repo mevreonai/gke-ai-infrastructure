@@ -1,7 +1,7 @@
 import json, re
 
 # 1. Update configs/suite_native_20g.json and configs/suite_default.json
-for cfg_path in ['/home/user/V9_FULL/configs/suite_native_20g.json', '/home/user/V9_FULL/configs/suite_default.json']:
+for cfg_path in ['$HOME/V9_FULL/configs/suite_native_20g.json', '$HOME/V9_FULL/configs/suite_default.json']:
     try:
         with open(cfg_path, 'r') as f:
             cfg = json.load(f)
@@ -13,7 +13,7 @@ for cfg_path in ['/home/user/V9_FULL/configs/suite_native_20g.json', '/home/user
         print(f"Error updating {cfg_path}: {e}")
 
 # 2. Update v9_core/matrix.py
-matrix_path = '/home/user/V9_FULL/v9_core/matrix.py'
+matrix_path = '$HOME/V9_FULL/v9_core/matrix.py'
 with open(matrix_path, 'r') as f:
     code = f.read()
 

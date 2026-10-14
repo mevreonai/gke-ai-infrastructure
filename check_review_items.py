@@ -15,7 +15,7 @@ try:
 except Exception as e:
     print("Error importing IMAGE_SENTINEL_BASE_ID:", e)
 
-with open("/home/user/vllm_env/lib/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/model.py") as f:
+with open("$HOME/vllm_env/lib/python3.12/site-packages/vllm/models/deepseek_v4_1/nvidia/model.py") as f:
     lines = f.readlines()
     print("deepseek_v4_1 lines 105-135:")
     for i in range(105, min(135, len(lines))):

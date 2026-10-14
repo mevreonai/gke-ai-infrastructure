@@ -90,7 +90,7 @@ run_multinode() {
     echo "OK: [$coll] $np ranks, 1 job, NET hops present, tc counted $((after-before)) bytes."
 }
 
-DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v /home/user:/home/user --entrypoint /bin/bash rtx-smoke:latest -c"
+DOCKER_LOCAL="docker run --rm --gpus all --ipc=host --net=host -v $HOME:$HOME --entrypoint /bin/bash rtx-smoke:latest -c"
 
 # ============================== PHASE 1: node-local baselines =================
 echo ">>> [Phase 1/2] Node-local baselines <<<"
