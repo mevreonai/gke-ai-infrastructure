@@ -164,6 +164,18 @@ while [[ $# -gt 0 ]]; do
       RESUME=0
       shift
       ;;
+    --package-evidence)
+      PACKAGE_EVIDENCE=1
+      shift
+      ;;
+    --no-package-evidence)
+      PACKAGE_EVIDENCE=0
+      shift
+      ;;
+    --static-validate)
+      RUN_STATIC_VALIDATE=1
+      shift
+      ;;
     --profile)
       SELECTED_PROFILE="$2"
       case "$SELECTED_PROFILE" in
@@ -479,6 +491,9 @@ run_step() {
 # STEP 00: Environment Snapshot & Checksums Manifest
 # ------------------------------------------------------------------------------
 run_step 0 "preflight_and_env_snapshot" bash -c "
+  if [[ -f '$SUITE_ROOT/pip_static_validate.py' ]]; then
+    python3 '$SUITE_ROOT/pip_static_validate.py' --root '$SUITE_ROOT' --out '$MASTER_ROOT/env/STATIC_VALIDATION.json' || true
+  fi
   find '$SUITE_ROOT' -type f \( -name '*.sh' -o -name '*.py' -o -name '*.json' \) -not -path '*/.*' -exec sha256sum {} + | sort -k2 > '$MASTER_ROOT/SUITE_SOURCE_SHA256SUMS.txt'
   python3 -c 'import sys, platform, torch, vllm; print(\"Python:\", sys.version); print(\"PyTorch:\", torch.__version__); print(\"CUDA:\", torch.version.cuda); print(\"vLLM:\", vllm.__version__)' > '$MASTER_ROOT/env/node0_python_stack.txt' 2>&1 || true
   nvidia-smi > '$MASTER_ROOT/env/node0_nvidia_smi.txt' 2>&1 || true
@@ -1144,6 +1159,24 @@ else:
 PY
   AUDIT_RC=$?
   set -e
+
+  # Post-Run Collector & Strict Provenance Validator
+  if [[ -f "$SUITE_ROOT/pip_collect_and_validate.py" ]]; then
+    echo ""
+    echo "================================================================================"
+    echo "  RUNNING STRICT PROVENANCE COLLECTOR & VALIDATOR"
+    echo "================================================================================"
+    "$PYTHON_EXEC" "$SUITE_ROOT/pip_collect_and_validate.py" --root "$MASTER_ROOT" --suite "$SUITE_ROOT" --out "$MASTER_ROOT/final_validation" || true
+  fi
+
+  # Automated Evidence Packaging & SHA-256 Checksum
+  if [[ "${PACKAGE_EVIDENCE:-1}" == "1" && -f "$SUITE_ROOT/pip_package_evidence.sh" ]]; then
+    echo ""
+    echo "================================================================================"
+    echo "  PACKAGING IMMUTABLE EVIDENCE ARCHIVE"
+    echo "================================================================================"
+    bash "$SUITE_ROOT/pip_package_evidence.sh" "$MASTER_ROOT" || true
+  fi
 fi
 
 echo ""

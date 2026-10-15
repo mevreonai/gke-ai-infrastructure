@@ -2,7 +2,7 @@ PERFORMANCE INTELLIGENCE PLATFORM — AUDIT VERIFICATION REPORT
 Total: 29 | Passed: 29 | Failed: 0 | Rate: 100.0%
 
 [PASS] Blocker 01 - All .sh scripts committed with executable mode (100755) in git index
-      Details: 49 total scripts checked, 0 non-executable
+      Details: 50 total scripts checked, 0 non-executable
 [PASS] Blocker 02 - Master exports topology_matches, quotes sub-shell paths, and avoids illegal local in bash -c
       Details: export -f topology_matches present, $TP8_DIR quoted, PID=$! assigned outside function
 [PASS] Blocker 03 - All shared dependencies present in 02/ and 06/ folders (sampler, nccl_policy, ray_audit, cases)
@@ -55,7 +55,7 @@ Total: 29 | Passed: 29 | Failed: 0 | Rate: 100.0%
       Details: C:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\tools\compile_canonical_data.py
 [PASS] Tools S8.2 - tools/run_v1_4_verification.py exists and is syntactically valid
       Details: C:\Users\ayu23\OneDrive\Desktop\tpu\Performance_Intelligence_Platform\tools\run_v1_4_verification.py
-[PASS] Integrity S9.1 - All Python files (68) compile cleanly without SyntaxError
-      Details: 68 files compiled successfully
-[PASS] Integrity S9.2 - All JSON configurations (57) parse cleanly without JSONDecodeError
-      Details: 57 files validated successfully
+[PASS] Integrity S9.1 - All Python files (72) compile cleanly without SyntaxError
+      Details: 72 files compiled successfully
+[PASS] Integrity S9.2 - All JSON configurations (58) parse cleanly without JSONDecodeError
+      Details: 58 files validated successfully

@@ -99,6 +99,11 @@ The platform provides a suite of high-precision analytical tools that operate on
 | [`generate_result_summary.py`](./generate_result_summary.py) | Generates `RESULT_SUMMARY.md` and per-block Markdown reports from continuous batching manifests. | `python3 generate_result_summary.py <out_dir>` |
 | [`server_log.py`](./server_log.py) | Parses microsecond timestamped server logs; extracts logs 2s before to 1s after any detected pause to identify root cause. | `python3 server_log.py <server.log> --run <run.json>` |
 | [`metrics_diff.py`](./metrics_diff.py) | Validates Prometheus scrapes (`metrics_node0.jsonl`) against client request timelines; verifies queue gauges. | `python3 metrics_diff.py <metrics.jsonl> --run <run.json>` |
+| [`pip_static_validate.py`](./pip_static_validate.py) | GPU-free pre-flight static validator checking python compilation, bash syntax, case uniqueness, and safety gates. | `python3 pip_static_validate.py [--strict-exit]` |
+| [`pip_collect_and_validate.py`](./pip_collect_and_validate.py) | Strict post-run collector verifying network provenance (GCP_NATIVE vs CAPPED), zero failures, and building FINAL_VALIDATION.json. | `python3 pip_collect_and_validate.py --root <results_dir>` |
+| [`pip_package_evidence.sh`](./pip_package_evidence.sh) | Generates immutable file manifest (FILE_LIST.tsv), packages results into tar.gz, and generates SHA-256 checksum file. | `bash pip_package_evidence.sh <results_dir>` |
+| [`pip_cluster_orchestrator.py`](./pip_cluster_orchestrator.py) | Cost-effective dynamic cluster lifecycle orchestrator; manages worker sleep/wake across stages to slash GPU spend. | `python3 pip_cluster_orchestrator.py --action orchestrate` |
+| [`pip_sync_and_shutdown.py`](./pip_sync_and_shutdown.py) | Automated polling watchdog that waits for remote run completion, SCPs results, and terminates instances ($0/hr). | `python3 pip_sync_and_shutdown.py --head-node kimi-node-0` |
 
 ---
 

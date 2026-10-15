@@ -1,0 +1,1414 @@
+{
+  "timestamp": "",
+  "root_directory": "C:\\Users\\ayu23\\OneDrive\\Desktop\\tpu\\Performance_Intelligence_Platform\\scripts",
+  "total_checks": 234,
+  "passed_checks": 234,
+  "failed_checks": 0,
+  "pass_rate_percent": 100.0,
+  "checks": [
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\04_summarize_results.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\05_analyze_model.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\07_preflight_v5.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\07_validate_results.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\08_validate_kimi_linear.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\20_ray_nccl_env_audit.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:01_preflight_and_diagnostics\\22_readiness.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:02_single_node_baseline_matrix\\09_metrics_sampler.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:02_single_node_baseline_matrix\\11_run_vllm_surrogate.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:02_single_node_baseline_matrix\\13_generate_load_cases.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:02_single_node_baseline_matrix\\15_summarize_vllm.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:02_single_node_baseline_matrix\\v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:03_open_loop_poisson_arrival\\09_metrics_sampler.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:03_open_loop_poisson_arrival\\15_summarize_vllm.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:03_open_loop_poisson_arrival\\17_build_serving_analysis.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:03_open_loop_poisson_arrival\\v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:04_scaleout_distributed_network\\09_metrics_sampler.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:04_scaleout_distributed_network\\12_run_vllm_multi_node.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:04_scaleout_distributed_network\\20_ray_nccl_env_audit.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:04_scaleout_distributed_network\\v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:05_long_context_1m_extensions\\24_audit_kv_and_trim_traces.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:05_long_context_1m_extensions\\v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:06_deep_kernel_and_torch_profiling\\09_metrics_sampler.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:06_deep_kernel_and_torch_profiling\\16_analyze_vllm_profiles.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:06_deep_kernel_and_torch_profiling\\18_run_vllm_multi_node_profile_case.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:06_deep_kernel_and_torch_profiling\\19_postprocess_nsys.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:06_deep_kernel_and_torch_profiling\\20_ray_nccl_env_audit.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:06_deep_kernel_and_torch_profiling\\v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:09_metrics_sampler.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:15_summarize_vllm.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:bench_summary.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:build_expected_values.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:calc_deepseek_timing.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:generate_result_summary.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:metrics_diff.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_cluster_orchestrator.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_collect_and_validate.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_mixed_traffic.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_scan.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_static_validate.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_step_cost.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_sync_and_shutdown.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_timeline.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:pip_waves.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_hardware_diagnostics\\04_summarize_results.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_hardware_diagnostics\\05_analyze_model.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_hardware_diagnostics\\07_validate_results.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\07_preflight_v5.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\08_validate_kimi_linear.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\09_metrics_sampler.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\11_run_vllm_surrogate.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\12_run_vllm_multi_node.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\13_generate_load_cases.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\15_summarize_vllm.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\16_analyze_vllm_profiles.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\17_build_serving_analysis.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\18_run_vllm_multi_node_profile_case.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\19_postprocess_nsys.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\20_ray_nccl_env_audit.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\22_readiness.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\24_audit_kv_and_trim_traces.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:rtx_g4_smoke_v5\\v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:run_continuous_batching.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:server_log.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:test_pip_waves.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:ttft_waves.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "py_compile:v5_runner_lib.py",
+      "category": "python_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\00_init_gcp_config.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\00_smoke_common.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\01_prepare_node.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\02_run_node_local.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\03_run_network_sweep.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\06_package_results.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:01_preflight_and_diagnostics\\run_quickstart.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:02_single_node_baseline_matrix\\00_smoke_common.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:02_single_node_baseline_matrix\\20_run_single_node_v6_aligned.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:04_scaleout_distributed_network\\00_smoke_common.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:04_scaleout_distributed_network\\12_run_vllm_multi_node.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:04_scaleout_distributed_network\\20_nccl_policy.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:04_scaleout_distributed_network\\20_run_vllm_network_matrix.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:04_scaleout_distributed_network\\23_run_nccl_socket_tuning.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\00_smoke_common.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\14_run_vllm_nsys_profile.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\14b_run_vllm_torch_profile.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\14c_run_vllm_torch_profile_batched.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\14d_run_vllm_torch_profile_multi_node.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\18_run_vllm_multi_node_profiles.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\20_nccl_policy.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:06_deep_kernel_and_torch_profiling\\21_run_vllm_capped_profiles.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:07_master_campaign_orchestration\\run_master_benchmark.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:pip_package_evidence.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_hardware_diagnostics\\00_smoke_common.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_hardware_diagnostics\\01_prepare_node.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_hardware_diagnostics\\02_run_node_local.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_hardware_diagnostics\\03_run_network_sweep.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_hardware_diagnostics\\06_package_results.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\00_init_gcp_config.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\00_smoke_common.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\12_run_vllm_multi_node.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\14_run_vllm_nsys_profile.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\14b_run_vllm_torch_profile.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\14c_run_vllm_torch_profile_batched.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\14d_run_vllm_torch_profile_multi_node.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\18_run_vllm_multi_node_profiles.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\20_nccl_policy.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\20_run_single_node_v6_aligned.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\20_run_vllm_network_matrix.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\21_run_vllm_capped_profiles.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:rtx_g4_smoke_v5\\23_run_nccl_socket_tuning.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:run_20min_tp4pp4_campaign.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:run_continuous_batching.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:run_demo_setup.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:run_master_benchmark.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:run_quickstart.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:run_smoke_test.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:setup_cluster_and_run_smoke.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "bash_syntax_heuristic:setup_node_env.sh",
+      "category": "shell_syntax",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:01_preflight_and_diagnostics\\kimi_linear_provenance.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "22 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_context_baseline:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp8_context_baseline:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_prefill_focus:1m_prefill",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_chunk4k:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_chunk8k:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_chunk16k:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_closedloop_512k:c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=c1, seen=['c1']"
+    },
+    {
+      "name": "gate_order:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_closedloop_512k:c4",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=c2, seen=['c1', 'c2']"
+    },
+    {
+      "name": "gate_order:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_closedloop_1m:c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=c1, seen=['c1']"
+    },
+    {
+      "name": "token_clamp_1m:02_single_node_baseline_matrix\\10_vllm_surrogate_cases.json:tp4_native_offload_pressure:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "4 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:04_scaleout_distributed_network\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:05_long_context_1m_extensions\\10d_1m_extended_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:05_long_context_1m_extensions\\10d_1m_extended_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "7 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c1, seen=['1m_c1']"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c4",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c2, seen=['1m_c1', '1m_c2']"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c1, seen=['1m_c1']"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c4",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c2, seen=['1m_c1', '1m_c2']"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_maxseq4:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_maxseq8:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_1m_maxseq16:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_fp8_kv_1m:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\10d_1m_extended_cases.json:tp4_prefix1m:prefix1m",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=0"
+    },
+    {
+      "name": "json_parse:05_long_context_1m_extensions\\1m_single_node_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:05_long_context_1m_extensions\\1m_single_node_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "2 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\1m_single_node_cases.json:tp4_fp8_kv_fixed:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:05_long_context_1m_extensions\\1m_single_node_cases.json:tp4_native_offload_reuse_test:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "4 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:06_deep_kernel_and_torch_profiling\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:06_deep_kernel_and_torch_profiling\\18_multi_node_profile_matrix.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:07_master_campaign_orchestration\\master_benchmark_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:continuous_batching_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:continuous_batching_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "28 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:continuous_batching_cases.json:cb_b1_server_a_baseline:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:continuous_batching_cases.json:cb_b1_server_b_chunk_cap:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:continuous_batching_cases.json:cb_b1_server_c_big_step:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:continuous_batching_cases.json:cb_b1_tp8_pp2_chunk_cap:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:continuous_batching_cases.json:cb_b1_tp4_pp4_chunk_cap:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:expected_values.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:master_benchmark_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "22 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_context_baseline:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp8_context_baseline:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_prefill_focus:1m_prefill",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_chunk4k:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_chunk8k:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_chunk16k:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_closedloop_512k:c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=c1, seen=['c1']"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_closedloop_512k:c4",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=c2, seen=['c1', 'c2']"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_closedloop_1m:c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=c1, seen=['c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10_vllm_surrogate_cases.json:tp4_native_offload_pressure:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "4 cases defined"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c1",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp4_pp2_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c1",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp8_pp2_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c1",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp4_pp4_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:512k_c1",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=128k_c1, seen=['128k_c1']"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c1",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=512k_c1, seen=['128k_c1', '512k_c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10b_vllm_multi_node_cases.json:tp16_pp1_dist:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "json_parse:rtx_g4_smoke_v5\\10d_1m_extended_cases.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "unique_cases:rtx_g4_smoke_v5\\10d_1m_extended_cases.json",
+      "category": "case_integrity",
+      "passed": true,
+      "detail": "7 cases defined"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c1, seen=['1m_c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c4",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c2, seen=['1m_c1', '1m_c2']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_concurrency_extension:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c2",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c1, seen=['1m_c1']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c2",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "gate_order:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c4",
+      "category": "gate_dependencies",
+      "passed": true,
+      "detail": "depends_on=1m_c2, seen=['1m_c1', '1m_c2']"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp8_1m_concurrency_extension:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_maxseq4:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_maxseq8:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_1m_maxseq16:1m_c4",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_fp8_kv_1m:1m_c1",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=1000000"
+    },
+    {
+      "name": "token_clamp_1m:rtx_g4_smoke_v5\\10d_1m_extended_cases.json:tp4_prefix1m:prefix1m",
+      "category": "token_clamping",
+      "passed": true,
+      "detail": "input_tokens=0"
+    },
+    {
+      "name": "json_parse:rtx_g4_smoke_v5\\18_multi_node_profile_matrix.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "json_parse:rtx_g4_smoke_v5\\kimi_linear_provenance.json",
+      "category": "json_schema",
+      "passed": true,
+      "detail": ""
+    },
+    {
+      "name": "nccl_p2p_sensitivity_isolated:01_preflight_and_diagnostics\\02_run_node_local.sh",
+      "category": "nccl_invariants",
+      "passed": true,
+      "detail": "isolated_sensitivity=True"
+    },
+    {
+      "name": "nccl_p2p_sensitivity_isolated:rtx_g4_hardware_diagnostics\\02_run_node_local.sh",
+      "category": "nccl_invariants",
+      "passed": true,
+      "detail": "isolated_sensitivity=True"
+    }
+  ]
+}
