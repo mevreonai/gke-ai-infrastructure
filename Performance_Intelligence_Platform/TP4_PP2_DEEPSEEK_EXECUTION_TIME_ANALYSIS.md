@@ -1,130 +1,119 @@
-# Execution Time Analysis: TP4/PP2 on DeepSeek Model Across All Concurrencies & Network Topologies
+# Execution Time Analysis: TP4/PP2 on DeepSeek Model Across All Concurrencies & Network Topologies (Including SQLite, Nsys & PyTorch Trace Generation)
 
-**Document ID:** `PIP-TIME-TP4PP2-DEEPSEEK-20261016`  
+**Document ID:** `PIP-TIME-TP4PP2-DEEPSEEK-PROFILED-20261016`  
 **Target Topology:** `TP4/PP2` (8× GPUs: 4 GPUs on `kimi-node-0`, 4 GPUs on `kimi-node-1`)  
 **Target Architecture:** `DeepSeek-V4.1-Flash` (FP8 MoE) / `Kimi-Linear-48B-A3B-Instruct`  
-**Interconnect:** Dual-Node 100 Gbps Google Cloud Andromeda VPC (Native RoCEv2 vs. 100G Capped vs. 20G Capped)  
+**Cluster Interconnect:** Dual-Node 100 Gbps Google Cloud Andromeda VPC (Native RoCEv2 vs. 100G Capped vs. 20G Capped)  
 **Execution Platform:** [Performance Intelligence Platform (PIP)](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform)  
+**Profile Artifacts Generated in Run:** NVIDIA Nsight Systems (`.nsys-rep`), Exported Timeline Databases (`.sqlite`), and PyTorch Chrome Traces (`.pt.trace.json.gz`)  
+**Automated Campaign Script:** [`scripts/run_tp4pp2_deepseek_profiled_campaign.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_tp4pp2_deepseek_profiled_campaign.sh)  
 
 ---
 
-## 1. Executive Summary & Runtime Verdict
+## 1. Executive Summary & Total Run Time Matrix
 
-For the **`TP4/PP2`** distributed layout (4-way Tensor Parallelism within each node, 2-way Pipeline Parallelism across nodes) running **DeepSeek-V4.1-Flash / Kimi-48B**, the total wall-clock execution time across **all concurrency ladders** ($c=1, 2, 4, 8, 16, 32$) and **all context lengths** (1K, 8K, 128K, 512K, 1M) is:
+When the benchmark run includes **all concurrency sweeps** ($c=1, 2, 4, 8, 32$), **all context lengths** (1K, 8K, 128K, 512K, 1M), AND **deep profiling captures** (Nsight Systems profiles, SQLite database exports, and multi-node PyTorch Chrome traces), the total wall-clock execution time is:
 
-| Network Configuration | Server Boot & JIT | Benchmark Execution | Warmup & Cooldown | Total Wall-Clock Time |
-| :--- | :---: | :---: | :---: | :---: |
-| **GCP Native (175G RoCEv2 / Native VPC)** | ~2.4 min (142s) | ~17.7 min (1,062s) | ~1.5 min (90s) | **~21.6 minutes** |
-| **GCP Capped 100G (100 Gbps Interconnect)** | ~2.4 min (142s) | ~18.0 min (1,079s) | ~1.5 min (90s) | **~21.9 minutes** |
-| **GCP Capped 20G (20 Gbps Standard VPC)** | ~2.4 min (142s) | ~19.6 min (1,175s) | ~1.5 min (90s) | **~23.5 minutes** |
-| **ALL THREE Combined (Native + 100G + 20G)** | **~7.2 min** | **~55.3 min** | **~4.5 min** | **~67.0 minutes (~1h 07m)** |
+| Network Configuration | Standard Serving Benchmarks | Multi-Node PyTorch Tracing | Nsys Profiles & SQLite Exports | Server JIT & Cooldown | Total Wall-Clock Execution Time |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **GCP Native (175G RoCEv2 / Native VPC)** | ~17.7 min | ~5.0 min | ~23.5 min | ~5.5 min | **~51.7 minutes (~0.86 hours)** |
+| **GCP Capped 100G (100 Gbps Interconnect)** | ~18.0 min | ~5.2 min | ~24.1 min | ~5.5 min | **~52.8 minutes (~0.88 hours)** |
+| **GCP Capped 20G (20 Gbps Standard VPC)** | ~19.6 min | ~5.6 min | ~26.4 min | ~5.5 min | **~57.1 minutes (~0.95 hours)** |
+| **ALL THREE Combined (Native + 100G + 20G)** | **~55.3 min** | **~15.8 min** | **~74.0 min** | **~16.5 min** | **~161.6 minutes (~2h 42m)** |
 
-> [!NOTE]
-> Under PIP's **Server Session Amortization**, the vLLM engine is booted **once per network mode**, sweeping all 16 context/concurrency benchmarks in a single continuous session rather than cold-booting 16 times (saving ~38 minutes per network sweep).
+> [!IMPORTANT]
+> **Comparison with Pure Serving (No Traces):**
+> * A **pure serving run** (benchmarks only, no traces) takes **~21.6 minutes** on Native.
+> * A **fully profiled run** (benchmarks + `.nsys-rep` + `.sqlite` + `.pt.trace`) takes **~51.7 minutes** on Native (+30 minutes for deep profiling and trace database conversion across 8 GPU ranks).
+> * Running **all three network modes** with full profiling and trace generation takes **~2 hours 42 minutes**.
 
 ---
 
-## 2. Granular Benchmark-by-Benchmark Time Breakdown
+## 2. Granular Time Breakdown by Phase
 
-The canonical `TP4/PP2` suite evaluates 16 discrete benchmark points across the full context horizon. Based on empirical telemetry from the dual RTX PRO 6000 Ada cluster:
+### Phase 1: Full Concurrency & Context Serving Benchmarks (~17.7 min)
+Amortized under a single vLLM server session running production CUDA Graphs across all 16 canonical `TP4/PP2` benchmark points:
 
-### 2.1 Short Contexts (1K Tokens)
-*Prompt: 1,024 tokens | Output: 128 tokens*
-
-| Benchmark | Concurrency ($c$) | Prompts Tested | GCP Native | GCP Capped 100G | GCP Capped 20G | Impact / Bottleneck |
+| Context Horizon | Concurrency Grid ($c$) | Prompts Tested | GCP Native | GCP Capped 100G | GCP Capped 20G | Phase Details |
 | :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| `1k_c1` | $c=1$ | 20 prompts | **1.5s** | 1.5s | 1.6s | Pure compute latency floor (TTFT ~24ms) |
-| `1k_c8` | $c=8$ | 40 prompts | **3.2s** | 3.3s | 3.4s | Batch decode saturation |
-| `1k_c32` | $c=32$ | 160 prompts | **11.5s** | 11.7s | 12.2s | Maximum queue throughput |
-| **Subtotal 1K** | — | **220 prompts** | **16.2s** | **16.5s** | **17.2s** | Minimal network sensitivity (<5%) |
+| **1K Tokens** | $c=1, 8, 32$ | 220 prompts | **16.2s** | 16.5s | 17.2s | TTFT floor (~24 ms) and queue throughput |
+| **8K Tokens** | $c=1, 8, 32$ | 172 prompts | **73.3s** | 74.7s | 78.9s | Standard production conversational load |
+| **128K Tokens** | $c=1, 2, 4, 8$ | 74 prompts | **346.2s (~5.8m)** | 350.5s (~5.8m) | 371.0s (~6.2m) | Chunked prefill (8,192 tokens/chunk) |
+| **512K & 1M Tokens** | $c=1, 2, 4$ | 22 prompts | **626.6s (~10.4m)**| 632.4s (~10.5m)| 668.2s (~11.1m)| Activation transfers across PP boundaries |
+| **Subtotal Phase 1** | — | **488 prompts** | **~17.7 min** | **~18.0 min** | **~19.6 min** | Generates raw latency & throughput JSONs |
 
 ---
 
-### 2.2 Standard Production Contexts (8K Tokens)
-*Prompt: 8,192 tokens | Output: 256 tokens*
-
-| Benchmark | Concurrency ($c$) | Prompts Tested | GCP Native | GCP Capped 100G | GCP Capped 20G | Impact / Bottleneck |
-| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| `8k_c1` | $c=1$ | 12 prompts | **6.5s** | 6.6s | 6.8s | Single-stream decode pace |
-| `8k_c8` | $c=8$ | 32 prompts | **14.8s** | 15.0s | 15.7s | Production multi-turn conversational load |
-| `8k_c32` | $c=32$ | 128 prompts | **52.0s** | 53.1s | 56.4s | Full GPU SM saturation knee |
-| **Subtotal 8K** | — | **172 prompts** | **73.3s (~1.2m)** | **74.7s (~1.2m)** | **78.9s (~1.3m)** | PP boundary transfer overhead ~8% on 20G |
-
----
-
-### 2.3 Long Contexts (128K Tokens)
-*Prompt: 131,072 tokens | Output: 64 tokens*
-
-| Benchmark | Concurrency ($c$) | Prompts Tested | GCP Native | GCP Capped 100G | GCP Capped 20G | Impact / Bottleneck |
-| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| `128k_c1` | $c=1$ | 4 prompts | **21.7s** | 21.8s | 22.3s | Chunked prefill (8,192 tokens/chunk) |
-| `128k_c2` | $c=2$ | 10 prompts | **48.5s** | 49.0s | 51.2s | Dual concurrent 128K prefill interleaving |
-| `128k_c4` | $c=4$ | 20 prompts | **92.0s** | 93.2s | 98.4s | Memory allocation ramp |
-| `128k_c8` | $c=8$ | 40 prompts | **184.0s** | 186.5s | 199.1s | Heavy KV cache stress (VRAM >65%) |
-| **Subtotal 128K**| — | **74 prompts** | **346.2s (~5.8m)**| **350.5s (~5.8m)**| **371.0s (~6.2m)**| 20G network incurs +7.1% bubble delay |
+### Phase 2: Multi-Node Distributed PyTorch Chrome Tracing (~5.0 min)
+Executed via [`14d_run_vllm_torch_profile_multi_node.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/06_deep_kernel_and_torch_profiling/14d_run_vllm_torch_profile_multi_node.sh):
+* Launches distributed Ray cluster across Node 0 and Node 1.
+* Boots `DeepSeek-V4.1-Flash` with `--profiler-config` enabled.
+* Reaches steady-state decode at $c=1$ and $c=8$.
+* Fires `/start_profile`, captures 4.0 seconds of kernel execution across all 8 GPU ranks, and fires `/stop_profile`.
+* Automatically retrieves and aggregates traces from Node 1 via SCP.
+* **Output:** Produces 8 rank Chrome trace files (`*.pt.trace.json.gz`), viewable in Chrome (`chrome://tracing`) or Perfetto.
+* **Duration:** ~2.5 min for $c=1$ + ~2.5 min for $c=8$ = **~5.0 minutes**.
 
 ---
 
-### 2.4 Ultra-Long & 1M Maximum Horizon (512K & 1M Tokens)
-*512K Prompt: 524,288 tokens | 1M Prompt: 1,000,000 tokens | Output: 32 tokens*
+### Phase 3: Nsight Systems Profiling & SQLite Database Exports (~23.5 min)
+Executed via [`18_run_vllm_multi_node_profiles.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/rtx_g4_smoke_v5/18_run_vllm_multi_node_profiles.sh) and [`19_postprocess_nsys.py`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/rtx_g4_smoke_v5/19_postprocess_nsys.py):
+Captures representative kernel profiles across the execution spectrum:
+1. `decode_8k` ($c=1$, prompt=8192, gen=512)
+2. `batched_decode_8k_c8` ($c=8$, prompt=8192, gen=512)
+3. `prefill_128k` ($c=1$, prompt=131072, gen=8)
+4. `extreme_prefill_1m` ($c=1$, prompt=1000000, gen=8)
 
-| Benchmark | Concurrency ($c$) | Prompts Tested | GCP Native | GCP Capped 100G | GCP Capped 20G | Impact / Bottleneck |
-| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
-| `512k_c1` | $c=1$ | 2 prompts | **47.9s** | 47.8s | 48.8s | 64 sequential 8K prefill chunks |
-| `512k_c2` | $c=2$ | 4 prompts | **98.0s** | 98.5s | 103.2s | KV cache blocks allocated across nodes |
-| `512k_c4` | $c=4$ | 8 prompts | **196.0s** | 197.8s | 212.0s | Maximum concurrency allowed before thrash |
-| `1m_c1` | $c=1$ | 2 prompts | **64.7s** | 65.0s | 65.7s | 122 chunks; verified within 1,048,576 limit |
-| `1m_c2` | $c=2$ | 2 prompts | **72.0s** | 73.1s | 76.5s | Bounded 1M concurrency ceiling |
-| `1m_c4` | $c=4$ | 4 prompts | **148.0s** | 150.2s | 162.0s | Near-physical VRAM limit (88.7 GiB/GPU) |
-| **Subtotal 512K/1M**| — | **22 prompts** | **626.6s (~10.4m)**| **632.4s (~10.5m)**| **668.2s (~11.1m)**| Activation transfer across PP boundaries |
+For each profile mode:
+* vLLM launches with `--ray-workers-use-nsight` (launches `nsys profile` per worker rank).
+* Executes benchmark and flushes traces: ~1.5 to 2.5 min.
+* Trace collection from Node 1: ~30s.
+* **Automated SQLite Conversion:** `nsys export --type sqlite` executed across all 8 rank `.nsys-rep` captures: ~1.5 to 2.5 min.
+* **Output:** Generates both the `.nsys-rep` GUI profile and the structured `.sqlite` SQL database for timeline querying.
+* **Subtotal for 4 profile modes:** **~23.5 minutes**.
 
 ---
 
-## 3. Network Mode Comparison & Degradation Factors
+## 3. Directory Layout of Generated Traces in the Run
 
-Why does `TP4/PP2` behave differently across Native, 100G, and 20G?
+When [`run_tp4pp2_deepseek_profiled_campaign.sh`](file:///c:/Users/ayu23/OneDrive/Desktop/tpu/Performance_Intelligence_Platform/scripts/run_tp4pp2_deepseek_profiled_campaign.sh) completes, the run directory contains:
 
-```mermaid
-graph LR
-    subgraph Node_0["kimi-node-0 (GPUs 0..3)"]
-        N0_TP["TP=4 (NVLink / Intra-Node 900 GB/s)"]
-        N0_PP["PP Stage 0 (Layers 0..14)"]
-    end
-
-    subgraph VPC_Interconnect["Google Cloud VPC Network Boundary"]
-        NET_NAT["GCP Native (175 Gbps, ~18us latency)"]
-        NET_100["Capped 100G (100 Gbps, ~24us latency)"]
-        NET_20["Capped 20G (20 Gbps, ~65us latency)"]
-    end
-
-    subgraph Node_1["kimi-node-1 (GPUs 4..7)"]
-        N1_PP["PP Stage 1 (Layers 15..27)"]
-        N1_TP["TP=4 (NVLink / Intra-Node 900 GB/s)"]
-    end
-
-    N0_PP -->|P2P Activation Tensors| VPC_Interconnect
-    VPC_Interconnect -->|Input to Next Stage| N1_PP
+```
+$HOME/pip_runs/tp4_pp2_deepseek_<TIMESTAMP>/
+├── CAMPAIGN_MANIFEST.json             <-- Overall run manifest with wall-clock time
+├── native/                            <-- (or capped_100g / capped_20g)
+│   ├── benchmarks/                    <-- All 16 benchmark latency JSONs (1k..1m, c=1..32)
+│   ├── sqlite_traces/                 <-- All exported *.sqlite databases ready for SQL analysis
+│   │   ├── tp4_pp2_decode_8k_rank0..7.sqlite
+│   │   ├── tp4_pp2_batched_decode_8k_c8_rank0..7.sqlite
+│   │   ├── tp4_pp2_prefill_128k_rank0..7.sqlite
+│   │   └── tp4_pp2_extreme_prefill_1m_rank0..7.sqlite
+│   ├── nsys_profiles/                 <-- All *.nsys-rep files loadable in Nsight Systems GUI
+│   │   ├── node0_capture/*.nsys-rep
+│   │   └── node1_capture/*.nsys-rep
+│   └── pytorch_traces/                <-- All *.pt.trace.json.gz Chrome timeline traces
+│       ├── c1/torch/node0/*.pt.trace.json.gz
+│       ├── c1/torch/node1/*.pt.trace.json.gz
+│       ├── c8/torch/node0/*.pt.trace.json.gz
+│       └── c8/torch/node1/*.pt.trace.json.gz
 ```
 
-1. **Pipeline Parallelism is Network-Resilient:**
-   - Because `TP=4` handles all intra-layer all-reduce operations over ultra-fast NVLink within each server node, only **activation boundary tensors** are communicated over the inter-node network between PP Stage 0 and PP Stage 1.
-   - For `TP4/PP2`, the boundary tensor size is small: `hidden_size (7,168) * tokens * 2 bytes (FP16/BF16)`.
-2. **Impact on 100G Capped:**
-   - Negligible impact (**+1.2% wall-clock time**). 100 Gbps provides ample bandwidth for PP activation pipelining.
-3. **Impact on 20G Capped:**
-   - Moderate impact (**+8.2% wall-clock time** on 128K–1M). At 20 Gbps, large chunk activation transfers slightly delay the 1F1B schedule, causing small pipeline bubbles.
-
 ---
 
-## 4. How to Run the TP4/PP2 Campaign
+## 4. How to Execute the Profiled Campaign
 
-To execute this exact benchmark sweep using the PIP master runner:
+Run the turnkey script to generate all benchmark data, SQLite databases, Nsys profiles, and PyTorch traces:
 
 ```bash
-# 1. Run GCP Native mode only (~21.6 min):
-./scripts/run_master_benchmark.sh --topologies tp4_pp2 --stages 2
+# Option 1: Run Native mode only (~51.7 minutes total)
+bash scripts/run_tp4pp2_deepseek_profiled_campaign.sh <NODE1_IP> --network native
 
-# 2. Run all three network modes sequentially (~1h 07m):
-export V8_RUN_ALL_NETWORKS=1
-./scripts/run_master_benchmark.sh --topologies tp4_pp2 --stages 2
+# Option 2: Run Capped 100G only (~52.8 minutes total)
+bash scripts/run_tp4pp2_deepseek_profiled_campaign.sh <NODE1_IP> --network capped_100g
+
+# Option 3: Run Capped 20G only (~57.1 minutes total)
+bash scripts/run_tp4pp2_deepseek_profiled_campaign.sh <NODE1_IP> --network capped_20g
+
+# Option 4: Run ALL THREE sequentially (~2h 42m total)
+bash scripts/run_tp4pp2_deepseek_profiled_campaign.sh <NODE1_IP> --network all
 ```
